@@ -1,0 +1,93 @@
+[2026-08-03T05:03:17.157Z] INFO  [skills] detectSkills found 0 active (0 in registry)
+[2026-08-03T05:03:18.704Z] INFO  [notes] detectNotes found 0 notes (0 in registry)
+[2026-08-03T05:03:18.711Z] INFO  [Sync:VsCodeBootstrap] Memory Bank sync engine built (auto-sync off — manual only)
+[2026-08-03T05:03:18.711Z] INFO  [StorageFactory] StorageFactory.create: storageMode=dual-write, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-08-03T05:03:19.698Z] INFO  [StorageFactory] Storage mode: dual-write (primary=orphan, shadow=folder)
+[2026-08-03T05:03:19.699Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-03T05:03:41.146Z] INFO  [StorageFactory] StorageFactory.create: storageMode=dual-write, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-08-03T05:03:41.703Z] INFO  [StorageFactory] Storage mode: dual-write (primary=orphan, shadow=folder)
+[2026-08-03T05:03:41.954Z] INFO  [bridge] Own dist-paths/antigravity-ide missing, stale, or pointing elsewhere — re-enabling
+[2026-08-03T05:03:41.954Z] INFO  [bridge] enable() called
+[2026-08-03T05:03:42.297Z] INFO  [StorageFactory] StorageFactory.create: storageMode=dual-write, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-08-03T05:03:42.790Z] INFO  [StorageFactory] Storage mode: dual-write (primary=orphan, shadow=folder)
+[2026-08-03T05:03:42.814Z] INFO  [Installer] Installing Jolli Memory hooks
+[2026-08-03T05:03:43.486Z] INFO  [DispatchScripts] Wrote resolve-dist-path, run-hook, and run-cli scripts to C:\Users\mk\.jolli\jollimemory
+[2026-08-03T05:03:43.494Z] INFO  [DistPathWriter] Wrote dist-paths/antigravity-ide (version=0.99.10, distDir=c:\Users\mk\.antigravity-ide\extensions\jolli.jollimemory-vscode-0.99.10-universal\dist)
+[2026-08-03T05:03:43.541Z] INFO  [SkillInstaller] Wrote SKILL.md (revision 2) to C:\Users\mk\Documents\motion-graphic-reels\.agents\skills\jolli-recall\SKILL.md
+[2026-08-03T05:03:43.554Z] INFO  [SkillInstaller] Wrote SKILL.md (revision 2) to C:\Users\mk\Documents\motion-graphic-reels\.agents\skills\jolli-search\SKILL.md
+[2026-08-03T05:03:43.558Z] INFO  [SkillInstaller] Wrote SKILL.md (revision 5) to C:\Users\mk\Documents\motion-graphic-reels\.agents\skills\jolli-local-run\SKILL.md
+[2026-08-03T05:03:43.563Z] INFO  [SkillInstaller] Wrote SKILL.md (revision 4) to C:\Users\mk\Documents\motion-graphic-reels\.agents\skills\jolli-remote-run\SKILL.md
+[2026-08-03T05:03:43.637Z] INFO  [SkillInstaller] Wrote SKILL.md (revision 6) to C:\Users\mk\Documents\motion-graphic-reels\.agents\skills\jolli\SKILL.md
+[2026-08-03T05:03:43.840Z] INFO  [SchemaV5Migration] Storage backend not initialized yet — skipping schema v5 migration (no data to migrate)
+[2026-08-03T05:03:43.841Z] INFO  [activate] Schema v5 migration: alreadyDone=false fresh=true migrated=0 skipped=0
+[2026-08-03T05:03:44.589Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-03T05:03:44.598Z] INFO  [plans] detectPlans found 0 plans (0 in registry)
+[2026-08-03T05:03:44.598Z] INFO  [notes] detectNotes found 0 notes (0 in registry)
+[2026-08-03T05:03:44.598Z] INFO  [references] detectReferences(*) found 0 (0 in registry)
+[2026-08-03T05:03:44.598Z] INFO  [skills] detectSkills found 0 active (0 in registry)
+[2026-08-03T05:03:44.720Z] INFO  [GitExclude] Updated C:\Users\mk\Documents\motion-graphic-reels\.git\info\exclude with 8 Jolli skill exclude paths
+[2026-08-03T05:03:44.741Z] INFO  [McpRegistration] Registered MCP server in C:\Users\mk\Documents\motion-graphic-reels\.mcp.json
+[2026-08-03T05:03:44.754Z] INFO  [JsonMcpWriter] Registered MCP server in C:\Users\mk\Documents\motion-graphic-reels\.cursor\mcp.json
+[2026-08-03T05:03:44.805Z] INFO  [JsonMcpWriter] Registered MCP server in C:\Users\mk\.gemini\settings.json
+[2026-08-03T05:03:45.290Z] INFO  [CodexTomlWriter] Registered Codex MCP server in C:\Users\mk\.codex\config.toml
+[2026-08-03T05:03:45.388Z] INFO  [JsonMcpWriter] Registered MCP server in C:\Users\mk\.config\opencode\opencode.json
+[2026-08-03T05:03:45.489Z] INFO  [JsonMcpWriter] Registered MCP server in C:\Users\mk\AppData\Roaming\Code\User\mcp.json
+[2026-08-03T05:03:45.492Z] INFO  [JsonMcpWriter] Registered MCP server in C:\Users\mk\.gemini\config\mcp_config.json
+[2026-08-03T05:03:45.727Z] INFO  [GitHookInstaller] Git post-commit hook installed
+[2026-08-03T05:03:45.736Z] INFO  [GitHookInstaller] Git post-rewrite hook installed
+[2026-08-03T05:03:45.742Z] INFO  [GitHookInstaller] Git prepare-commit-msg hook installed
+[2026-08-03T05:03:45.749Z] INFO  [GitHookInstaller] Git post-merge hook installed
+[2026-08-03T05:03:45.755Z] INFO  [GitHookInstaller] Git pre-push hook installed
+[2026-08-03T05:03:45.759Z] INFO  [GeminiHookInstaller] Gemini AfterAgent hook installed
+[2026-08-03T05:03:45.761Z] INFO  [Installer] Skipping v5 migration on vscode-extension source — Extension.ts owns it with UI
+[2026-08-03T05:03:45.761Z] INFO  [Installer] Installation complete
+[2026-08-03T05:03:45.764Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-03T05:04:07.786Z] INFO  [Installer] Status: enabled=false, claude=false, git=false, geminiHook=false, worktreeHooks=false, sessions=0, summaries=0, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-03T05:04:07.819Z] INFO  [initialLoad] All panels loaded — updating status bar
+[2026-08-03T05:04:07.820Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-03T05:04:11.989Z] INFO  [Installer] Status: enabled=false, claude=false, git=false, geminiHook=true, worktreeHooks=false, sessions=0, summaries=0, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-03T05:04:12.125Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=0, summaries=0, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-03T05:04:12.147Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-03T05:04:20.795Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=0, summaries=0, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-03T05:04:21.521Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=0, summaries=0, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-03T05:04:21.924Z] INFO  [StorageFactory] StorageFactory.create: storageMode=dual-write, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-08-03T05:04:22.434Z] INFO  [StorageFactory] Storage mode: dual-write (primary=orphan, shadow=folder)
+[2026-08-03T05:04:22.448Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-03T05:04:24.324Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=0, summaries=0, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-03T16:45:29.700Z] INFO  [deactivate] Jolli Memory extension deactivating
+[2026-08-03T19:51:03.156Z] INFO  [activate] Activating JolliMemory extension {"workspaceRoot":"c:\\Users\\mk\\Documents\\motion-graphic-reels","extensionPath":"c:\\Users\\mk\\.antigravity-ide\\extensions\\jolli.jollimemory-vscode-0.99.10-universal"}
+[2026-08-03T19:51:21.208Z] INFO  [initialLoad] Loading all panels
+[2026-08-03T19:53:08.741Z] WARN  [activate] kbInitPromise watchdog fired after 60s — releasing sync gate; check initializeKB() for hangs
+[2026-08-03T19:53:21.106Z] INFO  [plans] detectPlans found 0 plans (0 in registry)
+[2026-08-03T19:53:21.107Z] INFO  [notes] detectNotes found 0 notes (0 in registry)
+[2026-08-03T19:53:21.107Z] INFO  [references] detectReferences(*) found 0 (0 in registry)
+[2026-08-03T19:53:21.107Z] INFO  [skills] detectSkills found 0 active (0 in registry)
+[2026-08-03T19:53:56.281Z] INFO  [StorageFactory] StorageFactory.create: storageMode=dual-write, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-08-03T19:53:58.897Z] INFO  [StorageFactory] Storage mode: dual-write (primary=orphan, shadow=folder)
+[2026-08-03T19:53:58.914Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-03T19:53:58.915Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-03T19:54:05.846Z] INFO  [Sync:VsCodeBootstrap] Memory Bank sync engine built (auto-sync off — manual only)
+[2026-08-03T19:54:09.839Z] INFO  [StorageFactory] StorageFactory.create: storageMode=dual-write, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-08-03T19:54:12.529Z] INFO  [StorageFactory] Storage mode: dual-write (primary=orphan, shadow=folder)
+[2026-08-03T19:54:14.933Z] INFO  [StorageFactory] StorageFactory.create: storageMode=dual-write, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-08-03T19:54:19.224Z] INFO  [StorageFactory] Storage mode: dual-write (primary=orphan, shadow=folder)
+[2026-08-03T19:54:26.952Z] INFO  [SchemaV5Migration] Storage backend not initialized yet — skipping schema v5 migration (no data to migrate)
+[2026-08-03T19:54:26.952Z] INFO  [activate] Schema v5 migration: alreadyDone=false fresh=true migrated=0 skipped=0
+[2026-08-03T19:54:49.925Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=1, summaries=0, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-03T19:54:49.995Z] INFO  [initialLoad] All panels loaded — updating status bar
+[2026-08-03T19:54:49.995Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-03T19:54:52.338Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=1, summaries=0, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-03T19:54:52.340Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-03T19:55:08.277Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=1, summaries=0, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-03T19:55:08.511Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=1, summaries=0, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-03T19:55:18.860Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-03T19:55:31.782Z] INFO  [StorageFactory] StorageFactory.create: storageMode=dual-write, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-08-03T19:55:58.612Z] INFO  [StorageFactory] Storage mode: dual-write (primary=orphan, shadow=folder)
+[2026-08-03T19:56:34.655Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=1, summaries=0, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-03T20:13:47.759Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-03T20:13:47.807Z] INFO  [plans] detectPlans found 0 plans (0 in registry)
+[2026-08-03T20:13:47.808Z] INFO  [notes] detectNotes found 0 notes (0 in registry)
+[2026-08-03T20:13:47.808Z] INFO  [skills] detectSkills found 0 active (0 in registry)
+[2026-08-03T20:13:47.808Z] INFO  [references] detectReferences(*) found 0 (0 in registry)
+[2026-08-03T20:13:54.235Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=1, summaries=0, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-03T20:13:54.508Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
