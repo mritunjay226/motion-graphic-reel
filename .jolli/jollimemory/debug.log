@@ -145,3 +145,18 @@
 [2026-08-03T20:17:32.988Z] INFO  [references] detectReferences(*) found 0 (0 in registry)
 [2026-08-03T20:17:32.988Z] INFO  [skills] detectSkills found 0 active (0 in registry)
 [2026-08-03T20:17:34.074Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-03T20:32:00.606Z] INFO  [PrepareMsgHook] === Prepare-commit-msg hook started (source: message) ===
+[2026-08-03T20:32:00.913Z] INFO  [PrepareMsgHook] === Prepare-commit-msg hook finished ===
+[2026-08-03T20:32:12.106Z] INFO  [PostCommitHook] [trace=cc5ecb5bf40c9d1d0b01873e2b25aaa6] Detected operation: commit
+[2026-08-03T20:32:13.376Z] INFO  [PostCommitHook] [trace=cc5ecb5bf40c9d1d0b01873e2b25aaa6] Enqueued: type=commit hash=4ec4abba
+[2026-08-03T20:32:13.377Z] INFO  [QueueWorker] [trace=cc5ecb5bf40c9d1d0b01873e2b25aaa6] Launching background worker
+[2026-08-03T20:32:13.408Z] INFO  [QueueWorker] [trace=cc5ecb5bf40c9d1d0b01873e2b25aaa6] Background worker spawned (PID: 22480)
+[2026-08-03T20:32:26.056Z] INFO  [QueueWorker] [trace=cc5ecb5bf40c9d1d0b01873e2b25aaa6] === Queue worker started === node=22.17.0 kind=vscode-plugin source=antigravity-ide pkgVer=0.99.10 cliVer=0.99.10 dist=c:\Users\mk\.antigravity-ide\extensions\jolli.jollimemory-vscode-0.99.10-universal\dist
+[2026-08-03T20:32:26.083Z] INFO  [StorageFactory] [trace=cc5ecb5bf40c9d1d0b01873e2b25aaa6] StorageFactory.create: storageMode=dual-write, projectPath=C:\Users\mk\Documents\motion-graphic-reels
+[2026-08-03T20:32:27.822Z] INFO  [StorageFactory] [trace=cc5ecb5bf40c9d1d0b01873e2b25aaa6] Storage mode: dual-write (primary=orphan, shadow=folder)
+[2026-08-03T20:32:27.834Z] INFO  [QueueWorker] [trace=cc5ecb5bf40c9d1d0b01873e2b25aaa6] Processing queue entry: type=commit hash=4ec4abba
+[2026-08-03T20:32:28.111Z] INFO  [GitOps] [trace=cc5ecb5bf40c9d1d0b01873e2b25aaa6] Commit 4ec4abba: first
+[2026-08-03T20:32:28.111Z] INFO  [QueueWorker] [trace=cc5ecb5bf40c9d1d0b01873e2b25aaa6] Commit: 4ec4abba - first (266ms)
+[2026-08-03T20:32:37.234Z] INFO  [QueueWorker] [trace=cc5ecb5bf40c9d1d0b01873e2b25aaa6] Discovered 1 Antigravity session(s)
+[2026-08-03T20:32:37.257Z] INFO  [QueueWorker] [trace=cc5ecb5bf40c9d1d0b01873e2b25aaa6] Transcript source: session=de68da7c-5d55-4333-a070-307792dc24f5, lines=353→492, entries=8
+[2026-08-03T20:32:37.531Z] INFO  [QueueWorker] [trace=cc5ecb5bf40c9d1d0b01873e2b25aaa6] Git diff: 16 files changed, +609 -118 (263ms)

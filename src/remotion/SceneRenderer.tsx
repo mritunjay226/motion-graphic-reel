@@ -19,11 +19,12 @@ interface SceneRendererProps {
   scene: Scene;
   voiceId?: string;
   theme?: VideoTheme;
+  enableAudio?: boolean;
 }
 
 /**
  * SceneRenderer orchestrates the layer hierarchy for a single scene:
- * Auto-Attached Cartesia AI Voice Narration Track
+ * Non-blocking Audio Track (pauseWhenBuffering={false})
  * Layer 1: Background (Parallax Layer + Theme Color Filter)
  * Layer 2: Atmospheric Overlay FX
  * Layer 3: Dynamic Projected Floor Shadow
@@ -36,6 +37,7 @@ export const SceneRenderer: React.FC<SceneRendererProps> = ({
   scene,
   voiceId = "5ee9feff-1265-424a-9d7f-8e4d431a12c7",
   theme,
+  enableAudio = false,
 }) => {
   const {
     startFrame,
@@ -54,9 +56,14 @@ export const SceneRenderer: React.FC<SceneRendererProps> = ({
 
   return (
     <AbsoluteFill style={{ overflow: "hidden" }}>
-      {/* Auto-Attached Cartesia AI Voice Narration Track */}
-      {narrationLine && (
-        <Audio src={narrationAudioUrl} volume={1.0} />
+      {/* Optional Cartesia Voice Track (configured with pauseWhenBuffering={false} so network audio never freezes video playback) */}
+      {enableAudio && narrationLine && (
+        <Audio
+          src={narrationAudioUrl}
+          volume={1.0}
+          pauseWhenBuffering={false}
+          acceptableTimeDifferenceInSeconds={1.5}
+        />
       )}
 
       {/* Layer 1: Background (Parallax Zoom + Theme Filter) */}

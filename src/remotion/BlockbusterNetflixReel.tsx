@@ -12,11 +12,12 @@ export interface BlockbusterNetflixReelProps {
   plan?: ExecutionPlan;
   voiceId?: string;
   themeId?: string;
+  enableAudio?: boolean;
 }
 
 /**
  * Main Remotion composition component for the 2.5D documentary reel.
- * Sequentially renders each scene with auto-attached Cartesia voice audio,
+ * Sequentially renders each scene with smooth 30 FPS video playback,
  * dynamic Video Theme color grading & typography, and wraps the output in
  * the global <FilmTreatment /> overlay (The "Texture Sandwich").
  */
@@ -24,6 +25,7 @@ export const BlockbusterNetflixReel: React.FC<BlockbusterNetflixReelProps> = ({
   plan = defaultPlan,
   voiceId = "5ee9feff-1265-424a-9d7f-8e4d431a12c7",
   themeId = DEFAULT_THEME_ID,
+  enableAudio = false,
 }) => {
   const activePlan = plan || defaultPlan;
   const activeTheme = VIDEO_THEMES[themeId] || VIDEO_THEMES[DEFAULT_THEME_ID];
@@ -39,7 +41,12 @@ export const BlockbusterNetflixReel: React.FC<BlockbusterNetflixReelProps> = ({
           durationInFrames={scene.durationFrames}
           name={scene.sceneTitle}
         >
-          <SceneRenderer scene={scene} voiceId={voiceId} theme={activeTheme} />
+          <SceneRenderer
+            scene={scene}
+            voiceId={voiceId}
+            theme={activeTheme}
+            enableAudio={enableAudio}
+          />
         </Sequence>
       ))}
 
