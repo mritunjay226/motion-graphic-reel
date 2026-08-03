@@ -91,3 +91,57 @@
 [2026-08-03T20:13:47.808Z] INFO  [references] detectReferences(*) found 0 (0 in registry)
 [2026-08-03T20:13:54.235Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=1, summaries=0, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
 [2026-08-03T20:13:54.508Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-03T20:16:57.781Z] INFO  [PrepareMsgHook] === Prepare-commit-msg hook started (source: message) ===
+[2026-08-03T20:16:59.587Z] INFO  [PrepareMsgHook] === Prepare-commit-msg hook finished ===
+[2026-08-03T20:17:19.019Z] INFO  [PostCommitHook] [trace=248add01758a49bb54bdab6ec4142ef7] Detected operation: commit
+[2026-08-03T20:17:19.294Z] INFO  [PostCommitHook] [trace=248add01758a49bb54bdab6ec4142ef7] Enqueued: type=commit hash=318f9ef4
+[2026-08-03T20:17:19.294Z] INFO  [QueueWorker] [trace=248add01758a49bb54bdab6ec4142ef7] Launching background worker
+[2026-08-03T20:17:19.317Z] INFO  [QueueWorker] [trace=248add01758a49bb54bdab6ec4142ef7] Background worker spawned (PID: 15268)
+[2026-08-03T20:17:24.626Z] INFO  [QueueWorker] [trace=248add01758a49bb54bdab6ec4142ef7] === Queue worker started === node=22.17.0 kind=vscode-plugin source=antigravity-ide pkgVer=0.99.10 cliVer=0.99.10 dist=c:\Users\mk\.antigravity-ide\extensions\jolli.jollimemory-vscode-0.99.10-universal\dist
+[2026-08-03T20:17:24.636Z] INFO  [StorageFactory] [trace=248add01758a49bb54bdab6ec4142ef7] StorageFactory.create: storageMode=dual-write, projectPath=C:\Users\mk\Documents\motion-graphic-reels
+[2026-08-03T20:17:25.951Z] INFO  [StorageFactory] [trace=248add01758a49bb54bdab6ec4142ef7] Storage mode: dual-write (primary=orphan, shadow=folder)
+[2026-08-03T20:17:25.973Z] INFO  [QueueWorker] [trace=248add01758a49bb54bdab6ec4142ef7] Processing queue entry: type=commit hash=318f9ef4
+[2026-08-03T20:17:26.347Z] INFO  [GitOps] [trace=248add01758a49bb54bdab6ec4142ef7] Commit 318f9ef4: Trying to create a first video not buiding the app yet just 
+[2026-08-03T20:17:26.348Z] INFO  [QueueWorker] [trace=248add01758a49bb54bdab6ec4142ef7] Commit: 318f9ef4 - Trying to create a first video not buiding the app yet just figuring out the pipeline (353ms)
+[2026-08-03T20:17:27.254Z] INFO  [QueueWorker] [trace=248add01758a49bb54bdab6ec4142ef7] Discovered 1 Antigravity session(s)
+[2026-08-03T20:17:27.299Z] INFO  [QueueWorker] [trace=248add01758a49bb54bdab6ec4142ef7] Transcript source: session=de68da7c-5d55-4333-a070-307792dc24f5, lines=0→353, entries=14
+[2026-08-03T20:17:27.751Z] WARN  [GitOps] [trace=248add01758a49bb54bdab6ec4142ef7] Diff exceeds 150000-char budget (343200 chars) — prepending --stat file list and truncating body
+[2026-08-03T20:17:27.883Z] INFO  [QueueWorker] [trace=248add01758a49bb54bdab6ec4142ef7] Git diff: 32 files changed, +7307 -642 (564ms)
+[2026-08-03T20:17:28.359Z] WARN  [GitOps] [trace=248add01758a49bb54bdab6ec4142ef7] Diff exceeds 60000-char budget (343200 chars) — prepending --stat file list and truncating body
+[2026-08-03T20:17:28.395Z] INFO  [QueueWorker] [trace=248add01758a49bb54bdab6ec4142ef7] Prompt blocks: plans=0 notes=0 references=0 (+0 track-only archived, not prompted) (AI soft-excluded 0)
+[2026-08-03T20:17:28.399Z] INFO  [Summarizer] [trace=248add01758a49bb54bdab6ec4142ef7] Generating summary for commit 318f9ef4
+[2026-08-03T20:17:28.399Z] INFO  [Summarizer] [trace=248add01758a49bb54bdab6ec4142ef7] Context: transcript=14, files=32, lines=7307+642
+[2026-08-03T20:17:28.400Z] WARN  [QueueWorker] [trace=248add01758a49bb54bdab6ec4142ef7] First API attempt failed: No LLM provider available. Set an Anthropic API key (ANTHROPIC_API_KEY) or configure a Jolli Space API key (jolliApiKey).. Retrying in 2000ms...
+[2026-08-03T20:17:30.402Z] INFO  [Summarizer] [trace=248add01758a49bb54bdab6ec4142ef7] Generating summary for commit 318f9ef4
+[2026-08-03T20:17:30.402Z] INFO  [Summarizer] [trace=248add01758a49bb54bdab6ec4142ef7] Context: transcript=14, files=32, lines=7307+642
+[2026-08-03T20:17:30.403Z] ERROR [QueueWorker] [trace=248add01758a49bb54bdab6ec4142ef7] API call failed after retry: No LLM provider available. Set an Anthropic API key (ANTHROPIC_API_KEY) or configure a Jolli Space API key (jolliApiKey).
+[2026-08-03T20:17:30.403Z] WARN  [QueueWorker] [trace=248add01758a49bb54bdab6ec4142ef7] Saving summary with empty topics + llm-failed marker for commit 318f9ef4
+[2026-08-03T20:17:30.404Z] INFO  [QueueWorker] [trace=248add01758a49bb54bdab6ec4142ef7] API summary generated (2.0s)
+[2026-08-03T20:17:30.406Z] INFO  [QueueWorker] [trace=248add01758a49bb54bdab6ec4142ef7] Plan registry scan: found 0 uncommitted slug(s) on main: []
+[2026-08-03T20:17:30.407Z] INFO  [QueueWorker] [trace=248add01758a49bb54bdab6ec4142ef7] Plan association: detected 0 slug(s) from transcripts: []
+[2026-08-03T20:17:30.407Z] INFO  [QueueWorker] [trace=248add01758a49bb54bdab6ec4142ef7] Note registry scan: found 0 uncommitted note(s) on main: []
+[2026-08-03T20:17:30.408Z] INFO  [QueueWorker] [trace=248add01758a49bb54bdab6ec4142ef7] Note association: detected 0 note(s): []
+[2026-08-03T20:17:30.410Z] INFO  [QueueWorker] [trace=248add01758a49bb54bdab6ec4142ef7] Reference association: detected 0 ref(s) for branch main
+[2026-08-03T20:17:30.426Z] INFO  [QueueWorker] [trace=248add01758a49bb54bdab6ec4142ef7] Summary built for 318f9ef4: recap=no, topics=0, plans=absent, notes=absent, references=absent
+[2026-08-03T20:17:31.210Z] INFO  [GitOps] [trace=248add01758a49bb54bdab6ec4142ef7] Creating orphan branch 'jollimemory/summaries/v3' using plumbing commands
+[2026-08-03T20:17:31.763Z] INFO  [GitOps] [trace=248add01758a49bb54bdab6ec4142ef7] Orphan branch 'jollimemory/summaries/v3' created successfully
+[2026-08-03T20:17:32.427Z] INFO  [GitOps] [trace=248add01758a49bb54bdab6ec4142ef7] Updated branch 'jollimemory/summaries/v3': 4 written, 0 deleted (via fast-import)
+[2026-08-03T20:17:32.439Z] INFO  [MetadataManager] [trace=248add01758a49bb54bdab6ec4142ef7] Branch mapping created: main → main
+[2026-08-03T20:17:32.488Z] INFO  [MetadataManager] [trace=248add01758a49bb54bdab6ec4142ef7] Manifest updated: main/trying-to-create-a-first-video-not-buiding-the-app-318f9ef4.md (commit)
+[2026-08-03T20:17:32.488Z] INFO  [FolderStorage] [trace=248add01758a49bb54bdab6ec4142ef7] Markdown generated: main/trying-to-create-a-first-video-not-buiding-the-app-318f9ef4.md
+[2026-08-03T20:17:32.512Z] INFO  [FolderStorage] [trace=248add01758a49bb54bdab6ec4142ef7] Wrote 4 files, deleted 0 (Add summary for 318f9ef4: Trying to create a first video not buiding the app)
+[2026-08-03T20:17:32.513Z] INFO  [SummaryStore] [trace=248add01758a49bb54bdab6ec4142ef7] Summary stored successfully for commit 318f9ef4
+[2026-08-03T20:17:32.519Z] INFO  [QueueWorker] [trace=248add01758a49bb54bdab6ec4142ef7] Summary stored successfully for commit 318f9ef4 (2.1s, 0 plans, 0 notes, 0 references)
+[2026-08-03T20:17:32.520Z] INFO  [QueueWorker] [trace=248add01758a49bb54bdab6ec4142ef7] === Pipeline completed in 6.5s ===
+[2026-08-03T20:17:32.520Z] INFO  [QueueWorker] [trace=248add01758a49bb54bdab6ec4142ef7] === Summary content (0 topics) ===
+[2026-08-03T20:17:32.675Z] INFO  [QueueWorker] [trace=248add01758a49bb54bdab6ec4142ef7] Processed 1 queue entries
+[2026-08-03T20:17:32.703Z] INFO  [SessionTracker] [trace=248add01758a49bb54bdab6ec4142ef7] Enqueued queue operation: type=ingest tag=ingest file=1785788252681-00000001-2250502a-ingest.json
+[2026-08-03T20:17:32.718Z] INFO  [PushExecutor] [trace=248add01758a49bb54bdab6ec4142ef7] Post-queue push trigger: scheduling drain for 1 newly generated summar(ies)
+[2026-08-03T20:17:32.727Z] INFO  [QueueWorker] [trace=248add01758a49bb54bdab6ec4142ef7] === Queue worker finished ===
+[2026-08-03T20:17:32.764Z] INFO  [QueueWorker] [trace=248add01758a49bb54bdab6ec4142ef7] Processing queue entry: type=ingest triggeredBy=post-commit
+[2026-08-03T20:17:32.772Z] INFO  [QueueWorker] [trace=248add01758a49bb54bdab6ec4142ef7] No API key configured — skipping ingest (post-commit)
+[2026-08-03T20:17:32.987Z] INFO  [plans] detectPlans found 0 plans (0 in registry)
+[2026-08-03T20:17:32.988Z] INFO  [notes] detectNotes found 0 notes (0 in registry)
+[2026-08-03T20:17:32.988Z] INFO  [references] detectReferences(*) found 0 (0 in registry)
+[2026-08-03T20:17:32.988Z] INFO  [skills] detectSkills found 0 active (0 in registry)
+[2026-08-03T20:17:34.074Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}

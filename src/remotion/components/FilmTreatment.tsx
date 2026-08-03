@@ -1,17 +1,28 @@
 import React from "react";
 import { AbsoluteFill, useCurrentFrame, useVideoConfig, random } from "remotion";
 import type { FilmTreatmentConfig } from "../types";
+import type { VideoTheme } from "../utils/themes";
+
+interface FilmTreatmentProps {
+  config: FilmTreatmentConfig;
+  theme?: VideoTheme;
+}
 
 /**
  * The "Texture Sandwich" — cinematic film look overlay.
  * Renders grain, scanlines, vignette, and corner blur on every frame.
- * Must be placed as the TOPMOST layer in the composition stack.
+ * Dynamically adjusts parameters when a Video Theme is selected.
  */
-export const FilmTreatment: React.FC<{ config: FilmTreatmentConfig }> = ({
+export const FilmTreatment: React.FC<FilmTreatmentProps> = ({
   config,
+  theme,
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
+
+  const grainOpacity = theme ? theme.grainOpacity : config.grainOpacity;
+  const hasScanlines = theme ? theme.scanlines : config.scanlines;
+  const vignetteAmount = theme ? theme.vignette : config.vignette;
 
   // Animated grain: change the noise seed at grainFps intervals
   const grainSeed = config.grainAnimated
@@ -24,13 +35,13 @@ export const FilmTreatment: React.FC<{ config: FilmTreatmentConfig }> = ({
       <AbsoluteFill
         style={{
           mixBlendMode: config.grainBlendMode as React.CSSProperties["mixBlendMode"],
-          opacity: config.grainOpacity,
+          opacity: grainOpacity,
           background: generateNoiseGradient(grainSeed),
         }}
       />
 
       {/* Scanlines Layer */}
-      {config.scanlines && (
+      {hasScanlines && (
         <AbsoluteFill
           style={{
             mixBlendMode: config.scanlineBlendMode as React.CSSProperties["mixBlendMode"],
@@ -48,14 +59,14 @@ export const FilmTreatment: React.FC<{ config: FilmTreatmentConfig }> = ({
       )}
 
       {/* Vignette Layer */}
-      {config.vignette > 0 && (
+      {vignetteAmount > 0 && (
         <AbsoluteFill
           style={{
             mixBlendMode: config.vignetteBlendMode as React.CSSProperties["mixBlendMode"],
             background: `radial-gradient(
               ellipse at center,
               transparent 40%,
-              rgba(0, 0, 0, ${config.vignette}) 100%
+              rgba(0, 0, 0, ${vignetteAmount}) 100%
             )`,
           }}
         />

@@ -27,29 +27,26 @@ function resolveEasing(name?: string) {
 interface ParallaxLayerProps {
   /** URL or path for the background image */
   backgroundUrl: string;
-  /** URL or path for the foreground cutout (optional) */
-  foregroundUrl?: string;
   /** Background motion configuration from execution plan */
   backgroundMotion: BackgroundMotion;
   /** Scene start frame (absolute) — used to compute local frame */
   sceneStartFrame: number;
   /** Scene duration in frames */
   sceneDurationFrames: number;
-  /** Depth multiplier for foreground parallax (default: 2.5) */
-  foregroundDepth?: number;
+  /** Theme color grade filter string (e.g. contrast(1.2)...) */
+  themeFilter?: string;
   children?: React.ReactNode;
 }
 
 /**
  * Applies independent zoom/pan interpolations to background and foreground
- * layers to create a 2.5D depth parallax effect.
- *
- * Background zooms slowly; foreground zooms faster for perceived depth.
+ * layers to create a 2.5D depth parallax effect with theme color grading.
  */
 export const ParallaxLayer: React.FC<ParallaxLayerProps> = ({
   backgroundUrl,
   backgroundMotion,
   sceneStartFrame,
+  themeFilter,
   children,
 }) => {
   const frame = useCurrentFrame();
@@ -89,11 +86,12 @@ export const ParallaxLayer: React.FC<ParallaxLayerProps> = ({
 
   return (
     <AbsoluteFill>
-      {/* Background Image */}
+      {/* Background Image with Theme Color Grade */}
       <AbsoluteFill
         style={{
           transform: `scale(${bgScale}) translate(${bgPanX}px, ${bgPanY}px)`,
-          willChange: "transform",
+          filter: themeFilter || undefined,
+          willChange: "transform, filter",
         }}
       >
         <img
@@ -105,7 +103,6 @@ export const ParallaxLayer: React.FC<ParallaxLayerProps> = ({
             objectFit: "cover",
           }}
           onError={(e) => {
-            // Fallback: show a dark gradient when asset fails to load
             (e.target as HTMLImageElement).style.display = "none";
           }}
         />
@@ -119,7 +116,7 @@ export const ParallaxLayer: React.FC<ParallaxLayerProps> = ({
         />
       </AbsoluteFill>
 
-      {/* Children (foreground, props, etc.) render on top */}
+      {/* Children (foreground, props, captions) render on top */}
       {children}
     </AbsoluteFill>
   );

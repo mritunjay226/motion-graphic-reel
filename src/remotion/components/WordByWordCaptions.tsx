@@ -9,38 +9,64 @@ interface WordByWordCaptionsProps {
   config: KineticCaptionConfig;
   /** Scene start frame (absolute) — tokens use absolute frames */
   sceneStartFrame: number;
+  /** Theme font family override */
+  themeFontFamily?: string;
+  /** Theme caption text color override */
+  themeTextColor?: string;
+  /** Theme caption highlight color override */
+  themeHighlightColor?: string;
+  /** Theme caption highlight background override (Vox Yellow Marker) */
+  themeHighlightBg?: string;
+  /** Theme shadow color override */
+  themeShadowColor?: string;
 }
 
 /**
- * Kinetic word-by-word caption system.
+ * Kinetic word-by-word caption system with theme palette & Vox highlighter box integration.
  *
  * Each word pops in at its startFrame using spring physics.
- * Highlight words receive a color boost and scale emphasis.
- * Words flow inline with automatic wrapping.
+ * Highlight words receive a Vox yellow marker box or scale/color emphasis.
+ * Words are contained within a legible semi-transparent frosted container.
  */
 export const WordByWordCaptions: React.FC<WordByWordCaptionsProps> = ({
   tokens,
   config,
   sceneStartFrame,
+  themeFontFamily,
+  themeTextColor,
+  themeHighlightColor,
+  themeHighlightBg,
+  themeShadowColor,
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const absoluteFrame = frame + sceneStartFrame;
 
+  const fontFamily = themeFontFamily || config.fontFamily;
+  const baseTextColor = themeTextColor || config.textColor;
+  const highlightTextColor = themeHighlightBg ? "#000000" : (themeHighlightColor || config.highlightColor);
+  const shadowColor = themeShadowColor || config.shadowConfig.color;
+
   return (
     <div
       style={{
         position: "absolute",
-        bottom: config.position.bottom,
-        left: 0,
-        right: 0,
+        bottom: config.position.bottom || 240,
+        left: "50%",
+        transform: "translateX(-50%)",
         display: "flex",
         flexWrap: "wrap",
-        justifyContent:
-          config.position.horizontalAlign === "center" ? "center" : "flex-start",
+        justifyContent: "center",
         alignItems: "center",
-        gap: "6px 10px",
-        padding: "0 40px",
+        gap: "8px 12px",
+        padding: "14px 28px",
+        maxWidth: "92%",
+        background: "rgba(0, 0, 0, 0.55)",
+        backdropFilter: "blur(10px)",
+        WebkitBackdropFilter: "blur(10px)",
+        borderRadius: "20px",
+        border: "1px solid rgba(255, 255, 255, 0.14)",
+        boxShadow: "0 10px 30px rgba(0, 0, 0, 0.6)",
         zIndex: 100,
       }}
     >
@@ -50,7 +76,7 @@ export const WordByWordCaptions: React.FC<WordByWordCaptionsProps> = ({
 
         const localFrame = absoluteFrame - token.startFrame;
         const isHighlight = config.highlightWords.some(
-          (hw) => token.word.replace(/[.,!?;:—]/g, "") === hw.replace(/[.,!?;:—]/g, "")
+          (hw) => token.word.replace(/[.,!?;:—]/g, "").toLowerCase() === hw.replace(/[.,!?;:—]/g, "").toLowerCase()
         );
 
         // Spring animation for pop-in
@@ -68,25 +94,39 @@ export const WordByWordCaptions: React.FC<WordByWordCaptionsProps> = ({
           ? popScale * config.highlightScale
           : popScale;
 
-        const color = isHighlight ? config.highlightColor : config.textColor;
+        const textColor = isHighlight ? highlightTextColor : baseTextColor;
+
+        // Vox Yellow Highlighter Box style
+        const highlightBgStyle: React.CSSProperties = isHighlight && themeHighlightBg
+          ? {
+              backgroundColor: themeHighlightBg,
+              color: "#000000",
+              padding: "2px 10px",
+              borderRadius: "4px",
+              boxShadow: "0 4px 14px rgba(255, 230, 0, 0.45)",
+              WebkitTextStroke: "0px transparent",
+            }
+          : {
+              WebkitTextStroke: `${config.strokeWidth}px ${config.strokeColor}`,
+            };
 
         return (
           <span
             key={`${token.word}-${i}`}
             style={{
               display: "inline-block",
-              fontFamily: config.fontFamily,
+              fontFamily,
               fontSize: config.fontSize,
               fontWeight: config.fontWeight,
-              color,
+              color: textColor,
               transform: `scale(${finalScale})`,
               transformOrigin: "center bottom",
-              WebkitTextStroke: `${config.strokeWidth}px ${config.strokeColor}`,
               paintOrder: "stroke fill",
-              textShadow: `${0}px ${config.shadowConfig.offsetY}px ${config.shadowConfig.blur}px ${config.shadowConfig.color}`,
+              textShadow: isHighlight && themeHighlightBg ? "none" : `0px ${config.shadowConfig.offsetY}px ${config.shadowConfig.blur}px ${shadowColor}`,
               letterSpacing: "1px",
               lineHeight: 1.2,
               willChange: "transform",
+              ...highlightBgStyle,
             }}
           >
             {token.word}

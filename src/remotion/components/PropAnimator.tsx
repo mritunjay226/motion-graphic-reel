@@ -12,7 +12,7 @@ interface PropAnimatorProps {
 
 /**
  * Drives animation for contextual prop overlays (floating money, stamps, documents, light streaks).
- * Implements named motion strategies with frame-accurate interpolations and physics.
+ * Implements named motion strategies including Vox-style staggered flying documents & finger wagging.
  */
 export const PropAnimator: React.FC<PropAnimatorProps> = ({
   propUrl,
@@ -62,7 +62,7 @@ export const PropAnimator: React.FC<PropAnimatorProps> = ({
       translateY = interpolate(springVal, [0, 1], [fromY, toY]);
     } else if (config.motion === "slam_rotate_in") {
       const fromRot = config.fromRotation ?? 45;
-      const toRot = config.toRotation ?? 0;
+      const toRot = config.toRotation ?? -12;
       const fromS = config.fromScale ?? 3;
       const toS = config.toScale ?? 1;
       rotation = interpolate(springVal, [0, 1], [fromRot, toRot]);
@@ -99,34 +99,132 @@ export const PropAnimator: React.FC<PropAnimatorProps> = ({
     if (config.rotationRange) {
       rotation += (localFrame * (config.rotationRange[1] - config.rotationRange[0])) / 100;
     }
+  } else if (config.motion === "finger_wag") {
+    // Signature "no-no-no" finger wagging oscillation
+    rotation += Math.sin(localFrame * 0.45) * 16;
+  } else if (config.motion === "staggered_fly_in") {
+    // Staggered flying newspapers / documents
+    const staggerOffset = config.propIndex * 6; // 6 frames delay per prop
+    const staggerFrame = Math.max(0, localFrame - staggerOffset);
+    const flyProgress = interpolate(staggerFrame, [0, 15], [0, 1], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+    });
+    scale = flyProgress;
+    rotation += (1 - flyProgress) * 45;
   }
 
   const blendMode = (config.blendMode ?? "normal") as React.CSSProperties["mixBlendMode"];
+
+  // Non-blocking layout styles based on prop index & motion strategy
+  const propContainerStyle = getOptimizedPropContainerStyle(config, config.propIndex);
 
   return (
     <div
       style={{
         position: "absolute",
-        inset: 0,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
         transform: `translate(${translateX}px, ${translateY}px) scale(${scale}) rotate(${rotation}deg)`,
         opacity,
         mixBlendMode: blendMode,
         pointerEvents: "none",
         zIndex: 50,
+        ...propContainerStyle,
       }}
     >
-      <div style={{ width: "80%", height: "80%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <ImageKitAsset src={propUrl} objectFit="contain" />
       </div>
     </div>
   );
 };
 
+/**
+ * Computes non-occluding placement for props so they don't cover central subjects.
+ */
+function getOptimizedPropContainerStyle(
+  config: PropAnimationConfig,
+  propIndex: number
+): React.CSSProperties {
+  // If custom position coordinates exist, use them
+  if (config.position) {
+    const pos = config.position as Record<string, any>;
+    return {
+      top: pos.top ?? "auto",
+      bottom: pos.bottom ?? "auto",
+      left: pos.left ?? (pos.centerX ? "50%" : "auto"),
+      right: pos.right ?? "auto",
+      transform: pos.centerX ? "translateX(-50%)" : "none",
+      width: pos.width ?? "60%",
+      height: pos.height ?? "30%",
+    };
+  }
+
+  // Finger wagging icon (bottom right corner)
+  if (config.motion === "finger_wag") {
+    return {
+      bottom: "20%",
+      right: "12%",
+      width: "25%",
+      height: "25%",
+    };
+  }
+
+  // Stamp / Headline text props (upper third of frame)
+  if (
+    config.motion === "slam_stamp_in" ||
+    config.motion === "slam_rotate_in" ||
+    config.motion === "counter_roll_in" ||
+    config.motion === "slam_in_from_top"
+  ) {
+    return {
+      top: "18%",
+      left: "10%",
+      width: "80%",
+      height: "28%",
+    };
+  }
+
+  // Floating accent items (upper right or left side)
+  if (config.motion === "float_orbit" || config.motion === "gentle_float") {
+    return {
+      top: "22%",
+      right: "8%",
+      width: "38%",
+      height: "28%",
+    };
+  }
+
+  // Full ambient sweeps or falling particles
+  if (
+    config.motion === "diagonal_sweep" ||
+    config.motion === "constant_rise" ||
+    config.motion === "continuous_fall" ||
+    config.motion === "creep_upward" ||
+    config.motion === "pulse_fade" ||
+    config.motion === "staggered_fly_in"
+  ) {
+    return {
+      inset: 0,
+      width: "100%",
+      height: "100%",
+    };
+  }
+
+  // Fallback layout based on propIndex
+  if (propIndex === 0) {
+    return { top: "15%", left: "10%", width: "80%", height: "30%" };
+  } else if (propIndex === 1) {
+    return { top: "25%", right: "5%", width: "40%", height: "30%" };
+  }
+
+  return { inset: 0, width: "100%", height: "100%" };
+}
+
 /** Helper to evaluate number or InterpolationRange */
-function evaluateVal(val: number | { inputRange: number[]; outputRange: number[]; easing?: string }, absoluteFrame: number): number {
+function evaluateVal(
+  val: number | { inputRange: number[]; outputRange: number[]; easing?: string },
+  absoluteFrame: number
+): number {
   if (typeof val === "number") return val;
   return interpolate(absoluteFrame, val.inputRange, val.outputRange, {
     extrapolateLeft: "clamp",

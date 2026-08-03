@@ -3,13 +3,14 @@
 import React, { useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { BlockbusterNetflixReel } from "@/remotion/BlockbusterNetflixReel";
+import { getResolvedExecutionPlan } from "@/remotion/data/execution-plan";
+import { POLLINATIONS_MODELS } from "@/remotion/utils/pollinations";
+import { VIDEO_THEMES, DEFAULT_THEME_ID } from "@/remotion/utils/themes";
 
 const Player = dynamic(
   () => import("@remotion/player").then((mod) => mod.Player),
   { ssr: false }
 );
-import { getResolvedExecutionPlan } from "@/remotion/data/execution-plan";
-import { POLLINATIONS_MODELS } from "@/remotion/utils/pollinations";
 
 const CARTESIA_VOICES = [
   { id: "5ee9feff-1265-424a-9d7f-8e4d431a12c7", name: "Ronald — Deep Thinker (US Male)" },
@@ -24,6 +25,7 @@ export default function Home() {
   const [model, setModel] = useState<"flux" | "flux-realism" | "turbo" | "sana">("flux");
   const [seed, setSeed] = useState<number>(42);
   const [quality, setQuality] = useState<"preview" | "hd">("preview");
+  const [themeId, setThemeId] = useState<string>(DEFAULT_THEME_ID);
 
   // Cartesia voice state
   const [selectedVoiceId, setSelectedVoiceId] = useState<string>("5ee9feff-1265-424a-9d7f-8e4d431a12c7");
@@ -38,10 +40,11 @@ export default function Home() {
 
   // Memoize inputProps as required by AGENTS.md rules
   const inputProps = useMemo(
-    () => ({ plan: activePlan, voiceId: selectedVoiceId }),
-    [activePlan, selectedVoiceId]
+    () => ({ plan: activePlan, voiceId: selectedVoiceId, themeId }),
+    [activePlan, selectedVoiceId, themeId]
   );
 
+  const activeTheme = VIDEO_THEMES[themeId] || VIDEO_THEMES[DEFAULT_THEME_ID];
   const { projectMeta, scenes, filmTreatment, audioPipeline } = activePlan;
 
   const handleRandomizeSeed = () => {
@@ -86,9 +89,12 @@ export default function Home() {
       {/* Header */}
       <header className="w-full max-w-5xl flex flex-col md:flex-row items-center justify-between gap-4 mb-6 pb-4 border-b border-neutral-800">
         <div>
-          <div className="flex items-center gap-2 mb-1">
+          <div className="flex items-center gap-2 mb-1 flex-wrap">
             <span className="px-2.5 py-0.5 text-xs font-bold bg-red-600/20 text-red-500 rounded-full border border-red-500/30">
               2.5D REEL ENGINE
+            </span>
+            <span className={`px-2.5 py-0.5 text-xs font-bold rounded-full border ${activeTheme.accentBadge}`}>
+              THEME: {activeTheme.name.toUpperCase()}
             </span>
             <span className="px-2.5 py-0.5 text-xs font-bold bg-blue-600/20 text-blue-400 rounded-full border border-blue-500/30 flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-blue-400" /> CARTESIA AI VOICE
@@ -133,7 +139,7 @@ export default function Home() {
             />
           </div>
           <p className="text-xs text-neutral-500 mt-3 text-center">
-            Click play to preview interactive 2.5D reel animation with live Pollinations AI visuals
+            Click play to preview non-occluding 2.5D animation with live Pollinations visuals & Cartesia narration
           </p>
 
           {/* Cartesia Voice Narration Audio Player */}
@@ -144,7 +150,7 @@ export default function Home() {
                   <svg className="w-4 h-4 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
                   </svg>
-                  Cartesia Voice Audio Ready
+                  Cartesia Audio Stream Ready
                 </span>
                 <span className="font-mono text-neutral-400 text-[10px]">Sonic-3</span>
               </div>
@@ -153,8 +159,48 @@ export default function Home() {
           )}
         </div>
 
-        {/* Right Column — Controls & Scene Breakdown */}
+        {/* Right Column — Studio Controls */}
         <div className="lg:col-span-6 flex flex-col gap-5">
+          {/* Video Theme Selector Card */}
+          <div className="bg-neutral-900/80 border border-amber-500/30 rounded-xl p-4 backdrop-blur-sm relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-amber-600/10 rounded-full blur-2xl pointer-events-none" />
+
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-sm font-bold uppercase tracking-wider text-amber-400 flex items-center gap-2">
+                <svg className="w-4 h-4 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                </svg>
+                Video Visual Theme
+              </h2>
+              <span className="text-[11px] font-mono text-amber-300 bg-amber-950/60 px-2 py-0.5 rounded border border-amber-800/50">
+                Live Color & Typo Grade
+              </span>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              {Object.values(VIDEO_THEMES).map((t) => {
+                const isSelected = themeId === t.id;
+                return (
+                  <button
+                    key={t.id}
+                    type="button"
+                    onClick={() => setThemeId(t.id)}
+                    className={`p-2.5 rounded-lg border text-left transition-all ${
+                      isSelected
+                        ? "bg-amber-500/20 border-amber-500 text-white shadow-lg shadow-amber-500/10"
+                        : "bg-neutral-950 border-neutral-800 text-neutral-400 hover:text-neutral-200 hover:border-neutral-700"
+                    }`}
+                  >
+                    <span className="font-bold text-xs block truncate">{t.name}</span>
+                    <span className="text-[10px] text-neutral-500 block truncate mt-0.5">
+                      {t.description}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
           {/* Cartesia AI Voiceover Panel */}
           <div className="bg-neutral-900/80 border border-blue-500/30 rounded-xl p-4 backdrop-blur-sm relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-blue-600/10 rounded-full blur-2xl pointer-events-none" />
@@ -167,14 +213,14 @@ export default function Home() {
                 Cartesia AI Voice Pipeline
               </h2>
               <span className="text-[11px] font-mono text-blue-300 bg-blue-950/60 px-2 py-0.5 rounded border border-blue-800/50">
-                Cartesia API Key Connected
+                Cartesia API Key Active
               </span>
             </div>
 
             <div className="grid grid-cols-1 gap-3 text-xs">
               <div>
                 <label className="text-neutral-400 block mb-1 font-medium">
-                  Select Cartesia Voice
+                  Select Voice Accent
                 </label>
                 <select
                   value={selectedVoiceId}
@@ -199,11 +245,11 @@ export default function Home() {
                   {isGeneratingTts ? (
                     <>
                       <span className="w-3 h-3 rounded-full border-2 border-white border-t-transparent animate-spin" />
-                      <span>Generating Cartesia Audio...</span>
+                      <span>Generating Cartesia Stream...</span>
                     </>
                   ) : (
                     <>
-                      <span>🎙️ Generate Full Script Narration</span>
+                      <span>🎙️ Generate External Audio File</span>
                     </>
                   )}
                 </button>
@@ -234,7 +280,6 @@ export default function Home() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-              {/* Model Picker */}
               <div>
                 <label className="text-neutral-400 block mb-1 font-medium">
                   AI Image Model
@@ -252,7 +297,6 @@ export default function Home() {
                 </select>
               </div>
 
-              {/* Resolution Toggle */}
               <div>
                 <label className="text-neutral-400 block mb-1 font-medium">
                   Render Quality
@@ -284,7 +328,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Seed Control & Refresh Button */}
             <div className="flex items-center gap-2 mt-3 pt-3 border-t border-neutral-800/60">
               <div className="flex-1 flex items-center gap-2 bg-neutral-950 px-3 py-1.5 rounded-lg border border-neutral-800">
                 <span className="text-neutral-500 font-mono text-[11px]">SEED:</span>
@@ -302,34 +345,6 @@ export default function Home() {
               >
                 <span>🎲 Re-roll Visuals</span>
               </button>
-            </div>
-          </div>
-
-          {/* Film Treatment Card */}
-          <div className="bg-neutral-900/60 border border-neutral-800 rounded-xl p-4 backdrop-blur-sm">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-neutral-400 mb-3 flex items-center gap-2">
-              <svg className="w-4 h-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 4v16M17 4v16M3 8h18M3 16h18" />
-              </svg>
-              Film Treatment Overlay (&quot;Texture Sandwich&quot;)
-            </h2>
-            <div className="grid grid-cols-2 gap-2 text-xs">
-              <div className="bg-neutral-950 p-2.5 rounded-lg border border-neutral-800/80">
-                <span className="text-neutral-500 block">Film Grain</span>
-                <span className="font-mono text-neutral-200">{filmTreatment.grainOpacity * 100}% Opacity ({filmTreatment.grainBlendMode})</span>
-              </div>
-              <div className="bg-neutral-950 p-2.5 rounded-lg border border-neutral-800/80">
-                <span className="text-neutral-500 block">Scanlines</span>
-                <span className="font-mono text-neutral-200">{filmTreatment.scanlineWidth}px @ {filmTreatment.scanlineOpacity * 100}%</span>
-              </div>
-              <div className="bg-neutral-950 p-2.5 rounded-lg border border-neutral-800/80">
-                <span className="text-neutral-500 block">Vignette</span>
-                <span className="font-mono text-neutral-200">{filmTreatment.vignette * 100}% Strength</span>
-              </div>
-              <div className="bg-neutral-950 p-2.5 rounded-lg border border-neutral-800/80">
-                <span className="text-neutral-500 block">Corner Blur</span>
-                <span className="font-mono text-neutral-200">{filmTreatment.cornerBlurRadius}px Radius</span>
-              </div>
             </div>
           </div>
 
