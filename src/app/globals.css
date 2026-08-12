@@ -1,26 +1,165 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
 @import "tailwindcss";
 
 :root {
-  --background: #0a0a0a;
-  --foreground: #ededed;
+  --color-paper: #F2F1EC;
+  --color-ink: #0C0C0E;
+  --color-vox-lime: #B4F500;
+  --color-highlighter: #FFE600;
+  --color-crimson: #E50914;
+  --color-border: #D8D7D2;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-inter), 'Inter', sans-serif;
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: 'Inter', sans-serif;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Studio Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #111111;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #B4F500;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #FFE600;
 }
 
 .font-bebas {
-  font-family: var(--font-bebas), 'Bebas Neue', sans-serif;
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.04em;
 }
 
-/* Custom player styling */
-.player-container {
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 30px rgba(229, 9, 20, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  overflow: hidden;
+.font-serif-editorial {
+  font-family: 'Instrument Serif', serif;
 }
+
+.font-utility {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Kinetic Text Highlight Utilities */
+.highlight-yellow {
+  background-color: #FFE600;
+  color: #0C0C0E;
+  padding: 0.1em 0.3em;
+  border-radius: 0.15em;
+  font-weight: 800;
+}
+
+.highlight-lime {
+  background-color: #B4F500;
+  color: #0C0C0E;
+  padding: 0.1em 0.3em;
+  border-radius: 0.15em;
+  font-weight: 800;
+}
+
+.highlight-dark {
+  background-color: #0C0C0E;
+  color: #B4F500;
+  padding: 0.1em 0.3em;
+  border-radius: 0.15em;
+  font-weight: 800;
+}
+
+/* Vox tactile paper card styling */
+.vox-card {
+  background: #ffffff;
+  border: 2.5px solid var(--color-ink);
+  box-shadow: 6px 6px 0px var(--color-ink);
+}
+
+.vox-badge-lime {
+  background-color: var(--color-vox-lime);
+  color: var(--color-ink);
+  font-weight: 800;
+}
+
+.vox-badge-yellow {
+  background-color: var(--color-highlighter);
+  color: var(--color-ink);
+  font-weight: 800;
+}
+
+/* Vox Tactile Paper Fiber & Grain Texture Overlay */
+.vox-paper-texture {
+  background-color: #F2F1EC;
+  background-image: 
+    radial-gradient(#0C0C0E 0.6px, transparent 0.6px),
+    radial-gradient(#0C0C0E 0.6px, #F2F1EC 0.6px);
+  background-size: 28px 28px;
+  background-position: 0 0, 14px 14px;
+}
+
+/* Vintage Newsprint Halftone Pattern */
+.vox-halftone {
+  background-image: radial-gradient(rgba(12, 12, 14, 0.09) 1.2px, transparent 1.2px);
+  background-size: 10px 10px;
+}
+
+/* Tactile Studio Drop Shadow */
+.shadow-vox {
+  box-shadow: 8px 8px 0px var(--color-ink);
+}
+
+.shadow-vox-lime {
+  box-shadow: 8px 8px 0px var(--color-vox-lime);
+}
+
+.shadow-vox-yellow {
+  box-shadow: 8px 8px 0px var(--color-highlighter);
+}
+
+/* 2.5D Character Boil Animation (Continuous Organic Micro-Wiggle) */
+@keyframes character-boil {
+  0% {
+    transform: rotate(0deg) scale(1) translateY(0px);
+  }
+  25% {
+    transform: rotate(-1.5deg) scale(1.02) translateY(-2px);
+  }
+  50% {
+    transform: rotate(1deg) scale(0.99) translateY(1px);
+  }
+  75% {
+    transform: rotate(-0.5deg) scale(1.01) translateY(-1px);
+  }
+  100% {
+    transform: rotate(0deg) scale(1) translateY(0px);
+  }
+}
+
+.animate-character-boil {
+  animation: character-boil 3.5s ease-in-out infinite;
+}
+
+/* Pulse Glow Keyframe */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(181, 245, 0, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 35px rgba(181, 245, 0, 0.8), 0 0 10px rgba(255, 230, 0, 0.6);
+  }
+}
+
+.glow-vox-lime {
+  animation: pulse-glow 3s infinite;
+}
+
+
+
+

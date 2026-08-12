@@ -52,6 +52,8 @@ export interface AudioPipeline {
   voiceConfig: VoiceConfig;
   bgMusicTrack: BgMusicTrack;
   sfxEvents: SfxEvent[];
+  fullVoiceoverUrl?: string;
+  masterWhisperTokens?: WhisperToken[];
 }
 
 // ─── Film Treatment ──────────────────────────────────────────────────────────
@@ -72,6 +74,17 @@ export interface FilmTreatmentConfig {
   cornerBlurSpread: number;
   colorGradeLut: string;
   letterboxOpacity: number;
+  // Tactile & Film Texture Additions
+  paperGrid?: boolean;
+  paperGridOpacity?: number;
+  paperGridSize?: number;
+  paperTexture?: boolean;
+  paperTextureType?: "studio_paper" | "vintage_fold" | "grunge_canvas" | "halftone_dots" | "paper_grid";
+  paperTextureOpacity?: number;
+  dustAndScratches?: boolean;
+  dustOpacity?: number;
+  halftoneDots?: boolean;
+  halftoneOpacity?: number;
 }
 
 // ─── Whisper Tokens ──────────────────────────────────────────────────────────
@@ -288,6 +301,9 @@ export interface Scene {
   imageKitUrls: ImageKitUrls;
   animationRules: AnimationRules;
   kineticCaptions: KineticCaptionConfig;
+  audioUrl?: string;
+  visualType?: string;
+  layoutType?: string;
 }
 
 // ─── Global Animation Defaults ───────────────────────────────────────────────

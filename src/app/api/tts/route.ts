@@ -3,8 +3,13 @@ import { NextRequest, NextResponse } from "next/server";
 // In-memory cache for generated TTS audio to make seeking instant and avoid re-fetching
 const audioCache = new Map<string, ArrayBuffer>();
 
-async function getOrGenerateAudio(text: string, voiceId: string, modelId: string): Promise<ArrayBuffer> {
-  const cacheKey = `${voiceId}_${modelId}_${text}`;
+async function getOrGenerateAudio(
+  text: string,
+  voiceId: string,
+  modelId: string,
+  language: string = "en"
+): Promise<ArrayBuffer> {
+  const cacheKey = `${voiceId}_${modelId}_${language}_${text}`;
   if (audioCache.has(cacheKey)) {
     return audioCache.get(cacheKey)!;
   }
@@ -14,6 +19,32 @@ async function getOrGenerateAudio(text: string, voiceId: string, modelId: string
     throw new Error("CARTESIA_API_KEY is not configured in environment variables.");
   }
 
+  const sanitizedText = text
+    .replace(/\s*\.{3,}/g, ".")
+    .replace(/;/g, ",")
+    .replace(/—/g, ",")
+    .replace(/,{2,}/g, ",")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  const payload: any = {
+    model_id: modelId,
+    transcript: sanitizedText,
+    voice: {
+      mode: "id",
+      id: voiceId,
+    },
+    output_format: {
+      container: "mp3",
+      bit_rate: 128000,
+      sample_rate: 44100,
+    },
+  };
+
+  if (language && language !== "en") {
+    payload.language = language;
+  }
+
   const response = await fetch("https://api.cartesia.ai/tts/bytes", {
     method: "POST",
     headers: {
@@ -21,19 +52,7 @@ async function getOrGenerateAudio(text: string, voiceId: string, modelId: string
       "Cartesia-Version": "2026-03-01",
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      model_id: modelId,
-      transcript: text,
-      voice: {
-        mode: "id",
-        id: voiceId,
-      },
-      output_format: {
-        container: "mp3",
-        bit_rate: 128000,
-        sample_rate: 44100,
-      },
-    }),
+    body: JSON.stringify(payload),
   });
 
   if (!response.ok) {
@@ -50,14 +69,15 @@ export async function GET(req: NextRequest) {
   try {
     const searchParams = req.nextUrl.searchParams;
     const text = searchParams.get("text");
-    const voiceId = searchParams.get("voiceId") || "5ee9feff-1265-424a-9d7f-8e4d431a12c7";
+    const voiceId = searchParams.get("voiceId") || "62ae83ad-4f6a-430b-af41-a9bede9286ca";
     const modelId = searchParams.get("modelId") || "sonic-3";
+    const language = searchParams.get("language") || "en";
 
     if (!text) {
       return NextResponse.json({ error: "Missing 'text' parameter." }, { status: 400 });
     }
 
-    const audioBuffer = await getOrGenerateAudio(text, voiceId, modelId);
+    const audioBuffer = await getOrGenerateAudio(text, voiceId, modelId, language);
     const totalSize = audioBuffer.byteLength;
 
     // Handle HTTP Range Requests for Remotion Seekable Media (206 Partial Content)
@@ -77,7 +97,7 @@ export async function GET(req: NextRequest) {
           "Accept-Ranges": "bytes",
           "Content-Length": chunkSize.toString(),
           "Content-Type": "audio/mpeg",
-          "Cache-Control": "public, max-age=86400",
+          "Cache-Control": "public, max-age=31536000, immutable",
         },
       });
     }
@@ -102,15 +122,16 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const {
       text,
-      voiceId = "5ee9feff-1265-424a-9d7f-8e4d431a12c7",
+      voiceId = "62ae83ad-4f6a-430b-af41-a9bede9286ca",
       modelId = "sonic-3",
+      language = "en",
     } = body;
 
     if (!text || typeof text !== "string") {
       return NextResponse.json({ error: "A valid 'text' parameter is required." }, { status: 400 });
     }
 
-    const audioBuffer = await getOrGenerateAudio(text, voiceId, modelId);
+    const audioBuffer = await getOrGenerateAudio(text, voiceId, modelId, language);
 
     return new NextResponse(audioBuffer, {
       status: 200,

@@ -1,0 +1,1602 @@
+{
+  "metadata": {
+    "transaction_key": "deprecated",
+    "request_id": "019fe2a6-7a3a-7542-8d70-28b212bdbf7b",
+    "sha256": "049062587680257f8bc06850d66a0abcb6898c9349efe5b8cb3b73c07213b560",
+    "created": "2026-08-08T18:37:33.074Z",
+    "duration": 52.392,
+    "channels": 1,
+    "models": [
+      "1abfe86b-e047-4eed-858a-35e5625b41ee"
+    ],
+    "model_info": {
+      "1abfe86b-e047-4eed-858a-35e5625b41ee": {
+        "name": "2-general-nova",
+        "version": "2024-01-06.5664",
+        "arch": "nova-2"
+      }
+    }
+  },
+  "results": {
+    "channels": [
+      {
+        "alternatives": [
+          {
+            "transcript": "Every year, broken McDonald's ice cream machines. Every year, broke every year, Broke McDonald's ice Yeah. Broke McDonald's ice cream machines cost the company hundreds of hundreds of millions in lost sales sales. But it's not simply broken. These machines are engineered with self with self cleaning cleaning cycles so com so complex complex. Franchises are trapped, forced forced to pay exorbitant fees for fees for repairs that off often involve symbols. Then an independent startup created created a tiny tiny device kitsch promise promising to decode error messages messages and Donald's quickly fought back fought back. Alleging alleging peach peach pose safety risks.",
+            "confidence": 0.9042969,
+            "words": [
+              {
+                "word": "every",
+                "start": 6,
+                "end": 6.3999996,
+                "confidence": 0.5419922,
+                "punctuated_word": "Every"
+              },
+              {
+                "word": "year",
+                "start": 6.3999996,
+                "end": 6.72,
+                "confidence": 0.8186035,
+                "punctuated_word": "year,"
+              },
+              {
+                "word": "broken",
+                "start": 6.72,
+                "end": 7.22,
+                "confidence": 0.82470703,
+                "punctuated_word": "broken"
+              },
+              {
+                "word": "mcdonald's",
+                "start": 7.52,
+                "end": 8.02,
+                "confidence": 0.9433594,
+                "punctuated_word": "McDonald's"
+              },
+              {
+                "word": "ice",
+                "start": 8.16,
+                "end": 8.4,
+                "confidence": 0.99121094,
+                "punctuated_word": "ice"
+              },
+              {
+                "word": "cream",
+                "start": 8.4,
+                "end": 8.72,
+                "confidence": 0.99902344,
+                "punctuated_word": "cream"
+              },
+              {
+                "word": "machines",
+                "start": 8.72,
+                "end": 9.2,
+                "confidence": 0.88842773,
+                "punctuated_word": "machines."
+              },
+              {
+                "word": "every",
+                "start": 9.2,
+                "end": 9.599999,
+                "confidence": 0.99316406,
+                "punctuated_word": "Every"
+              },
+              {
+                "word": "year",
+                "start": 9.599999,
+                "end": 9.84,
+                "confidence": 0.91259766,
+                "punctuated_word": "year,"
+              },
+              {
+                "word": "broke",
+                "start": 9.84,
+                "end": 10.16,
+                "confidence": 0.7915039,
+                "punctuated_word": "broke"
+              },
+              {
+                "word": "every",
+                "start": 10.16,
+                "end": 10.66,
+                "confidence": 0.5703125,
+                "punctuated_word": "every"
+              },
+              {
+                "word": "year",
+                "start": 11.599999,
+                "end": 12.015,
+                "confidence": 0.6772461,
+                "punctuated_word": "year,"
+              },
+              {
+                "word": "broke",
+                "start": 12.015,
+                "end": 12.415,
+                "confidence": 0.47143555,
+                "punctuated_word": "Broke"
+              },
+              {
+                "word": "mcdonald's",
+                "start": 12.415,
+                "end": 12.915,
+                "confidence": 0.9313965,
+                "punctuated_word": "McDonald's"
+              },
+              {
+                "word": "ice",
+                "start": 13.215,
+                "end": 13.375,
+                "confidence": 0.89746094,
+                "punctuated_word": "ice"
+              },
+              {
+                "word": "yeah",
+                "start": 13.455,
+                "end": 13.695001,
+                "confidence": 0.63720703,
+                "punctuated_word": "Yeah."
+              },
+              {
+                "word": "broke",
+                "start": 13.695001,
+                "end": 13.935,
+                "confidence": 0.9802246,
+                "punctuated_word": "Broke"
+              },
+              {
+                "word": "mcdonald's",
+                "start": 13.935,
+                "end": 14.435,
+                "confidence": 0.99121094,
+                "punctuated_word": "McDonald's"
+              },
+              {
+                "word": "ice",
+                "start": 14.655001,
+                "end": 14.815001,
+                "confidence": 0.99609375,
+                "punctuated_word": "ice"
+              },
+              {
+                "word": "cream",
+                "start": 14.815001,
+                "end": 15.055,
+                "confidence": 0.99902344,
+                "punctuated_word": "cream"
+              },
+              {
+                "word": "machines",
+                "start": 15.055,
+                "end": 15.535,
+                "confidence": 0.90625,
+                "punctuated_word": "machines"
+              },
+              {
+                "word": "cost",
+                "start": 15.535,
+                "end": 16.035,
+                "confidence": 0.58984375,
+                "punctuated_word": "cost"
+              },
+              {
+                "word": "the",
+                "start": 16.095001,
+                "end": 16.255001,
+                "confidence": 0.9902344,
+                "punctuated_word": "the"
+              },
+              {
+                "word": "company",
+                "start": 16.255001,
+                "end": 16.655,
+                "confidence": 0.9970703,
+                "punctuated_word": "company"
+              },
+              {
+                "word": "hundreds",
+                "start": 16.655,
+                "end": 16.975,
+                "confidence": 0.99121094,
+                "punctuated_word": "hundreds"
+              },
+              {
+                "word": "of",
+                "start": 16.975,
+                "end": 17.215,
+                "confidence": 0.984375,
+                "punctuated_word": "of"
+              },
+              {
+                "word": "hundreds",
+                "start": 17.215,
+                "end": 17.615,
+                "confidence": 0.95947266,
+                "punctuated_word": "hundreds"
+              },
+              {
+                "word": "of",
+                "start": 17.615,
+                "end": 17.855,
+                "confidence": 0.9873047,
+                "punctuated_word": "of"
+              },
+              {
+                "word": "millions",
+                "start": 17.855,
+                "end": 18.355,
+                "confidence": 0.8774414,
+                "punctuated_word": "millions"
+              },
+              {
+                "word": "in",
+                "start": 18.495,
+                "end": 18.735,
+                "confidence": 0.98095703,
+                "punctuated_word": "in"
+              },
+              {
+                "word": "lost",
+                "start": 18.735,
+                "end": 19.055,
+                "confidence": 0.8330078,
+                "punctuated_word": "lost"
+              },
+              {
+                "word": "sales",
+                "start": 19.055,
+                "end": 19.555,
+                "confidence": 0.5761719,
+                "punctuated_word": "sales"
+              },
+              {
+                "word": "sales",
+                "start": 19.775,
+                "end": 20.275,
+                "confidence": 0.59277344,
+                "punctuated_word": "sales."
+              },
+              {
+                "word": "but",
+                "start": 20.654999,
+                "end": 20.895,
+                "confidence": 0.8828125,
+                "punctuated_word": "But"
+              },
+              {
+                "word": "it's",
+                "start": 20.895,
+                "end": 21.055,
+                "confidence": 0.98706055,
+                "punctuated_word": "it's"
+              },
+              {
+                "word": "not",
+                "start": 21.055,
+                "end": 21.215,
+                "confidence": 0.99902344,
+                "punctuated_word": "not"
+              },
+              {
+                "word": "simply",
+                "start": 21.215,
+                "end": 21.695,
+                "confidence": 0.99902344,
+                "punctuated_word": "simply"
+              },
+              {
+                "word": "broken",
+                "start": 21.695,
+                "end": 22.195,
+                "confidence": 0.91552734,
+                "punctuated_word": "broken."
+              },
+              {
+                "word": "these",
+                "start": 23.055,
+                "end": 23.295,
+                "confidence": 0.93408203,
+                "punctuated_word": "These"
+              },
+              {
+                "word": "machines",
+                "start": 23.295,
+                "end": 23.695,
+                "confidence": 0.9863281,
+                "punctuated_word": "machines"
+              },
+              {
+                "word": "are",
+                "start": 23.695,
+                "end": 23.855,
+                "confidence": 0.9951172,
+                "punctuated_word": "are"
+              },
+              {
+                "word": "engineered",
+                "start": 23.855,
+                "end": 24.335,
+                "confidence": 0.99902344,
+                "punctuated_word": "engineered"
+              },
+              {
+                "word": "with",
+                "start": 24.335,
+                "end": 24.415,
+                "confidence": 0.9892578,
+                "punctuated_word": "with"
+              },
+              {
+                "word": "self",
+                "start": 24.415,
+                "end": 24.735,
+                "confidence": 0.96972656,
+                "punctuated_word": "self"
+              },
+              {
+                "word": "with",
+                "start": 24.735,
+                "end": 24.975,
+                "confidence": 0.65234375,
+                "punctuated_word": "with"
+              },
+              {
+                "word": "self",
+                "start": 24.975,
+                "end": 25.295,
+                "confidence": 0.9970703,
+                "punctuated_word": "self"
+              },
+              {
+                "word": "cleaning",
+                "start": 25.295,
+                "end": 25.695,
+                "confidence": 0.96972656,
+                "punctuated_word": "cleaning"
+              },
+              {
+                "word": "cleaning",
+                "start": 25.695,
+                "end": 26.015,
+                "confidence": 0.90771484,
+                "punctuated_word": "cleaning"
+              },
+              {
+                "word": "cycles",
+                "start": 26.015,
+                "end": 26.494999,
+                "confidence": 0.6088867,
+                "punctuated_word": "cycles"
+              },
+              {
+                "word": "so",
+                "start": 26.494999,
+                "end": 26.654999,
+                "confidence": 0.80322266,
+                "punctuated_word": "so"
+              },
+              {
+                "word": "com",
+                "start": 26.654999,
+                "end": 26.814999,
+                "confidence": 0.51220703,
+                "punctuated_word": "com"
+              },
+              {
+                "word": "so",
+                "start": 26.895,
+                "end": 27.135,
+                "confidence": 0.9243164,
+                "punctuated_word": "so"
+              },
+              {
+                "word": "complex",
+                "start": 27.135,
+                "end": 27.615,
+                "confidence": 0.9560547,
+                "punctuated_word": "complex"
+              },
+              {
+                "word": "complex",
+                "start": 27.615,
+                "end": 27.96,
+                "confidence": 0.460083,
+                "punctuated_word": "complex."
+              },
+              {
+                "word": "franchises",
+                "start": 29.4,
+                "end": 29.9,
+                "confidence": 0.59472656,
+                "punctuated_word": "Franchises"
+              },
+              {
+                "word": "are",
+                "start": 29.96,
+                "end": 30.119999,
+                "confidence": 0.9135742,
+                "punctuated_word": "are"
+              },
+              {
+                "word": "trapped",
+                "start": 30.119999,
+                "end": 30.599998,
+                "confidence": 0.7227783,
+                "punctuated_word": "trapped,"
+              },
+              {
+                "word": "forced",
+                "start": 30.599998,
+                "end": 31.079998,
+                "confidence": 0.9819336,
+                "punctuated_word": "forced"
+              },
+              {
+                "word": "forced",
+                "start": 31.079998,
+                "end": 31.32,
+                "confidence": 0.9506836,
+                "punctuated_word": "forced"
+              },
+              {
+                "word": "to",
+                "start": 31.32,
+                "end": 31.48,
+                "confidence": 0.9980469,
+                "punctuated_word": "to"
+              },
+              {
+                "word": "pay",
+                "start": 31.48,
+                "end": 31.72,
+                "confidence": 0.98828125,
+                "punctuated_word": "pay"
+              },
+              {
+                "word": "exorbitant",
+                "start": 31.72,
+                "end": 32.22,
+                "confidence": 0.9664714,
+                "punctuated_word": "exorbitant"
+              },
+              {
+                "word": "fees",
+                "start": 32.68,
+                "end": 32.92,
+                "confidence": 0.9921875,
+                "punctuated_word": "fees"
+              },
+              {
+                "word": "for",
+                "start": 32.92,
+                "end": 33.32,
+                "confidence": 0.94970703,
+                "punctuated_word": "for"
+              },
+              {
+                "word": "fees",
+                "start": 33.32,
+                "end": 33.48,
+                "confidence": 0.6791992,
+                "punctuated_word": "fees"
+              },
+              {
+                "word": "for",
+                "start": 33.48,
+                "end": 33.719997,
+                "confidence": 0.9819336,
+                "punctuated_word": "for"
+              },
+              {
+                "word": "repairs",
+                "start": 33.719997,
+                "end": 34.12,
+                "confidence": 0.99902344,
+                "punctuated_word": "repairs"
+              },
+              {
+                "word": "that",
+                "start": 34.12,
+                "end": 34.36,
+                "confidence": 0.9140625,
+                "punctuated_word": "that"
+              },
+              {
+                "word": "off",
+                "start": 34.36,
+                "end": 34.6,
+                "confidence": 0.43359375,
+                "punctuated_word": "off"
+              },
+              {
+                "word": "often",
+                "start": 34.68,
+                "end": 35.079998,
+                "confidence": 0.99609375,
+                "punctuated_word": "often"
+              },
+              {
+                "word": "involve",
+                "start": 35.079998,
+                "end": 35.579998,
+                "confidence": 0.6430664,
+                "punctuated_word": "involve"
+              },
+              {
+                "word": "symbols",
+                "start": 35.719997,
+                "end": 36.219997,
+                "confidence": 0.60632324,
+                "punctuated_word": "symbols."
+              },
+              {
+                "word": "then",
+                "start": 36.6,
+                "end": 36.92,
+                "confidence": 0.9921875,
+                "punctuated_word": "Then"
+              },
+              {
+                "word": "an",
+                "start": 36.92,
+                "end": 37.079998,
+                "confidence": 0.9448242,
+                "punctuated_word": "an"
+              },
+              {
+                "word": "independent",
+                "start": 37.079998,
+                "end": 37.579998,
+                "confidence": 1,
+                "punctuated_word": "independent"
+              },
+              {
+                "word": "startup",
+                "start": 37.64,
+                "end": 38.12,
+                "confidence": 0.6777344,
+                "punctuated_word": "startup"
+              },
+              {
+                "word": "created",
+                "start": 38.12,
+                "end": 38.6,
+                "confidence": 0.9892578,
+                "punctuated_word": "created"
+              },
+              {
+                "word": "created",
+                "start": 38.6,
+                "end": 38.92,
+                "confidence": 0.7915039,
+                "punctuated_word": "created"
+              },
+              {
+                "word": "a",
+                "start": 38.92,
+                "end": 39.079998,
+                "confidence": 0.98828125,
+                "punctuated_word": "a"
+              },
+              {
+                "word": "tiny",
+                "start": 39.079998,
+                "end": 39.579998,
+                "confidence": 0.6640625,
+                "punctuated_word": "tiny"
+              },
+              {
+                "word": "tiny",
+                "start": 39.8,
+                "end": 39.975,
+                "confidence": 0.6298828,
+                "punctuated_word": "tiny"
+              },
+              {
+                "word": "device",
+                "start": 40.215,
+                "end": 40.614998,
+                "confidence": 0.8691406,
+                "punctuated_word": "device"
+              },
+              {
+                "word": "kitsch",
+                "start": 40.614998,
+                "end": 40.934998,
+                "confidence": 0.61328125,
+                "punctuated_word": "kitsch"
+              },
+              {
+                "word": "promise",
+                "start": 40.934998,
+                "end": 41.254997,
+                "confidence": 0.24951172,
+                "punctuated_word": "promise"
+              },
+              {
+                "word": "promising",
+                "start": 41.495,
+                "end": 41.995,
+                "confidence": 0.82128906,
+                "punctuated_word": "promising"
+              },
+              {
+                "word": "to",
+                "start": 42.055,
+                "end": 42.215,
+                "confidence": 0.8442383,
+                "punctuated_word": "to"
+              },
+              {
+                "word": "decode",
+                "start": 42.215,
+                "end": 42.715,
+                "confidence": 0.60253906,
+                "punctuated_word": "decode"
+              },
+              {
+                "word": "error",
+                "start": 42.855,
+                "end": 43.355,
+                "confidence": 0.9135742,
+                "punctuated_word": "error"
+              },
+              {
+                "word": "messages",
+                "start": 43.414997,
+                "end": 43.914997,
+                "confidence": 0.8378906,
+                "punctuated_word": "messages"
+              },
+              {
+                "word": "messages",
+                "start": 44.055,
+                "end": 44.555,
+                "confidence": 0.34228516,
+                "punctuated_word": "messages"
+              },
+              {
+                "word": "and",
+                "start": 44.614998,
+                "end": 45.114998,
+                "confidence": 0.85498047,
+                "punctuated_word": "and"
+              },
+              {
+                "word": "donald's",
+                "start": 45.495,
+                "end": 45.894997,
+                "confidence": 0.8364258,
+                "punctuated_word": "Donald's"
+              },
+              {
+                "word": "quickly",
+                "start": 45.894997,
+                "end": 46.214996,
+                "confidence": 0.984375,
+                "punctuated_word": "quickly"
+              },
+              {
+                "word": "fought",
+                "start": 46.214996,
+                "end": 46.714996,
+                "confidence": 0.6582031,
+                "punctuated_word": "fought"
+              },
+              {
+                "word": "back",
+                "start": 47.574997,
+                "end": 47.894997,
+                "confidence": 0.36401367,
+                "punctuated_word": "back"
+              },
+              {
+                "word": "fought",
+                "start": 47.894997,
+                "end": 48.135,
+                "confidence": 0.23059082,
+                "punctuated_word": "fought"
+              },
+              {
+                "word": "back",
+                "start": 48.135,
+                "end": 48.635,
+                "confidence": 0.71276855,
+                "punctuated_word": "back."
+              },
+              {
+                "word": "alleging",
+                "start": 48.855,
+                "end": 49.355,
+                "confidence": 0.9042969,
+                "punctuated_word": "Alleging"
+              },
+              {
+                "word": "alleging",
+                "start": 49.495,
+                "end": 49.995,
+                "confidence": 0.6196289,
+                "punctuated_word": "alleging"
+              },
+              {
+                "word": "peach",
+                "start": 50.055,
+                "end": 50.454998,
+                "confidence": 0.47973633,
+                "punctuated_word": "peach"
+              },
+              {
+                "word": "peach",
+                "start": 50.454998,
+                "end": 50.774998,
+                "confidence": 0.93115234,
+                "punctuated_word": "peach"
+              },
+              {
+                "word": "pose",
+                "start": 50.774998,
+                "end": 51.015,
+                "confidence": 0.5083008,
+                "punctuated_word": "pose"
+              },
+              {
+                "word": "safety",
+                "start": 51.015,
+                "end": 51.414997,
+                "confidence": 0.9980469,
+                "punctuated_word": "safety"
+              },
+              {
+                "word": "risks",
+                "start": 51.414997,
+                "end": 51.914997,
+                "confidence": 0.8405762,
+                "punctuated_word": "risks."
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "utterances": [
+      {
+        "start": 6,
+        "end": 7.22,
+        "confidence": 0.72843426,
+        "channel": 0,
+        "transcript": "Every year, broken",
+        "words": [
+          {
+            "word": "every",
+            "start": 6,
+            "end": 6.3999996,
+            "confidence": 0.5419922,
+            "punctuated_word": "Every"
+          },
+          {
+            "word": "year",
+            "start": 6.3999996,
+            "end": 6.72,
+            "confidence": 0.8186035,
+            "punctuated_word": "year,"
+          },
+          {
+            "word": "broken",
+            "start": 6.72,
+            "end": 7.22,
+            "confidence": 0.82470703,
+            "punctuated_word": "broken"
+          }
+        ],
+        "id": "dc69f562-1722-42c8-9bd1-b0626ea2ba0c"
+      },
+      {
+        "start": 7.52,
+        "end": 10.66,
+        "confidence": 0.88619995,
+        "channel": 0,
+        "transcript": "McDonald's ice cream machines. Every year, broke every",
+        "words": [
+          {
+            "word": "mcdonald's",
+            "start": 7.52,
+            "end": 8.02,
+            "confidence": 0.9433594,
+            "punctuated_word": "McDonald's"
+          },
+          {
+            "word": "ice",
+            "start": 8.16,
+            "end": 8.4,
+            "confidence": 0.99121094,
+            "punctuated_word": "ice"
+          },
+          {
+            "word": "cream",
+            "start": 8.4,
+            "end": 8.72,
+            "confidence": 0.99902344,
+            "punctuated_word": "cream"
+          },
+          {
+            "word": "machines",
+            "start": 8.72,
+            "end": 9.2,
+            "confidence": 0.88842773,
+            "punctuated_word": "machines."
+          },
+          {
+            "word": "every",
+            "start": 9.2,
+            "end": 9.599999,
+            "confidence": 0.99316406,
+            "punctuated_word": "Every"
+          },
+          {
+            "word": "year",
+            "start": 9.599999,
+            "end": 9.84,
+            "confidence": 0.91259766,
+            "punctuated_word": "year,"
+          },
+          {
+            "word": "broke",
+            "start": 9.84,
+            "end": 10.16,
+            "confidence": 0.7915039,
+            "punctuated_word": "broke"
+          },
+          {
+            "word": "every",
+            "start": 10.16,
+            "end": 10.66,
+            "confidence": 0.5703125,
+            "punctuated_word": "every"
+          }
+        ],
+        "id": "c1986f7a-564c-4338-a6c3-bddce39bf5de"
+      },
+      {
+        "start": 11.599999,
+        "end": 12.915,
+        "confidence": 0.6933594,
+        "channel": 0,
+        "transcript": "year, Broke McDonald's",
+        "words": [
+          {
+            "word": "year",
+            "start": 11.599999,
+            "end": 12.015,
+            "confidence": 0.6772461,
+            "punctuated_word": "year,"
+          },
+          {
+            "word": "broke",
+            "start": 12.015,
+            "end": 12.415,
+            "confidence": 0.47143555,
+            "punctuated_word": "Broke"
+          },
+          {
+            "word": "mcdonald's",
+            "start": 12.415,
+            "end": 12.915,
+            "confidence": 0.9313965,
+            "punctuated_word": "McDonald's"
+          }
+        ],
+        "id": "eb84ad0a-cb05-4a4f-804d-f318a5b8a3ca"
+      },
+      {
+        "start": 13.215,
+        "end": 20.275,
+        "confidence": 0.8824913,
+        "channel": 0,
+        "transcript": "ice Yeah. Broke McDonald's ice cream machines cost the company hundreds of hundreds of millions in lost sales sales.",
+        "words": [
+          {
+            "word": "ice",
+            "start": 13.215,
+            "end": 13.375,
+            "confidence": 0.89746094,
+            "punctuated_word": "ice"
+          },
+          {
+            "word": "yeah",
+            "start": 13.455,
+            "end": 13.695001,
+            "confidence": 0.63720703,
+            "punctuated_word": "Yeah."
+          },
+          {
+            "word": "broke",
+            "start": 13.695001,
+            "end": 13.935,
+            "confidence": 0.9802246,
+            "punctuated_word": "Broke"
+          },
+          {
+            "word": "mcdonald's",
+            "start": 13.935,
+            "end": 14.435,
+            "confidence": 0.99121094,
+            "punctuated_word": "McDonald's"
+          },
+          {
+            "word": "ice",
+            "start": 14.655001,
+            "end": 14.815001,
+            "confidence": 0.99609375,
+            "punctuated_word": "ice"
+          },
+          {
+            "word": "cream",
+            "start": 14.815001,
+            "end": 15.055,
+            "confidence": 0.99902344,
+            "punctuated_word": "cream"
+          },
+          {
+            "word": "machines",
+            "start": 15.055,
+            "end": 15.535,
+            "confidence": 0.90625,
+            "punctuated_word": "machines"
+          },
+          {
+            "word": "cost",
+            "start": 15.535,
+            "end": 16.035,
+            "confidence": 0.58984375,
+            "punctuated_word": "cost"
+          },
+          {
+            "word": "the",
+            "start": 16.095001,
+            "end": 16.255001,
+            "confidence": 0.9902344,
+            "punctuated_word": "the"
+          },
+          {
+            "word": "company",
+            "start": 16.255001,
+            "end": 16.655,
+            "confidence": 0.9970703,
+            "punctuated_word": "company"
+          },
+          {
+            "word": "hundreds",
+            "start": 16.655,
+            "end": 16.975,
+            "confidence": 0.99121094,
+            "punctuated_word": "hundreds"
+          },
+          {
+            "word": "of",
+            "start": 16.975,
+            "end": 17.215,
+            "confidence": 0.984375,
+            "punctuated_word": "of"
+          },
+          {
+            "word": "hundreds",
+            "start": 17.215,
+            "end": 17.615,
+            "confidence": 0.95947266,
+            "punctuated_word": "hundreds"
+          },
+          {
+            "word": "of",
+            "start": 17.615,
+            "end": 17.855,
+            "confidence": 0.9873047,
+            "punctuated_word": "of"
+          },
+          {
+            "word": "millions",
+            "start": 17.855,
+            "end": 18.355,
+            "confidence": 0.8774414,
+            "punctuated_word": "millions"
+          },
+          {
+            "word": "in",
+            "start": 18.495,
+            "end": 18.735,
+            "confidence": 0.98095703,
+            "punctuated_word": "in"
+          },
+          {
+            "word": "lost",
+            "start": 18.735,
+            "end": 19.055,
+            "confidence": 0.8330078,
+            "punctuated_word": "lost"
+          },
+          {
+            "word": "sales",
+            "start": 19.055,
+            "end": 19.555,
+            "confidence": 0.5761719,
+            "punctuated_word": "sales"
+          },
+          {
+            "word": "sales",
+            "start": 19.775,
+            "end": 20.275,
+            "confidence": 0.59277344,
+            "punctuated_word": "sales."
+          }
+        ],
+        "id": "f199b4f0-a610-4f5f-9fb2-b61486a52a09"
+      },
+      {
+        "start": 20.654999,
+        "end": 22.195,
+        "confidence": 0.9566895,
+        "channel": 0,
+        "transcript": "But it's not simply broken.",
+        "words": [
+          {
+            "word": "but",
+            "start": 20.654999,
+            "end": 20.895,
+            "confidence": 0.8828125,
+            "punctuated_word": "But"
+          },
+          {
+            "word": "it's",
+            "start": 20.895,
+            "end": 21.055,
+            "confidence": 0.98706055,
+            "punctuated_word": "it's"
+          },
+          {
+            "word": "not",
+            "start": 21.055,
+            "end": 21.215,
+            "confidence": 0.99902344,
+            "punctuated_word": "not"
+          },
+          {
+            "word": "simply",
+            "start": 21.215,
+            "end": 21.695,
+            "confidence": 0.99902344,
+            "punctuated_word": "simply"
+          },
+          {
+            "word": "broken",
+            "start": 21.695,
+            "end": 22.195,
+            "confidence": 0.91552734,
+            "punctuated_word": "broken."
+          }
+        ],
+        "id": "cf2cc972-634d-4c90-b633-bb1ce7ca2aa9"
+      },
+      {
+        "start": 23.055,
+        "end": 27.96,
+        "confidence": 0.8540726,
+        "channel": 0,
+        "transcript": "These machines are engineered with self with self cleaning cleaning cycles so com so complex complex.",
+        "words": [
+          {
+            "word": "these",
+            "start": 23.055,
+            "end": 23.295,
+            "confidence": 0.93408203,
+            "punctuated_word": "These"
+          },
+          {
+            "word": "machines",
+            "start": 23.295,
+            "end": 23.695,
+            "confidence": 0.9863281,
+            "punctuated_word": "machines"
+          },
+          {
+            "word": "are",
+            "start": 23.695,
+            "end": 23.855,
+            "confidence": 0.9951172,
+            "punctuated_word": "are"
+          },
+          {
+            "word": "engineered",
+            "start": 23.855,
+            "end": 24.335,
+            "confidence": 0.99902344,
+            "punctuated_word": "engineered"
+          },
+          {
+            "word": "with",
+            "start": 24.335,
+            "end": 24.415,
+            "confidence": 0.9892578,
+            "punctuated_word": "with"
+          },
+          {
+            "word": "self",
+            "start": 24.415,
+            "end": 24.735,
+            "confidence": 0.96972656,
+            "punctuated_word": "self"
+          },
+          {
+            "word": "with",
+            "start": 24.735,
+            "end": 24.975,
+            "confidence": 0.65234375,
+            "punctuated_word": "with"
+          },
+          {
+            "word": "self",
+            "start": 24.975,
+            "end": 25.295,
+            "confidence": 0.9970703,
+            "punctuated_word": "self"
+          },
+          {
+            "word": "cleaning",
+            "start": 25.295,
+            "end": 25.695,
+            "confidence": 0.96972656,
+            "punctuated_word": "cleaning"
+          },
+          {
+            "word": "cleaning",
+            "start": 25.695,
+            "end": 26.015,
+            "confidence": 0.90771484,
+            "punctuated_word": "cleaning"
+          },
+          {
+            "word": "cycles",
+            "start": 26.015,
+            "end": 26.494999,
+            "confidence": 0.6088867,
+            "punctuated_word": "cycles"
+          },
+          {
+            "word": "so",
+            "start": 26.494999,
+            "end": 26.654999,
+            "confidence": 0.80322266,
+            "punctuated_word": "so"
+          },
+          {
+            "word": "com",
+            "start": 26.654999,
+            "end": 26.814999,
+            "confidence": 0.51220703,
+            "punctuated_word": "com"
+          },
+          {
+            "word": "so",
+            "start": 26.895,
+            "end": 27.135,
+            "confidence": 0.9243164,
+            "punctuated_word": "so"
+          },
+          {
+            "word": "complex",
+            "start": 27.135,
+            "end": 27.615,
+            "confidence": 0.9560547,
+            "punctuated_word": "complex"
+          },
+          {
+            "word": "complex",
+            "start": 27.615,
+            "end": 27.96,
+            "confidence": 0.460083,
+            "punctuated_word": "complex."
+          }
+        ],
+        "id": "2f777066-5642-409b-9ba8-7245d2cfe934"
+      },
+      {
+        "start": 29.4,
+        "end": 32.22,
+        "confidence": 0.88956195,
+        "channel": 0,
+        "transcript": "Franchises are trapped, forced forced to pay exorbitant",
+        "words": [
+          {
+            "word": "franchises",
+            "start": 29.4,
+            "end": 29.9,
+            "confidence": 0.59472656,
+            "punctuated_word": "Franchises"
+          },
+          {
+            "word": "are",
+            "start": 29.96,
+            "end": 30.119999,
+            "confidence": 0.9135742,
+            "punctuated_word": "are"
+          },
+          {
+            "word": "trapped",
+            "start": 30.119999,
+            "end": 30.599998,
+            "confidence": 0.7227783,
+            "punctuated_word": "trapped,"
+          },
+          {
+            "word": "forced",
+            "start": 30.599998,
+            "end": 31.079998,
+            "confidence": 0.9819336,
+            "punctuated_word": "forced"
+          },
+          {
+            "word": "forced",
+            "start": 31.079998,
+            "end": 31.32,
+            "confidence": 0.9506836,
+            "punctuated_word": "forced"
+          },
+          {
+            "word": "to",
+            "start": 31.32,
+            "end": 31.48,
+            "confidence": 0.9980469,
+            "punctuated_word": "to"
+          },
+          {
+            "word": "pay",
+            "start": 31.48,
+            "end": 31.72,
+            "confidence": 0.98828125,
+            "punctuated_word": "pay"
+          },
+          {
+            "word": "exorbitant",
+            "start": 31.72,
+            "end": 32.22,
+            "confidence": 0.9664714,
+            "punctuated_word": "exorbitant"
+          }
+        ],
+        "id": "0d128b10-b32b-4e9d-9601-ded6bdbad127"
+      },
+      {
+        "start": 32.68,
+        "end": 36.219997,
+        "confidence": 0.81951904,
+        "channel": 0,
+        "transcript": "fees for fees for repairs that off often involve symbols.",
+        "words": [
+          {
+            "word": "fees",
+            "start": 32.68,
+            "end": 32.92,
+            "confidence": 0.9921875,
+            "punctuated_word": "fees"
+          },
+          {
+            "word": "for",
+            "start": 32.92,
+            "end": 33.32,
+            "confidence": 0.94970703,
+            "punctuated_word": "for"
+          },
+          {
+            "word": "fees",
+            "start": 33.32,
+            "end": 33.48,
+            "confidence": 0.6791992,
+            "punctuated_word": "fees"
+          },
+          {
+            "word": "for",
+            "start": 33.48,
+            "end": 33.719997,
+            "confidence": 0.9819336,
+            "punctuated_word": "for"
+          },
+          {
+            "word": "repairs",
+            "start": 33.719997,
+            "end": 34.12,
+            "confidence": 0.99902344,
+            "punctuated_word": "repairs"
+          },
+          {
+            "word": "that",
+            "start": 34.12,
+            "end": 34.36,
+            "confidence": 0.9140625,
+            "punctuated_word": "that"
+          },
+          {
+            "word": "off",
+            "start": 34.36,
+            "end": 34.6,
+            "confidence": 0.43359375,
+            "punctuated_word": "off"
+          },
+          {
+            "word": "often",
+            "start": 34.68,
+            "end": 35.079998,
+            "confidence": 0.99609375,
+            "punctuated_word": "often"
+          },
+          {
+            "word": "involve",
+            "start": 35.079998,
+            "end": 35.579998,
+            "confidence": 0.6430664,
+            "punctuated_word": "involve"
+          },
+          {
+            "word": "symbols",
+            "start": 35.719997,
+            "end": 36.219997,
+            "confidence": 0.60632324,
+            "punctuated_word": "symbols."
+          }
+        ],
+        "id": "8eb6e892-69c9-4c5d-a972-f9b70f876e2a"
+      },
+      {
+        "start": 36.6,
+        "end": 45.114998,
+        "confidence": 0.76981395,
+        "channel": 0,
+        "transcript": "Then an independent startup created created a tiny tiny device kitsch promise promising to decode error messages messages and",
+        "words": [
+          {
+            "word": "then",
+            "start": 36.6,
+            "end": 36.92,
+            "confidence": 0.9921875,
+            "punctuated_word": "Then"
+          },
+          {
+            "word": "an",
+            "start": 36.92,
+            "end": 37.079998,
+            "confidence": 0.9448242,
+            "punctuated_word": "an"
+          },
+          {
+            "word": "independent",
+            "start": 37.079998,
+            "end": 37.579998,
+            "confidence": 1,
+            "punctuated_word": "independent"
+          },
+          {
+            "word": "startup",
+            "start": 37.64,
+            "end": 38.12,
+            "confidence": 0.6777344,
+            "punctuated_word": "startup"
+          },
+          {
+            "word": "created",
+            "start": 38.12,
+            "end": 38.6,
+            "confidence": 0.9892578,
+            "punctuated_word": "created"
+          },
+          {
+            "word": "created",
+            "start": 38.6,
+            "end": 38.92,
+            "confidence": 0.7915039,
+            "punctuated_word": "created"
+          },
+          {
+            "word": "a",
+            "start": 38.92,
+            "end": 39.079998,
+            "confidence": 0.98828125,
+            "punctuated_word": "a"
+          },
+          {
+            "word": "tiny",
+            "start": 39.079998,
+            "end": 39.579998,
+            "confidence": 0.6640625,
+            "punctuated_word": "tiny"
+          },
+          {
+            "word": "tiny",
+            "start": 39.8,
+            "end": 39.975,
+            "confidence": 0.6298828,
+            "punctuated_word": "tiny"
+          },
+          {
+            "word": "device",
+            "start": 40.215,
+            "end": 40.614998,
+            "confidence": 0.8691406,
+            "punctuated_word": "device"
+          },
+          {
+            "word": "kitsch",
+            "start": 40.614998,
+            "end": 40.934998,
+            "confidence": 0.61328125,
+            "punctuated_word": "kitsch"
+          },
+          {
+            "word": "promise",
+            "start": 40.934998,
+            "end": 41.254997,
+            "confidence": 0.24951172,
+            "punctuated_word": "promise"
+          },
+          {
+            "word": "promising",
+            "start": 41.495,
+            "end": 41.995,
+            "confidence": 0.82128906,
+            "punctuated_word": "promising"
+          },
+          {
+            "word": "to",
+            "start": 42.055,
+            "end": 42.215,
+            "confidence": 0.8442383,
+            "punctuated_word": "to"
+          },
+          {
+            "word": "decode",
+            "start": 42.215,
+            "end": 42.715,
+            "confidence": 0.60253906,
+            "punctuated_word": "decode"
+          },
+          {
+            "word": "error",
+            "start": 42.855,
+            "end": 43.355,
+            "confidence": 0.9135742,
+            "punctuated_word": "error"
+          },
+          {
+            "word": "messages",
+            "start": 43.414997,
+            "end": 43.914997,
+            "confidence": 0.8378906,
+            "punctuated_word": "messages"
+          },
+          {
+            "word": "messages",
+            "start": 44.055,
+            "end": 44.555,
+            "confidence": 0.34228516,
+            "punctuated_word": "messages"
+          },
+          {
+            "word": "and",
+            "start": 44.614998,
+            "end": 45.114998,
+            "confidence": 0.85498047,
+            "punctuated_word": "and"
+          }
+        ],
+        "id": "379c6b87-5cc3-4ca4-aba6-d5be77de28f3"
+      },
+      {
+        "start": 45.495,
+        "end": 46.714996,
+        "confidence": 0.82633466,
+        "channel": 0,
+        "transcript": "Donald's quickly fought",
+        "words": [
+          {
+            "word": "donald's",
+            "start": 45.495,
+            "end": 45.894997,
+            "confidence": 0.8364258,
+            "punctuated_word": "Donald's"
+          },
+          {
+            "word": "quickly",
+            "start": 45.894997,
+            "end": 46.214996,
+            "confidence": 0.984375,
+            "punctuated_word": "quickly"
+          },
+          {
+            "word": "fought",
+            "start": 46.214996,
+            "end": 46.714996,
+            "confidence": 0.6582031,
+            "punctuated_word": "fought"
+          }
+        ],
+        "id": "a7659d5e-2014-482f-b4a4-375d8783c03a"
+      },
+      {
+        "start": 47.574997,
+        "end": 51.914997,
+        "confidence": 0.6589111,
+        "channel": 0,
+        "transcript": "back fought back. Alleging alleging peach peach pose safety risks.",
+        "words": [
+          {
+            "word": "back",
+            "start": 47.574997,
+            "end": 47.894997,
+            "confidence": 0.36401367,
+            "punctuated_word": "back"
+          },
+          {
+            "word": "fought",
+            "start": 47.894997,
+            "end": 48.135,
+            "confidence": 0.23059082,
+            "punctuated_word": "fought"
+          },
+          {
+            "word": "back",
+            "start": 48.135,
+            "end": 48.635,
+            "confidence": 0.71276855,
+            "punctuated_word": "back."
+          },
+          {
+            "word": "alleging",
+            "start": 48.855,
+            "end": 49.355,
+            "confidence": 0.9042969,
+            "punctuated_word": "Alleging"
+          },
+          {
+            "word": "alleging",
+            "start": 49.495,
+            "end": 49.995,
+            "confidence": 0.6196289,
+            "punctuated_word": "alleging"
+          },
+          {
+            "word": "peach",
+            "start": 50.055,
+            "end": 50.454998,
+            "confidence": 0.47973633,
+            "punctuated_word": "peach"
+          },
+          {
+            "word": "peach",
+            "start": 50.454998,
+            "end": 50.774998,
+            "confidence": 0.93115234,
+            "punctuated_word": "peach"
+          },
+          {
+            "word": "pose",
+            "start": 50.774998,
+            "end": 51.015,
+            "confidence": 0.5083008,
+            "punctuated_word": "pose"
+          },
+          {
+            "word": "safety",
+            "start": 51.015,
+            "end": 51.414997,
+            "confidence": 0.9980469,
+            "punctuated_word": "safety"
+          },
+          {
+            "word": "risks",
+            "start": 51.414997,
+            "end": 51.914997,
+            "confidence": 0.8405762,
+            "punctuated_word": "risks."
+          }
+        ],
+        "id": "1693cf89-3e85-4267-8501-520d10235be4"
+      }
+    ]
+  }
+}

@@ -1,5 +1,5 @@
-import type { ExecutionPlan } from "../types";
-import { getPollinationsImageUrl } from "../utils/pollinations";
+import type { ExecutionPlan, WhisperToken } from "../types";
+import { generateSvgVectorStickerUrl } from "../utils/vector-assets";
 
 export interface PipelineOptions {
   model?: "flux" | "flux-realism" | "turbo" | "sana";
@@ -29,8 +29,8 @@ export const baseExecutionPlan: ExecutionPlan = {
       "In the year 2000, a small startup called Netflix walked into Blockbuster's headquarters with a bold offer. They asked for fifty million dollars to become Blockbuster's online streaming arm. The Blockbuster executives literally laughed them out of the room, calling the idea a joke. What they didn't realize is they had just sealed their own fate. Within a decade, Netflix was worth over a hundred billion dollars. And Blockbuster? They filed for bankruptcy in 2010 — the most expensive rejection in business history.",
     voiceConfig: {
       provider: "cartesia",
-      voiceId: "5ee9feff-1265-424a-9d7f-8e4d431a12c7",
-      voiceName: "Ronald — Thinker",
+      voiceId: "62ae83ad-4f6a-430b-af41-a9bede9286ca",
+      voiceName: "Vox High-Retention Explainer",
       modelId: "sonic-3",
       language: "en",
       sampleRate: 44100,
@@ -64,21 +64,29 @@ export const baseExecutionPlan: ExecutionPlan = {
   },
 
   filmTreatment: {
-    grainOpacity: 0.12,
-    grainBlendMode: "screen",
+    grainOpacity: 0.14,
+    grainBlendMode: "overlay",
     grainAnimated: true,
-    grainFps: 8,
+    grainFps: 10,
     scanlines: true,
     scanlineWidth: 1.6,
     scanlineOpacity: 0.16,
     scanlineBlendMode: "multiply",
-    vignette: 0.4,
+    vignette: 0.38,
     vignetteBlendMode: "multiply",
     cornerBlur: true,
     cornerBlurRadius: 12,
     cornerBlurSpread: 180,
     colorGradeLut: "teal_orange_cinematic",
     letterboxOpacity: 0.0,
+    paperGrid: true,
+    paperGridOpacity: 0.12,
+    paperGridSize: 32,
+    paperTexture: true,
+    paperTextureType: "studio_paper",
+    paperTextureOpacity: 0.1,
+    dustAndScratches: true,
+    dustOpacity: 0.1,
   },
 
   scenes: [
@@ -122,14 +130,10 @@ export const baseExecutionPlan: ExecutionPlan = {
         ],
       },
       imageKitUrls: {
-        background:
-          "https://ik.imagekit.io/motionreels/blockbuster-netflix/bg_scene1_blockbuster_store.png?tr=w-1080,h-1920,fo-auto,f-webp,q-85",
-        foreground:
-          "https://ik.imagekit.io/motionreels/blockbuster-netflix/fg_scene1_entrepreneur_cutout.png?tr=w-800,h-1400,fo-face,f-webp,q-90",
+        background: "/vox_documentary_bg.png",
+        foreground: "/vox_subject_cutout.png",
         props: [
-          "https://ik.imagekit.io/motionreels/blockbuster-netflix/prop_dvd_mailer.png?tr=w-300,f-webp,q-85",
-          "https://ik.imagekit.io/motionreels/blockbuster-netflix/prop_vhs_tapes.png?tr=w-500,f-webp,q-85",
-          "https://ik.imagekit.io/motionreels/blockbuster-netflix/overlay_gold_particles.png?tr=w-1080,f-webp,q-80",
+          "/vox_newspaper_clipping.png",
         ],
       },
       animationRules: {
@@ -227,6 +231,7 @@ export const baseExecutionPlan: ExecutionPlan = {
     {
       sceneId: 2,
       sceneTitle: "The Pitch — $50 Million Ask",
+      visualType: "editorial_strikethrough_swap",
       startFrame: 150,
       endFrame: 300,
       durationFrames: 150,
@@ -362,6 +367,7 @@ export const baseExecutionPlan: ExecutionPlan = {
     {
       sceneId: 3,
       sceneTitle: "The Rejection — Laughed Out",
+      visualType: "matrix_scramble_hacker",
       startFrame: 300,
       endFrame: 450,
       durationFrames: 150,
@@ -506,6 +512,7 @@ export const baseExecutionPlan: ExecutionPlan = {
     {
       sceneId: 4,
       sceneTitle: "The Irony — Sealed Their Fate",
+      visualType: "infographic_bar_chart",
       startFrame: 450,
       endFrame: 600,
       durationFrames: 150,
@@ -640,6 +647,7 @@ export const baseExecutionPlan: ExecutionPlan = {
     {
       sceneId: 5,
       sceneTitle: "The Rise — Netflix Soars Past $100B",
+      visualType: "ecosystem_integration_hub",
       startFrame: 600,
       endFrame: 750,
       durationFrames: 150,
@@ -771,6 +779,7 @@ export const baseExecutionPlan: ExecutionPlan = {
     {
       sceneId: 6,
       sceneTitle: "The Fall — Blockbuster's Bankruptcy",
+      visualType: "handwritten_roadmap_checklist",
       startFrame: 750,
       endFrame: 900,
       durationFrames: 150,
@@ -879,10 +888,9 @@ export const baseExecutionPlan: ExecutionPlan = {
           loop: true,
         },
         transitionOut: {
-          type: "fade_to_black",
-          triggerFrame: 870,
-          durationFrames: 30,
-          easing: "easeInOutSine",
+          type: "tv_power_off",
+          triggerFrame: 880,
+          durationFrames: 20,
         },
       },
       kineticCaptions: {
@@ -961,29 +969,10 @@ export function getResolvedExecutionPlan(options: PipelineOptions = {}): Executi
   return {
     ...baseExecutionPlan,
     scenes: baseExecutionPlan.scenes.map((scene) => {
-      const bgUrl = getPollinationsImageUrl(scene.assetPrompts.backgroundPrompt, {
-        width: bgWidth,
-        height: bgHeight,
-        model,
-        seed: seedBase + scene.sceneId * 10,
-        enhance: true,
-      });
-
-      const fgUrl = getPollinationsImageUrl(scene.assetPrompts.foregroundCutoutPrompt, {
-        width: fgWidth,
-        height: fgHeight,
-        model,
-        seed: seedBase + scene.sceneId * 10 + 1,
-        enhance: true,
-      });
-
-      const propUrls = scene.assetPrompts.propsOverlays.map((propPrompt, pIdx) =>
-        getPollinationsImageUrl(propPrompt, {
-          width: 500,
-          height: 500,
-          model,
-          seed: seedBase + scene.sceneId * 10 + 2 + pIdx,
-        })
+      const bgUrl = generateSvgVectorStickerUrl(scene.assetPrompts.backgroundPrompt, `BACKGROUND ${scene.sceneId}`);
+      const fgUrl = generateSvgVectorStickerUrl(scene.assetPrompts.foregroundCutoutPrompt, `CUTOUT ${scene.sceneId}`);
+      const propUrls = scene.assetPrompts.propsOverlays.map((propPrompt) =>
+        generateSvgVectorStickerUrl(propPrompt, `PROP ${scene.sceneId}`)
       );
 
       return {
@@ -999,3 +988,149 @@ export function getResolvedExecutionPlan(options: PipelineOptions = {}): Executi
 }
 
 export const executionPlan = getResolvedExecutionPlan();
+
+/**
+ * Converts a Convex reel database document into a fully hydrated ExecutionPlan.
+ * Dynamically builds scenes, whisper caption tokens, narration lines, single-subject cutouts,
+ * and Remotion timeline durations from convexReel.storyboard.
+ */
+export function convertConvexReelToExecutionPlan(convexReel: any): ExecutionPlan {
+  const resolvedPlan = getResolvedExecutionPlan();
+
+  if (!convexReel || !convexReel.storyboard || !Array.isArray(convexReel.storyboard) || convexReel.storyboard.length === 0) {
+    return resolvedPlan;
+  }
+
+  const hasMasterVoiceover = Boolean(
+    convexReel.fullVoiceoverUrl &&
+    typeof convexReel.fullVoiceoverUrl === "string" &&
+    convexReel.fullVoiceoverUrl.length > 10 &&
+    !convexReel.fullVoiceoverUrl.includes("cdn.saas.com")
+  );
+
+  let currentFrameAcc = 0;
+
+  const dynamicScenes = convexReel.storyboard.map((dbScene: any, index: number) => {
+    const sceneId = dbScene.sceneId || index + 1;
+    const narration = dbScene.narration || "";
+
+    // Extract real Whisper tokens from DB (Deepgram STT) or generate fallback tokens
+    const rawWhisperTokens = (dbScene.whisperTokens && Array.isArray(dbScene.whisperTokens) && dbScene.whisperTokens.length > 0)
+      ? dbScene.whisperTokens
+      : generateTokensFromText(narration, 0);
+
+    const lastToken = rawWhisperTokens[rawWhisperTokens.length - 1];
+    const lastTokenEndFrame = lastToken
+      ? (lastToken.endFrame || Math.ceil((lastToken.endMs || 0) / 33.33))
+      : 0;
+
+    const baseDuration = dbScene.durationFrames || (dbScene.audioDurationSec ? Math.ceil(dbScene.audioDurationSec * 30) : 0);
+    const durationFrames = Math.max(135, baseDuration, lastTokenEndFrame + 15);
+
+    const startFrame = (typeof dbScene.startFrame === "number" && dbScene.startFrame >= currentFrameAcc)
+      ? dbScene.startFrame
+      : currentFrameAcc;
+
+    const whisperTokens = rawWhisperTokens;
+
+    currentFrameAcc = startFrame + durationFrames;
+
+    const endFrame = startFrame + durationFrames;
+    const durationSeconds = Math.round((durationFrames / 30) * 10) / 10;
+
+    const baseScene = resolvedPlan.scenes[index % resolvedPlan.scenes.length];
+
+    // Collect all generated image URLs for this scene (primary image + event images)
+    const primaryImg = (dbScene.imageUrl && typeof dbScene.imageUrl === "string" && dbScene.imageUrl.length > 5)
+      ? dbScene.imageUrl
+      : "";
+
+    const eventsList = (dbScene.events && Array.isArray(dbScene.events))
+      ? dbScene.events
+      : [];
+
+    const eventImages = eventsList
+      .map((ev: any) => ev.imageUrl)
+      .filter((url: any) => typeof url === "string" && url.length > 5);
+
+    const propUrls = eventImages.length > 0
+      ? eventImages
+      : (baseScene.imageKitUrls.props || []);
+
+    const foregroundUrl = primaryImg || (eventImages[0] || baseScene.imageKitUrls.foreground);
+    const bgUrl = (dbScene.bgImageUrl && typeof dbScene.bgImageUrl === "string" && dbScene.bgImageUrl.length > 5)
+      ? dbScene.bgImageUrl
+      : baseScene.imageKitUrls.background;
+
+    const headlineWords = dbScene.headline ? dbScene.headline.split(/\s+/) : baseScene.kineticCaptions.highlightWords;
+
+    return {
+      ...baseScene,
+      sceneId,
+      sceneTitle: `SCENE ${sceneId}: ${dbScene.headline || baseScene.sceneTitle}`,
+      startFrame,
+      endFrame,
+      durationFrames,
+      durationSeconds,
+      narrationLine: narration,
+      visualType: dbScene.visualType || (baseScene as any).visualType || "center_cutout_hero",
+      gsapType: dbScene.gsapType || (baseScene as any).gsapType || "grid_lines",
+      entranceType: dbScene.entranceType || (baseScene as any).entranceType || "slide_corner_bottom_left",
+      events: eventsList,
+      whisperTokens,
+      audioUrl: dbScene.audioUrl || "",
+      imageKitUrls: {
+        background: bgUrl,
+        foreground: foregroundUrl,
+        props: propUrls,
+      },
+      kineticCaptions: {
+        ...baseScene.kineticCaptions,
+        highlightWords: headlineWords,
+      },
+    };
+  });
+
+  const totalFrames = Math.max(900, currentFrameAcc);
+  const totalSeconds = Math.round((totalFrames / 30) * 10) / 10;
+
+  return {
+    ...resolvedPlan,
+    projectMeta: {
+      ...resolvedPlan.projectMeta,
+      title: convexReel.title || convexReel.topic || resolvedPlan.projectMeta.title,
+      totalDurationFrames: totalFrames,
+      totalDurationSeconds: totalSeconds,
+    },
+    audioPipeline: {
+      ...resolvedPlan.audioPipeline,
+      fullVoiceoverUrl: convexReel.fullVoiceoverUrl || "",
+      masterWhisperTokens: convexReel.masterWhisperTokens || [],
+    },
+    scenes: dynamicScenes,
+  };
+}
+
+/**
+ * Generate Whisper token timestamps for narration text relative to scene startFrame.
+ */
+function generateTokensFromText(text: string, sceneStartFrame: number): WhisperToken[] {
+  const words = text.split(/\s+/).filter(Boolean);
+  // Cartesia TTS sonic-3 speech pace: ~180ms per word (5.4 frames/word @ 30 FPS)
+  const durationPerWordMs = 180;
+
+  return words.map((word, idx) => {
+    const startMs = idx * durationPerWordMs;
+    const endMs = (idx + 1) * durationPerWordMs;
+    const wordStartFrame = sceneStartFrame + Math.floor(startMs / 33.33);
+    const wordEndFrame = sceneStartFrame + Math.max(1, Math.ceil(endMs / 33.33));
+
+    return {
+      word,
+      startMs,
+      endMs,
+      startFrame: wordStartFrame,
+      endFrame: wordEndFrame,
+    };
+  });
+}

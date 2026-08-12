@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Composition } from "remotion";
+import "./utils/fonts";
 import { BlockbusterNetflixReel } from "./BlockbusterNetflixReel";
 import { executionPlan } from "./data/execution-plan";
 

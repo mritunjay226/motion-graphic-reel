@@ -1,19 +1,25 @@
 "use client";
 
 import React from "react";
-import { AbsoluteFill, Audio } from "remotion";
+import { AbsoluteFill, useCurrentFrame, interpolate, spring } from "remotion";
 import type { Scene } from "./types";
 import type { VideoTheme } from "./utils/themes";
-import { ParallaxLayer } from "./components/ParallaxLayer";
+import { AnimatedLayer } from "./components/ParallaxLayer";
 import { OverlayFx } from "./components/OverlayFx";
-import { ProjectedShadow } from "./components/ProjectedShadow";
+import { PaperSticker } from "./components/PaperSticker";
 import { CharacterBoil } from "./components/CharacterBoil";
-import { SpringEntrance } from "./components/SpringEntrance";
-import { ImageKitAsset } from "./components/ImageKitAsset";
-import { PropAnimator } from "./components/PropAnimator";
 import { WordByWordCaptions } from "./components/WordByWordCaptions";
 import { TransitionEffect } from "./components/TransitionEffect";
 import { SwingingOverheadLamp } from "./components/SwingingOverheadLamp";
+import { VoxTypography } from "./components/VoxTypography";
+import { VoxLeaderLine } from "./components/VoxLeaderLine";
+import { GsapSvgGraphics } from "./components/GsapSvgGraphics";
+import { CurveCutTransition } from "./components/CurveCutTransition";
+import { ExitAnimationWrapper } from "./components/ExitAnimationWrapper";
+import { TypewriterParagraph } from "./components/TypewriterParagraph";
+import { NewsArticleClipping } from "./components/NewsArticleClipping";
+
+import { getLayoutTemplate } from "./templates/layouts";
 
 interface SceneRendererProps {
   scene: Scene;
@@ -23,147 +29,124 @@ interface SceneRendererProps {
 }
 
 /**
- * SceneRenderer orchestrates the layer hierarchy for a single scene:
- * Non-blocking Audio Track (pauseWhenBuffering={false})
- * Layer 1: Background (Parallax Layer + Theme Color Filter)
- * Layer 2: Atmospheric Overlay FX
- * Layer 3: Dynamic Projected Floor Shadow
- * Layer 4: Foreground Subject (Character Boil + Spring Entrance)
- * Layer 5: Non-blocking Prop Animations
- * Layer 6: Legible Kinetic Captions with Theme Palette
- * Layer 7: Frame-Accurate Scene Transitions
+ * SceneRenderer orchestrates Vox documentary visual storytelling by routing scenes into 
+ * broadcast-grade, collision-free 2.5D Vox layout templates (12 dynamic presets).
  */
 export const SceneRenderer: React.FC<SceneRendererProps> = ({
   scene,
-  voiceId = "5ee9feff-1265-424a-9d7f-8e4d431a12c7",
+  voiceId,
   theme,
-  enableAudio = false,
+  enableAudio = true,
 }) => {
+  const frame = useCurrentFrame();
+
   const {
+    sceneId,
     startFrame,
     durationFrames,
-    imageKitUrls,
     animationRules,
-    whisperTokens,
-    kineticCaptions,
-    narrationLine,
   } = scene;
 
-  // Auto-generate Cartesia AI TTS audio stream URL for this scene's narration line
-  const narrationAudioUrl = `/api/tts?text=${encodeURIComponent(
-    narrationLine
-  )}&voiceId=${voiceId}`;
+  const canvasBg = theme?.canvasBg || "#F4F4F6";
+  const isGradientBg = canvasBg.includes("gradient");
+
+  // Continuous dynamic camera scale zoom (1.0 -> 1.05) over scene duration
+  const cameraScale = interpolate(frame, [0, Math.max(1, durationFrames)], [1.0, 1.05], {
+    extrapolateRight: "clamp",
+  });
+
+  // Select dynamic layout template preset
+  const LayoutTemplate = getLayoutTemplate(scene, sceneId);
 
   return (
-    <AbsoluteFill style={{ overflow: "hidden" }}>
-      {/* Optional Cartesia Voice Track (configured with pauseWhenBuffering={false} so network audio never freezes video playback) */}
-      {enableAudio && narrationLine && (
-        <Audio
-          src={narrationAudioUrl}
-          volume={1.0}
-          pauseWhenBuffering={false}
-          acceptableTimeDifferenceInSeconds={1.5}
-        />
-      )}
-
-      {/* Layer 1: Background (Parallax Zoom + Theme Filter) */}
-      <ParallaxLayer
-        backgroundUrl={imageKitUrls.background}
-        backgroundMotion={animationRules.backgroundMotion}
+    <AbsoluteFill
+      style={{
+        overflow: "hidden",
+        backgroundColor: isGradientBg ? "transparent" : canvasBg,
+        backgroundImage: isGradientBg
+          ? `${canvasBg}, radial-gradient(rgba(255,255,255,0.08) 1.5px, transparent 1.5px)`
+          : `radial-gradient(rgba(0,0,0,0.12) 1.5px, transparent 1.5px)`,
+        backgroundSize: isGradientBg ? "100% 100%, 24px 24px" : "24px 24px",
+        transform: `scale(${cameraScale})`,
+        transformOrigin: "center center",
+        filter: theme?.filter || "none",
+      }}
+    >
+      {/* ── VOX "CUTTING THE CURVE" VELOCITY-MATCHED SCENE TRANSITION ── */}
+      <CurveCutTransition
         sceneStartFrame={startFrame}
-        sceneDurationFrames={durationFrames}
-        themeFilter={theme?.filter}
+        durationFrames={durationFrames}
+        cutWindowFrames={6}
       >
-        {/* Layer 2: Overlay FX */}
-        {animationRules.overlayFx && (
-          <OverlayFx config={animationRules.overlayFx} />
-        )}
-
-        {/* Vox Signature Swinging Overhead Lamp & Flickering Desk Light */}
-        {(scene.sceneId === 5 || animationRules.overlayFx?.type === "flickering_light") && (
-          <SwingingOverheadLamp />
-        )}
-
-        {/* Layer 3: Projected Shadow */}
-        {animationRules.projectedShadow?.enabled && (
-          <ProjectedShadow
-            config={animationRules.projectedShadow}
-            foregroundUrl={imageKitUrls.foreground}
-          />
-        )}
-
-        {/* Layer 4: Foreground Subject (Center-Bottom Alignment) */}
-        {imageKitUrls.foreground && (
-          <AbsoluteFill
+        {/* Top Studio Stage Badges (Vox Reference Style) */}
+        <div
+          style={{
+            position: "absolute",
+            top: "40px",
+            left: "50px",
+            right: "50px",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            zIndex: 900,
+            pointerEvents: "none",
+          }}
+        >
+          {/* Left Theme Scene Opener Badge */}
+          <div
             style={{
+              backgroundColor: theme?.badgeBg || "#FFE600",
+              border: `2.5px solid ${theme?.badgeBorder || "#111111"}`,
+              borderRadius: "4px",
+              padding: "4px 12px",
+              boxShadow: `3px 3px 0px ${theme?.badgeBorder || "#111111"}`,
+              fontFamily: `${theme?.fontFamily || "Bebas Neue"}, sans-serif`,
+              fontSize: "18px",
+              fontWeight: 800,
+              color: theme?.badgeText || "#111111",
+              letterSpacing: "1.5px",
               display: "flex",
               alignItems: "center",
-              justifyContent: "center",
-              filter: theme?.filter || undefined,
-              zIndex: 10,
+              gap: "6px",
             }}
           >
-            <SpringEntrance
-              config={animationRules.foregroundMotion.entrance}
-              sceneStartFrame={startFrame}
-            >
-              <CharacterBoil config={animationRules.foregroundMotion.boil}>
-                <ImageKitAsset
-                  src={imageKitUrls.foreground}
-                  objectFit="contain"
-                  style={{
-                    maxHeight: "75%",
-                    maxWidth: "75%",
-                    margin: "auto",
-                  }}
-                />
-              </CharacterBoil>
-            </SpringEntrance>
-          </AbsoluteFill>
-        )}
+            <span>SCENE {String(sceneId).padStart(2, "0")} • {scene.sceneTitle?.replace(/SCENE \d+:\s*/i, "").slice(0, 20).toUpperCase() || "STORY OPENER"}</span>
+          </div>
 
-        {/* Layer 5: Non-blocking Prop Animations */}
-        {imageKitUrls.props?.map((propUrl, idx) => {
-          const propAnimConfig = animationRules.propsAnimations?.find(
-            (p) => p.propIndex === idx
-          ) ?? {
-            propIndex: idx,
-            motion: "gentle_float",
-            startFrame: startFrame + 10,
-          };
+          {/* Right Dark Studio Status Badge */}
+          <div
+            style={{
+              backgroundColor: theme?.badgeBorder || "#1B2A10",
+              border: `2.5px solid ${theme?.badgeBorder || "#111111"}`,
+              borderRadius: "6px",
+              padding: "4px 12px",
+              boxShadow: "3px 3px 0px rgba(0,0,0,0.5)",
+              fontFamily: "Inter, sans-serif",
+              fontSize: "13px",
+              fontWeight: 800,
+              color: theme?.orbitRingColor || "#B4F500",
+              letterSpacing: "1px",
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+            }}
+          >
+            <span style={{ display: "inline-block", width: "8px", height: "8px", backgroundColor: theme?.orbitRingColor || "#B4F500", borderRadius: "1px" }} />
+            <span>{theme?.name.toUpperCase() || "PAUSE STAGE"}</span>
+          </div>
+        </div>
 
-          return (
-            <PropAnimator
-              key={`prop-${idx}`}
-              propUrl={propUrl}
-              config={propAnimConfig}
-              sceneStartFrame={startFrame}
-            />
-          );
-        })}
+        {/* Render Dynamic Broadcast Vox Layout Template */}
+        <LayoutTemplate scene={scene} theme={theme} />
+      </CurveCutTransition>
 
-        {/* Layer 6: Legible Kinetic Captions with Theme Styling */}
-        {whisperTokens && whisperTokens.length > 0 && (
-          <WordByWordCaptions
-            tokens={whisperTokens}
-            config={kineticCaptions}
-            sceneStartFrame={startFrame}
-            themeFontFamily={theme?.fontFamily}
-            themeTextColor={theme?.captionTextColor}
-            themeHighlightColor={theme?.captionHighlightColor}
-            themeHighlightBg={theme?.captionHighlightBg}
-            themeShadowColor={theme?.captionShadowColor}
-          />
-        )}
-
-        {/* Layer 7: Transition Out */}
-        {animationRules.transitionOut && (
-          <TransitionEffect
-            config={animationRules.transitionOut}
-            sceneStartFrame={startFrame}
-          />
-        )}
-      </ParallaxLayer>
+      {/* Scene Transition Out */}
+      {animationRules?.transitionOut && (
+        <TransitionEffect
+          config={animationRules.transitionOut}
+          sceneStartFrame={startFrame}
+        />
+      )}
     </AbsoluteFill>
   );
 };
