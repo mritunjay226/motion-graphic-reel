@@ -1,3 +1,12 @@
 {
-	"manuallyDisabled": false
+	"manuallyDisabled": true,
+	"userDisabled": false,
+	"cutoverAttemptedAtMs": 1786514552068,
+	"cutoverFence": {
+		"reason": "cutover to sqlite",
+		"at": "2026-08-12T06:02:32.760Z",
+		"tips": {
+			"C:\\Users\\mk\\Documents\\motion-graphic-reels": "dfd2e55db442e169d4ede6c2c663856cd43dc847"
+		}
+	}
 }

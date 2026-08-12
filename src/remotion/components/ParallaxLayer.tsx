@@ -1,6 +1,5 @@
 import React from "react";
-import { AbsoluteFill, useCurrentFrame, interpolate, Easing } from "remotion";
-import type { BackgroundMotion } from "../types";
+import { AbsoluteFill, useCurrentFrame, interpolate, Easing, spring, useVideoConfig } from "remotion";
 
 /**
  * Resolves an easing string name to a Remotion Easing function.
@@ -24,101 +23,227 @@ function resolveEasing(name?: string) {
   }
 }
 
-interface ParallaxLayerProps {
-  /** URL or path for the background image */
-  backgroundUrl: string;
-  /** Background motion configuration from execution plan */
-  backgroundMotion: BackgroundMotion;
-  /** Scene start frame (absolute) — used to compute local frame */
+type EntranceType =
+  | "fade_scale"
+  | "slide_up"
+  | "slide_down"
+  | "slide_left"
+  | "slide_right"
+  | "slide_corner_top_left"
+  | "slide_corner_top_right"
+  | "slide_corner_bottom_left"
+  | "slide_corner_bottom_right"
+  | "slide_smooth_ease"
+  | "pop_in"
+  | "none";
+
+interface AnimatedLayerProps {
+  /** Entrance animation type */
+  entrance?: EntranceType;
+  /** Frame offset within scene to start the entrance */
+  enterAtFrame?: number;
+  /** Spring damping for entrance */
+  damping?: number;
+  /** Spring stiffness for entrance */
+  stiffness?: number;
+  /** Continuous slow zoom drift (1 = no zoom) */
+  zoomDrift?: { from: number; to: number };
+  /** Continuous slow pan drift in px */
+  panDrift?: { x?: number; y?: number };
+  /** Absolute positioning overrides */
+  position?: {
+    top?: string;
+    bottom?: string;
+    left?: string;
+    right?: string;
+    width?: string;
+    height?: string;
+  };
+  /** z-index */
+  zIndex?: number;
+  /** Scene start frame for absolute timing */
   sceneStartFrame: number;
-  /** Scene duration in frames */
+  /** Scene duration frames for drift calculation */
   sceneDurationFrames: number;
-  /** Theme color grade filter string (e.g. contrast(1.2)...) */
-  themeFilter?: string;
-  children?: React.ReactNode;
+  /** Custom inline style overrides */
+  style?: React.CSSProperties;
+  children: React.ReactNode;
 }
 
 /**
- * Applies independent zoom/pan interpolations to background and foreground
- * layers to create a 2.5D depth parallax effect with theme color grading.
+ * Universal animated layer wrapper for Vox Reel elements.
+ *
+ * Supports Vox signature corner slide entrances, cubic-bezier ease-in-out curves,
+ * and rotation settling for maximum visual satisfaction.
  */
-export const ParallaxLayer: React.FC<ParallaxLayerProps> = ({
-  backgroundUrl,
-  backgroundMotion,
+export const AnimatedLayer: React.FC<AnimatedLayerProps> = ({
+  entrance = "fade_scale",
+  enterAtFrame = 0,
+  damping = 12,
+  stiffness = 100,
+  zoomDrift,
+  panDrift,
+  position,
+  zIndex = 10,
   sceneStartFrame,
-  themeFilter,
+  sceneDurationFrames,
+  style,
   children,
 }) => {
   const frame = useCurrentFrame();
-  const absoluteFrame = frame + sceneStartFrame;
+  const { fps } = useVideoConfig();
 
-  // Background scale
-  const bgScale = interpolate(
-    absoluteFrame,
-    backgroundMotion.scaleInterpolation.inputRange,
-    backgroundMotion.scaleInterpolation.outputRange,
+  const entranceLocalFrame = frame - enterAtFrame;
+
+  if (entranceLocalFrame < 0) {
+    return null;
+  }
+
+  const springVal = spring({
+    frame: entranceLocalFrame,
+    fps,
+    config: { damping, stiffness, mass: 0.8 },
+  });
+
+  const voxEase = interpolate(
+    entranceLocalFrame,
+    [0, 18],
+    [0, 1],
     {
       extrapolateLeft: "clamp",
       extrapolateRight: "clamp",
-      easing: resolveEasing(backgroundMotion.scaleInterpolation.easing),
+      easing: Easing.bezier(0.16, 1, 0.3, 1),
     }
   );
 
-  // Background pan X
-  const bgPanX = backgroundMotion.panX
-    ? interpolate(
-        absoluteFrame,
-        backgroundMotion.panX.inputRange,
-        backgroundMotion.panX.outputRange,
-        { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
-      )
-    : 0;
+  let entranceTranslateX = 0;
+  let entranceTranslateY = 0;
+  let entranceRotation = 0;
+  let entranceScale = 1;
+  let entranceOpacity = 1;
 
-  // Background pan Y
-  const bgPanY = backgroundMotion.panY
-    ? interpolate(
-        absoluteFrame,
-        backgroundMotion.panY.inputRange,
-        backgroundMotion.panY.outputRange,
-        { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
-      )
-    : 0;
+  switch (entrance) {
+    case "fade_scale":
+      entranceScale = interpolate(springVal, [0, 1], [0.7, 1]);
+      entranceOpacity = interpolate(springVal, [0, 1], [0, 1]);
+      break;
+    case "slide_up":
+      entranceTranslateY = interpolate(springVal, [0, 1], [120, 0]);
+      entranceOpacity = interpolate(springVal, [0, 1], [0, 1]);
+      break;
+    case "slide_down":
+      entranceTranslateY = interpolate(springVal, [0, 1], [-120, 0]);
+      entranceOpacity = interpolate(springVal, [0, 1], [0, 1]);
+      break;
+    case "slide_left":
+      entranceTranslateX = interpolate(springVal, [0, 1], [200, 0]);
+      entranceOpacity = interpolate(springVal, [0, 1], [0, 1]);
+      break;
+    case "slide_right":
+      entranceTranslateX = interpolate(springVal, [0, 1], [-200, 0]);
+      entranceOpacity = interpolate(springVal, [0, 1], [0, 1]);
+      break;
+    case "slide_corner_top_left":
+      entranceTranslateX = interpolate(voxEase, [0, 1], [-280, 0]);
+      entranceTranslateY = interpolate(voxEase, [0, 1], [-240, 0]);
+      entranceRotation = interpolate(voxEase, [0, 1], [-14, 0]);
+      entranceOpacity = interpolate(voxEase, [0, 1], [0, 1]);
+      break;
+    case "slide_corner_top_right":
+      entranceTranslateX = interpolate(voxEase, [0, 1], [280, 0]);
+      entranceTranslateY = interpolate(voxEase, [0, 1], [-240, 0]);
+      entranceRotation = interpolate(voxEase, [0, 1], [14, 0]);
+      entranceOpacity = interpolate(voxEase, [0, 1], [0, 1]);
+      break;
+    case "slide_corner_bottom_left":
+      entranceTranslateX = interpolate(voxEase, [0, 1], [-280, 0]);
+      entranceTranslateY = interpolate(voxEase, [0, 1], [240, 0]);
+      entranceRotation = interpolate(voxEase, [0, 1], [-10, 0]);
+      entranceOpacity = interpolate(voxEase, [0, 1], [0, 1]);
+      break;
+    case "slide_corner_bottom_right":
+      entranceTranslateX = interpolate(voxEase, [0, 1], [280, 0]);
+      entranceTranslateY = interpolate(voxEase, [0, 1], [240, 0]);
+      entranceRotation = interpolate(voxEase, [0, 1], [10, 0]);
+      entranceOpacity = interpolate(voxEase, [0, 1], [0, 1]);
+      break;
+    case "slide_smooth_ease":
+      entranceTranslateX = interpolate(voxEase, [0, 1], [-200, 0]);
+      entranceScale = interpolate(voxEase, [0, 1], [0.8, 1]);
+      entranceOpacity = interpolate(voxEase, [0, 1], [0, 1]);
+      break;
+    case "pop_in":
+      entranceScale = interpolate(springVal, [0, 1], [0, 1]);
+      entranceOpacity = interpolate(springVal, [0, 1], [0, 1]);
+      break;
+    case "none":
+      break;
+  }
+
+  let driftScale = 1;
+  let driftX = 0;
+  let driftY = 0;
+
+  if (zoomDrift) {
+    driftScale = interpolate(
+      frame - sceneStartFrame,
+      [0, sceneDurationFrames],
+      [zoomDrift.from, zoomDrift.to],
+      { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+    );
+  }
+
+  if (panDrift) {
+    driftX = interpolate(
+      frame - sceneStartFrame,
+      [0, sceneDurationFrames],
+      [0, panDrift.x ?? 0],
+      { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+    );
+    driftY = interpolate(
+      frame - sceneStartFrame,
+      [0, sceneDurationFrames],
+      [0, panDrift.y ?? 0],
+      { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+    );
+  }
+
+  const totalScale = entranceScale * driftScale;
+  const totalX = entranceTranslateX + driftX;
+  const totalY = entranceTranslateY + driftY;
+
+  const positionStyles: React.CSSProperties = position
+    ? {
+        position: "absolute",
+        top: position.top,
+        bottom: position.bottom,
+        left: position.left,
+        right: position.right,
+        width: position.width ?? "auto",
+        height: position.height ?? "auto",
+      }
+    : {
+        position: "absolute",
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+      };
 
   return (
-    <AbsoluteFill>
-      {/* Background Image with Theme Color Grade */}
-      <AbsoluteFill
-        style={{
-          transform: `scale(${bgScale}) translate(${bgPanX}px, ${bgPanY}px)`,
-          filter: themeFilter || undefined,
-          willChange: "transform, filter",
-        }}
-      >
-        <img
-          src={backgroundUrl}
-          alt=""
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-          }}
-          onError={(e) => {
-            (e.target as HTMLImageElement).style.display = "none";
-          }}
-        />
-        {/* Fallback gradient shown behind the image */}
-        <AbsoluteFill
-          style={{
-            background:
-              "linear-gradient(135deg, #0a1628 0%, #1a0a2e 30%, #0d1117 60%, #162447 100%)",
-            zIndex: -1,
-          }}
-        />
-      </AbsoluteFill>
-
-      {/* Children (foreground, props, captions) render on top */}
+    <div
+      style={{
+        ...positionStyles,
+        zIndex,
+        transform: `translate(${totalX}px, ${totalY}px) rotate(${entranceRotation}deg) scale(${totalScale})`,
+        opacity: entranceOpacity,
+        willChange: "transform, opacity",
+        pointerEvents: "none",
+        ...style,
+      }}
+    >
       {children}
-    </AbsoluteFill>
+    </div>
   );
 };
 

@@ -1,114 +1,445 @@
-export interface VideoTheme {
+export interface ColorPalette {
   id: string;
   name: string;
   description: string;
-  filter: string;
-  fontFamily: string;
+  canvasBg: string;
   captionTextColor: string;
   captionStrokeColor: string;
   captionHighlightColor: string;
-  captionHighlightBg?: string; // Highlighter background color (Vox Style)
+  captionHighlightBg: string;
   captionShadowColor: string;
-  grainOpacity: number;
-  scanlines: boolean;
-  vignette: number;
   accentBadge: string;
-  isVoxCutout?: boolean; // Adds paper-stroke border to subjects
+  badgeBg: string;
+  badgeText: string;
+  badgeBorder: string;
+  orbitRingColor: string;
+  previewColors: string[];
 }
 
-export const VIDEO_THEMES: Record<string, VideoTheme> = {
-  vox_explainer: {
-    id: "vox_explainer",
-    name: "Vox Explainer",
-    description: "Vox signature yellow marker highlighter & paper collage cutouts",
-    filter: "contrast(1.15) saturate(1.2) brightness(1.03)",
-    fontFamily: "Bebas Neue",
+export interface VisualStyle {
+  id: string;
+  name: string;
+  description: string;
+  defaultPaletteId: string;
+  fontFamily: string;
+  frameStyle: "polaroid_2d" | "cyber_hud" | "cinematic_gold" | "swiss_hairline" | "torn_newsprint" | "terminal_window" | "neon_glow";
+  filter: string;
+  grainOpacity: number;
+  scanlines: boolean;
+  scanlineOpacity?: number;
+  vignette: number;
+  isVoxCutout?: boolean;
+  bgStyle: "floating_card" | "full_bleed";
+  showOrbitRing?: boolean;
+  paperGrid?: boolean;
+  paperGridOpacity?: number;
+  paperGridSize?: number;
+  paperTexture?: boolean;
+  paperTextureType?: "studio_paper" | "vintage_fold" | "grunge_canvas" | "halftone_dots" | "paper_grid";
+  paperTextureOpacity?: number;
+  dustAndScratches?: boolean;
+  dustOpacity?: number;
+  halftoneDots?: boolean;
+  halftoneOpacity?: number;
+}
+
+export interface VideoTheme extends ColorPalette, Omit<VisualStyle, "id" | "name" | "description"> {
+  themeId: string;
+  styleId: string;
+  paletteId: string;
+  name: string;
+  description: string;
+}
+
+// ─── 1. SEPARATE COLOR PALETTES ───
+export const COLOR_PALETTES: Record<string, ColorPalette> = {
+  vox_yellow: {
+    id: "vox_yellow",
+    name: "Vox Studio Yellow",
+    description: "Signature Vox neutral canvas with yellow marker highlights and lime neon accents",
+    canvasBg: "radial-gradient(circle at 50% 40%, #FAFAFA 0%, #E6E6E6 60%, #D0D0D0 100%)",
+    captionTextColor: "#1A1A1A",
+    captionStrokeColor: "#FFFFFF",
+    captionHighlightColor: "#000000",
+    captionHighlightBg: "#FFE600",
+    captionShadowColor: "rgba(0,0,0,0.2)",
+    accentBadge: "bg-yellow-400/20 text-yellow-300 border-yellow-400/40",
+    badgeBg: "#FFE600",
+    badgeText: "#111111",
+    badgeBorder: "#111111",
+    orbitRingColor: "#B5F500",
+    previewColors: ["#F4F4F6", "#FFE600", "#B5F500", "#1A1A1A"],
+  },
+  cyber_neon: {
+    id: "cyber_neon",
+    name: "Cyber Neon Cyan",
+    description: "High-voltage electric magenta, cyan neon glow, and dark synthwave backdrop",
+    canvasBg: "radial-gradient(circle at 50% 50%, #10061E 0%, #05020A 100%)",
+    captionTextColor: "#00FFFF",
+    captionStrokeColor: "#000000",
+    captionHighlightColor: "#FFFFFF",
+    captionHighlightBg: "#FF007F",
+    captionShadowColor: "rgba(255,0,127,0.7)",
+    accentBadge: "bg-fuchsia-500/20 text-fuchsia-400 border-fuchsia-500/40",
+    badgeBg: "#FF007F",
+    badgeText: "#FFFFFF",
+    badgeBorder: "#00FFFF",
+    orbitRingColor: "#00FFFF",
+    previewColors: ["#05020A", "#FF007F", "#00FFFF", "#8B5CF6"],
+  },
+  teal_orange: {
+    id: "teal_orange",
+    name: "Blockbuster Teal & Gold",
+    description: "Rich documentary 35mm grade with gold captions and deep teal shadows",
+    canvasBg: "radial-gradient(circle at 50% 50%, #1A262C 0%, #0A1014 100%)",
     captionTextColor: "#FFFFFF",
     captionStrokeColor: "#000000",
     captionHighlightColor: "#000000",
-    captionHighlightBg: "#FFE600",
-    captionShadowColor: "rgba(0,0,0,0.8)",
-    grainOpacity: 0.08,
-    scanlines: false,
-    vignette: 0.25,
-    accentBadge: "bg-yellow-400/20 text-yellow-300 border-yellow-400/40",
-    isVoxCutout: true,
-  },
-  cinematic_teal_orange: {
-    id: "cinematic_teal_orange",
-    name: "Teal & Orange",
-    description: "MoSidd signature blockbuster documentary grade",
-    filter: "contrast(1.12) saturate(1.2) sepia(0.08) hue-rotate(-8deg)",
-    fontFamily: "Bebas Neue",
-    captionTextColor: "#FFFFFF",
-    captionStrokeColor: "#000000",
-    captionHighlightColor: "#FFD700",
-    captionShadowColor: "rgba(0,0,0,0.8)",
-    grainOpacity: 0.12,
-    scanlines: true,
-    vignette: 0.4,
+    captionHighlightBg: "#F59E0B",
+    captionShadowColor: "rgba(0,0,0,0.85)",
     accentBadge: "bg-amber-500/20 text-amber-400 border-amber-500/40",
+    badgeBg: "#F59E0B",
+    badgeText: "#000000",
+    badgeBorder: "#06B6D4",
+    orbitRingColor: "#06B6D4",
+    previewColors: ["#0A1014", "#F59E0B", "#06B6D4", "#F3F4F6"],
   },
-  cyberpunk_neon: {
-    id: "cyberpunk_neon",
-    name: "Cyberpunk Neon",
-    description: "Electric magenta, cyan and high-tech glow",
-    filter: "contrast(1.25) saturate(1.5) hue-rotate(180deg) brightness(1.05)",
-    fontFamily: "Bebas Neue",
-    captionTextColor: "#00FFFF",
-    captionStrokeColor: "#000000",
-    captionHighlightColor: "#FF007F",
-    captionShadowColor: "rgba(255,0,127,0.6)",
-    grainOpacity: 0.15,
-    scanlines: true,
-    vignette: 0.5,
-    accentBadge: "bg-fuchsia-500/20 text-fuchsia-400 border-fuchsia-500/40",
+  vermillion_red: {
+    id: "vermillion_red",
+    name: "Swiss Vermillion Red",
+    description: "Crisp off-white studio paper with bold charcoal typography and vermillion red accents",
+    canvasBg: "#F8FAFC",
+    captionTextColor: "#0F172A",
+    captionStrokeColor: "#FFFFFF",
+    captionHighlightColor: "#FFFFFF",
+    captionHighlightBg: "#DC2626",
+    captionShadowColor: "rgba(15,23,42,0.15)",
+    accentBadge: "bg-red-500/20 text-red-400 border-red-500/40",
+    badgeBg: "#DC2626",
+    badgeText: "#FFFFFF",
+    badgeBorder: "#0F172A",
+    orbitRingColor: "#DC2626",
+    previewColors: ["#F8FAFC", "#DC2626", "#0F172A", "#64748B"],
   },
-  noir_dramatic: {
-    id: "noir_dramatic",
-    name: "High Contrast Noir",
-    description: "Gritty monochromatic black & white crime thriller style",
-    filter: "contrast(1.4) grayscale(1) brightness(0.95)",
-    fontFamily: "Bebas Neue",
-    captionTextColor: "#FFFFFF",
-    captionStrokeColor: "#000000",
-    captionHighlightColor: "#FF3333",
-    captionShadowColor: "rgba(255,0,0,0.7)",
-    grainOpacity: 0.2,
-    scanlines: true,
-    vignette: 0.6,
-    accentBadge: "bg-neutral-500/20 text-neutral-300 border-neutral-500/40",
-  },
-  vintage_70s: {
-    id: "vintage_70s",
-    name: "Vintage 70s Warm",
-    description: "Nostalgic golden film stock with warm sepia tones",
-    filter: "contrast(1.05) saturate(1.1) sepia(0.35) brightness(1.02)",
-    fontFamily: "Bebas Neue",
+  sepia_gold: {
+    id: "sepia_gold",
+    name: "Vintage Sepia Gold",
+    description: "Warm golden vintage film stock, sepia ambers, and deep coffee brown borders",
+    canvasBg: "#F5F0E1",
     captionTextColor: "#FFFDD0",
     captionStrokeColor: "#3B2219",
-    captionHighlightColor: "#FFA500",
+    captionHighlightColor: "#000000",
+    captionHighlightBg: "#D97706",
     captionShadowColor: "rgba(59,34,25,0.7)",
-    grainOpacity: 0.18,
-    scanlines: false,
-    vignette: 0.35,
     accentBadge: "bg-orange-500/20 text-orange-400 border-orange-500/40",
+    badgeBg: "#D97706",
+    badgeText: "#FFFDD0",
+    badgeBorder: "#451A03",
+    orbitRingColor: "#D97706",
+    previewColors: ["#F5F0E1", "#D97706", "#78350F", "#FFFDD0"],
   },
-  dark_matrix: {
-    id: "dark_matrix",
-    name: "Dark Matrix Slate",
-    description: "Moody emerald dark tones with high shadow depth",
-    filter: "contrast(1.2) saturate(0.9) hue-rotate(60deg) brightness(0.9)",
-    fontFamily: "Bebas Neue",
+  emerald_matrix: {
+    id: "emerald_matrix",
+    name: "Matrix Emerald Green",
+    description: "Terminal code slate with mint green glow highlights and deep emerald shadows",
+    canvasBg: "radial-gradient(circle at 50% 50%, #064E3B 0%, #022C22 100%)",
     captionTextColor: "#FFFFFF",
     captionStrokeColor: "#003300",
-    captionHighlightColor: "#00FF66",
-    captionShadowColor: "rgba(0,255,102,0.5)",
-    grainOpacity: 0.1,
-    scanlines: true,
-    vignette: 0.45,
+    captionHighlightColor: "#000000",
+    captionHighlightBg: "#10B981",
+    captionShadowColor: "rgba(0,255,102,0.6)",
     accentBadge: "bg-emerald-500/20 text-emerald-400 border-emerald-500/40",
+    badgeBg: "#10B981",
+    badgeText: "#022C22",
+    badgeBorder: "#064E3B",
+    orbitRingColor: "#34D399",
+    previewColors: ["#022C22", "#10B981", "#34D399", "#ECFDF5"],
+  },
+  synthwave_pink: {
+    id: "synthwave_pink",
+    name: "Outrun Synthwave Pink",
+    description: "Deep violet to warm amber sunset gradient with glowing hot pink accents",
+    canvasBg: "linear-gradient(180deg, #1E1B4B 0%, #4C1D95 50%, #831843 100%)",
+    captionTextColor: "#FFFFFF",
+    captionStrokeColor: "#312E81",
+    captionHighlightColor: "#FFFFFF",
+    captionHighlightBg: "#EC4899",
+    captionShadowColor: "rgba(236,72,153,0.8)",
+    accentBadge: "bg-pink-500/20 text-pink-400 border-pink-500/40",
+    badgeBg: "#EC4899",
+    badgeText: "#FFFFFF",
+    badgeBorder: "#F59E0B",
+    orbitRingColor: "#F472B6",
+    previewColors: ["#1E1B4B", "#EC4899", "#F59E0B", "#FFFFFF"],
+  },
+  monochrome_noir: {
+    id: "monochrome_noir",
+    name: "Stark Monochrome Noir",
+    description: "Gritty 16mm high-contrast black & white thriller style with stark crimson accents",
+    canvasBg: "#0A0A0A",
+    captionTextColor: "#FFFFFF",
+    captionStrokeColor: "#000000",
+    captionHighlightColor: "#FFFFFF",
+    captionHighlightBg: "#FF3333",
+    captionShadowColor: "rgba(255,0,0,0.8)",
+    accentBadge: "bg-neutral-500/20 text-neutral-300 border-neutral-500/40",
+    badgeBg: "#FF3333",
+    badgeText: "#FFFFFF",
+    badgeBorder: "#FFFFFF",
+    orbitRingColor: "#FF3333",
+    previewColors: ["#0A0A0A", "#FF3333", "#FFFFFF", "#525252"],
   },
 };
 
-export const DEFAULT_THEME_ID = "vox_explainer";
+// ─── 2. SEPARATE VISUAL MOTION GRAPHIC STYLES ───
+export const VISUAL_STYLES: Record<string, VisualStyle> = {
+  vox_documentary: {
+    id: "vox_documentary",
+    name: "Vox 2.5D Paper Explainer",
+    description: "Signature Vox 2.5D polaroid card cutouts, blueprint graph paper grid, yellow marker sweeps & node orbit rings",
+    defaultPaletteId: "vox_yellow",
+    fontFamily: "Bebas Neue",
+    frameStyle: "polaroid_2d",
+    filter: "contrast(1.15) saturate(1.1) brightness(1.02)",
+    grainOpacity: 0.09,
+    scanlines: false,
+    vignette: 0.18,
+    isVoxCutout: true,
+    bgStyle: "floating_card",
+    showOrbitRing: true,
+    paperGrid: true,
+    paperGridOpacity: 0.14,
+    paperGridSize: 32,
+    paperTexture: true,
+    paperTextureType: "studio_paper",
+    paperTextureOpacity: 0.12,
+    halftoneDots: true,
+    halftoneOpacity: 0.05,
+  },
+  cyberpunk_hacker: {
+    id: "cyberpunk_hacker",
+    name: "Cyberpunk Glitch HUD",
+    description: "High-tech matrix scanlines, CRT screen flicker, corner bracket HUD frames & electric neon glows",
+    defaultPaletteId: "cyber_neon",
+    fontFamily: "Bebas Neue",
+    frameStyle: "cyber_hud",
+    filter: "contrast(1.25) saturate(1.5) hue-rotate(180deg) brightness(1.05)",
+    grainOpacity: 0.14,
+    scanlines: true,
+    scanlineOpacity: 0.22,
+    vignette: 0.45,
+    bgStyle: "full_bleed",
+    showOrbitRing: true,
+    paperGrid: true,
+    paperGridOpacity: 0.2,
+    paperGridSize: 24,
+    halftoneDots: true,
+    halftoneOpacity: 0.08,
+  },
+  cinematic_35mm: {
+    id: "cinematic_35mm",
+    name: "MoSidd 35mm Cinema",
+    description: "Organic 35mm film ISO noise, jumping dust flecks & film scratches, deep vignette & warm film grade",
+    defaultPaletteId: "teal_orange",
+    fontFamily: "Bebas Neue",
+    frameStyle: "cinematic_gold",
+    filter: "contrast(1.12) saturate(1.2) sepia(0.08) hue-rotate(-8deg)",
+    grainOpacity: 0.16,
+    scanlines: true,
+    scanlineOpacity: 0.12,
+    vignette: 0.4,
+    bgStyle: "full_bleed",
+    dustAndScratches: true,
+    dustOpacity: 0.15,
+    paperTexture: true,
+    paperTextureType: "grunge_canvas",
+    paperTextureOpacity: 0.08,
+  },
+  swiss_magazine: {
+    id: "swiss_magazine",
+    name: "Swiss Editorial Magazine",
+    description: "Clean minimalist typography grid, razor-sharp hairline borders, vermillion red highlight blocks & high contrast",
+    defaultPaletteId: "vermillion_red",
+    fontFamily: "Bebas Neue",
+    frameStyle: "swiss_hairline",
+    filter: "contrast(1.1) saturate(1.0) brightness(1.0)",
+    grainOpacity: 0.04,
+    scanlines: false,
+    vignette: 0.12,
+    bgStyle: "floating_card",
+    paperGrid: true,
+    paperGridOpacity: 0.08,
+    paperGridSize: 40,
+  },
+  vintage_newspaper: {
+    id: "vintage_newspaper",
+    name: "1970s Crime Archive",
+    description: "Weathered newspaper fold creases, halftone printing stipple dots, typewriter subtext & aged rubber stamps",
+    defaultPaletteId: "sepia_gold",
+    fontFamily: "Bebas Neue",
+    frameStyle: "torn_newsprint",
+    filter: "contrast(1.05) saturate(1.1) sepia(0.35) brightness(1.02)",
+    grainOpacity: 0.18,
+    scanlines: false,
+    vignette: 0.35,
+    bgStyle: "full_bleed",
+    paperTexture: true,
+    paperTextureType: "vintage_fold",
+    paperTextureOpacity: 0.22,
+    dustAndScratches: true,
+    dustOpacity: 0.14,
+  },
+  matrix_terminal: {
+    id: "matrix_terminal",
+    name: "Dark Tech Terminal",
+    description: "Hacker code prompt `> _`, emerald green data streams, dark slate terminal windows & monospace brackets",
+    defaultPaletteId: "emerald_matrix",
+    fontFamily: "Bebas Neue",
+    frameStyle: "terminal_window",
+    filter: "contrast(1.2) saturate(0.9) hue-rotate(60deg) brightness(0.9)",
+    grainOpacity: 0.12,
+    scanlines: true,
+    scanlineOpacity: 0.18,
+    vignette: 0.45,
+    bgStyle: "full_bleed",
+    showOrbitRing: true,
+    paperGrid: true,
+    paperGridOpacity: 0.15,
+    paperGridSize: 36,
+  },
+  synthwave_80s: {
+    id: "synthwave_80s",
+    name: "80s Sunset Synthwave",
+    description: "Outrun sunset horizon grid, glowing neon gradient backdrops, hot pink stickers & futuristic aesthetic",
+    defaultPaletteId: "synthwave_pink",
+    fontFamily: "Bebas Neue",
+    frameStyle: "neon_glow",
+    filter: "contrast(1.2) saturate(1.4) brightness(1.05)",
+    grainOpacity: 0.12,
+    scanlines: true,
+    scanlineOpacity: 0.15,
+    vignette: 0.32,
+    bgStyle: "full_bleed",
+    showOrbitRing: true,
+    paperGrid: true,
+    paperGridOpacity: 0.1,
+    paperGridSize: 30,
+  },
+};
+
+export const DEFAULT_STYLE_ID = "vox_documentary";
+export const DEFAULT_PALETTE_ID = "vox_yellow";
+
+// ─── 3. RESOLVER: COMBINES VISUAL STYLE + COLOR PALETTE ───
+export function resolveVideoTheme(styleId?: string, paletteId?: string): VideoTheme {
+  const activeStyle = VISUAL_STYLES[styleId || ""] || VISUAL_STYLES[DEFAULT_STYLE_ID];
+  const targetPaletteId = paletteId || activeStyle.defaultPaletteId || DEFAULT_PALETTE_ID;
+  const activePalette = COLOR_PALETTES[targetPaletteId] || COLOR_PALETTES[DEFAULT_PALETTE_ID];
+
+  return {
+    id: `${activeStyle.id}_${activePalette.id}`,
+    themeId: `${activeStyle.id}_${activePalette.id}`,
+    styleId: activeStyle.id,
+    paletteId: activePalette.id,
+    defaultPaletteId: activeStyle.defaultPaletteId,
+    name: `${activeStyle.name} (${activePalette.name})`,
+    description: `${activeStyle.description}. Styled with ${activePalette.name}.`,
+    
+    // Color Palette Tokens
+    canvasBg: activePalette.canvasBg,
+    captionTextColor: activePalette.captionTextColor,
+    captionStrokeColor: activePalette.captionStrokeColor,
+    captionHighlightColor: activePalette.captionHighlightColor,
+    captionHighlightBg: activePalette.captionHighlightBg,
+    captionShadowColor: activePalette.captionShadowColor,
+    accentBadge: activePalette.accentBadge,
+    badgeBg: activePalette.badgeBg,
+    badgeText: activePalette.badgeText,
+    badgeBorder: activePalette.badgeBorder,
+    orbitRingColor: activePalette.orbitRingColor,
+    previewColors: activePalette.previewColors,
+
+    // Visual Style Tokens
+    fontFamily: activeStyle.fontFamily,
+    frameStyle: activeStyle.frameStyle,
+    filter: activeStyle.filter,
+    grainOpacity: activeStyle.grainOpacity,
+    scanlines: activeStyle.scanlines,
+    scanlineOpacity: activeStyle.scanlineOpacity,
+    vignette: activeStyle.vignette,
+    isVoxCutout: activeStyle.isVoxCutout,
+    bgStyle: activeStyle.bgStyle,
+    showOrbitRing: activeStyle.showOrbitRing,
+    paperGrid: activeStyle.paperGrid,
+    paperGridOpacity: activeStyle.paperGridOpacity,
+    paperGridSize: activeStyle.paperGridSize,
+    paperTexture: activeStyle.paperTexture,
+    paperTextureType: activeStyle.paperTextureType,
+    paperTextureOpacity: activeStyle.paperTextureOpacity,
+    dustAndScratches: activeStyle.dustAndScratches,
+    dustOpacity: activeStyle.dustOpacity,
+    halftoneDots: activeStyle.halftoneDots,
+    halftoneOpacity: activeStyle.halftoneOpacity,
+  };
+}
+
+/**
+ * Backward-compatible single theme ID resolver.
+ * Parses legacy theme IDs (e.g., "vox_explainer", "cyberpunk_neon") or combined strings ("vox_documentary_vox_yellow").
+ */
+export function getVideoTheme(themeId?: string): VideoTheme {
+  if (!themeId) return resolveVideoTheme(DEFAULT_STYLE_ID, DEFAULT_PALETTE_ID);
+
+  // 1. Legacy Theme ID map
+  const legacyMap: Record<string, { styleId: string; paletteId: string }> = {
+    vox_explainer: { styleId: "vox_documentary", paletteId: "vox_yellow" },
+    cyberpunk_neon: { styleId: "cyberpunk_hacker", paletteId: "cyber_neon" },
+    cinematic_teal_orange: { styleId: "cinematic_35mm", paletteId: "teal_orange" },
+    minimal_editorial: { styleId: "swiss_magazine", paletteId: "vermillion_red" },
+    vintage_70s: { styleId: "vintage_newspaper", paletteId: "sepia_gold" },
+    dark_matrix: { styleId: "matrix_terminal", paletteId: "emerald_matrix" },
+    sunset_synthwave: { styleId: "synthwave_80s", paletteId: "synthwave_pink" },
+  };
+
+  if (legacyMap[themeId]) {
+    return resolveVideoTheme(legacyMap[themeId].styleId, legacyMap[themeId].paletteId);
+  }
+
+  // 2. Direct Visual Style ID match
+  if (VISUAL_STYLES[themeId]) {
+    return resolveVideoTheme(themeId);
+  }
+
+  // 3. Direct Color Palette ID match
+  if (COLOR_PALETTES[themeId]) {
+    return resolveVideoTheme(DEFAULT_STYLE_ID, themeId);
+  }
+
+  // 4. Combined styleId_paletteId parsing
+  for (const styleKey of Object.keys(VISUAL_STYLES)) {
+    if (themeId.startsWith(styleKey + "_")) {
+      const candidatePaletteId = themeId.slice(styleKey.length + 1);
+      if (COLOR_PALETTES[candidatePaletteId]) {
+        return resolveVideoTheme(styleKey, candidatePaletteId);
+      }
+    }
+  }
+
+  return resolveVideoTheme(DEFAULT_STYLE_ID, DEFAULT_PALETTE_ID);
+}
+
+export const ALL_VIDEO_STYLES = Object.values(VISUAL_STYLES);
+export const ALL_COLOR_PALETTES = Object.values(COLOR_PALETTES);
+
+const themes = {
+  resolveVideoTheme,
+  getVideoTheme,
+  COLOR_PALETTES,
+  VISUAL_STYLES,
+  ALL_VIDEO_STYLES,
+  ALL_COLOR_PALETTES,
+  DEFAULT_STYLE_ID,
+  DEFAULT_PALETTE_ID,
+};
+
+export default themes;

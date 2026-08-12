@@ -132,7 +132,7 @@ export const PropAnimator: React.FC<PropAnimatorProps> = ({
       }}
     >
       <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <ImageKitAsset src={propUrl} objectFit="contain" />
+        <ImageKitAsset src={propUrl} objectFit="contain" maskType="paper_card" />
       </div>
     </div>
   );
@@ -204,7 +204,10 @@ function getOptimizedPropContainerStyle(
     config.motion === "staggered_fly_in"
   ) {
     return {
-      inset: 0,
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
       width: "100%",
       height: "100%",
     };
@@ -217,7 +220,14 @@ function getOptimizedPropContainerStyle(
     return { top: "25%", right: "5%", width: "40%", height: "30%" };
   }
 
-  return { inset: 0, width: "100%", height: "100%" };
+  return {
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+  };
 }
 
 /** Helper to evaluate number or InterpolationRange */
