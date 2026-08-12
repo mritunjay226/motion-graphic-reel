@@ -181,3 +181,103 @@
 [2026-08-12T06:29:43.330Z] INFO  [PostCommitHook] [trace=5a1bb5381db8e9d0e0e42e0ea7f6cea6] Rebase in progress — skipping (post-rewrite will handle)
 [2026-08-12T06:29:44.483Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=4, summaries=4, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
 [2026-08-12T06:30:04.352Z] INFO  [PrePushHook] [trace=025102c67f03fbd761c4b64d55b8a503] pre-push hook: remote=origin budget=3000ms
+[2026-08-12T06:30:32.958Z] INFO  [PrepareMsgHook] === Prepare-commit-msg hook started (source: message) ===
+[2026-08-12T06:30:33.261Z] INFO  [PrepareMsgHook] === Prepare-commit-msg hook finished ===
+[2026-08-12T06:30:34.340Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-12T06:30:34.341Z] INFO  [PlanService] detectPlans found 0 plans (0 in registry)
+[2026-08-12T06:30:34.341Z] INFO  [NoteService] detectNotes found 0 notes (0 in registry)
+[2026-08-12T06:30:34.341Z] INFO  [references] detectReferences(*) found 0 (0 in registry)
+[2026-08-12T06:30:34.341Z] INFO  [SkillProjection] projectActiveSkills: 0 active (0 in registry)
+[2026-08-12T06:30:38.979Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=4, summaries=4, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-12T06:30:40.125Z] INFO  [PostCommitHook] [trace=95d6a759f698aed7ac78cd0e29e428f2] Detected operation: rebase
+[2026-08-12T06:30:40.125Z] INFO  [PostCommitHook] [trace=95d6a759f698aed7ac78cd0e29e428f2] Rebase in progress — skipping (post-rewrite will handle)
+[2026-08-12T06:30:40.515Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-12T06:30:40.522Z] INFO  [PlanService] detectPlans found 0 plans (0 in registry)
+[2026-08-12T06:30:40.522Z] INFO  [NoteService] detectNotes found 0 notes (0 in registry)
+[2026-08-12T06:30:40.522Z] INFO  [references] detectReferences(*) found 0 (0 in registry)
+[2026-08-12T06:30:40.522Z] INFO  [SkillProjection] projectActiveSkills: 0 active (0 in registry)
+[2026-08-12T06:30:46.089Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=4, summaries=4, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-12T06:30:50.063Z] INFO  [PostRewriteHook] [trace=1b91e3e07df66b0edf780184d636994b] === Post-rewrite hook started (command: rebase) ===
+[2026-08-12T06:30:50.740Z] INFO  [SessionTracker] [trace=1b91e3e07df66b0edf780184d636994b] Enqueued queue operation: type=rebase-pick tag=83276a14 file=1786516250737-00000001-da296f48-83276a14.json
+[2026-08-12T06:30:50.740Z] INFO  [PostRewriteHook] [trace=1b91e3e07df66b0edf780184d636994b] rebase-pick enqueued: [83e168da] → 83276a14
+[2026-08-12T06:30:50.741Z] INFO  [PostRewriteHook] [trace=1b91e3e07df66b0edf780184d636994b] Rebase: enqueued 1 group(s) from 1 mapping(s)
+[2026-08-12T06:30:50.742Z] INFO  [QueueWorker] [trace=1b91e3e07df66b0edf780184d636994b] Launching background worker
+[2026-08-12T06:30:50.759Z] INFO  [QueueWorker] [trace=1b91e3e07df66b0edf780184d636994b] Background worker spawned (PID: 19348)
+[2026-08-12T06:30:50.759Z] INFO  [PostRewriteHook] [trace=1b91e3e07df66b0edf780184d636994b] === Post-rewrite hook finished ===
+[2026-08-12T06:31:04.717Z] INFO  [PrePushHook] [trace=7d2140ccb82766385a8273b61089ef3b] pre-push hook: remote=origin budget=3000ms
+[2026-08-12T06:31:04.893Z] INFO  [PushPendingStore] [trace=7d2140ccb82766385a8273b61089ef3b] Enqueued 2 new push-pending entries (branch=main)
+[2026-08-12T06:31:04.932Z] INFO  [PrePushHook] [trace=7d2140ccb82766385a8273b61089ef3b] pre-push: recorded 2 commit(s) across 1 pushed ref(s)
+[2026-08-12T06:31:05.175Z] INFO  [PrePushHook] [trace=7d2140ccb82766385a8273b61089ef3b] pre-push: worker spawned (pushId=7d2140ccb82766385a8273b61089ef3b) — watching for 2531ms
+[2026-08-12T06:31:06.157Z] INFO  [PushExecutor] [trace=7d2140ccb82766385a8273b61089ef3b] processPushPending(pre-push): 2 pending entr(ies) (filtered to 2 hash(es))
+[2026-08-12T06:31:06.736Z] INFO  [PushExecutor] [trace=7d2140ccb82766385a8273b61089ef3b] processPushPending(pre-push): claimed 2/2 candidate(s)
+[2026-08-12T06:31:07.108Z] INFO  [StorageFactory] [trace=7d2140ccb82766385a8273b61089ef3b] StorageFactory.create: route=cutover, projectPath=C:\Users\mk\Documents\motion-graphic-reels
+[2026-08-12T06:31:07.714Z] INFO  [PrePushHook] [trace=7d2140ccb82766385a8273b61089ef3b] pre-push: watch timed out — 1 of 2 settled
+[2026-08-12T06:31:08.006Z] INFO  [PushExecutor] [trace=7d2140ccb82766385a8273b61089ef3b] processPushPending(pre-push): triage — withMemory=0 noMemory=2 mergedChildren=0
+[2026-08-12T06:31:08.006Z] INFO  [PrePushWorker] [trace=7d2140ccb82766385a8273b61089ef3b] PrePushWorker(pre-push): drain done — pushed=0 failed=0 noMemory=2 (no candidates with memory)
+[2026-08-12T06:31:08.054Z] INFO  [PushExecutor] [trace=7d2140ccb82766385a8273b61089ef3b] processPushPending(pre-push): 2 pending entr(ies)
+[2026-08-12T06:48:56.829Z] INFO  [PrepareMsgHook] === Prepare-commit-msg hook started (source: message) ===
+[2026-08-12T06:48:57.024Z] INFO  [PrepareMsgHook] === Prepare-commit-msg hook finished ===
+[2026-08-12T06:49:01.750Z] INFO  [PostCommitHook] [trace=b7e64f7174a9baa6588e6badd61b3fdf] Detected operation: commit
+[2026-08-12T06:49:01.920Z] INFO  [PostCommitHook] [trace=b7e64f7174a9baa6588e6badd61b3fdf] Enqueued: type=commit hash=43bcf796
+[2026-08-12T06:49:01.920Z] INFO  [QueueWorker] [trace=b7e64f7174a9baa6588e6badd61b3fdf] Launching background worker
+[2026-08-12T06:49:01.937Z] INFO  [QueueWorker] [trace=b7e64f7174a9baa6588e6badd61b3fdf] Background worker spawned (PID: 16240)
+[2026-08-12T06:49:03.155Z] INFO  [QueueWorker] [trace=b7e64f7174a9baa6588e6badd61b3fdf] === Queue worker started === node=22.23.2 kind=vscode-plugin source=antigravity-ide pkgVer=0.99.11 cliVer=0.99.11 dist=c:\Users\mk\.antigravity-ide\extensions\jolli.jollimemory-vscode-0.99.11-universal\dist
+[2026-08-12T06:49:03.300Z] INFO  [StorageFactory] [trace=b7e64f7174a9baa6588e6badd61b3fdf] StorageFactory.create: route=cutover, projectPath=C:\Users\mk\Documents\motion-graphic-reels
+[2026-08-12T06:49:04.475Z] INFO  [QueueWorker] [trace=1b91e3e07df66b0edf780184d636994b] Processing queue entry: type=rebase-pick hash=83276a14
+[2026-08-12T06:49:04.844Z] INFO  [GitOps] [trace=1b91e3e07df66b0edf780184d636994b] Commit 83276a14: readme
+[2026-08-12T06:49:05.174Z] INFO  [SummaryStore] [trace=1b91e3e07df66b0edf780184d636994b] Migrating summary 1:1: 83e168da → 83276a14
+[2026-08-12T06:49:05.968Z] INFO  [MetadataManager] [trace=1b91e3e07df66b0edf780184d636994b] Manifest updated: main/readme-83276a14.md (commit)
+[2026-08-12T06:49:05.968Z] INFO  [FolderStorage] [trace=1b91e3e07df66b0edf780184d636994b] Markdown generated: main/readme-83276a14.md
+[2026-08-12T06:49:05.991Z] INFO  [FolderStorage] [trace=1b91e3e07df66b0edf780184d636994b] Cleaned up superseded MD: main/readme-83e168da.md
+[2026-08-12T06:49:05.997Z] INFO  [FolderStorage] [trace=1b91e3e07df66b0edf780184d636994b] Wrote 3 files, deleted 0 (Migrate summary 83e168da → 83276a14)
+[2026-08-12T06:49:05.998Z] INFO  [SummaryStore] [trace=1b91e3e07df66b0edf780184d636994b] Summary migrated: 83e168da → 83276a14
+[2026-08-12T06:49:06.002Z] INFO  [QueueWorker] [trace=1b91e3e07df66b0edf780184d636994b] Rebase-pick: migrated 83e168da → 83276a14
+[2026-08-12T06:49:06.094Z] INFO  [QueueWorker] [trace=b7e64f7174a9baa6588e6badd61b3fdf] Processing queue entry: type=commit hash=43bcf796
+[2026-08-12T06:49:06.355Z] INFO  [GitOps] [trace=b7e64f7174a9baa6588e6badd61b3fdf] Commit 43bcf796: fix: wrap useSearchParams in Suspense boundary for page /cre
+[2026-08-12T06:49:06.355Z] INFO  [QueueWorker] [trace=b7e64f7174a9baa6588e6badd61b3fdf] Commit: 43bcf796 - fix: wrap useSearchParams in Suspense boundary for page /create-video (249ms)
+[2026-08-12T06:49:08.718Z] INFO  [QueueWorker] [trace=b7e64f7174a9baa6588e6badd61b3fdf] Discovered 4 Antigravity session(s)
+[2026-08-12T06:49:08.790Z] INFO  [QueueWorker] [trace=b7e64f7174a9baa6588e6badd61b3fdf] Transcript source: session=319682c6-43b7-4766-ab71-f0410ac1d2dc, lines=0→228, entries=6
+[2026-08-12T06:49:09.351Z] INFO  [QueueWorker] [trace=b7e64f7174a9baa6588e6badd61b3fdf] Git diff: 1 files changed, +15 -2 (350ms)
+[2026-08-12T06:49:09.910Z] INFO  [QueueWorker] [trace=b7e64f7174a9baa6588e6badd61b3fdf] Prompt blocks: plans=0 notes=0 references=0 (+0 track-only archived, not prompted) (AI soft-excluded 0)
+[2026-08-12T06:49:09.912Z] INFO  [Summarizer] [trace=b7e64f7174a9baa6588e6badd61b3fdf] Generating summary for commit 43bcf796
+[2026-08-12T06:49:09.912Z] INFO  [Summarizer] [trace=b7e64f7174a9baa6588e6badd61b3fdf] Context: transcript=6, files=1, lines=15+2
+[2026-08-12T06:49:09.913Z] WARN  [QueueWorker] [trace=b7e64f7174a9baa6588e6badd61b3fdf] First API attempt failed: No LLM provider available. Set an Anthropic API key (ANTHROPIC_API_KEY) or configure a Jolli Space API key (jolliApiKey).. Retrying in 2000ms...
+[2026-08-12T06:49:10.423Z] INFO  [PrePushHook] [trace=b225ec56da2eb9d396ff580979871123] pre-push hook: remote=origin budget=3000ms
+[2026-08-12T06:49:10.809Z] INFO  [PushPendingStore] [trace=b225ec56da2eb9d396ff580979871123] Enqueued 1 new push-pending entries (branch=main)
+[2026-08-12T06:49:10.834Z] INFO  [PrePushHook] [trace=b225ec56da2eb9d396ff580979871123] pre-push: recorded 1 commit(s) across 1 pushed ref(s)
+[2026-08-12T06:49:11.190Z] INFO  [PrePushHook] [trace=b225ec56da2eb9d396ff580979871123] pre-push: worker spawned (pushId=b225ec56da2eb9d396ff580979871123) — watching for 2215ms
+[2026-08-12T06:49:11.890Z] INFO  [PushExecutor] [trace=b225ec56da2eb9d396ff580979871123] processPushPending(pre-push): 3 pending entr(ies) (filtered to 1 hash(es))
+[2026-08-12T06:49:11.947Z] INFO  [Summarizer] [trace=b7e64f7174a9baa6588e6badd61b3fdf] Generating summary for commit 43bcf796
+[2026-08-12T06:49:11.947Z] INFO  [Summarizer] [trace=b7e64f7174a9baa6588e6badd61b3fdf] Context: transcript=6, files=1, lines=15+2
+[2026-08-12T06:49:11.949Z] ERROR [QueueWorker] [trace=b7e64f7174a9baa6588e6badd61b3fdf] API call failed after retry: No LLM provider available. Set an Anthropic API key (ANTHROPIC_API_KEY) or configure a Jolli Space API key (jolliApiKey).
+[2026-08-12T06:49:11.949Z] WARN  [QueueWorker] [trace=b7e64f7174a9baa6588e6badd61b3fdf] Saving summary with empty topics + llm-failed marker for commit 43bcf796
+[2026-08-12T06:49:11.950Z] INFO  [QueueWorker] [trace=b7e64f7174a9baa6588e6badd61b3fdf] API summary generated (2.0s)
+[2026-08-12T06:49:11.952Z] INFO  [QueueWorker] [trace=b7e64f7174a9baa6588e6badd61b3fdf] Plan registry scan: found 0 uncommitted slug(s) on main: []
+[2026-08-12T06:49:11.952Z] INFO  [QueueWorker] [trace=b7e64f7174a9baa6588e6badd61b3fdf] Plan association: detected 0 slug(s) from transcripts: []
+[2026-08-12T06:49:11.953Z] INFO  [QueueWorker] [trace=b7e64f7174a9baa6588e6badd61b3fdf] Note registry scan: found 0 uncommitted note(s) on main: []
+[2026-08-12T06:49:11.954Z] INFO  [QueueWorker] [trace=b7e64f7174a9baa6588e6badd61b3fdf] Note association: detected 0 note(s): []
+[2026-08-12T06:49:11.955Z] INFO  [QueueWorker] [trace=b7e64f7174a9baa6588e6badd61b3fdf] Reference association: detected 0 ref(s) for branch main
+[2026-08-12T06:49:12.134Z] INFO  [QueueWorker] [trace=b7e64f7174a9baa6588e6badd61b3fdf] Summary built for 43bcf796: recap=no, topics=0, plans=absent, notes=absent, references=absent
+[2026-08-12T06:49:12.902Z] INFO  [MetadataManager] [trace=b7e64f7174a9baa6588e6badd61b3fdf] Manifest updated: main/fix-wrap-usesearchparams-in-suspense-boundary-for-43bcf796.md (commit)
+[2026-08-12T06:49:12.902Z] INFO  [FolderStorage] [trace=b7e64f7174a9baa6588e6badd61b3fdf] Markdown generated: main/fix-wrap-usesearchparams-in-suspense-boundary-for-43bcf796.md
+[2026-08-12T06:49:12.909Z] INFO  [FolderStorage] [trace=b7e64f7174a9baa6588e6badd61b3fdf] Wrote 4 files, deleted 0 (Add summary for 43bcf796: fix: wrap useSearchParams in Suspense boundary for)
+[2026-08-12T06:49:12.910Z] INFO  [SummaryStore] [trace=b7e64f7174a9baa6588e6badd61b3fdf] Summary stored successfully for commit 43bcf796
+[2026-08-12T06:49:13.210Z] INFO  [PushExecutor] [trace=b225ec56da2eb9d396ff580979871123] processPushPending(pre-push): claimed 1/1 candidate(s)
+[2026-08-12T06:49:13.313Z] INFO  [QueueWorker] [trace=b7e64f7174a9baa6588e6badd61b3fdf] Summary stored successfully for commit 43bcf796 (1.2s, 0 plans, 0 notes, 0 references)
+[2026-08-12T06:49:13.315Z] INFO  [QueueWorker] [trace=b7e64f7174a9baa6588e6badd61b3fdf] === Pipeline completed in 7.2s ===
+[2026-08-12T06:49:13.315Z] INFO  [QueueWorker] [trace=b7e64f7174a9baa6588e6badd61b3fdf] === Summary content (0 topics) ===
+[2026-08-12T06:49:13.329Z] INFO  [QueueWorker] [trace=b7e64f7174a9baa6588e6badd61b3fdf] Processed 2 queue entries
+[2026-08-12T06:49:13.336Z] INFO  [SessionTracker] [trace=b7e64f7174a9baa6588e6badd61b3fdf] Enqueued queue operation: type=ingest tag=ingest file=1786517353334-00000001-f0b1573a-ingest.json
+[2026-08-12T06:49:13.340Z] INFO  [PushExecutor] [trace=b7e64f7174a9baa6588e6badd61b3fdf] Post-queue push trigger: scheduling drain for 2 newly generated summar(ies)
+[2026-08-12T06:49:13.349Z] INFO  [PushExecutor] [trace=b7e64f7174a9baa6588e6badd61b3fdf] processPushPending(post-queue): 3 pending entr(ies) (filtered to 2 hash(es))
+[2026-08-12T06:49:13.506Z] INFO  [PrePushHook] [trace=b225ec56da2eb9d396ff580979871123] pre-push: watch timed out — 0 of 1 settled
+[2026-08-12T06:49:14.580Z] INFO  [StorageFactory] [trace=b225ec56da2eb9d396ff580979871123] StorageFactory.create: route=cutover, projectPath=C:\Users\mk\Documents\motion-graphic-reels
+[2026-08-12T06:49:15.241Z] INFO  [GitOps] [trace=b7e64f7174a9baa6588e6badd61b3fdf] Commit 83276a14: readme
+[2026-08-12T06:49:15.677Z] INFO  [GitOps] [trace=b7e64f7174a9baa6588e6badd61b3fdf] Commit 43bcf796: fix: wrap useSearchParams in Suspense boundary for page /cre
+[2026-08-12T06:49:16.217Z] INFO  [PushExecutor] [trace=b225ec56da2eb9d396ff580979871123] processPushPending(pre-push): triage — withMemory=1 noMemory=0 mergedChildren=0
+[2026-08-12T06:49:18.466Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-12T06:49:20.297Z] INFO  [SummaryStore] Tree hash match: 31fda5ba → 701c65ca (treeHash: fb5a4b62)
+[2026-08-12T06:49:20.405Z] WARN  [SummaryStore] scanTreeHashAliases: read side has 4 row(s) write side lacks — deferring alias write to avoid shadow clobber
+[2026-08-12T06:49:21.402Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-12T06:49:22.879Z] INFO  [SummaryStore] Tree hash match: 31fda5ba → 701c65ca (treeHash: fb5a4b62)
+[2026-08-12T06:49:23.004Z] WARN  [SummaryStore] scanTreeHashAliases: read side has 4 row(s) write side lacks — deferring alias write to avoid shadow clobber
