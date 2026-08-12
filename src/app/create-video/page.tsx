@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { UserButton, SignInButton, useUser } from "@clerk/nextjs";
@@ -53,7 +53,7 @@ const PRESET_TOPICS_HI = [
   "BlackBerry के पतन की असली कहानी",
 ];
 
-export default function CreateVideoPage() {
+function CreateVideoContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { isSignedIn, user } = useUser();
@@ -373,3 +373,16 @@ export default function CreateVideoPage() {
     </main>
   );
 }
+
+export default function CreateVideoPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-[#F2F1EC] text-[#0C0C0E] flex flex-col items-center justify-center font-bebas text-2xl tracking-wider">
+        Loading Studio...
+      </div>
+    }>
+      <CreateVideoContent />
+    </Suspense>
+  );
+}
+
