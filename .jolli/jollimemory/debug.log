@@ -167,3 +167,17 @@
 [2026-08-12T06:14:27.114Z] INFO  [SkillProjection] projectActiveSkills: 0 active (0 in registry)
 [2026-08-12T06:14:44.989Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
 [2026-08-12T06:14:47.575Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=4, summaries=4, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-12T06:28:06.184Z] INFO  [SummaryStore] Tree hash match: 31fda5ba → 701c65ca (treeHash: fb5a4b62)
+[2026-08-12T06:28:06.556Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=4, summaries=4, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-12T06:28:08.635Z] WARN  [SummaryStore] scanTreeHashAliases: read side has 2 row(s) write side lacks — deferring alias write to avoid shadow clobber
+[2026-08-12T06:29:36.017Z] INFO  [PrepareMsgHook] === Prepare-commit-msg hook started (source: message) ===
+[2026-08-12T06:29:37.551Z] INFO  [PrepareMsgHook] === Prepare-commit-msg hook finished ===
+[2026-08-12T06:29:37.924Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-12T06:29:37.924Z] INFO  [PlanService] detectPlans found 0 plans (0 in registry)
+[2026-08-12T06:29:37.924Z] INFO  [NoteService] detectNotes found 0 notes (0 in registry)
+[2026-08-12T06:29:37.924Z] INFO  [references] detectReferences(*) found 0 (0 in registry)
+[2026-08-12T06:29:37.924Z] INFO  [SkillProjection] projectActiveSkills: 0 active (0 in registry)
+[2026-08-12T06:29:43.330Z] INFO  [PostCommitHook] [trace=5a1bb5381db8e9d0e0e42e0ea7f6cea6] Detected operation: rebase
+[2026-08-12T06:29:43.330Z] INFO  [PostCommitHook] [trace=5a1bb5381db8e9d0e0e42e0ea7f6cea6] Rebase in progress — skipping (post-rewrite will handle)
+[2026-08-12T06:29:44.483Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=4, summaries=4, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-12T06:30:04.352Z] INFO  [PrePushHook] [trace=025102c67f03fbd761c4b64d55b8a503] pre-push hook: remote=origin budget=3000ms
