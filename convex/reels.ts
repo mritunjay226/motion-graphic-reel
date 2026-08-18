@@ -60,6 +60,8 @@ export const createReel = mutation({
         narration: v.string(),
         imagePrompt: v.optional(v.string()),
         imageUrl: v.optional(v.string()),
+        videoUrl: v.optional(v.string()),
+        bRollUrl: v.optional(v.string()),
         isSingleSubject: v.optional(v.boolean()),
       })
     ),
@@ -185,9 +187,13 @@ export const updateReelStatus = mutation({
           narration: v.string(),
           imagePrompt: v.optional(v.string()),
           imageUrl: v.optional(v.string()),
+          bgImageUrl: v.optional(v.string()),
           isSingleSubject: v.optional(v.boolean()),
           whisperTokens: v.optional(v.any()),
           audioUrl: v.optional(v.string()),
+          audioDurationSec: v.optional(v.number()),
+          videoUrl: v.optional(v.string()),
+          bRollUrl: v.optional(v.string()),
           visualType: v.optional(v.string()),
           gsapType: v.optional(v.string()),
           entranceType: v.optional(v.string()),
@@ -332,3 +338,102 @@ export const failRender = mutation({
     });
   },
 });
+
+/**
+ * Record initial social media publishing request for a reel.
+ */
+export const recordSocialPublish = mutation({
+  args: {
+    reelId: v.id("reels"),
+    posts: v.array(
+      v.object({
+        platform: v.string(),
+        accountId: v.string(),
+        accountName: v.optional(v.string()),
+        postId: v.optional(v.string()),
+        status: v.union(
+          v.literal("pending"),
+          v.literal("published"),
+          v.literal("scheduled"),
+          v.literal("failed")
+        ),
+        postUrl: v.optional(v.string()),
+        errorMessage: v.optional(v.string()),
+        publishedAt: v.optional(v.number()),
+      })
+    ),
+  },
+  handler: async (ctx, args) => {
+    const reel = await ctx.db.get(args.reelId);
+    if (!reel) {
+      throw new Error(`Reel ${args.reelId} not found`);
+    }
+
+    const existingPosts = reel.socialPosts || [];
+    // Merge or replace posts with new entries
+    const updatedPosts = [...existingPosts];
+
+    for (const newPost of args.posts) {
+      const idx = updatedPosts.findIndex(
+        (p) => p.platform === newPost.platform && p.accountId === newPost.accountId
+      );
+      if (idx >= 0) {
+        updatedPosts[idx] = newPost;
+      } else {
+        updatedPosts.push(newPost);
+      }
+    }
+
+    await ctx.db.patch(args.reelId, {
+      socialPosts: updatedPosts,
+      updatedAt: Date.now(),
+    });
+
+    return updatedPosts;
+  },
+});
+
+/**
+ * Update the status of a specific social post for a reel.
+ */
+export const updateSocialPostStatus = mutation({
+  args: {
+    reelId: v.id("reels"),
+    platform: v.string(),
+    accountId: v.string(),
+    status: v.union(
+      v.literal("pending"),
+      v.literal("published"),
+      v.literal("scheduled"),
+      v.literal("failed")
+    ),
+    postId: v.optional(v.string()),
+    postUrl: v.optional(v.string()),
+    errorMessage: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const reel = await ctx.db.get(args.reelId);
+    if (!reel) return;
+
+    const posts = reel.socialPosts || [];
+    const updated = posts.map((post) => {
+      if (post.platform === args.platform && post.accountId === args.accountId) {
+        return {
+          ...post,
+          status: args.status,
+          postId: args.postId || post.postId,
+          postUrl: args.postUrl || post.postUrl,
+          errorMessage: args.errorMessage,
+          publishedAt: args.status === "published" ? Date.now() : post.publishedAt,
+        };
+      }
+      return post;
+    });
+
+    await ctx.db.patch(args.reelId, {
+      socialPosts: updated,
+      updatedAt: Date.now(),
+    });
+  },
+});
+

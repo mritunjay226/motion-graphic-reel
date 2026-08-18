@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
       data: {
         reelId,
         themeId: themeId || reel.themeId || "vox_explainer",
-        bgMusicUrl: bgMusicUrl || reel.bgMusicUrl || "/music/without_me.mp3",
+        bgMusicUrl: bgMusicUrl || reel.bgMusicUrl || "/music/documentary_pulse.mp3",
         bgMusicVolume: bgMusicVolume ?? reel.bgMusicVolume ?? 0.15,
       },
     });

@@ -18,28 +18,7 @@ import themes, {
 const resolveTheme = resolveVideoTheme || themes?.resolveVideoTheme || getVideoTheme;
 const fetchTheme = getVideoTheme || themes?.getVideoTheme;
 
-const StyleWandIcon = () => (
-  <svg className="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L5.605 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"
-    />
-  </svg>
-);
-
-const PaletteIcon = () => (
-  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-  </svg>
-);
-
-const CheckIcon = () => (
-  <svg className="w-3.5 h-3.5 stroke-[3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-  </svg>
-);
+import { Sparkles, Palette, Check } from "lucide-react";
 
 interface ThemeSelectorProps {
   reelId?: Id<"reels">;
@@ -115,8 +94,8 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
       {/* ── 1. HEADER & TAB NAVIGATION ── */}
       <div className="flex items-center justify-between mb-4 pb-3 border-b border-neutral-800">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
-            <StyleWandIcon />
+          <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
+            <Sparkles className="w-4 h-4" />
           </div>
           <div>
             <h3 className="text-sm font-bold text-white uppercase tracking-wide flex items-center gap-2">
@@ -136,24 +115,25 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
           <button
             type="button"
             onClick={() => setActiveTab("style")}
-            className={`px-3 py-1 rounded-md transition-all ${
+            className={`px-3 py-1.5 rounded-md transition-all flex items-center gap-1.5 ${
               activeTab === "style"
                 ? "bg-amber-400 text-neutral-950 shadow-sm"
                 : "text-neutral-400 hover:text-white"
             }`}
           >
-            🎨 Visual Styles
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Visual Styles</span>
           </button>
           <button
             type="button"
             onClick={() => setActiveTab("palette")}
-            className={`px-3 py-1 rounded-md transition-all flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 rounded-md transition-all flex items-center gap-1.5 ${
               activeTab === "palette"
                 ? "bg-amber-400 text-neutral-950 shadow-sm"
                 : "text-neutral-400 hover:text-white"
             }`}
           >
-            <PaletteIcon />
+            <Palette className="w-3.5 h-3.5" />
             <span>Color Palettes</span>
           </button>
         </div>
@@ -186,7 +166,7 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
 
                     {isSelected ? (
                       <span className="w-5 h-5 rounded-full bg-amber-400 text-neutral-950 flex items-center justify-center font-bold text-xs shadow-md">
-                        <CheckIcon />
+                        <Check className="w-3.5 h-3.5 stroke-[3]" />
                       </span>
                     ) : (
                       <span className="text-[10px] font-mono text-neutral-500 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -264,7 +244,7 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
 
                     {isSelected ? (
                       <span className="w-5 h-5 rounded-full bg-amber-400 text-neutral-950 flex items-center justify-center font-bold text-xs shadow-md">
-                        <CheckIcon />
+                        <Check className="w-3.5 h-3.5 stroke-[3]" />
                       </span>
                     ) : (
                       <span className="text-[10px] font-mono text-neutral-500 opacity-0 group-hover:opacity-100 transition-opacity">

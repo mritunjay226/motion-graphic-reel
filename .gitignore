@@ -46,3 +46,6 @@ modal_render/remotion_bundle/public/
 modal_render/remotion_bundle/node_modules/
 modal_render/remotion_bundle/remotion.config.ts
 modal_render/remotion_bundle/tsconfig.json
+
+# SFX Pack
+/sfx-pack

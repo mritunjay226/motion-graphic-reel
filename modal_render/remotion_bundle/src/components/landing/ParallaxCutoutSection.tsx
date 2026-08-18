@@ -2,6 +2,7 @@
 
 import React, { useRef, useState } from "react";
 import { motion, useScroll, useTransform, useMotionValueEvent } from "framer-motion";
+import { Layers, Sparkles } from "lucide-react";
 
 export default function ParallaxCutoutSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -86,13 +87,23 @@ export default function ParallaxCutoutSection() {
               <button
                 type="button"
                 onClick={() => setIsExplodedMode(!isExplodedMode)}
-                className={`px-3 py-1 rounded-lg font-bold border-2 transition-all cursor-pointer text-xs ${
+                className={`px-3 py-1 rounded-lg font-bold border-2 transition-all cursor-pointer text-xs flex items-center gap-1.5 ${
                   isExplodedMode
                     ? "bg-[#E50914] text-white border-[#111111] shadow-xs animate-pulse"
                     : "bg-[#111111] text-[#B5F500] border-[#111111] hover:bg-[#222222]"
                 }`}
               >
-                {isExplodedMode ? "💥 EXPLODED 3D VIEW ON" : "✨ TOGGLE 3D EXPLODE"}
+                {isExplodedMode ? (
+                  <>
+                    <Layers className="w-3.5 h-3.5" />
+                    <span>EXPLODED 3D VIEW ON</span>
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>TOGGLE 3D EXPLODE</span>
+                  </>
+                )}
               </button>
 
               {/* Layer Spotlight Isolator Buttons */}
@@ -154,7 +165,7 @@ export default function ParallaxCutoutSection() {
                 </div>
 
                 <div className="text-[10px] font-mono text-gray-200 border-t border-gray-800 pt-2 font-semibold z-10 bg-[#111111]/90 px-2 py-1 rounded">
-                  ImageKit URL: ?tr=w-1080,h-1080,fo-auto
+                  Resolution: 1080×1920 • 4K Source
                 </div>
               </motion.div>
 

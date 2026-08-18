@@ -45,8 +45,8 @@ export const Template7DualVersus: React.FC<TemplateProps> = ({ scene, theme }) =
     narrationLine,
   } = scene;
 
-  const leftStickerUrl = imageKitUrls.foreground || imageKitUrls.background;
-  const rightStickerUrl = imageKitUrls.background || imageKitUrls.foreground;
+  const leftStickerUrl = imageKitUrls.props?.[0] || imageKitUrls.foreground || "/vox_subject_cutout.png";
+  const rightStickerUrl = imageKitUrls.props?.[1] || imageKitUrls.background || "/vox_subject_cutout.png";
 
   const headlineText = sceneTitle
     ? sceneTitle.replace(/^SCENE \d+:\s*/i, "").toUpperCase()

@@ -2,8 +2,8 @@ import { inngest } from "../client";
 import { generateLLMStoryboard } from "@/lib/llm-storyboard";
 import { transcribeAudioWithDeepgram } from "@/lib/deepgram";
 import { uploadAudioToCloudinary } from "@/lib/cloudinary";
-import { generateGeminiImage } from "@/lib/gemini-image";
 import { fetchRealWorldAssetImage } from "@/lib/web-asset-fetcher";
+import { fetchVerifiedVideoBRoll } from "@/lib/video-fetcher";
 import { generateSvgVectorStickerUrl } from "@/remotion/utils/vector-assets";
 import { ConvexHttpClient } from "convex/browser";
 import { api } from "../../../convex/_generated/api";
@@ -17,15 +17,7 @@ const APP_URL = process.env.NEXT_PUBLIC_APP_URL
   || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 
 /**
- * Inngest Step-Function: Full 2.5D Vox Video Generation Pipeline with Strict Error Synchronization.
- *
- * Steps:
- * 1. Script Generation — Google Gemini 2.5 Director generates 6-scene documentary script & event timelines
- * 2. Image Prompt Collection — Single-subject cutout & event asset prompts
- * 3. Audio TTS Generation — Cartesia AI voice narration & Cloudinary CDN Upload
- * 4. Caption Transcription — Deepgram Nova-2 word-level tokens
- * 5. Image Generation — Google Gemini 2.5 Flash Image & ImageKit AI BG Removal
- * 6. Convex DB Sync — Assemble full storyboard & events and persist to database
+ * Inngest Step-Function: Full 2.5D Vox Video Generation Pipeline with In-Memory Audio Buffers & Deepgram STT.
  */
 export const generateReelPipeline = (inngest.createFunction as any)(
   {
@@ -79,14 +71,15 @@ export const generateReelPipeline = (inngest.createFunction as any)(
         return prompts;
       });
 
-      // ─── Step 3: Audio TTS Generation & Cloudinary Upload ───────────────
+      // ─── Step 3: Audio TTS Generation (Direct In-Memory Buffers + Cloudinary) ───
       const audioData = await step.run("3-generate-audio-tts", async () => {
         console.log(`[Step 3] Generating Cartesia TTS master continuous voiceover & per-scene audio (${language})...`);
         const voice = voiceId || "62ae83ad-4f6a-430b-af41-a9bede9286ca";
-        const results: { sceneId: number; narration: string; audioUrl: string }[] = [];
+        const results: { sceneId: number; narration: string; audioUrl: string; bufferBase64: string; audioDurationSec?: number }[] = [];
         let masterVoiceoverUrl = "";
+        let masterBufferBase64 = "";
 
-        // 1. Synthesize Master Continuous Script for 100% Vocal Continuity
+        // 1. Synthesize Master Continuous Script
         const masterScript = scriptScenes.map((sc: any) => sc.narration.trim()).join(" ");
         try {
           const masterTtsRes = await fetch(`${APP_URL}/api/tts`, {
@@ -101,18 +94,26 @@ export const generateReelPipeline = (inngest.createFunction as any)(
           });
 
           if (masterTtsRes.ok) {
-            const masterBuffer = Buffer.from(await masterTtsRes.arrayBuffer());
+            const masterArrayBuffer = await masterTtsRes.arrayBuffer();
+            const masterBuffer = Buffer.from(masterArrayBuffer);
+            masterBufferBase64 = masterBuffer.toString("base64");
             const fileName = `master_voiceover_${Date.now()}.mp3`;
-            masterVoiceoverUrl = await uploadAudioToCloudinary(masterBuffer, fileName, "vox-reels/audio");
-            console.log(`[Step 3] ✅ Master continuous voiceover uploaded to Cloudinary: ${masterVoiceoverUrl}`);
+            try {
+              masterVoiceoverUrl = await uploadAudioToCloudinary(masterBuffer, fileName, "vox-reels/audio");
+              console.log(`[Step 3] ✅ Master continuous voiceover uploaded to Cloudinary: ${masterVoiceoverUrl}`);
+            } catch (cErr: any) {
+              masterVoiceoverUrl = `data:audio/mp3;base64,${masterBufferBase64}`;
+            }
           }
         } catch (masterErr: any) {
-          console.warn(`[Step 3 Master Voiceover Warning] Failed to generate continuous master track:`, masterErr.message);
+          console.warn(`[Step 3 Master Voiceover Warning]`, masterErr.message);
         }
 
         // 2. Synthesize Per-Scene Audio Chunks
         for (const sc of scriptScenes) {
           let audioUrl = "";
+          let bufferBase64 = "";
+
           try {
             const ttsRes = await fetch(`${APP_URL}/api/tts`, {
               method: "POST",
@@ -128,77 +129,99 @@ export const generateReelPipeline = (inngest.createFunction as any)(
             if (ttsRes.ok) {
               const arrayBuffer = await ttsRes.arrayBuffer();
               const buffer = Buffer.from(arrayBuffer);
+              bufferBase64 = buffer.toString("base64");
               const fileName = `narration_sc_${sc.sceneId}_${Date.now()}.mp3`;
+              // 128kbps Cartesia MP3 = 16000 bytes/sec exact duration
+              const durationSec = Math.round((buffer.length / 16000) * 100) / 100;
 
-              audioUrl = await uploadAudioToCloudinary(buffer, fileName, "vox-reels/audio");
-              console.log(`[Step 3] ✅ Scene ${sc.sceneId} audio uploaded to Cloudinary: ${audioUrl}`);
+              try {
+                audioUrl = await uploadAudioToCloudinary(buffer, fileName, "vox-reels/audio");
+                console.log(`[Step 3] ✅ Scene ${sc.sceneId} audio uploaded (${durationSec}s): ${audioUrl}`);
+              } catch (cErr: any) {
+                audioUrl = `data:audio/mp3;base64,${bufferBase64}`;
+              }
             }
           } catch (err: any) {
-            console.warn(`[Step 3 Cloudinary Warning] Scene ${sc.sceneId} audio upload failed, fallback to local URL:`, err.message);
+            console.warn(`[Step 3 Scene Audio Warning] Scene ${sc.sceneId}:`, err.message);
           }
 
-          if (!audioUrl) {
-            audioUrl = `${APP_URL}/api/tts?text=${encodeURIComponent(sc.narration)}&voiceId=${voice}&language=${language}`;
+          if (!audioUrl && bufferBase64) {
+            audioUrl = `data:audio/mp3;base64,${bufferBase64}`;
           }
+
+          const wordCount = sc.narration.trim().split(/\s+/).filter(Boolean).length;
+          const fallbackDurationSec = Math.max(2.5, wordCount * 0.35);
+          const finalDurationSec = bufferBase64
+            ? Math.round((Buffer.from(bufferBase64, "base64").length / 16000) * 100) / 100
+            : fallbackDurationSec;
 
           results.push({
             sceneId: sc.sceneId,
             narration: sc.narration,
             audioUrl,
+            bufferBase64,
+            audioDurationSec: finalDurationSec,
           });
         }
 
-        return { sceneResults: results, masterVoiceoverUrl };
+        return { sceneResults: results, masterVoiceoverUrl, masterBufferBase64 };
       });
 
-      // ─── Step 4: Caption Transcription via Deepgram Nova-2 ─────────────
+      // ─── Step 4: Deepgram Nova-2 Transcription directly from Audio Buffers ───
       const captionsData = await step.run("4-deepgram-captions", async () => {
-        console.log(`[Step 4] Generating Deepgram word-level captions (${language})`);
+        console.log(`[Step 4] Generating Deepgram word-level captions directly from in-memory audio buffers (${language})`);
         const sceneAudios = audioData?.sceneResults || (Array.isArray(audioData) ? audioData : []);
-        const masterVoiceoverUrl = audioData?.masterVoiceoverUrl || "";
 
-        // 1. Per-scene caption tokens (scene-relative timestamps starting at 0ms each)
         const results: { sceneId: number; whisperTokens: any[] }[] = [];
         for (const sc of scriptScenes) {
-          const audio = sceneAudios.find((a: any) => a.sceneId === sc.sceneId);
-          const tokens = await transcribeAudioWithDeepgram(sc.narration, audio?.audioUrl, language);
+          const audioItem = sceneAudios.find((a: any) => a.sceneId === sc.sceneId);
+          let tokens: any[] = [];
+
+          if (audioItem?.bufferBase64) {
+            const buffer = Buffer.from(audioItem.bufferBase64, "base64");
+            tokens = await transcribeAudioWithDeepgram(sc.narration, buffer, language, audioItem?.audioDurationSec);
+          } else {
+            tokens = await transcribeAudioWithDeepgram(sc.narration, audioItem?.audioUrl, language, audioItem?.audioDurationSec);
+          }
+
           results.push({ sceneId: sc.sceneId, whisperTokens: tokens });
         }
 
-        // 2. Master voiceover caption tokens (absolute timestamps across entire reel)
-        let masterWhisperTokens: any[] = [];
-        if (masterVoiceoverUrl) {
+        return { sceneResults: results };
+      });
+
+      // ─── Step 5: Tri-Media Sourcing (Verified 4K Video B-Roll + Real Archival Cutouts) ───
+      const mediaData = await step.run("5-generate-and-upload-images", async () => {
+        console.log(`[Step 5] Sourcing verified 4K B-Roll videos & real archival photo cutouts for ${scriptScenes.length} scenes...`);
+
+        // 1. Fetch Verified 4K B-Roll Videos for each scene
+        const bRollResults: { sceneId: number; videoUrl: string; bRollConfidence: number }[] = [];
+        for (const sc of scriptScenes) {
+          const bQuery = (sc as any).bRollQuery || `${sc.headline} documentary ${topic}`;
           try {
-            const masterScript = scriptScenes.map((sc: any) => sc.narration.trim()).join(" ");
-            masterWhisperTokens = await transcribeAudioWithDeepgram(masterScript, masterVoiceoverUrl, language);
-            console.log(`[Step 4] ✅ Master voiceover transcribed: ${masterWhisperTokens.length} tokens`);
-          } catch (masterErr: any) {
-            console.warn(`[Step 4 Master Caption Warning] Falling back to per-scene tokens:`, masterErr.message);
+            const bRoll = await fetchVerifiedVideoBRoll(bQuery, sc.narration);
+            if (bRoll && bRoll.videoUrl) {
+              bRollResults.push({
+                sceneId: sc.sceneId,
+                videoUrl: bRoll.videoUrl,
+                bRollConfidence: bRoll.confidenceScore || 8,
+              });
+            }
+          } catch (vErr: any) {
+            console.warn(`[Step 5 Video Warning] Scene ${sc.sceneId} B-roll error:`, vErr.message);
           }
         }
 
-        return { sceneResults: results, masterWhisperTokens };
-      });
-
-      // ─── Step 5: AI Image Generation (Gemini 2.5 Flash Image & Dynamic BG Removal) ───
-      const imagesData = await step.run("5-generate-and-upload-images", async () => {
-        console.log(`[Step 5] Generating AI images via Gemini 2.5 Flash Image for ${imagePrompts.length} prompts...`);
+        // 2. Fetch Foreground Subject Cutouts & Event Assets
         const results: { sceneId: number; eventId?: string; imageUrl: string }[] = [];
         for (let i = 0; i < imagePrompts.length; i++) {
           const item = imagePrompts[i];
           let rawImageUrl = "";
 
           try {
-            // First check if prompt is a real person, place, or logo from the web
-            const webAssetUrl = await fetchRealWorldAssetImage(item.prompt);
-            if (webAssetUrl) {
-              rawImageUrl = webAssetUrl;
-              console.log(`[Step 5 Web Fetcher] ✅ Using real-world web image for asset ${i + 1}: ${webAssetUrl}`);
-            } else {
-              rawImageUrl = await generateGeminiImage(item.prompt);
-            }
-          } catch (aiErr: any) {
-            console.warn(`[Step 5 Gemini Image Warning] Asset ${i + 1} generation fallback to vector:`, aiErr.message);
+            rawImageUrl = await fetchRealWorldAssetImage(item.prompt);
+          } catch (err: any) {
+            console.warn(`[Step 5 Asset Warning] Asset ${i + 1} fallback to vector:`, err.message);
             rawImageUrl = generateSvgVectorStickerUrl(item.prompt, `SCENE ${item.sceneId}`);
           }
 
@@ -234,8 +257,8 @@ export const generateReelPipeline = (inngest.createFunction as any)(
           results.push({ sceneId: item.sceneId, eventId: item.eventId, imageUrl: finalUrl });
         }
 
-        console.log(`[Step 5] ✅ All ${results.length} AI image assets generated and synced.`);
-        return results;
+        console.log(`[Step 5] ✅ Tri-Media sourcing complete: ${results.length} cutouts, ${bRollResults.length} verified B-roll clips.`);
+        return { images: results, bRolls: bRollResults };
       });
 
       // ─── Step 6: Assemble & Sync to Convex DB ──────────────────────────
@@ -244,29 +267,46 @@ export const generateReelPipeline = (inngest.createFunction as any)(
         const sceneAudios = audioData?.sceneResults || (Array.isArray(audioData) ? audioData : []);
         const masterVoiceoverUrl = audioData?.masterVoiceoverUrl || "";
         const sceneCaptions = captionsData?.sceneResults || (Array.isArray(captionsData) ? captionsData : []);
-        const masterWhisperTokens = captionsData?.masterWhisperTokens || [];
 
-        // Compute 100% precise frame-locked scene boundaries from continuous master STT timestamps
-        const masterTimings = computeMasterSceneTimings(scriptScenes, masterWhisperTokens);
+        const imageAssets = (mediaData as any)?.images || (Array.isArray(mediaData) ? mediaData : []);
+        const bRollAssets = (mediaData as any)?.bRolls || [];
 
-        const fullStoryboard = scriptScenes.map((sc: any, idx: number) => {
+        let currentFrameAcc = 0;
+
+        const fullStoryboard = scriptScenes.map((sc: any) => {
           const audio = sceneAudios.find((a: any) => a.sceneId === sc.sceneId);
           const caption = sceneCaptions.find((c: any) => c.sceneId === sc.sceneId);
-          const timing = masterTimings ? masterTimings[idx] : null;
+          const sceneTokens = caption?.whisperTokens || [];
 
-          // Primary scene image
-          const primaryImage = imagesData.find((img: any) => img.sceneId === sc.sceneId && !img.eventId);
+          // Primary scene image & verified B-roll video
+          const primaryImage = imageAssets.find((img: any) => img.sceneId === sc.sceneId && !img.eventId);
+          const bRollItem = bRollAssets.find((b: any) => b.sceneId === sc.sceneId);
+          const videoUrl = bRollItem?.videoUrl || "";
 
           // Update event object image URLs
           const updatedEvents = (sc.events && Array.isArray(sc.events))
             ? sc.events.map((ev: any) => {
-                const evImg = imagesData.find((img: any) => img.sceneId === sc.sceneId && img.eventId === ev.id);
+                const evImg = imageAssets.find((img: any) => img.sceneId === sc.sceneId && img.eventId === ev.id);
                 return {
                   ...ev,
                   imageUrl: evImg?.imageUrl || "",
                 };
               })
             : [];
+
+          // Dynamic scene duration derived directly from audio playback length
+          const audioDurationFrames = audio?.audioDurationSec ? Math.ceil(audio.audioDurationSec * 30) : 0;
+          const lastToken = sceneTokens[sceneTokens.length - 1];
+          const lastTokenEndFrame = lastToken
+            ? (lastToken.endFrame || Math.ceil((lastToken.endMs || 0) / 33.33))
+            : 0;
+
+          const durationFrames = audioDurationFrames > 0
+            ? audioDurationFrames
+            : (lastTokenEndFrame > 0 ? lastTokenEndFrame : (sc.durationFrames || 90));
+
+          const startFrame = currentFrameAcc;
+          currentFrameAcc += durationFrames;
 
           return {
             sceneId: sc.sceneId,
@@ -276,10 +316,13 @@ export const generateReelPipeline = (inngest.createFunction as any)(
             imagePrompt: sc.imagePrompt || "",
             imageUrl: primaryImage?.imageUrl || "",
             audioUrl: audio?.audioUrl || "",
+            audioDurationSec: audio?.audioDurationSec,
+            videoUrl: videoUrl || undefined,
+            bRollUrl: videoUrl || undefined,
             isSingleSubject: true,
-            whisperTokens: timing?.whisperTokens || caption?.whisperTokens || [],
-            startFrame: timing?.startFrame,
-            durationFrames: timing?.durationFrames,
+            whisperTokens: sceneTokens,
+            startFrame,
+            durationFrames,
             visualType: sc.visualType || "center_cutout_hero",
             gsapType: sc.gsapType || "grid_lines",
             entranceType: sc.entranceType || "slide_corner_bottom_left",
@@ -287,16 +330,15 @@ export const generateReelPipeline = (inngest.createFunction as any)(
           };
         });
 
-        // Save storyboard + fullVoiceoverUrl + masterWhisperTokens in one call
+        // Save storyboard in Convex
         await convex.mutation(api.reels.updateReelStatus, {
           reelId: reelId as Id<"reels">,
           status: "completed",
           storyboard: fullStoryboard,
           fullVoiceoverUrl: masterVoiceoverUrl || undefined,
-          masterWhisperTokens: masterWhisperTokens.length > 0 ? masterWhisperTokens : undefined,
         });
 
-        console.log(`[Step 6] ✅ Reel ${reelId} completed: ${fullStoryboard.length} scenes, masterVoiceover: ${masterVoiceoverUrl ? 'YES' : 'NO'}, masterTokens: ${masterWhisperTokens.length}`);
+        console.log(`[Step 6] ✅ Reel ${reelId} completed: ${fullStoryboard.length} scenes, totalFrames: ${currentFrameAcc}`);
       });
 
       return { status: "success", reelId, topic, scenesProcessed: scriptScenes.length };
@@ -317,59 +359,3 @@ export const generateReelPipeline = (inngest.createFunction as any)(
     }
   }
 );
-
-/**
- * Computes 100% frame-locked scene boundaries and relative whisper tokens
- * from continuous master Deepgram STT timestamps.
- * Guarantees that ALL 6 scenes receive valid, non-overlapping timeline durations.
- */
-function computeMasterSceneTimings(scriptScenes: any[], masterWhisperTokens: any[]) {
-  if (!scriptScenes || !Array.isArray(scriptScenes) || scriptScenes.length === 0) {
-    return null;
-  }
-
-  let currentFrameAcc = 0;
-  let tokenPointer = 0;
-  const numScenes = scriptScenes.length;
-
-  return scriptScenes.map((sc, idx) => {
-    const sceneWords = sc.narration.trim().split(/\s+/).filter(Boolean);
-    const sceneTokens: any[] = [];
-
-    if (masterWhisperTokens && Array.isArray(masterWhisperTokens)) {
-      for (let i = 0; i < sceneWords.length && tokenPointer < masterWhisperTokens.length; i++) {
-        sceneTokens.push(masterWhisperTokens[tokenPointer]);
-        tokenPointer++;
-      }
-    }
-
-    const startFrame = currentFrameAcc;
-
-    let computedDuration = 150; // Default 5s per scene @ 30fps
-    if (sceneTokens.length > 0) {
-      const firstTokenStart = sceneTokens[0].startFrame || 0;
-      const lastTokenEnd = sceneTokens[sceneTokens.length - 1].endFrame || (firstTokenStart + 120);
-      computedDuration = Math.max(135, lastTokenEnd - firstTokenStart + 15);
-    } else {
-      computedDuration = Math.max(135, Math.ceil(sceneWords.length * 5.5) + 20);
-    }
-
-    const durationFrames = computedDuration;
-    currentFrameAcc += durationFrames;
-
-    // Relative tokens starting at frame 0 for WordByWordCaptions inside sequence
-    const relativeTokens = sceneTokens.length > 0
-      ? sceneTokens.map((t) => ({
-          ...t,
-          startFrame: Math.max(0, (t.startFrame || 0) - (sceneTokens[0].startFrame || 0)),
-          endFrame: Math.max(1, (t.endFrame || 0) - (sceneTokens[0].startFrame || 0)),
-        }))
-      : [];
-
-    return {
-      startFrame,
-      durationFrames,
-      whisperTokens: relativeTokens,
-    };
-  });
-}

@@ -1,14 +1,17 @@
 import React from "react";
-import { useCurrentFrame, spring, useVideoConfig } from "remotion";
+import { useCurrentFrame, spring, useVideoConfig, OffthreadVideo } from "remotion";
 import { PaperSticker } from "./PaperSticker";
 import { CharacterBoil } from "./CharacterBoil";
+import { resolveAssetUrl } from "../utils/resolveAsset";
 import { getFontFamily, FONTS } from "../utils/fonts";
 
 import type { VideoTheme } from "../utils/themes";
 
 interface VoxPolaroidCardProps {
   /** Image source URL */
-  imageUrl: string;
+  imageUrl?: string;
+  /** Video source URL if playing footage inside frame */
+  videoUrl?: string;
   /** Primary card title (e.g. "BLOCKBUSTER CEO" or "FOUNDER PORTRAIT") */
   title?: string;
   /** Monospace tag line below title (e.g. "REJECTED NETFLIX PITCH") */
@@ -35,6 +38,7 @@ const boilConfig = {
  */
 export const VoxPolaroidCard: React.FC<VoxPolaroidCardProps> = ({
   imageUrl,
+  videoUrl,
   title = "PRIMARY SUBJECT",
   subtitle = "DOCUMENTARY PROOF",
   cornerTag,
@@ -169,8 +173,8 @@ export const VoxPolaroidCard: React.FC<VoxPolaroidCardProps> = ({
           </div>
         )}
 
-        {/* Rubber Stamp Slammed Over Card */}
-        {stampText && localFrame >= 10 && (
+        {/* Rubber Stamp Slammed Over Card (Only if short authentic stamp word) */}
+        {stampText && stampText.length <= 15 && localFrame >= 10 && (
           <div
             style={{
               position: "absolute",
@@ -182,7 +186,7 @@ export const VoxPolaroidCard: React.FC<VoxPolaroidCardProps> = ({
               backgroundColor: "rgba(255, 255, 255, 0.95)",
               color: "#D61C1C",
               fontFamily: getFontFamily(FONTS.bebasNeue),
-              fontSize: "44px",
+              fontSize: "40px",
               fontWeight: 900,
               letterSpacing: "3px",
               transform: `scale(${stampSpring}) rotate(-14deg)`,
@@ -194,12 +198,12 @@ export const VoxPolaroidCard: React.FC<VoxPolaroidCardProps> = ({
           </div>
         )}
 
-        {/* Inner Photo Inset Frame */}
+        {/* Inner Photo or Video Inset Frame */}
         <div
           style={{
             width: "100%",
             height: "380px",
-            backgroundColor: "#F4F4F6",
+            backgroundColor: "#0C0C0E",
             border: "3px solid #111111",
             borderRadius: "20px",
             overflow: "hidden",
@@ -209,14 +213,27 @@ export const VoxPolaroidCard: React.FC<VoxPolaroidCardProps> = ({
             position: "relative",
           }}
         >
-          <PaperSticker
-            src={imageUrl || "/vox_subject_cutout.png"}
-            rotationDeg={0}
-            isSingleSubject={false}
-            width="100%"
-            height="100%"
-            style={{ objectFit: "contain" }}
-          />
+          {videoUrl ? (
+            <OffthreadVideo
+              src={resolveAssetUrl(videoUrl)}
+              volume={0}
+              muted={true}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+              }}
+            />
+          ) : (
+            <PaperSticker
+              src={imageUrl || "/vox_subject_cutout.png"}
+              rotationDeg={0}
+              isSingleSubject={false}
+              width="100%"
+              height="100%"
+              style={{ objectFit: "contain" }}
+            />
+          )}
         </div>
 
         {/* Card Title & Subtitle Below Photo */}

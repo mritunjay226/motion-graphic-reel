@@ -36,7 +36,10 @@ Follow these rules strictly. Do NOT deviate or hallucinate dependencies.
    - Wrap scenes in a global `<FilmTreatment />` overlay (grain, scanlines, vignette).
 3. **ImageKit Optimization**: Wrap image components using pre-optimized ImageKit URLs instead of raw heavy uploads.
    Example query parameter format: `?tr=w-1080,h-1080,fo-auto,f-webp`.
-4. **Audio & Frame Sync**: Trigger sound effects (pop, whoosh, click) on exact keyframe numbers matching element entrances.
+4. **Audio & Frame Sync (39-Sound Tactile Foley Suite)**:
+   - Use `<TactileSfxLayer />` and `sfxRegistry.ts` for frame-accurate Foley sound effects.
+   - Synchronize physical audio to exact keyframes: paper rips on transitions, rubber stamps on seal impacts, yellow marker squeaks on headline sweeps, camera shutter snaps on polaroids, and sub-bass drops on hook/climax reveals.
+   - Maintain mix hierarchy: Dialogue `0dB`, background music ducked to `-18dB`, tactile Foley at `-14dB to -22dB`.
 
 ---
 
@@ -51,6 +54,7 @@ Follow these rules strictly. Do NOT deviate or hallucinate dependencies.
 
 When building video scenes, assemble pre-built helper components instead of writing custom raw CSS from scratch:
 - `<FilmTreatment grain={0.12} scanlines={true} vignette={0.4} />`
+- `<TactileSfxLayer scenes={scenes} sfxVolume={1.0} enableAudio={true} />`
 - `<ParallaxLayer backgroundUrl={...} foregroundUrl={...} depth={1.2} />`
 - `<WordByWordCaptions tokens={whisperTokens} currentFrame={frame} />`
 - `<ImageKitAsset path="..." transformations="tr=w-800,fo-auto" />`

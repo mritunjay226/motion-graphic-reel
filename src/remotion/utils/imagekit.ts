@@ -26,6 +26,18 @@ export function buildImageKitUrl(
   imagePathOrUrl: string,
   options: ImageKitTransformOptions = {}
 ): string {
+  if (!imagePathOrUrl) return "";
+
+  // If already a local cache path, localhost URL, or data URI, do not proxy through ImageKit
+  if (
+    imagePathOrUrl.startsWith("/cache/") ||
+    imagePathOrUrl.startsWith("http://localhost") ||
+    imagePathOrUrl.startsWith("data:") ||
+    imagePathOrUrl.startsWith("file:")
+  ) {
+    return imagePathOrUrl;
+  }
+
   const urlEndpoint =
     process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT ||
     "https://ik.imagekit.io/motionreels";

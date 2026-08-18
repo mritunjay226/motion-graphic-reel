@@ -11,6 +11,8 @@ import { api } from "../../../convex/_generated/api";
 import { Id } from "../../../convex/_generated/dataModel";
 import { convertConvexReelToExecutionPlan } from "@/remotion/data/execution-plan";
 import { BlockbusterNetflixReel } from "@/remotion/BlockbusterNetflixReel";
+import { StudioNavbar } from "@/components/StudioNavbar";
+import { Film, Play, Eye, Trash2, Loader2, Zap, Plus } from "lucide-react";
 
 export default function ReelsGalleryPage() {
   const router = useRouter();
@@ -106,7 +108,9 @@ export default function ReelsGalleryPage() {
     return {
       plan: previewExecutionPlan,
       enableAudio: true,
-      bgMusicUrl: previewReel?.bgMusicUrl || "/music/without_me.mp3",
+      enableSfx: true,
+      sfxVolume: 1.0,
+      bgMusicUrl: previewReel?.bgMusicUrl || "/music/documentary_pulse.mp3",
       bgMusicVolume: previewReel?.bgMusicVolume ?? 0.15,
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -131,58 +135,7 @@ export default function ReelsGalleryPage() {
   return (
     <main className="min-h-screen bg-[#F2F1EC] text-[#0C0C0E] flex flex-col font-sans selection:bg-[#B4F500] selection:text-black vox-paper-texture">
       {/* 1. Vox Editorial Top Header */}
-      <header className="border-b-2 border-[#0C0C0E] bg-[#F2F1EC]/95 backdrop-blur-md sticky top-0 z-40 px-6 sm:px-10 py-4 flex items-center justify-between shadow-xs">
-        <div className="flex items-center gap-3">
-          <Link
-            href="/"
-            className="px-3.5 py-1 bg-[#0C0C0E] text-[#B4F500] font-bebas text-2xl tracking-widest rounded shadow-[3px_3px_0px_#FFE600] flex items-center gap-2 hover:bg-[#222224] transition-colors"
-          >
-            <span>VOX</span>
-            <span className="w-2.5 h-2.5 rounded-full bg-[#B4F500] animate-ping" />
-          </Link>
-          <div>
-            <h1 className="font-bebas text-xl tracking-wide text-[#0C0C0E] leading-none flex items-center gap-2">
-              <span>REELS GALLERY</span>
-              <span className="text-[10px] font-utility font-black bg-[#B4F500] text-[#0C0C0E] border border-[#0C0C0E] px-2 py-0.5 rounded uppercase">
-                COMMUNITY ARCHIVE
-              </span>
-            </h1>
-            <p className="text-[10px] text-[#666666] font-utility font-bold uppercase tracking-wider">
-              Explore 2.5D Motion Graphic Video Creations
-            </p>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <Link
-            href="/create-video"
-            className="px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider bg-[#B4F500] text-[#0C0C0E] hover:bg-[#a5e400] transition-all shadow-vox border-2 border-[#0C0C0E] flex items-center gap-1.5"
-          >
-            <span>⚡ + Create New Reel</span>
-          </Link>
-
-          <div className="pl-2 border-l-2 border-[#D8D7D2]">
-            {isSignedIn ? (
-              <UserButton
-                appearance={{
-                  elements: {
-                    userButtonAvatarBox: "w-9 h-9 rounded-full border-2 border-[#0C0C0E]",
-                  },
-                }}
-              />
-            ) : (
-              <SignInButton mode="modal">
-                <button
-                  type="button"
-                  className="px-3.5 py-2 rounded-lg text-xs font-black uppercase tracking-wider bg-[#0C0C0E] text-white hover:bg-[#222224] transition-all border border-[#0C0C0E]"
-                >
-                  Sign In
-                </button>
-              </SignInButton>
-            )}
-          </div>
-        </div>
-      </header>
+      <StudioNavbar />
 
       {/* 2. Hero Section & Stats Banner */}
       <section className="bg-white border-b-4 border-[#0C0C0E] px-6 sm:px-10 py-10 shadow-xs relative overflow-hidden">
@@ -195,7 +148,7 @@ export default function ReelsGalleryPage() {
               Explore Documentary Video Reels
             </h1>
             <p className="text-sm text-[#555555] font-medium leading-relaxed max-w-2xl">
-              Real-time directory of 2.5D documentary video reels generated with Cartesia Sonic voiceovers, Deepgram STT, dynamic Remotion animations, and paper-cutout visual assets.
+              Real-time directory of 2.5D documentary video reels generated with cinema-grade voiceovers, kinetic captions, dynamic motion animations, and tactile paper-cutout visual assets.
             </p>
           </div>
 
@@ -306,8 +259,8 @@ export default function ReelsGalleryPage() {
         ) : filteredReels.length === 0 ? (
           /* Empty Filter Result State */
           <div className="bg-white border-4 border-[#0C0C0E] rounded-3xl p-12 text-center shadow-vox max-w-xl mx-auto my-12">
-            <div className="w-16 h-16 bg-[#FFE500] border-2 border-[#0C0C0E] rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4 shadow-xs">
-              🎬
+            <div className="w-16 h-16 bg-[#FFE500] border-2 border-[#0C0C0E] rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xs">
+              <Film className="w-8 h-8 text-[#0C0C0E]" />
             </div>
             <h3 className="font-bebas text-3xl uppercase text-[#0C0C0E] mb-2">
               No Video Reels Found
@@ -319,9 +272,10 @@ export default function ReelsGalleryPage() {
             </p>
             <Link
               href="/create-video"
-              className="inline-block px-6 py-3 rounded-xl font-bebas text-lg tracking-wider uppercase bg-[#B4F500] text-[#0C0C0E] border-2 border-[#0C0C0E] hover:bg-[#a5e400] transition-all shadow-vox"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bebas text-lg tracking-wider uppercase bg-[#B4F500] text-[#0C0C0E] border-2 border-[#0C0C0E] hover:bg-[#a5e400] transition-all shadow-vox"
             >
-              + Create First Video Reel
+              <Plus className="w-4 h-4" />
+              <span>Create First Video Reel</span>
             </Link>
           </div>
         ) : (
@@ -409,8 +363,8 @@ export default function ReelsGalleryPage() {
                     {/* Center Action Overlay Icon */}
                     <div className="relative z-10 flex flex-col items-center gap-2 text-center my-auto">
                       {isCompleted ? (
-                        <div className="w-14 h-14 rounded-full bg-[#B4F500] border-2 border-[#0C0C0E] flex items-center justify-center text-xl text-[#0C0C0E] font-black shadow-vox group-hover/frame:scale-110 transition-transform">
-                          ▶
+                        <div className="w-14 h-14 rounded-full bg-[#B4F500] border-2 border-[#0C0C0E] flex items-center justify-center text-[#0C0C0E] font-black shadow-vox group-hover/frame:scale-110 transition-transform">
+                          <Play className="w-6 h-6 fill-current ml-0.5" />
                         </div>
                       ) : (
                         <div className="w-12 h-12 rounded-full border-2 border-amber-400 border-t-transparent animate-spin flex items-center justify-center text-amber-400" />
@@ -436,9 +390,10 @@ export default function ReelsGalleryPage() {
                           router.push(`/reel/${reel._id}`);
                         }
                       }}
-                      className="flex-1 py-2 rounded-xl text-xs font-bebas tracking-wider uppercase bg-[#0C0C0E] text-[#B4F500] hover:bg-[#222224] transition-colors border border-[#0C0C0E] flex items-center justify-center gap-1 cursor-pointer"
+                      className="flex-1 py-2 rounded-xl text-xs font-bebas tracking-wider uppercase bg-[#0C0C0E] text-[#B4F500] hover:bg-[#222224] transition-colors border border-[#0C0C0E] flex items-center justify-center gap-1.5 cursor-pointer"
                     >
-                      <span>▶ Quick Play</span>
+                      <Play className="w-3.5 h-3.5 fill-current" />
+                      <span>Quick Play</span>
                     </button>
 
                     <Link
@@ -446,16 +401,20 @@ export default function ReelsGalleryPage() {
                       className="px-3 py-2 rounded-xl text-xs font-bebas tracking-wider uppercase bg-[#F7F7F5] hover:bg-[#FFE500] text-[#0C0C0E] border-2 border-[#0C0C0E] transition-colors flex items-center justify-center cursor-pointer"
                       title="Open Full Studio Page"
                     >
-                      <span>👁️</span>
+                      <Eye className="w-4 h-4" />
                     </Link>
 
                     <button
                       onClick={(e) => handleDelete(reel._id, e)}
                       disabled={deletingId === reel._id}
-                      className="px-2.5 py-2 rounded-xl text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 border border-red-300 transition-colors cursor-pointer disabled:opacity-50"
+                      className="px-2.5 py-2 rounded-xl text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 border border-red-300 transition-colors cursor-pointer disabled:opacity-50 flex items-center justify-center"
                       title="Delete Reel"
                     >
-                      {deletingId === reel._id ? "..." : "🗑️"}
+                      {deletingId === reel._id ? (
+                        <Loader2 className="w-4 h-4 animate-spin text-red-600" />
+                      ) : (
+                        <Trash2 className="w-4 h-4" />
+                      )}
                     </button>
                   </div>
                 </motion.div>
@@ -500,10 +459,10 @@ export default function ReelsGalleryPage() {
                     compositionWidth={1080}
                     compositionHeight={1920}
                     fps={30}
-                    numberOfSharedAudioTags={5}
+                    numberOfSharedAudioTags={32}
                     style={{ width: "100%", height: "100%" }}
                     controls
-                    autoPlay
+                    autoPlay={false}
                     loop
                     clickToPlay
                     showVolumeControls
@@ -511,7 +470,7 @@ export default function ReelsGalleryPage() {
                 ) : (
                   <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center text-neutral-400 gap-3">
                     <span className="w-8 h-8 border-2 border-amber-400 border-t-transparent rounded-full animate-spin" />
-                    <p className="text-xs font-mono">Loading Remotion Video Composition...</p>
+                    <p className="text-xs font-mono">Loading 2.5D Video Composition...</p>
                   </div>
                 )}
               </div>
@@ -526,7 +485,7 @@ export default function ReelsGalleryPage() {
                     {previewReel.topic || previewReel.title}
                   </h2>
                   <p className="text-xs text-neutral-400 font-mono mb-4">
-                    {previewReel.storyboard?.length || 0} Scenes Assembled • Cartesia Sonic Voice
+                    {previewReel.storyboard?.length || 0} Scenes Assembled • Studio Voice Narration
                   </p>
 
                   <div className="space-y-2.5 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar border-t border-b border-neutral-800 py-3 mb-6">

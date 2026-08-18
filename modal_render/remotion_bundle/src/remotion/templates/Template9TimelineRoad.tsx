@@ -47,11 +47,17 @@ export const Template9TimelineRoad: React.FC<TemplateProps> = ({ scene, theme })
       ? kineticCaptions.highlightWords
       : headlineText.split(/\s+/).slice(0, 2);
 
-  const milestones = [
-    { year: "1997", label: "INITIAL FOUNDING" },
-    { year: "2007", label: "DIGITAL PIVOT" },
-    { year: "2024", label: "GLOBAL DOMINANCE" },
-  ];
+  const narrationYears = narrationLine.match(/\b(19\d\d|20\d\d)\b/g);
+  const milestones = narrationYears && narrationYears.length >= 2
+    ? narrationYears.slice(0, 3).map((yr, idx) => ({
+        year: yr,
+        label: `PHASE 0${idx + 1}`,
+      }))
+    : [
+        { year: "01", label: "GENESIS PHASE" },
+        { year: "02", label: "PIVOTAL SHIFT" },
+        { year: "03", label: "CURRENT STATE" },
+      ];
 
   return (
     <>
@@ -89,12 +95,12 @@ export const Template9TimelineRoad: React.FC<TemplateProps> = ({ scene, theme })
             sceneDurationFrames={durationFrames}
           >
             <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-              <div style={{ padding: "6px 10px", backgroundColor: "#111111", borderRadius: "6px", border: "1px solid #333" }}>
-                <span style={{ fontFamily: "monospace", fontSize: "14px", fontWeight: "bold", color: "#FFE600" }}>
+              <div style={{ padding: "6px 12px", backgroundColor: "#111111", borderRadius: "8px", border: "2px solid #333" }}>
+                <span style={{ fontFamily: "monospace", fontSize: "20px", fontWeight: "bold", color: "#FFE600" }}>
                   {m.year}
                 </span>
               </div>
-              <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "16px", fontWeight: 400, color: "#111111", letterSpacing: "1px" }}>
+              <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "26px", fontWeight: 400, color: "#111111", letterSpacing: "1px" }}>
                 {m.label}
               </span>
             </div>
@@ -105,7 +111,7 @@ export const Template9TimelineRoad: React.FC<TemplateProps> = ({ scene, theme })
       {/* 3. RIGHT ZONE: Typewriter Memo Document (Frame 22) */}
       <ExitAnimationWrapper
         startFrameOffset={22}
-        durationFrames={durationFrames - 26}
+        durationFrames={durationFrames}
         exitAnimation="paper_tear_out"
         style={{
           position: "absolute",

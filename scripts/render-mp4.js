@@ -25,6 +25,8 @@ async function main() {
   const inputProps = {
     plan,
     enableAudio: true,
+    enableSfx: true,
+    sfxVolume: 1.0,
     bgMusicUrl: reel.bgMusicUrl || "/music/without_me.mp3",
     bgMusicVolume: reel.bgMusicVolume ?? 0.15,
   };
@@ -35,7 +37,7 @@ async function main() {
   const outPath = path.join(__dirname, "..", outputFile);
   console.log(`rendering to ${outPath}...`);
 
-  const cmd = `npx remotion render src/remotion/index.ts BlockbusterNetflixReel "${outPath}" --props="${propsPath}" --concurrency=4`;
+  const cmd = `npx remotion render src/remotion/index.ts BlockbusterNetflixReel "${outPath}" --props="${propsPath}" --concurrency=100% --jpeg-quality=90 --gl=angle`;
   execSync(cmd, { stdio: "inherit" });
 
   console.log(`SUCCESS! Saved video to ${outPath}`);

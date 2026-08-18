@@ -141,8 +141,11 @@ const WhipZoomTransition: React.FC<{
   );
 
   const scale = interpolate(progress, [0, 1], [1, config.zoomTarget ?? 3.5]);
-  const blur = interpolate(progress, [0, 1], [0, 20]);
-  const opacity = interpolate(progress, [0.6, 1], [0, 1], {
+  const fadeOpacity = interpolate(progress, [0, 0.3, 1], [1, 0.7, 0], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  const blackOpacity = interpolate(progress, [0.6, 1], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
@@ -156,7 +159,7 @@ const WhipZoomTransition: React.FC<{
       <AbsoluteFill
         style={{
           transform: `scale(${scale}) translate(${offsetX}px, ${offsetY}px)`,
-          filter: `blur(${blur}px)`,
+          opacity: fadeOpacity,
           pointerEvents: "none",
           zIndex: 200,
         }}
@@ -164,7 +167,7 @@ const WhipZoomTransition: React.FC<{
       <AbsoluteFill
         style={{
           backgroundColor: "#000000",
-          opacity,
+          opacity: blackOpacity,
           pointerEvents: "none",
           zIndex: 201,
         }}

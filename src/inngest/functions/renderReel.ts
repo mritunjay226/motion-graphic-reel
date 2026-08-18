@@ -56,7 +56,9 @@ export const renderReelPipeline = (inngest.createFunction as any)(
         plan: executionPlan,
         themeId: themeId || reel.themeId || "vox_explainer",
         enableAudio: true,
-        bgMusicUrl: bgMusicUrl || reel.bgMusicUrl || "/music/without_me.mp3",
+        enableSfx: true,
+        sfxVolume: 1.0,
+        bgMusicUrl: bgMusicUrl || reel.bgMusicUrl || "/music/documentary_pulse.mp3",
         bgMusicVolume: bgMusicVolume ?? reel.bgMusicVolume ?? 0.15,
       };
 

@@ -5,35 +5,7 @@ import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Id } from "../../convex/_generated/dataModel";
 
-const MusicIcon = () => (
-  <svg className="w-5 h-5 text-[#FFE600]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 .895-2 3-2 3 .895 3 2zm12 0c0 1.105-1.343 2-3 2s-3-.895-3-2 .895-2 3-2 3 .895 3 2zM9 10l12-3" />
-  </svg>
-);
-
-const VolumeIcon = () => (
-  <svg className="w-4 h-4 text-[#FFE600]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-  </svg>
-);
-
-const PlayIcon = () => (
-  <svg className="w-4 h-4 fill-current ml-0.5" viewBox="0 0 24 24">
-    <path d="M8 5v14l11-7z" />
-  </svg>
-);
-
-const PauseIcon = () => (
-  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-  </svg>
-);
-
-const CheckIcon = () => (
-  <svg className="w-4 h-4 stroke-[3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-  </svg>
-);
+import { Music, Volume2, Play, Pause, Check } from "lucide-react";
 
 export interface BgMusicTrack {
   id: string;
@@ -140,7 +112,7 @@ export const BgMusicSelector: React.FC<BgMusicSelectorProps> = ({
       {/* Header */}
       <div className="flex items-center justify-between border-b border-gray-800 pb-3">
         <div className="flex items-center gap-2">
-          <MusicIcon />
+          <Music className="w-5 h-5 text-[#FFE600]" />
           <h3 className="text-base font-extrabold tracking-wide uppercase text-white">
             Background Music Selector
           </h3>
@@ -182,7 +154,7 @@ export const BgMusicSelector: React.FC<BgMusicSelectorProps> = ({
                       : "bg-gray-800 text-white hover:bg-gray-700"
                   }`}
                 >
-                  {isPlaying ? <PauseIcon /> : <PlayIcon />}
+                  {isPlaying ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current ml-0.5" />}
                 </button>
 
                 <div>
@@ -202,7 +174,7 @@ export const BgMusicSelector: React.FC<BgMusicSelectorProps> = ({
 
               {isSelected && (
                 <div className="w-6 h-6 rounded-full bg-[#FFE600] text-black flex items-center justify-center">
-                  <CheckIcon />
+                  <Check className="w-4 h-4 stroke-[3]" />
                 </div>
               )}
             </div>
@@ -215,7 +187,7 @@ export const BgMusicSelector: React.FC<BgMusicSelectorProps> = ({
         <div className="pt-2 border-t border-gray-800 space-y-2">
           <div className="flex items-center justify-between text-xs text-gray-300 font-mono">
             <div className="flex items-center gap-1.5">
-              <VolumeIcon />
+              <Volume2 className="w-4 h-4 text-[#FFE600]" />
               <span>MUSIC VOLUME DUCKING</span>
             </div>
             <span className="font-bold text-[#FFE600]">

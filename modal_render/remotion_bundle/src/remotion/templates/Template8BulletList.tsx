@@ -51,11 +51,18 @@ export const Template8BulletList: React.FC<TemplateProps> = ({ scene, theme }) =
       ? kineticCaptions.highlightWords
       : headlineText.split(/\s+/).slice(0, 2);
 
-  const bullets = [
-    "ELIMINATE UNNECESSARY OVERHEAD",
-    "AUTOMATE DISTRIBUTION CHANNELS",
-    "SCALE CUSTOMER RETENTION +340%",
-  ];
+  const events: any[] = (scene as any).events || [];
+  const eventBullets = events.map((e: any) => e.headline || e.content).filter(Boolean);
+
+  const bullets = eventBullets.length >= 2
+    ? eventBullets.slice(0, 3)
+    : narrationLine
+    ? narrationLine.split(/[.,!?—]\s+/).filter((s) => s.trim().length > 3).slice(0, 3).map((s) => s.toUpperCase())
+    : [
+        "KEY STRATEGY 01",
+        "KEY STRATEGY 02",
+        "KEY STRATEGY 03",
+      ];
 
   return (
     <>
@@ -83,18 +90,70 @@ export const Template8BulletList: React.FC<TemplateProps> = ({ scene, theme }) =
       </AnimatedLayer>
 
       {/* 2. LEFT ZONE: 3-Bullet Takeaways (Frames 8, 15, 22) */}
-      <div style={{ position: "absolute", top: "27%", left: "6%", width: "46%", display: "flex", flexDirection: "column", gap: "12px", zIndex: 15 }}>
+      <div
+        style={{
+          position: "absolute",
+          top: "24%",
+          left: "5%",
+          width: "50%",
+          display: "flex",
+          flexDirection: "column",
+          gap: "14px",
+          zIndex: 25,
+        }}
+      >
         {bullets.map((bText, idx) => (
           <AnimatedLayer
             key={idx}
             entrance="slide_right"
-            enterAtFrame={8 + idx * 7}
+            enterAtFrame={8 + idx * 6}
             sceneStartFrame={startFrame}
             sceneDurationFrames={durationFrames}
           >
-            <div style={{ background: "#FFFFFF", padding: "12px 16px", borderRadius: "10px", border: "2px solid #111111", boxShadow: "0 6px 18px rgba(0,0,0,0.1)", display: "flex", alignItems: "center", gap: "10px" }}>
-              <span style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: "#FFE600", border: "2px solid #111", flexShrink: 0 }} />
-              <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "18px", fontWeight: 400, color: "#111111", letterSpacing: "1px", lineHeight: 1.1 }}>
+            <div
+              style={{
+                backgroundColor: "#FFFFFF",
+                padding: "16px 20px",
+                borderRadius: "16px",
+                border: "3.5px solid #111113",
+                boxShadow: "6px 6px 0px #111113",
+                display: "flex",
+                alignItems: "flex-start",
+                gap: "12px",
+                boxSizing: "border-box",
+              }}
+            >
+              {/* Number Badge Tag */}
+              <div
+                style={{
+                  backgroundColor: theme?.captionHighlightBg || "#FFE600",
+                  color: "#111113",
+                  border: "2px solid #111113",
+                  borderRadius: "6px",
+                  padding: "2px 8px",
+                  fontFamily: "monospace",
+                  fontSize: "18px",
+                  fontWeight: 900,
+                  flexShrink: 0,
+                  marginTop: "2px",
+                  boxShadow: "2px 2px 0px #111113",
+                }}
+              >
+                0{idx + 1}
+              </div>
+
+              {/* High-Readability Bold Bullet Text */}
+              <span
+                style={{
+                  fontFamily: theme?.fontFamily || "'Space Grotesk', -apple-system, sans-serif",
+                  fontSize: "26px",
+                  fontWeight: 800,
+                  color: "#111113",
+                  letterSpacing: "0.2px",
+                  lineHeight: 1.2,
+                  textTransform: "uppercase",
+                }}
+              >
                 {bText}
               </span>
             </div>
@@ -102,24 +161,40 @@ export const Template8BulletList: React.FC<TemplateProps> = ({ scene, theme }) =
         ))}
       </div>
 
-      {/* 3. RIGHT ZONE: Subject Cutout Sticker (Frame 10) */}
+      {/* 3. RIGHT ZONE: Subject Cutout Sticker inside Polaroid Frame (Frame 10) */}
       <AnimatedLayer
         entrance="slide_corner_top_right"
         enterAtFrame={10}
-        position={{ top: "27%", left: "56%", width: "38%", height: "auto" }}
+        position={{ top: "24%", left: "58%", width: "38%", height: "auto" }}
         zIndex={20}
         sceneStartFrame={startFrame}
         sceneDurationFrames={durationFrames}
       >
         {primaryStickerUrl ? (
           <CharacterBoil config={boilConfig}>
-            <PaperSticker
-              src={primaryStickerUrl}
-              rotationDeg={3}
-              isSingleSubject={true}
-              width="100%"
-              height="auto"
-            />
+            <div
+              style={{
+                backgroundColor: "#FFFFFF",
+                border: "4px solid #111113",
+                borderRadius: "20px",
+                padding: "10px",
+                boxShadow: "10px 10px 0px #111113",
+                transform: "rotate(3deg)",
+              }}
+            >
+              <PaperSticker
+                src={primaryStickerUrl}
+                rotationDeg={0}
+                isSingleSubject={true}
+                width="100%"
+                height="auto"
+              />
+              <div style={{ marginTop: "10px", textAlign: "center", borderTop: "2px dashed #CCCCCC", paddingTop: "6px" }}>
+                <span style={{ fontFamily: "monospace", fontSize: "16px", fontWeight: 900, color: "#111113", letterSpacing: "1px" }}>
+                  EVIDENCE // 0{sceneId}
+                </span>
+              </div>
+            </div>
           </CharacterBoil>
         ) : null}
       </AnimatedLayer>

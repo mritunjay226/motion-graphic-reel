@@ -1,5 +1,5 @@
-import React, { useId } from "react";
-import { AbsoluteFill, useCurrentFrame, useVideoConfig, random } from "remotion";
+import React from "react";
+import { AbsoluteFill, Img, useCurrentFrame, useVideoConfig, random, staticFile } from "remotion";
 import type { FilmTreatmentConfig } from "../types";
 import type { VideoTheme } from "../utils/themes";
 
@@ -11,11 +11,14 @@ interface FilmTreatmentProps {
 /**
  * The "Texture Sandwich" — Comprehensive Cinematic & Tactile Texture Overlay Engine.
  * 
+ * Uses pre-baked 4K photographic texture overlays (35mm film grain + paper fiber)
+ * with GPU-accelerated blend modes and frame-based animated grain boil.
+ *
  * Multi-layered texture stack:
- * 1. Procedural Animated SVG Film Grain (35mm / 16mm ISO noise)
- * 2. Blueprint Paper Grid / Graph Lines (Vox Infographic Grid)
- * 3. Studio Paper & Vintage Fold Creases (Paper Fiber Texture)
- * 4. Halftone Stipple Mesh (Retro Newsprint Screen)
+ * 1. Blueprint Paper Grid / Graph Lines (Vox Infographic Grid)
+ * 2. Studio Paper & Vintage Fold Creases (Pre-baked Paper Fiber)
+ * 3. Halftone Stipple Mesh (Retro Newsprint Screen)
+ * 4. Animated 35mm Film Grain & Silver Halide Noise (Photographic Bitmap)
  * 5. Animated Dust & Scratches (Film Flecks & Hair Particles)
  * 6. CRT Scanlines (Digital Mesh)
  * 7. Cinematic Radial Vignette & Corner Blur
@@ -26,7 +29,6 @@ export const FilmTreatment: React.FC<FilmTreatmentProps> = ({
 }) => {
   const frame = useCurrentFrame();
   const { fps, width, height } = useVideoConfig();
-  const filterIdSuffix = useId().replace(/:/g, "_");
 
   // Determine active parameters from theme preset (with config overrides)
   const grainOpacity = theme?.grainOpacity ?? config.grainOpacity;
@@ -50,7 +52,7 @@ export const FilmTreatment: React.FC<FilmTreatmentProps> = ({
   const halftoneOpacity = theme?.halftoneOpacity ?? config.halftoneOpacity ?? 0.06;
 
   // Frame seeds for animated noise & jumping film flecks (changes every N frames)
-  const grainFps = config.grainFps || 10;
+  const grainFps = config.grainFps || 12;
   const grainSeed = config.grainAnimated
     ? Math.floor(frame / (fps / grainFps))
     : 0;
@@ -59,7 +61,7 @@ export const FilmTreatment: React.FC<FilmTreatmentProps> = ({
   const dustSeed = Math.floor(frame / 2);
 
   return (
-    <AbsoluteFill style={{ pointerEvents: "none", zIndex: 9999 }}>
+    <AbsoluteFill style={{ pointerEvents: "none", zIndex: 0 }}>
       {/* ── 1. BLUEPRINT PAPER GRID / GRAPH PAPER OVERLAY ── */}
       {paperGrid && paperGridOpacity > 0 && (
         <AbsoluteFill
@@ -81,8 +83,6 @@ export const FilmTreatment: React.FC<FilmTreatmentProps> = ({
         <PaperFiberOverlay
           type={paperTextureType}
           opacity={paperTextureOpacity}
-          seed={grainSeed}
-          filterId={`paper_fiber_${filterIdSuffix}`}
         />
       )}
 
@@ -99,75 +99,83 @@ export const FilmTreatment: React.FC<FilmTreatmentProps> = ({
         />
       )}
 
-      {/* ── 4. PROCEDURAL ANIMATED SVG FILM GRAIN ── */}
+      {/* ── 4. REAL 35MM CINEMATIC FILM GRAIN (Photographic Bitmap with Stop-Motion Boil) ── */}
       {grainOpacity > 0 && (
         <AbsoluteFill
           style={{
             mixBlendMode: (config.grainBlendMode as React.CSSProperties["mixBlendMode"]) || "overlay",
-            opacity: grainOpacity,
+            opacity: grainOpacity * 1.2,
+            overflow: "hidden",
+            pointerEvents: "none",
           }}
         >
-          <svg width="100%" height="100%" style={{ display: "block" }}>
-            <filter id={`film_grain_svg_${filterIdSuffix}`}>
-              <feTurbulence
-                type="fractalNoise"
-                baseFrequency="0.75"
-                numOctaves="3"
-                seed={grainSeed + 100}
-                result="noise"
-              />
-              <feColorMatrix
-                type="matrix"
-                values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.8 0"
-              />
-            </filter>
-            <rect
-              width="100%"
-              height="100%"
-              filter={`url(#film_grain_svg_${filterIdSuffix})`}
+          <div
+            style={{
+              position: "absolute",
+              inset: "-20%",
+              transform: `translate(${(grainSeed * 127) % 256}px, ${(grainSeed * 179) % 256}px)`,
+              willChange: "transform",
+            }}
+          >
+            <Img
+              src={staticFile("textures/film_grain.jpg")}
+              style={{ width: "140%", height: "140%", objectFit: "cover" }}
             />
-          </svg>
+          </div>
         </AbsoluteFill>
       )}
 
-      {/* ── 5. ANIMATED DUST & SCRATCHES FILM FLECKS ── */}
+      {/* ── 5. REAL 16MM ARCHIVAL FILM SCRATCHES & DUST OVERLAY ── */}
       {dustAndScratches && dustOpacity > 0 && (
         <DustAndScratchesOverlay
           opacity={dustOpacity}
           seed={dustSeed}
-          width={width}
-          height={height}
         />
       )}
 
-      {/* ── 6. CRT SCANLINES LAYER ── */}
+      {/* ── 6. 1980S RETRO CRT PHOSPHOR TERMINAL & SCANLINES ── */}
       {hasScanlines && scanlineOpacity > 0 && (
         <AbsoluteFill
           style={{
-            mixBlendMode: (config.scanlineBlendMode as React.CSSProperties["mixBlendMode"]) || "multiply",
+            mixBlendMode: "screen",
             opacity: scanlineOpacity,
-            backgroundImage: `repeating-linear-gradient(
-              0deg,
-              transparent,
-              transparent ${config.scanlineWidth || 1.6}px,
-              rgba(0, 0, 0, 0.9) ${config.scanlineWidth || 1.6}px,
-              rgba(0, 0, 0, 0.9) ${(config.scanlineWidth || 1.6) * 2}px
-            )`,
-            backgroundSize: `100% ${(config.scanlineWidth || 1.6) * 2}px`,
+            pointerEvents: "none",
+            overflow: "hidden",
           }}
-        />
+        >
+          {/* Green/Amber phosphor raster lines */}
+          <AbsoluteFill
+            style={{
+              backgroundImage: `repeating-linear-gradient(
+                0deg,
+                rgba(0, 255, 120, 0.12) 0px,
+                rgba(0, 255, 120, 0.12) 1.5px,
+                transparent 1.5px,
+                transparent 4px
+              )`,
+              backgroundSize: "100% 4px",
+            }}
+          />
+          {/* Subtle curved glass tube reflection & barrel vignette */}
+          <AbsoluteFill
+            style={{
+              background: `radial-gradient(ellipse at 50% 50%, transparent 60%, rgba(0, 30, 10, 0.6) 100%)`,
+              boxShadow: "inset 0 0 100px 20px rgba(0, 255, 120, 0.15)",
+            }}
+          />
+        </AbsoluteFill>
       )}
 
-      {/* ── 7. CINEMATIC VIGNETTE ── */}
+      {/* ── 7. CINEMATIC VIGNETTE (SOFT WARM LIGHT RIM, NON-DARK) ── */}
       {vignetteAmount > 0 && (
         <AbsoluteFill
           style={{
             mixBlendMode: (config.vignetteBlendMode as React.CSSProperties["mixBlendMode"]) || "multiply",
             background: `radial-gradient(
               ellipse at center,
-              transparent 45%,
-              rgba(0, 0, 0, ${vignetteAmount * 0.7}) 75%,
-              rgba(0, 0, 0, ${vignetteAmount}) 100%
+              transparent 55%,
+              rgba(35, 28, 20, ${vignetteAmount * 0.25}) 80%,
+              rgba(20, 15, 10, ${vignetteAmount * 0.45}) 100%
             )`,
           }}
         />
@@ -177,7 +185,7 @@ export const FilmTreatment: React.FC<FilmTreatmentProps> = ({
       {config.cornerBlur && (
         <AbsoluteFill
           style={{
-            boxShadow: `inset 0 0 ${config.cornerBlurSpread || 180}px ${config.cornerBlurRadius || 12}px rgba(0, 0, 0, 0.35)`,
+            boxShadow: `inset 0 0 ${config.cornerBlurSpread || 180}px ${config.cornerBlurRadius || 12}px rgba(0, 0, 0, 0.15)`,
           }}
         />
       )}
@@ -186,129 +194,62 @@ export const FilmTreatment: React.FC<FilmTreatmentProps> = ({
 };
 
 /**
- * Paper Fiber & Crease Texture component using SVG turbulence and gradient maps.
+ * Paper Fiber & Crease Texture component using high-res texture bitmaps.
  */
 const PaperFiberOverlay: React.FC<{
   type: string;
   opacity: number;
-  seed: number;
-  filterId: string;
-}> = ({ type, opacity, seed, filterId }) => {
-  if (type === "vintage_fold") {
+}> = ({ type, opacity }) => {
+  if (type === "vintage_fold" || type === "crumpled") {
     return (
-      <AbsoluteFill
-        style={{
-          mixBlendMode: "multiply",
-          opacity: opacity,
-          backgroundImage: `
-            linear-gradient(135deg, rgba(0,0,0,0.12) 0%, transparent 8%, transparent 42%, rgba(0,0,0,0.08) 50%, transparent 58%, transparent 92%, rgba(0,0,0,0.12) 100%),
-            linear-gradient(45deg, transparent 48%, rgba(255,255,255,0.15) 50%, transparent 52%)
-          `,
-        }}
-      />
+      <AbsoluteFill style={{ pointerEvents: "none", mixBlendMode: "multiply", opacity: opacity * 0.7 }}>
+        <Img
+          src={staticFile("textures/crumpled_paper.jpg")}
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+        />
+      </AbsoluteFill>
     );
   }
 
   return (
-    <AbsoluteFill
-      style={{
-        mixBlendMode: type === "grunge_canvas" ? "multiply" : "overlay",
-        opacity: opacity,
-      }}
-    >
-      <svg width="100%" height="100%" style={{ display: "block" }}>
-        <filter id={filterId}>
-          <feTurbulence
-            type="fractalNoise"
-            baseFrequency={type === "grunge_canvas" ? "0.03" : "0.05"}
-            numOctaves="4"
-            seed={seed}
-            result="paper_noise"
-          />
-          <feDiffuseLighting
-            in="paper_noise"
-            lightingColor="#ffffff"
-            surfaceScale="1.8"
-            result="light"
-          >
-            <feDistantLight azimuth="45" elevation="60" />
-          </feDiffuseLighting>
-          <feBlend mode="multiply" in="SourceGraphic" in2="light" />
-        </filter>
-        <rect width="100%" height="100%" filter={`url(#${filterId})`} fill="#F5F5F0" />
-      </svg>
+    <AbsoluteFill style={{ pointerEvents: "none", mixBlendMode: "multiply", opacity: opacity * 0.7 }}>
+      <Img
+        src={staticFile("textures/paper_fiber.jpg")}
+        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+      />
     </AbsoluteFill>
   );
 };
 
 /**
- * Animated Film Dust & Vertical Hair Scratches Overlay
- * Generates jumping dust motes and vertical scratches per frame seed.
+ * Real Archival Film Scratches & Emulsion Dust Overlay
  */
 const DustAndScratchesOverlay: React.FC<{
   opacity: number;
   seed: number;
-  width: number;
-  height: number;
-}> = ({ opacity, seed, width, height }) => {
-  const dustParticles: Array<{ x: number; y: number; r: number; opacity: number }> = [];
-  const scratches: Array<{ x: number; height: number; opacity: number }> = [];
-
-  // Generate 8 jumping dust specks per seed
-  for (let i = 0; i < 8; i++) {
-    dustParticles.push({
-      x: random(`dust-x-${seed}-${i}`) * width,
-      y: random(`dust-y-${seed}-${i}`) * height,
-      r: 1 + random(`dust-r-${seed}-${i}`) * 2.5,
-      opacity: 0.3 + random(`dust-o-${seed}-${i}`) * 0.7,
-    });
-  }
-
-  // Generate 1-2 occasional vertical scratch lines
-  const scratchCount = Math.floor(random(`scratch-cnt-${seed}`) * 2.2);
-  for (let i = 0; i < scratchCount; i++) {
-    scratches.push({
-      x: random(`scratch-x-${seed}-${i}`) * width,
-      height: 80 + random(`scratch-h-${seed}-${i}`) * 300,
-      opacity: 0.2 + random(`scratch-o-${seed}-${i}`) * 0.5,
-    });
-  }
-
+}> = ({ opacity, seed }) => {
   return (
     <AbsoluteFill
       style={{
         mixBlendMode: "screen",
-        opacity: opacity,
+        opacity: opacity * 0.7,
+        overflow: "hidden",
+        pointerEvents: "none",
       }}
     >
-      <svg width="100%" height="100%" style={{ display: "block" }}>
-        {/* Dust Specks */}
-        {dustParticles.map((pt, idx) => (
-          <circle
-            key={`dust-${idx}`}
-            cx={pt.x}
-            cy={pt.y}
-            r={pt.r}
-            fill="#FFFFFF"
-            opacity={pt.opacity}
-          />
-        ))}
-
-        {/* Vertical Scratch Lines */}
-        {scratches.map((sc, idx) => (
-          <line
-            key={`scratch-${idx}`}
-            x1={sc.x}
-            y1={100}
-            x2={sc.x + (random(`sc-dx-${seed}-${idx}`) * 4 - 2)}
-            y2={100 + sc.height}
-            stroke="#FFFFFF"
-            strokeWidth={1}
-            opacity={sc.opacity}
-          />
-        ))}
-      </svg>
+      <div
+        style={{
+          position: "absolute",
+          inset: "-10%",
+          transform: `translate(${(seed * 137) % 64}px, ${(seed * 193) % 64}px)`,
+          willChange: "transform",
+        }}
+      >
+        <Img
+          src={staticFile("textures/archival_film_scratches.jpg")}
+          style={{ width: "120%", height: "120%", objectFit: "cover" }}
+        />
+      </div>
     </AbsoluteFill>
   );
 };
-

@@ -7,6 +7,7 @@ import { PaperSticker } from "../components/PaperSticker";
 import { CharacterBoil } from "../components/CharacterBoil";
 import { GsapSvgGraphics } from "../components/GsapSvgGraphics";
 import { WordByWordCaptions } from "../components/WordByWordCaptions";
+import { VoxVideoCard } from "../components/VoxVideoCard";
 import { InfiniteBentoPan } from "@/components/remocn/infinite-bento-pan";
 import { Reel } from "@/components/remocn/reel";
 
@@ -89,55 +90,84 @@ export const Template14BentoShowcase: React.FC<TemplateProps> = ({ scene, theme 
         />
       </div>
 
-      {/* 3. CENTER LEFT: 2.5D HERO SUBJECT CUTOUT */}
-      <AnimatedLayer
-        entrance="slide_corner_top_left"
-        enterAtFrame={6}
-        position={{ top: "28%", left: "6%", width: "42%", height: "auto" }}
-        zIndex={25}
-        sceneStartFrame={startFrame}
-        sceneDurationFrames={durationFrames}
-      >
-        <CharacterBoil config={boilConfig}>
-          <PaperSticker
-            src={primaryStickerUrl}
-            rotationDeg={-2}
-            isSingleSubject={false}
-            width="100%"
-            height="auto"
-          />
-        </CharacterBoil>
-      </AnimatedLayer>
-
-      {/* 4. CENTER RIGHT: SCREENSHOT REEL CAROUSEL */}
-      {sampleShots.length > 0 && (
-        <AnimatedLayer
-          entrance="fade_scale"
-          enterAtFrame={12}
-          position={{ top: "30%", left: "52%", width: "42%", height: "auto" }}
-          zIndex={30}
-          sceneStartFrame={startFrame}
-          sceneDurationFrames={durationFrames}
+      {/* 3. MEDIA CARD OR BENTO SHOWCASE (Frame 6) */}
+      {(scene.videoUrl || scene.bRollUrl) ? (
+        <div
+          style={{
+            position: "absolute",
+            top: "26%",
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: 25,
+          }}
         >
-          <div
-            style={{
-              background: "#FFFFFF",
-              border: "5px solid #111113",
-              borderRadius: "24px",
-              padding: "16px",
-              boxShadow: "0 16px 45px rgba(0, 0, 0, 0.25)",
-            }}
+          <VoxVideoCard
+            videoUrl={scene.videoUrl || scene.bRollUrl || ""}
+            fallbackImageUrl={primaryStickerUrl}
+            personalityStickerUrl={primaryStickerUrl}
+            personalityTag="PRODUCT"
+            title={sceneTitle ? sceneTitle.replace(/^SCENE \d+:\s*/i, "").slice(0, 24) : "SYSTEM DEMO"}
+            subtitle="● LIVE PRODUCT EVIDENCE"
+            tagText="SHOWCASE"
+            rotationDeg={-1.5}
+            enterAtFrame={6}
+            theme={theme}
+            width={820}
+          />
+        </div>
+      ) : (
+        <>
+          {/* CENTER LEFT: 2.5D HERO SUBJECT CUTOUT */}
+          <AnimatedLayer
+            entrance="slide_corner_top_left"
+            enterAtFrame={6}
+            position={{ top: "28%", left: "6%", width: "42%", height: "auto" }}
+            zIndex={25}
+            sceneStartFrame={startFrame}
+            sceneDurationFrames={durationFrames}
           >
-            <Reel
-              images={sampleShots}
-              width={380}
-              height={260}
-              radius={12}
-              step={20}
-              reveal={12}
-            />
-          </div>
-        </AnimatedLayer>
+            <CharacterBoil config={boilConfig}>
+              <PaperSticker
+                src={primaryStickerUrl}
+                rotationDeg={-2}
+                isSingleSubject={false}
+                width="100%"
+                height="auto"
+              />
+            </CharacterBoil>
+          </AnimatedLayer>
+
+          {/* CENTER RIGHT: SCREENSHOT REEL CAROUSEL */}
+          {sampleShots.length > 0 && (
+            <AnimatedLayer
+              entrance="fade_scale"
+              enterAtFrame={12}
+              position={{ top: "30%", left: "52%", width: "42%", height: "auto" }}
+              zIndex={30}
+              sceneStartFrame={startFrame}
+              sceneDurationFrames={durationFrames}
+            >
+              <div
+                style={{
+                  background: "#FFFFFF",
+                  border: "5px solid #111113",
+                  borderRadius: "24px",
+                  padding: "16px",
+                  boxShadow: "0 16px 45px rgba(0, 0, 0, 0.25)",
+                }}
+              >
+                <Reel
+                  images={sampleShots}
+                  width={380}
+                  height={260}
+                  radius={12}
+                  step={20}
+                  reveal={12}
+                />
+              </div>
+            </AnimatedLayer>
+          )}
+        </>
       )}
 
       {/* 5. TOP RIGHT STAMP SEAL */}

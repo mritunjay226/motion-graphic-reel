@@ -6,6 +6,8 @@ import { executionPlan as defaultPlan } from "./data/execution-plan";
 import type { ExecutionPlan } from "./types";
 import { SceneRenderer } from "./SceneRenderer";
 import { FilmTreatment } from "./components/FilmTreatment";
+import { TactilePaperCanvas } from "./components/TactilePaperCanvas";
+import { TactileSfxLayer } from "./components/TactileSfxLayer";
 import { getVideoTheme, resolveVideoTheme, DEFAULT_STYLE_ID, DEFAULT_PALETTE_ID } from "./utils/themes";
 
 export interface BlockbusterNetflixReelProps {
@@ -15,6 +17,8 @@ export interface BlockbusterNetflixReelProps {
   styleId?: string;
   colorPaletteId?: string;
   enableAudio?: boolean;
+  enableSfx?: boolean;
+  sfxVolume?: number;
   bgMusicUrl?: string;
   bgMusicVolume?: number;
 }
@@ -31,7 +35,9 @@ export const BlockbusterNetflixReel: React.FC<BlockbusterNetflixReelProps> = ({
   styleId,
   colorPaletteId,
   enableAudio = true,
-  bgMusicUrl = "/music/without_me.mp3",
+  enableSfx = true,
+  sfxVolume = 1.0,
+  bgMusicUrl = "/music/documentary_pulse.mp3",
   bgMusicVolume = 0.15,
 }) => {
   const frame = useCurrentFrame();
@@ -72,14 +78,13 @@ export const BlockbusterNetflixReel: React.FC<BlockbusterNetflixReelProps> = ({
   const isGradientBg = activeTheme.canvasBg.includes("gradient");
 
   return (
-    <AbsoluteFill
-      style={{
-        backgroundColor: isGradientBg ? "transparent" : activeTheme.canvasBg,
-        backgroundImage: isGradientBg
-          ? activeTheme.canvasBg
-          : "radial-gradient(rgba(0,0,0,0.12) 1.5px, transparent 1.5px)",
-        backgroundSize: isGradientBg ? "100% 100%" : "24px 24px",
-      }}
+    <TactilePaperCanvas
+      baseColor={activeTheme.canvasBg || "#FAF8F2"}
+      vignetteStrength={activeTheme.vignette ?? 0.12}
+      gridOpacity={activeTheme.paperGridOpacity ?? 0.08}
+      gridSize={36}
+      showSubGrid={true}
+      showCreases={true}
     >
       {/* ── BACKGROUND MUSIC TRACK (DYNAMICALLY DUCKED & LOOPED ACROSS REEL) ── */}
       {enableAudio && resolvedBgMusicUrl && (
@@ -90,39 +95,44 @@ export const BlockbusterNetflixReel: React.FC<BlockbusterNetflixReelProps> = ({
         />
       )}
 
-      {/* ── MASTER CONTINUOUS VOICEOVER OR PER-SCENE AUDIO FALLBACK ── */}
+      {/* ── PER-SCENE FRAME-SYNCHRONIZED AUDIO (MATCHES DEEPGRAM TOKENS 100%) ── */}
       {enableAudio && (
-        isValidMasterUrl && masterAudioUrl ? (
-          <Audio
-            src={masterAudioUrl}
-            volume={1.0}
-          />
-        ) : (
-          scenes.map((scene) => {
-            const finalAudioUrl =
-              scene.audioUrl && !scene.audioUrl.includes("cdn.saas.com")
-                ? scene.audioUrl
-                : `/api/tts?text=${encodeURIComponent(scene.narrationLine)}&voiceId=${voiceId}`;
+        scenes.map((scene) => {
+          const finalAudioUrl =
+            scene.audioUrl && !scene.audioUrl.includes("cdn.saas.com")
+              ? scene.audioUrl
+              : `/api/tts?text=${encodeURIComponent(scene.narrationLine)}&voiceId=${voiceId}`;
 
-            return (
-              <Sequence
-                key={`audio-scene-${scene.sceneId}`}
-                from={scene.startFrame}
-                durationInFrames={scene.durationFrames}
-                name={`AUDIO: Scene ${scene.sceneId}`}
-                layout="none"
-              >
-                <Audio
-                  src={finalAudioUrl}
-                  volume={1.0}
-                />
-              </Sequence>
-            );
-          })
-        )
+          return (
+            <Sequence
+              key={`audio-scene-${scene.sceneId}`}
+              from={scene.startFrame}
+              durationInFrames={scene.durationFrames}
+              name={`AUDIO: Scene ${scene.sceneId}`}
+              layout="none"
+            >
+              <Audio
+                src={finalAudioUrl}
+                volume={1.0}
+              />
+            </Sequence>
+          );
+        })
       )}
 
-      {/* ── SCENE VISUAL SEQUENCE STACK ── */}
+      {/* ── BROADCAST 2.5D TACTILE FOLEY SFX LAYER ── */}
+      <TactileSfxLayer
+        scenes={scenes}
+        audioPipeline={activePlan.audioPipeline}
+        sfxVolume={sfxVolume}
+        enableAudio={enableAudio}
+        enableSfx={enableSfx}
+      />
+
+      {/* ── BACKGROUND CINEMATIC FILM & TEXTURE LAYER (STRICTLY BEHIND CONTENT) ── */}
+      <FilmTreatment config={filmTreatment} theme={activeTheme} />
+
+      {/* ── SCENE VISUAL SEQUENCE STACK (FOREGROUND: ALL SUBJECTS, TEXT, CUTOUTS, CAPTIONS) ── */}
       {scenes.map((scene) => (
         <Sequence
           key={`scene-${scene.sceneId}`}
@@ -138,9 +148,6 @@ export const BlockbusterNetflixReel: React.FC<BlockbusterNetflixReelProps> = ({
           />
         </Sequence>
       ))}
-
-      {/* Global Cinematic Film Treatment Overlay ("Texture Sandwich") */}
-      <FilmTreatment config={filmTreatment} theme={activeTheme} />
-    </AbsoluteFill>
+    </TactilePaperCanvas>
   );
 };

@@ -7,6 +7,7 @@ import { PaperSticker } from "../components/PaperSticker";
 import { CharacterBoil } from "../components/CharacterBoil";
 import { GsapSvgGraphics } from "../components/GsapSvgGraphics";
 import { WordByWordCaptions } from "../components/WordByWordCaptions";
+import { VoxVideoCard } from "../components/VoxVideoCard";
 import { MatrixDecode } from "@/components/remocn/matrix-decode";
 import { Typewriter } from "@/components/remocn/typewriter";
 

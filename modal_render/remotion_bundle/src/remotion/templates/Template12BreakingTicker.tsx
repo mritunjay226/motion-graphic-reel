@@ -8,6 +8,7 @@ import { CharacterBoil } from "../components/CharacterBoil";
 import { TypewriterParagraph } from "../components/TypewriterParagraph";
 import { ExitAnimationWrapper } from "../components/ExitAnimationWrapper";
 import { WordByWordCaptions } from "../components/WordByWordCaptions";
+import { VoxVideoCard } from "../components/VoxVideoCard";
 
 interface TemplateProps {
   scene: Scene;
@@ -63,14 +64,14 @@ export const Template12BreakingTicker: React.FC<TemplateProps> = ({ scene, theme
       <AnimatedLayer
         entrance="slide_right"
         enterAtFrame={0}
-        position={{ top: "2%", left: "0%", width: "100%", height: "32px" }}
+        position={{ top: "2%", left: "0%", width: "100%", height: "46px" }}
         zIndex={60}
         sceneStartFrame={startFrame}
         sceneDurationFrames={durationFrames}
       >
-        <div style={{ backgroundColor: "#D61C1C", color: "#FFFFFF", padding: "6px 16px", display: "flex", alignItems: "center", gap: "12px", boxShadow: "0 4px 12px rgba(214,28,28,0.4)" }}>
-          <span style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#FFFFFF", animation: "blink 1s infinite" }} />
-          <span style={{ fontFamily: "monospace", fontSize: "12px", fontWeight: 900, letterSpacing: "2px", textTransform: "uppercase" }}>
+        <div style={{ backgroundColor: "#D61C1C", color: "#FFFFFF", padding: "8px 20px", display: "flex", alignItems: "center", gap: "12px", boxShadow: "0 4px 12px rgba(214,28,28,0.4)" }}>
+          <span style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: "#FFFFFF", animation: "blink 1s infinite" }} />
+          <span style={{ fontFamily: "monospace", fontSize: "18px", fontWeight: 900, letterSpacing: "2px", textTransform: "uppercase" }}>
             ● BREAKING BULLETIN // DISRUPTION ALERT // SCENE {sceneId}
           </span>
         </div>
@@ -99,48 +100,78 @@ export const Template12BreakingTicker: React.FC<TemplateProps> = ({ scene, theme
         />
       </AnimatedLayer>
 
-      {/* 3. LEFT ZONE: News Photo Cutout Sticker (Frame 10) */}
-      <AnimatedLayer
-        entrance="slide_corner_bottom_left"
-        enterAtFrame={10}
-        position={{ top: "28%", left: "6%", width: "44%", height: "auto" }}
-        zIndex={15}
-        sceneStartFrame={startFrame}
-        sceneDurationFrames={durationFrames}
-      >
-        {primaryStickerUrl ? (
-          <CharacterBoil config={boilConfig}>
-            <PaperSticker
-              src={primaryStickerUrl}
-              rotationDeg={-3}
-              isSingleSubject={true}
-              width="100%"
-              height="auto"
-              filter="grayscale(0.6) contrast(1.2)"
-            />
-          </CharacterBoil>
-        ) : null}
-      </AnimatedLayer>
+      {/* 3. MEDIA CARD OR SPLIT NEWS ITEM (Frame 10) */}
+      {(scene.videoUrl || scene.bRollUrl) ? (
+        <div
+          style={{
+            position: "absolute",
+            top: "26%",
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: 20,
+          }}
+        >
+          <VoxVideoCard
+            videoUrl={scene.videoUrl || scene.bRollUrl || ""}
+            fallbackImageUrl={primaryStickerUrl}
+            personalityStickerUrl={primaryStickerUrl}
+            personalityTag="DISPATCH"
+            title={memoEvent?.headline || "BREAKING DISPATCH"}
+            subtitle="● LIVE ARCHIVE FEED"
+            tagText="DEVELOPING STORY"
+            variant="crt_monitor"
+            rotationDeg={-1.5}
+            enterAtFrame={10}
+            theme={theme}
+            width={820}
+          />
+        </div>
+      ) : (
+        <>
+          {/* LEFT ZONE: News Photo Cutout Sticker */}
+          <AnimatedLayer
+            entrance="slide_corner_bottom_left"
+            enterAtFrame={10}
+            position={{ top: "28%", left: "6%", width: "44%", height: "auto" }}
+            zIndex={15}
+            sceneStartFrame={startFrame}
+            sceneDurationFrames={durationFrames}
+          >
+            {primaryStickerUrl ? (
+              <CharacterBoil config={boilConfig}>
+                <PaperSticker
+                  src={primaryStickerUrl}
+                  rotationDeg={-3}
+                  isSingleSubject={true}
+                  width="100%"
+                  height="auto"
+                  filter="grayscale(0.6) contrast(1.2)"
+                />
+              </CharacterBoil>
+            ) : null}
+          </AnimatedLayer>
 
-      {/* 4. RIGHT ZONE: Typewriter Evidence Report (Frame 20) */}
-      <ExitAnimationWrapper
-        startFrameOffset={20}
-        durationFrames={durationFrames - 24}
-        exitAnimation="paper_tear_out"
-        style={{
-          position: "absolute",
-          top: "28%",
-          left: "54%",
-          width: "40%",
-          zIndex: 20,
-        }}
-      >
-        <TypewriterParagraph
-          headline={memoEvent?.headline || "EVIDENCE LOG"}
-          content={memoEvent?.content || narrationLine}
-          startFrameOffset={0}
-        />
-      </ExitAnimationWrapper>
+          {/* RIGHT ZONE: Typewriter Evidence Report */}
+          <ExitAnimationWrapper
+            startFrameOffset={20}
+            durationFrames={durationFrames}
+            exitAnimation="paper_tear_out"
+            style={{
+              position: "absolute",
+              top: "28%",
+              left: "54%",
+              width: "40%",
+              zIndex: 20,
+            }}
+          >
+            <TypewriterParagraph
+              headline={memoEvent?.headline || "EVIDENCE LOG"}
+              content={memoEvent?.content || narrationLine}
+              startFrameOffset={0}
+            />
+          </ExitAnimationWrapper>
+        </>
+      )}
 
       {/* 5. BOTTOM ZONE: Kinetic Subtitles */}
       {whisperTokens && whisperTokens.length > 0 && (

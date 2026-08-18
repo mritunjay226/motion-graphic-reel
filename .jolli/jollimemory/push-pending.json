@@ -12,31 +12,6 @@
 				}
 			],
 			"retryCount": 0
-		},
-		"83276a14bbbbfd50cf9d6db23414bc038aaec4fb": {
-			"branch": "main",
-			"enqueuedAt": "2026-08-12T06:31:04.886Z",
-			"pushTargets": [
-				{
-					"remote": "origin",
-					"remoteRef": "refs/heads/main",
-					"localSha": "83276a14bbbbfd50cf9d6db23414bc038aaec4fb"
-				}
-			],
-			"retryCount": 0
-		},
-		"43bcf796b5963ba21ce380244c4a6b5438eeb478": {
-			"branch": "main",
-			"enqueuedAt": "2026-08-12T06:49:10.801Z",
-			"retryCount": 0,
-			"pushTargets": [
-				{
-					"remote": "origin",
-					"remoteRef": "refs/heads/main",
-					"localSha": "43bcf796b5963ba21ce380244c4a6b5438eeb478"
-				}
-			],
-			"claimedAt": "2026-08-12T06:49:12.879Z"
 		}
 	}
 }

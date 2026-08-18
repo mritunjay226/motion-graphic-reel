@@ -8,7 +8,7 @@ import { CharacterBoil } from "../components/CharacterBoil";
 import { GsapSvgGraphics } from "../components/GsapSvgGraphics";
 import { VoxLeaderLine } from "../components/VoxLeaderLine";
 import { WordByWordCaptions } from "../components/WordByWordCaptions";
-import { AnimatedBarChart } from "@/components/remocn/animated-bar-chart";
+import { VoxBarChartCard } from "../components/VoxBarChartCard";
 
 interface TemplateProps {
   scene: Scene;
@@ -23,12 +23,11 @@ const boilConfig = {
 /**
  * TEMPLATE 6: `infographic_bar_chart`
  *
- * Meticulous 2.5D Spatial Math & Keyframe Staggering:
+ * Broadcast-grade 2.5D Animated Bar Chart Dossier:
  * - Frame 2: Headline Typography enters (`slide_up_word`)
- * - Frame 8: Left 3-Bar Financial Growth Chart grows Y (`bar_chart`, `left: 6%`, `width: 44%`, `top: 27%`)
- * - Frame 16: Right Subject Cutout Sticker slides from top-right (`slide_corner_top_right`, `left: 54%`, `width: 40%`)
- * - Frame 24: Dashed Leader Line badge points to peak $45B bar
- * - Frame 12+: Kinetic Subtitles at bottom 140px
+ * - Frame 8: Prominent Vox Bar Chart Card with spring-growth animation, real narration data, and big value counters
+ * - Frame 16: Subject Cutout Sticker / Brand Logo layers over top-right corner
+ * - Frame 12+: Kinetic Subtitles at bottom
  */
 export const Template6BarChart: React.FC<TemplateProps> = ({ scene, theme }) => {
   const {
@@ -42,13 +41,11 @@ export const Template6BarChart: React.FC<TemplateProps> = ({ scene, theme }) => 
     narrationLine,
   } = scene;
 
-  const primaryStickerUrl = imageKitUrls.foreground || imageKitUrls.background;
+  const primaryStickerUrl = (scene as any).imageUrl || imageKitUrls.foreground || imageKitUrls.background;
 
   const headlineText = sceneTitle
     ? sceneTitle.replace(/^SCENE \d+:\s*/i, "").toUpperCase()
     : narrationLine.toUpperCase();
-
-  const subtitleText = narrationLine ? narrationLine.toUpperCase() : "COMPARATIVE FINANCIAL METRICS";
 
   const highlightWords =
     kineticCaptions?.highlightWords && kineticCaptions.highlightWords.length > 0
@@ -80,57 +77,60 @@ export const Template6BarChart: React.FC<TemplateProps> = ({ scene, theme }) => 
         />
       </AnimatedLayer>
 
-      {/* 2. LEFT ZONE: Animated Spring Bar Chart (Remocn UI Block) */}
-      <AnimatedLayer
-        entrance="slide_up"
-        enterAtFrame={8}
-        position={{ top: "27%", left: "6%", width: "44%", height: "200px" }}
-        zIndex={15}
-        sceneStartFrame={startFrame}
-        sceneDurationFrames={durationFrames}
+      {/* 2. CENTER ZONE: Vox Animated Bar Chart Card (Frame 8) */}
+      <div
+        style={{
+          position: "absolute",
+          top: "23%",
+          left: "50%",
+          transform: "translateX(-50%)",
+          zIndex: 15,
+        }}
       >
-        <AnimatedBarChart
-          data={[35, 60, 45, 80, 55, 70, 90]}
-          labels={["2018", "2019", "2020", "2021", "2022", "2023", "2024"]}
-          barColor={theme?.captionHighlightBg || "#FFE600"}
-          width={500}
-          height={200}
-          staggerFrames={4}
+        <VoxBarChartCard
+          title={headlineText.slice(0, 22)}
+          subtitle="● VERIFIED FINANCIAL AUDIT"
+          narrationContext={narrationLine}
+          width={860}
+          height={480}
+          highlightColor={theme?.captionHighlightBg || "#FFE600"}
+          rotationDeg={-1}
+          enterAtFrame={8}
         />
-      </AnimatedLayer>
+      </div>
 
-      {/* 3. RIGHT ZONE: Subject Cutout Sticker (Frame 16) */}
-      <AnimatedLayer
-        entrance="slide_corner_top_right"
-        enterAtFrame={16}
-        position={{ top: "27%", left: "54%", width: "40%", height: "auto" }}
-        zIndex={20}
-        sceneStartFrame={startFrame}
-        sceneDurationFrames={durationFrames}
-      >
-        {primaryStickerUrl ? (
+      {/* 3. OVERLAPPING STICKER CUTOUT (Frame 16) */}
+      {primaryStickerUrl && (
+        <AnimatedLayer
+          entrance="slide_corner_top_right"
+          enterAtFrame={16}
+          position={{ top: "18%", right: "3%", width: "240px", height: "auto" }}
+          zIndex={25}
+          sceneStartFrame={startFrame}
+          sceneDurationFrames={durationFrames}
+        >
           <CharacterBoil config={boilConfig}>
-            <PaperSticker
-              src={primaryStickerUrl}
-              rotationDeg={3}
-              isSingleSubject={true}
-              width="100%"
-              height="auto"
-            />
+            <div
+              style={{
+                backgroundColor: "#FFFFFF",
+                border: "3.5px solid #111113",
+                borderRadius: "18px",
+                padding: "8px",
+                boxShadow: "8px 8px 0px #111113",
+                transform: "rotate(6deg)",
+              }}
+            >
+              <PaperSticker
+                src={primaryStickerUrl}
+                rotationDeg={0}
+                isSingleSubject={true}
+                width="100%"
+                height="auto"
+              />
+            </div>
           </CharacterBoil>
-        ) : null}
-      </AnimatedLayer>
-
-      {/* 4. LEADER LINE CALLOUT BADGE (Frame 24) */}
-      <VoxLeaderLine
-        label="PEAK REVENUE"
-        value="$45 BILLION"
-        top="56%"
-        left="36%"
-        lineWidth={60}
-        direction="left"
-        enterAtFrame={24}
-      />
+        </AnimatedLayer>
+      )}
 
       {/* 5. BOTTOM ZONE: Kinetic Subtitles */}
       {whisperTokens && whisperTokens.length > 0 && (

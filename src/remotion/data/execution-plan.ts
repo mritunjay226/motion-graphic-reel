@@ -43,23 +43,24 @@ export const baseExecutionPlan: ExecutionPlan = {
       fadeOutFrames: 45,
     },
     sfxEvents: [
-      { frame: 0, type: "deep_riser", sfxUrl: "https://cdn.saas.com/sfx/deep_riser_intro.mp3", volume: 0.6 },
-      { frame: 1, type: "whoosh", sfxUrl: "https://cdn.saas.com/sfx/whoosh_heavy.mp3", volume: 0.5 },
-      { frame: 45, type: "pop_in", sfxUrl: "https://cdn.saas.com/sfx/pop_crisp.mp3", volume: 0.4 },
-      { frame: 145, type: "whip_transition", sfxUrl: "https://cdn.saas.com/sfx/whip_whoosh.mp3", volume: 0.55 },
-      { frame: 150, type: "boom_impact", sfxUrl: "https://cdn.saas.com/sfx/boom_cinematic.mp3", volume: 0.5 },
-      { frame: 195, type: "pop_in", sfxUrl: "https://cdn.saas.com/sfx/pop_crisp.mp3", volume: 0.4 },
-      { frame: 295, type: "whip_transition", sfxUrl: "https://cdn.saas.com/sfx/whip_whoosh.mp3", volume: 0.55 },
-      { frame: 300, type: "slam_impact", sfxUrl: "https://cdn.saas.com/sfx/slam_impact.mp3", volume: 0.5 },
-      { frame: 345, type: "laugh_sfx", sfxUrl: "https://cdn.saas.com/sfx/subtle_laugh.mp3", volume: 0.3 },
-      { frame: 445, type: "whip_transition", sfxUrl: "https://cdn.saas.com/sfx/whip_whoosh.mp3", volume: 0.55 },
-      { frame: 450, type: "dark_reveal", sfxUrl: "https://cdn.saas.com/sfx/dark_reveal.mp3", volume: 0.5 },
-      { frame: 595, type: "tension_riser", sfxUrl: "https://cdn.saas.com/sfx/tension_riser.mp3", volume: 0.45 },
-      { frame: 600, type: "cash_register", sfxUrl: "https://cdn.saas.com/sfx/cash_register.mp3", volume: 0.5 },
-      { frame: 650, type: "shimmer", sfxUrl: "https://cdn.saas.com/sfx/shimmer_success.mp3", volume: 0.35 },
-      { frame: 745, type: "whip_transition", sfxUrl: "https://cdn.saas.com/sfx/whip_whoosh.mp3", volume: 0.55 },
-      { frame: 750, type: "glass_shatter", sfxUrl: "https://cdn.saas.com/sfx/glass_shatter.mp3", volume: 0.55 },
-      { frame: 870, type: "final_boom", sfxUrl: "https://cdn.saas.com/sfx/final_boom_reverb.mp3", volume: 0.6 },
+      { frame: 0, type: "cinematic_sub_boom", sfxUrl: "/sfx/cinematic_sub_boom.mp3", volume: 0.32 },
+      { frame: 1, type: "whip_whoosh", sfxUrl: "/sfx/whip_whoosh.mp3", volume: 0.22 },
+      { frame: 3, type: "marker_highlighter", sfxUrl: "/sfx/marker_highlighter.mp3", volume: 0.18 },
+      { frame: 45, type: "tactile_pop", sfxUrl: "/sfx/tactile_pop.mp3", volume: 0.20 },
+      { frame: 145, type: "whip_whoosh", sfxUrl: "/sfx/whip_whoosh.mp3", volume: 0.22 },
+      { frame: 150, type: "camera_shutter", sfxUrl: "/sfx/camera_shutter.mp3", volume: 0.24 },
+      { frame: 195, type: "tactile_pop", sfxUrl: "/sfx/tactile_pop.mp3", volume: 0.20 },
+      { frame: 295, type: "paper_rip", sfxUrl: "/sfx/paper_rip.mp3", volume: 0.22 },
+      { frame: 300, type: "rubber_stamp", sfxUrl: "/sfx/rubber_stamp.mp3", volume: 0.32 },
+      { frame: 345, type: "record_scratch", sfxUrl: "/sfx/record_scratch.mp3", volume: 0.24 },
+      { frame: 445, type: "whip_whoosh", sfxUrl: "/sfx/whip_whoosh.mp3", volume: 0.22 },
+      { frame: 450, type: "paper_slide", sfxUrl: "/sfx/paper_slide.mp3", volume: 0.18 },
+      { frame: 595, type: "tension_riser", sfxUrl: "/sfx/tension_riser.mp3", volume: 0.18 },
+      { frame: 600, type: "cash_register", sfxUrl: "/sfx/cash_register.mp3", volume: 0.26 },
+      { frame: 650, type: "success_chime", sfxUrl: "/sfx/success_chime.mp3", volume: 0.20 },
+      { frame: 745, type: "whip_whoosh", sfxUrl: "/sfx/whip_whoosh.mp3", volume: 0.22 },
+      { frame: 750, type: "glass_shatter", sfxUrl: "/sfx/glass_shatter.mp3", volume: 0.24 },
+      { frame: 870, type: "cinematic_boom_heavy", sfxUrl: "/sfx/cinematic_boom_heavy.mp3", volume: 0.30 },
     ],
   },
 
@@ -994,7 +995,10 @@ export const executionPlan = getResolvedExecutionPlan();
  * Dynamically builds scenes, whisper caption tokens, narration lines, single-subject cutouts,
  * and Remotion timeline durations from convexReel.storyboard.
  */
-export function convertConvexReelToExecutionPlan(convexReel: any): ExecutionPlan {
+export function convertConvexReelToExecutionPlan(
+  convexReel: any,
+  audioDurations?: Record<string, number>
+): ExecutionPlan {
   const resolvedPlan = getResolvedExecutionPlan();
 
   if (!convexReel || !convexReel.storyboard || !Array.isArray(convexReel.storyboard) || convexReel.storyboard.length === 0) {
@@ -1013,6 +1017,7 @@ export function convertConvexReelToExecutionPlan(convexReel: any): ExecutionPlan
   const dynamicScenes = convexReel.storyboard.map((dbScene: any, index: number) => {
     const sceneId = dbScene.sceneId || index + 1;
     const narration = dbScene.narration || "";
+    const audioUrl = dbScene.audioUrl || "";
 
     // Extract real Whisper tokens from DB (Deepgram STT) or generate fallback tokens
     const rawWhisperTokens = (dbScene.whisperTokens && Array.isArray(dbScene.whisperTokens) && dbScene.whisperTokens.length > 0)
@@ -1024,17 +1029,27 @@ export function convertConvexReelToExecutionPlan(convexReel: any): ExecutionPlan
       ? (lastToken.endFrame || Math.ceil((lastToken.endMs || 0) / 33.33))
       : 0;
 
-    const baseDuration = dbScene.durationFrames || (dbScene.audioDurationSec ? Math.ceil(dbScene.audioDurationSec * 30) : 0);
-    const durationFrames = Math.max(135, baseDuration, lastTokenEndFrame + 15);
+    // Dynamic audio duration detection (measured browser audio > DB audioDurationSec > whisper tokens):
+    const measuredSec = (audioDurations && audioUrl && audioDurations[audioUrl])
+      ? audioDurations[audioUrl]
+      : (dbScene.audioDurationSec || 0);
 
-    const startFrame = (typeof dbScene.startFrame === "number" && dbScene.startFrame >= currentFrameAcc)
-      ? dbScene.startFrame
-      : currentFrameAcc;
+    const audioDurationFrames = measuredSec > 0 ? Math.ceil(measuredSec * 30) : 0;
 
-    const whisperTokens = rawWhisperTokens;
+    // Pure dynamic scene duration:
+    let durationFrames = dbScene.durationFrames || 0;
+    if (audioDurationFrames > 0) {
+      durationFrames = audioDurationFrames;
+    } else if (lastTokenEndFrame > 0) {
+      durationFrames = lastTokenEndFrame;
+    } else if (!durationFrames || durationFrames <= 0) {
+      const words = narration.trim().split(/\s+/).filter(Boolean).length;
+      durationFrames = Math.max(30, Math.ceil(words * 8));
+    }
 
-    currentFrameAcc = startFrame + durationFrames;
-
+    // Contiguous scene placement with zero overlapping or empty frame gaps
+    const startFrame = currentFrameAcc;
+    currentFrameAcc += durationFrames;
     const endFrame = startFrame + durationFrames;
     const durationSeconds = Math.round((durationFrames / 30) * 10) / 10;
 
@@ -1077,8 +1092,10 @@ export function convertConvexReelToExecutionPlan(convexReel: any): ExecutionPlan
       gsapType: dbScene.gsapType || (baseScene as any).gsapType || "grid_lines",
       entranceType: dbScene.entranceType || (baseScene as any).entranceType || "slide_corner_bottom_left",
       events: eventsList,
-      whisperTokens,
+      whisperTokens: rawWhisperTokens,
       audioUrl: dbScene.audioUrl || "",
+      videoUrl: dbScene.videoUrl || dbScene.bRollUrl || "",
+      bRollUrl: dbScene.bRollUrl || dbScene.videoUrl || "",
       imageKitUrls: {
         background: bgUrl,
         foreground: foregroundUrl,
@@ -1091,7 +1108,8 @@ export function convertConvexReelToExecutionPlan(convexReel: any): ExecutionPlan
     };
   });
 
-  const totalFrames = Math.max(900, currentFrameAcc);
+  // Dynamic total duration matching the exact sum of all scenes (ZERO blank ending frames)
+  const totalFrames = currentFrameAcc;
   const totalSeconds = Math.round((totalFrames / 30) * 10) / 10;
 
   return {
@@ -1112,18 +1130,18 @@ export function convertConvexReelToExecutionPlan(convexReel: any): ExecutionPlan
 }
 
 /**
- * Generate Whisper token timestamps for narration text relative to scene startFrame.
+ * Generate Whisper token timestamps for narration text relative to scene startFrame (0-indexed).
  */
-function generateTokensFromText(text: string, sceneStartFrame: number): WhisperToken[] {
+function generateTokensFromText(text: string, sceneStartFrame: number = 0): WhisperToken[] {
   const words = text.split(/\s+/).filter(Boolean);
-  // Cartesia TTS sonic-3 speech pace: ~180ms per word (5.4 frames/word @ 30 FPS)
-  const durationPerWordMs = 180;
+  // Cartesia TTS sonic-3 speech pace: ~200ms per word (6.0 frames/word @ 30 FPS)
+  const durationPerWordMs = 200;
 
   return words.map((word, idx) => {
     const startMs = idx * durationPerWordMs;
     const endMs = (idx + 1) * durationPerWordMs;
-    const wordStartFrame = sceneStartFrame + Math.floor(startMs / 33.33);
-    const wordEndFrame = sceneStartFrame + Math.max(1, Math.ceil(endMs / 33.33));
+    const wordStartFrame = Math.floor(startMs / 33.33);
+    const wordEndFrame = Math.max(wordStartFrame + 2, Math.ceil(endMs / 33.33));
 
     return {
       word,

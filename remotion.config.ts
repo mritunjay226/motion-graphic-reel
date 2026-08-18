@@ -3,6 +3,8 @@ import path from "path";
 
 Config.setEntryPoint("./src/remotion/index.ts");
 Config.setPublicDir("./public");
+Config.setChromiumDisableWebSecurity(true);
+Config.setDelayRenderTimeoutInMilliseconds(180000);
 
 Config.overrideWebpackConfig((currentConfiguration) => {
   return {

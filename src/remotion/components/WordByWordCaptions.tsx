@@ -1,15 +1,17 @@
 import React, { useMemo } from "react";
-import { useCurrentFrame, spring, useVideoConfig } from "remotion";
+import { useCurrentFrame, spring, useVideoConfig, interpolate } from "remotion";
 import type { WhisperToken, KineticCaptionConfig } from "../types";
 import { getFontFamily, FONTS } from "../utils/fonts";
 
+export type CaptionAestheticStyle = "vox_marker" | "hormozi_glow" | "karaoke_fade";
+
 interface WordByWordCaptionsProps {
-  /** Whisper word tokens with frame timing */
+  /** Whisper word tokens with frame timing relative to scene start (0-indexed) */
   tokens: WhisperToken[];
   /** Kinetic caption styling config */
   config?: Partial<KineticCaptionConfig>;
-  /** Scene start frame (absolute) — tokens use absolute frames */
-  sceneStartFrame: number;
+  /** Scene start frame (for absolute timeline context if needed) */
+  sceneStartFrame?: number;
   /** Theme font family override */
   themeFontFamily?: string;
   /** Theme caption text color override */
@@ -20,157 +22,241 @@ interface WordByWordCaptionsProps {
   themeHighlightBg?: string;
   /** Theme shadow color override */
   themeShadowColor?: string;
-  /** Max words per subtitle page (default 6 for 1-2 clean lines) */
+  /** Max words per subtitle page (default 4-5 words for fast, effortless reading) */
   maxWordsPerPage?: number;
+  /** Visual aesthetic style (default vox_marker) */
+  stylePreset?: CaptionAestheticStyle;
 }
 
 /**
- * Paged Word-by-Word Caption System (1-2 Clean Lines Max).
+ * High-Readability, Zero-Layout-Shift Kinetic Caption System.
  *
- * Chunks narration tokens into clean 5-6 word pages that pop in and out,
- * ensuring subtitles NEVER accumulate into long 5-6 line blocks.
- * Rendered with loaded Google Fonts, high-contrast stroke outlines, and active word pop animations.
+ * 1. Automatic Timestamp Normalization: Ensures tokens are 100% frame-locked to scene local time.
+ * 2. Continuous Visibility: Subtitle card stays smoothly present on screen with zero flashing.
+ * 3. Exact Syllable Highlighting: Words highlight during their spoken acoustic window and relax afterwards.
+ * 4. Zero Layout Shift: Fixed geometry on all words prevents reflow jumping.
  */
 export const WordByWordCaptions: React.FC<WordByWordCaptionsProps> = ({
   tokens,
   config = {},
-  sceneStartFrame,
   themeFontFamily,
   themeTextColor,
   themeHighlightColor,
   themeHighlightBg,
   themeShadowColor,
-  maxWordsPerPage = 6,
+  maxWordsPerPage = 5,
+  stylePreset = "vox_marker",
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const localFrame = frame;
 
   const sampleText = useMemo(() => (tokens || []).map((t) => t.word).join(" "), [tokens]);
   const rawFontFamily = themeFontFamily || config.fontFamily || FONTS.bebasNeue;
   const activeFontFamily = getFontFamily(rawFontFamily, sampleText);
   const activeHighlightBg = themeHighlightBg || "#FFE500";
   const baseTextColor = themeTextColor || config.textColor || "#FFFFFF";
-  const highlightTextColor = activeHighlightBg
-    ? "#0C0C0E"
-    : (themeHighlightColor || config.highlightColor || "#FF2D55");
-  const shadowColor = themeShadowColor || config.shadowConfig?.color || "rgba(0, 0, 0, 0.85)";
 
-  const fontSize = config.fontSize || 42;
-  const fontWeight = config.fontWeight || 800;
-  const highlightScale = config.highlightScale || 1.25;
-  const highlightWords = config.highlightWords || [];
+  const positionBottom = config.position?.bottom ?? 96;
 
-  const springDamping = config.springConfig?.damping ?? 14;
-  const springStiffness = config.springConfig?.stiffness ?? 160;
-  const springMass = config.springConfig?.mass ?? 0.5;
-
-  const positionBottom = config.position?.bottom ?? 160;
-
-  // Chunk Whisper tokens into clean 5-6 word subtitle pages
-  const pages = useMemo(() => {
+  // ─── 0. AUTOMATIC TIMECODE NORMALIZATION (0-RELATIVE TO SCENE) ─────────────
+  const normalizedTokens = useMemo(() => {
     if (!tokens || tokens.length === 0) return [];
+    
+    // Filter out blank tokens
+    const valid = tokens.filter(
+      (t) => t.word && t.word.trim().length > 0 && t.word.trim() !== "—" && t.word.trim() !== "-"
+    );
+    if (valid.length === 0) return [];
 
-    const result: WhisperToken[][] = [];
+    // If tokens are absolute (e.g. minStart >= 30 from timeline offset), normalize to 0-start
+    const minStart = Math.min(...valid.map((t) => t.startFrame ?? 0));
+    const offset = minStart >= 30 ? minStart : 0;
+
+    return valid.map((t) => {
+      const sFrame = Math.max(0, (t.startFrame ?? 0) - offset);
+      const eFrame = Math.max(sFrame + 2, (t.endFrame ?? (sFrame + 4)) - offset);
+      return {
+        ...t,
+        startFrame: sFrame,
+        endFrame: eFrame,
+      };
+    });
+  }, [tokens]);
+
+  // ─── 1. SMART CHUNKING (SEAMLESS MULTI-WORD PAGES) ─────────────────────────
+  const pages = useMemo(() => {
+    if (!normalizedTokens || normalizedTokens.length === 0) return [];
+
+    const result: { tokens: WhisperToken[]; startFrame: number; endFrame: number }[] = [];
     let currentChunk: WhisperToken[] = [];
 
-    tokens.forEach((token, idx) => {
+    normalizedTokens.forEach((token, idx) => {
       currentChunk.push(token);
-      const isPunctuationEnd = /[.?!;,—]$/.test(token.word);
 
-      if (
-        currentChunk.length >= maxWordsPerPage ||
-        isPunctuationEnd ||
-        idx === tokens.length - 1
-      ) {
-        result.push(currentChunk);
+      const isPunctuationEnd = /[.?!]$/.test(token.word);
+      const isLastToken = idx === normalizedTokens.length - 1;
+      const isChunkFull = currentChunk.length >= maxWordsPerPage;
+
+      if (isChunkFull || isPunctuationEnd || isLastToken) {
+        // First page starts at frame 0 so captions are visible immediately
+        const chunkStart = result.length === 0 ? 0 : (currentChunk[0].startFrame || 0);
+        const chunkLast = currentChunk[currentChunk.length - 1];
+        const rawEnd = (chunkLast.endFrame || chunkStart + 20);
+
+        result.push({
+          tokens: [...currentChunk],
+          startFrame: chunkStart,
+          endFrame: rawEnd,
+        });
+
         currentChunk = [];
       }
     });
 
+    // Seamless back-to-back transitions without blank gaps between pages
+    for (let i = 0; i < result.length - 1; i++) {
+      result[i].endFrame = result[i + 1].startFrame;
+    }
+    if (result.length > 0) {
+      result[result.length - 1].endFrame = 9999;
+    }
+
     return result;
-  }, [tokens, maxWordsPerPage]);
+  }, [normalizedTokens, maxWordsPerPage]);
 
   if (pages.length === 0) return null;
 
-  // Find currently active page for localFrame
-  const activePageIndex = pages.findIndex((page, pIdx) => {
-    const pageStartFrame = page[0].startFrame;
-    const nextPage = pages[pIdx + 1];
-    const pageEndFrame = nextPage
-      ? nextPage[0].startFrame - 1
-      : page[page.length - 1].endFrame + 18;
-
-    return localFrame >= pageStartFrame && localFrame <= pageEndFrame;
+  // Find currently active page for frame
+  const activePageIndex = pages.findIndex((page) => {
+    return frame >= page.startFrame && frame < page.endFrame;
   });
 
-  // Fallback to active page or last active page if in bounds
-  const currentDisplayPage =
+  const activePage =
     activePageIndex !== -1
       ? pages[activePageIndex]
-      : localFrame >= pages[0][0].startFrame
-      ? pages[pages.length - 1]
-      : null;
+      : pages[pages.length - 1];
 
-  if (!currentDisplayPage) return null;
+  if (!activePage) return null;
 
-  // Dynamic theme-aware card & typography colors
-  const isDarkThemeText =
-    themeTextColor === "#FFFFFF" ||
-    themeTextColor === "#00FFFF" ||
-    themeTextColor === "#FFFDD0" ||
-    themeTextColor === "#00FF66";
+  // Smooth page fade in (2-frame ease)
+  const pageAge = frame - activePage.startFrame;
+  const pageOpacity = interpolate(pageAge, [0, 2], [0.8, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
 
-  const containerBg = isDarkThemeText ? "rgba(10, 14, 22, 0.94)" : "#FFFFFF";
-  const containerBorderColor = isDarkThemeText ? (themeTextColor || "#00FFFF") : "#111111";
-  const wordBaseTextColor = isDarkThemeText ? "#FFFFFF" : (themeTextColor || "#111111");
+  // ─── 2. STYLISTIC CONFIGURATION (VOX MARKER / HORMOZI / KARAOKE) ──────────
+  const isDarkText =
+    baseTextColor === "#FFFFFF" ||
+    baseTextColor === "#00FFFF" ||
+    baseTextColor === "#FFFDD0" ||
+    baseTextColor === "#00FF66";
+
+  let containerStyle: React.CSSProperties = {};
+
+  if (stylePreset === "vox_marker") {
+    containerStyle = {
+      backgroundColor: isDarkText ? "rgba(12, 14, 20, 0.94)" : "#FFFFFF",
+      border: `3.5px solid ${isDarkText ? "#00FFFF" : "#111111"}`,
+      borderRadius: "18px",
+      boxShadow: `8px 8px 0px ${isDarkText ? "rgba(0,0,0,0.8)" : "#111111"}`,
+      padding: "16px 28px",
+    };
+  } else if (stylePreset === "hormozi_glow") {
+    containerStyle = {
+      backgroundColor: "transparent",
+      border: "none",
+      boxShadow: "none",
+      padding: "8px 16px",
+    };
+  } else {
+    // karaoke_fade
+    containerStyle = {
+      backgroundColor: "rgba(0, 0, 0, 0.88)",
+      border: "1.5px solid rgba(255, 255, 255, 0.15)",
+      borderRadius: "14px",
+      boxShadow: "0 8px 24px rgba(0, 0, 0, 0.5)",
+      padding: "14px 24px",
+    };
+  }
 
   return (
     <div
       style={{
         position: "absolute",
-        bottom: positionBottom || 140,
+        bottom: positionBottom,
         left: "50%",
         transform: "translateX(-50%)",
         display: "flex",
         flexWrap: "wrap",
         justifyContent: "center",
         alignItems: "center",
-        gap: "8px 16px",
-        padding: "18px 32px",
+        gap: "6px 12px",
         maxWidth: "92%",
-        backgroundColor: containerBg,
-        border: `4px solid ${containerBorderColor}`,
-        borderRadius: "20px",
-        boxShadow: `10px 10px 0px ${isDarkThemeText ? "rgba(0,0,0,0.8)" : "#111111"}`,
         zIndex: 100,
         boxSizing: "border-box",
+        opacity: pageOpacity,
+        willChange: "opacity",
+        ...containerStyle,
       }}
     >
-      {currentDisplayPage.map((token, i) => {
-        const isVisible = localFrame >= token.startFrame;
-        if (!isVisible) return null;
+      {activePage.tokens.map((token, i) => {
+        const wordEnd = (token.endFrame || token.startFrame + 5) + 1;
+        const isSpoken = frame >= token.startFrame;
+        const isCurrentlyActive = frame >= token.startFrame && frame <= wordEnd;
 
-        const tokenLocalFrame = localFrame - token.startFrame;
-        const cleanWord = token.word.replace(/[.,!?;:—$]/g, "").toLowerCase();
-        
-        const isHighlight =
-          highlightWords.some(
-            (hw) => cleanWord === hw.replace(/[.,!?;:—$]/g, "").toLowerCase()
-          ) || (highlightWords.length === 0 && i === 0);
+        const tokenLocalFrame = Math.max(0, frame - token.startFrame);
 
-        // Spring animation for pop-in
-        const popScale = spring({
-          frame: tokenLocalFrame,
-          fps,
-          config: {
-            damping: springDamping,
-            stiffness: springStiffness,
-            mass: springMass,
-          },
-        });
+        // Smooth in-place spring pop (transforms without pushing neighbor words)
+        const popScale = isCurrentlyActive
+          ? spring({
+              frame: tokenLocalFrame,
+              fps,
+              config: { damping: 14, stiffness: 220, mass: 0.45 },
+            }) * 1.08
+          : 1.0;
 
-        const finalScale = isHighlight ? popScale * 1.08 : popScale;
+        // ─── WORD RENDERING BASED ON AESTHETIC STYLE ────────────────────────
+        let wordColor = "#FFFFFF";
+        let wordBg = "transparent";
+        let wordShadow = "none";
+        let textStroke = "none";
+        let wordBorder = "2.5px solid transparent"; // Fixed border thickness prevents layout shift!
+
+        if (stylePreset === "vox_marker") {
+          if (isCurrentlyActive) {
+            wordColor = "#0C0C0E";
+            wordBg = activeHighlightBg; // High-visibility yellow marker
+            wordBorder = "2.5px solid #111111";
+            wordShadow = "3px 3px 0px #111111";
+          } else if (isSpoken) {
+            wordColor = isDarkText ? "#FFFFFF" : "#111111";
+            wordBg = "transparent";
+          } else {
+            wordColor = isDarkText ? "rgba(255, 255, 255, 0.45)" : "rgba(17, 17, 17, 0.45)";
+            wordBg = "transparent";
+          }
+        } else if (stylePreset === "hormozi_glow") {
+          textStroke = "3.5px #000000";
+          if (isCurrentlyActive) {
+            wordColor = "#FFE600"; // Glowing yellow
+            wordShadow = "0 0 16px rgba(255, 230, 0, 0.8)";
+          } else if (isSpoken) {
+            wordColor = "#FFFFFF";
+          } else {
+            wordColor = "rgba(255, 255, 255, 0.5)";
+          }
+        } else {
+          // karaoke_fade
+          if (isCurrentlyActive) {
+            wordColor = "#FFE500";
+            wordShadow = "0 0 12px rgba(255, 229, 0, 0.6)";
+          } else if (isSpoken) {
+            wordColor = "#FFFFFF";
+          } else {
+            wordColor = "rgba(255, 255, 255, 0.4)";
+          }
+        }
 
         return (
           <span
@@ -179,19 +265,23 @@ export const WordByWordCaptions: React.FC<WordByWordCaptionsProps> = ({
               display: "inline-block",
               position: "relative",
               fontFamily: activeFontFamily,
-              fontSize: "36px",
-              fontWeight: activeFontFamily.toLowerCase().includes("bebas") ? 400 : (isHighlight ? 900 : 700),
-              color: isHighlight ? (themeHighlightColor || (activeHighlightBg === "#FFE600" ? "#0C0C0E" : "#FFFFFF")) : wordBaseTextColor,
-              transform: `scale(${finalScale})`,
-              transformOrigin: "center bottom",
-              padding: isHighlight ? "4px 12px" : "0 3px",
-              backgroundColor: isHighlight ? activeHighlightBg : "transparent",
-              border: isHighlight ? `2px solid ${containerBorderColor}` : "none",
-              borderRadius: isHighlight ? "6px" : "0",
-              boxShadow: isHighlight ? `3px 3px 0px ${isDarkThemeText ? "rgba(0,0,0,0.6)" : "#111111"}` : "none",
-              letterSpacing: "0.2px",
-              lineHeight: 1.25,
-              willChange: "transform",
+              fontSize: "48px",
+              fontWeight: activeFontFamily.toLowerCase().includes("bebas") ? 400 : 800,
+              color: wordColor,
+              backgroundColor: wordBg,
+              border: wordBorder,
+              borderRadius: "10px",
+              boxShadow: wordShadow,
+              WebkitTextStroke: textStroke,
+              transform: `scale(${popScale})`,
+              transformOrigin: "center center",
+              // FIXED PADDING & MARGIN = ZERO LAYOUT SHIFT
+              padding: "6px 14px",
+              margin: "3px 4px",
+              letterSpacing: "1px",
+              lineHeight: 1.2,
+              willChange: "transform, background-color, color",
+              transition: "background-color 0.1s ease-out, color 0.1s ease-out",
             }}
           >
             {token.word}

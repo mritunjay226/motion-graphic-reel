@@ -10,6 +10,7 @@ import { GsapSvgGraphics } from "../components/GsapSvgGraphics";
 import { VoxLeaderLine } from "../components/VoxLeaderLine";
 import { WordByWordCaptions } from "../components/WordByWordCaptions";
 import { VoxPolaroidCard } from "../components/VoxPolaroidCard";
+import { VoxVideoCard } from "../components/VoxVideoCard";
 
 interface TemplateProps {
   scene: Scene;
@@ -96,26 +97,41 @@ export const Template1CenterHero: React.FC<TemplateProps> = ({ scene, theme }) =
         style={{ top: "24%", left: "5%", width: "90%", height: "42%", opacity: 0.14, zIndex: 5 }}
       />
 
-      {/* 3. HERO SUBJECT CUTOUT CARD (Frame 6): Signature 2.5D Polaroid Card Anchor */}
+      {/* 3. HERO SUBJECT CARD (Frame 6): Renders 2.5D Video Card or Polaroid Card */}
       <div
         style={{
           position: "absolute",
-          top: "28%",
+          top: "26%",
           left: "50%",
           transform: "translateX(-50%)",
           zIndex: 20,
         }}
       >
-        <VoxPolaroidCard
-          imageUrl={primaryStickerUrl}
-          title={sceneTitle ? sceneTitle.replace(/^SCENE \d+:\s*/i, "").slice(0, 24) : "PRIMARY SUBJECT"}
-          subtitle="DOCUMENTARY PROOF"
-          cornerTag="PROPOSED BUYOUT"
-          stampText="DISRUPTED"
-          rotationDeg={-3}
-          enterAtFrame={6}
-          theme={theme}
-        />
+        {scene.videoUrl || scene.bRollUrl ? (
+          <VoxVideoCard
+            videoUrl={scene.videoUrl || scene.bRollUrl || ""}
+            fallbackImageUrl={primaryStickerUrl}
+            personalityStickerUrl={primaryStickerUrl}
+            personalityTag={headlineText ? headlineText.split(/\s+/)[0].slice(0, 10) : "EVIDENCE"}
+            title={sceneTitle ? sceneTitle.replace(/^SCENE \d+:\s*/i, "").slice(0, 24) : "PRIMARY EVIDENCE"}
+            subtitle="● VERIFIED 4K ARCHIVE"
+            tagText="HISTORICAL PROOF"
+            rotationDeg={-2.5}
+            enterAtFrame={6}
+            theme={theme}
+          />
+        ) : (
+          <VoxPolaroidCard
+            imageUrl={primaryStickerUrl}
+            title={sceneTitle ? sceneTitle.replace(/^SCENE \d+:\s*/i, "").slice(0, 24) : "PRIMARY SUBJECT"}
+            subtitle="DOCUMENTARY PROOF"
+            cornerTag={scene.narrationLine ? scene.narrationLine.slice(0, 20).toUpperCase() : "VERIFIED PROOF"}
+            stampText="EVIDENCE"
+            rotationDeg={-3}
+            enterAtFrame={6}
+            theme={theme}
+          />
+        )}
       </div>
 
       {/* 4. DATA-DRIVEN RUBBER STAMP SEAL (Frame 18): Closes curiosity gap with explicit stamp text */}

@@ -87,7 +87,7 @@ export default function ScrollMotionReelSim() {
           <div className="flex items-center gap-3">
             <span className="bg-[#111111] text-[#B5F500] px-3.5 py-1.5 rounded-lg border-2 border-[#B5F500]/60 uppercase tracking-widest font-black flex items-center gap-2 shadow-lg">
               <span className="w-2.5 h-2.5 rounded-full bg-[#B5F500] animate-ping" />
-              <span>LIVE REMOTION SCROLL ENGINE</span>
+              <span>LIVE 2.5D MOTION SCROLL ENGINE</span>
             </span>
 
             {/* Scene Jump Navigation Pills */}

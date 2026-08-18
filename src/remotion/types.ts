@@ -302,6 +302,8 @@ export interface Scene {
   animationRules: AnimationRules;
   kineticCaptions: KineticCaptionConfig;
   audioUrl?: string;
+  videoUrl?: string;
+  bRollUrl?: string;
   visualType?: string;
   layoutType?: string;
 }

@@ -34,6 +34,7 @@ const boilConfig = {
  * - Frame 12+: Kinetic Subtitles at bottom 140px
  */
 import { VoxPolaroidCard } from "../components/VoxPolaroidCard";
+import { VoxVideoCard } from "../components/VoxVideoCard";
 
 export const Template2SplitMemo: React.FC<TemplateProps> = ({ scene, theme }) => {
   const frame = useCurrentFrame();
@@ -89,48 +90,43 @@ export const Template2SplitMemo: React.FC<TemplateProps> = ({ scene, theme }) =>
         />
       </AnimatedLayer>
 
-      {/* 2. CENTER HERO CARD (Frame 6) */}
+      {/* 2. CENTER HERO MEDIA CARD (Frame 6) */}
       <div
         style={{
           position: "absolute",
-          top: "23%",
+          top: "24%",
           left: "50%",
           transform: "translateX(-50%)",
           zIndex: 20,
         }}
       >
-        <VoxPolaroidCard
-          imageUrl={primaryStickerUrl}
-          title={memoEvent?.headline || "INTERNAL MEMO"}
-          subtitle="CLASSIFIED DOCUMENTATION"
-          cornerTag="EVIDENCE ITEM"
-          stampText="CONFIDENTIAL"
-          rotationDeg={-3}
-          enterAtFrame={6}
-          theme={theme}
-        />
+        {scene.videoUrl || scene.bRollUrl ? (
+          <VoxVideoCard
+            videoUrl={scene.videoUrl || scene.bRollUrl || ""}
+            fallbackImageUrl={primaryStickerUrl}
+            personalityStickerUrl={primaryStickerUrl}
+            personalityTag={memoEvent?.headline ? memoEvent.headline.slice(0, 10) : "DOSSIER"}
+            title={memoEvent?.headline || "INTERNAL EVIDENCE"}
+            subtitle="● VERIFIED FOOTAGE"
+            tagText="CONFIDENTIAL"
+            variant="crt_monitor"
+            rotationDeg={-2}
+            enterAtFrame={6}
+            theme={theme}
+          />
+        ) : (
+          <VoxPolaroidCard
+            imageUrl={primaryStickerUrl}
+            title={memoEvent?.headline || "INTERNAL MEMO"}
+            subtitle="CLASSIFIED DOCUMENTATION"
+            cornerTag="EVIDENCE ITEM"
+            stampText="CONFIDENTIAL"
+            rotationDeg={-3}
+            enterAtFrame={6}
+            theme={theme}
+          />
+        )}
       </div>
-
-      {/* 3. TYPEWRITER REPORT MEMO (Frame 18) - Cascades over card */}
-      <ExitAnimationWrapper
-        startFrameOffset={18}
-        durationFrames={durationFrames - 24}
-        exitAnimation="paper_tear_out"
-        style={{
-          position: "absolute",
-          top: "54%",
-          left: "50%",
-          transform: "translateX(-50%) rotate(2deg)",
-          width: "88%",
-          zIndex: 35,
-        }}
-      >
-        <TypewriterParagraph
-          headline={memoEvent?.headline || "INTERNAL MEMORANDUM"}
-          content={memoEvent?.content || narrationLine}
-          startFrameOffset={0}
-        />
-      </ExitAnimationWrapper>
 
       {/* 4. TOP RIGHT STAMP SEAL (Frame 32) */}
       <GsapSvgGraphics

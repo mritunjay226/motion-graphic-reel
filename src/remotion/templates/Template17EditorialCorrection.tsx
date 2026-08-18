@@ -7,6 +7,7 @@ import { PaperSticker } from "../components/PaperSticker";
 import { CharacterBoil } from "../components/CharacterBoil";
 import { GsapSvgGraphics } from "../components/GsapSvgGraphics";
 import { WordByWordCaptions } from "../components/WordByWordCaptions";
+import { VoxVideoCard } from "../components/VoxVideoCard";
 import { StrikethroughReplace } from "@/components/remocn/strikethrough-replace";
 import { MarkerHighlight } from "@/components/remocn/marker-highlight";
 import { RollingNumber } from "@/components/remocn/rolling-number";
@@ -101,68 +102,97 @@ export const Template17EditorialCorrection: React.FC<TemplateProps> = ({ scene, 
         )}
       </AnimatedLayer>
 
-      {/* 2. LEFT ZONE: 2.5D HERO SUBJECT CUTOUT STICKER */}
-      <AnimatedLayer
-        entrance="slide_corner_top_left"
-        enterAtFrame={6}
-        position={{ top: "28%", left: "6%", width: "42%", height: "auto" }}
-        zIndex={20}
-        sceneStartFrame={startFrame}
-        sceneDurationFrames={durationFrames}
-      >
-        <CharacterBoil config={boilConfig}>
-          <PaperSticker
-            src={primaryStickerUrl}
-            rotationDeg={-2}
-            isSingleSubject={false}
-            width="100%"
-            height="auto"
-          />
-        </CharacterBoil>
-      </AnimatedLayer>
-
-      {/* 3. RIGHT ZONE: MARKER HIGHLIGHT INSIGHT / STAT COUNTER */}
-      <AnimatedLayer
-        entrance="fade_scale"
-        enterAtFrame={12}
-        position={{ top: "30%", left: "52%", width: "42%", height: "auto" }}
-        zIndex={30}
-        sceneStartFrame={startFrame}
-        sceneDurationFrames={durationFrames}
-      >
+      {/* 2. MEDIA CARD OR SPLIT HERO (Frame 6) */}
+      {(scene.videoUrl || scene.bRollUrl) ? (
         <div
           style={{
-            background: "#FFFFFF",
-            border: "4px solid #111113",
-            borderRadius: "24px",
-            padding: "20px",
-            boxShadow: "0 14px 40px rgba(0, 0, 0, 0.22)",
+            position: "absolute",
+            top: "26%",
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: 20,
           }}
         >
-          {statEvent && statEvent.numericValue ? (
-            <div style={{ textAlign: "center" }}>
-              <div style={{ fontSize: "14px", fontWeight: 800, color: "#666666", textTransform: "uppercase", marginBottom: "8px" }}>
-                VERIFIED METRIC
-              </div>
-              <RollingNumber
-                from={0}
-                to={Number(statEvent.numericValue)}
-                fontSize={56}
-                color="#D61C1C"
-              />
-            </div>
-          ) : (
-            <MarkerHighlight
-              before={narrationLine.slice(0, 40)}
-              highlight={highlightWords.join(" ") || "KEY FACT"}
-              after={narrationLine.slice(40, 80)}
-              fontSize={24}
-              baseColor="#111113"
-              markerColor="#FFE600"
-            />
-          )}
+          <VoxVideoCard
+            videoUrl={scene.videoUrl || scene.bRollUrl || ""}
+            fallbackImageUrl={primaryStickerUrl}
+            personalityStickerUrl={primaryStickerUrl}
+            personalityTag="EXPOSED"
+            title={sceneTitle ? sceneTitle.replace(/^SCENE \d+:\s*/i, "").slice(0, 24) : "CORRECTION EVIDENCE"}
+            subtitle="● VERIFIED HISTORICAL DATA"
+            tagText="EXPOSED"
+            rotationDeg={-1.5}
+            enterAtFrame={6}
+            theme={theme}
+            width={820}
+          />
         </div>
-      </AnimatedLayer>
+      ) : (
+        <>
+          {/* LEFT ZONE: 2.5D HERO SUBJECT CUTOUT STICKER */}
+          <AnimatedLayer
+            entrance="slide_corner_top_left"
+            enterAtFrame={6}
+            position={{ top: "28%", left: "6%", width: "42%", height: "auto" }}
+            zIndex={20}
+            sceneStartFrame={startFrame}
+            sceneDurationFrames={durationFrames}
+          >
+            <CharacterBoil config={boilConfig}>
+              <PaperSticker
+                src={primaryStickerUrl}
+                rotationDeg={-2}
+                isSingleSubject={false}
+                width="100%"
+                height="auto"
+              />
+            </CharacterBoil>
+          </AnimatedLayer>
+
+          {/* RIGHT ZONE: MARKER HIGHLIGHT INSIGHT / STAT COUNTER */}
+          <AnimatedLayer
+            entrance="fade_scale"
+            enterAtFrame={12}
+            position={{ top: "30%", left: "52%", width: "42%", height: "auto" }}
+            zIndex={30}
+            sceneStartFrame={startFrame}
+            sceneDurationFrames={durationFrames}
+          >
+            <div
+              style={{
+                background: "#FFFFFF",
+                border: "4px solid #111113",
+                borderRadius: "24px",
+                padding: "20px",
+                boxShadow: "0 14px 40px rgba(0, 0, 0, 0.22)",
+              }}
+            >
+              {statEvent && statEvent.numericValue ? (
+                <div style={{ textAlign: "center" }}>
+                  <div style={{ fontSize: "20px", fontWeight: 900, color: "#444444", textTransform: "uppercase", marginBottom: "8px", letterSpacing: "1.5px" }}>
+                    VERIFIED METRIC
+                  </div>
+                  <RollingNumber
+                    from={0}
+                    to={Number(statEvent.numericValue)}
+                    fontSize={56}
+                    color="#D61C1C"
+                  />
+                </div>
+              ) : (
+                <MarkerHighlight
+                  before={narrationLine.slice(0, 40)}
+                  highlight={highlightWords.join(" ") || "KEY FACT"}
+                  after={narrationLine.slice(40, 80)}
+                  fontSize={24}
+                  baseColor="#111113"
+                  markerColor="#FFE600"
+                />
+              )}
+            </div>
+          </AnimatedLayer>
+        </>
+      )}
 
       {/* 4. RUBBER STAMP SEAL */}
       <GsapSvgGraphics

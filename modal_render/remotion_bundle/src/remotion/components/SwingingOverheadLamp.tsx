@@ -59,7 +59,7 @@ export const SwingingOverheadLamp: React.FC = () => {
           }}
         />
 
-        {/* Conical Light Beam */}
+        {/* Conical Light Beam with Native Soft Gradient Falloff */}
         <div
           style={{
             position: "absolute",
@@ -68,18 +68,15 @@ export const SwingingOverheadLamp: React.FC = () => {
             width: "600px",
             height: "1200px",
             transform: "translateX(-50%)",
-            background:
-              "polygon(50% 0%, 0% 100%, 100% 100%)",
             backgroundImage:
-              "linear-gradient(180deg, rgba(255, 220, 130, 0.45) 0%, rgba(255, 180, 50, 0.05) 80%, transparent 100%)",
+              "linear-gradient(180deg, rgba(255, 220, 130, 0.42) 0%, rgba(255, 180, 50, 0.04) 75%, transparent 100%)",
             clipPath: "polygon(44% 0%, 56% 0%, 100% 100%, 0% 100%)",
             opacity: flickerOpacity,
-            filter: "blur(12px)",
           }}
         />
       </div>
 
-      {/* Desk Spot Highlight Flicker */}
+      {/* Desk Spot Highlight with Smooth Radial Gradient */}
       <div
         style={{
           position: "absolute",
@@ -89,9 +86,8 @@ export const SwingingOverheadLamp: React.FC = () => {
           height: "180px",
           transform: `translateX(-50%) rotate(${swingRotation * 0.3}deg)`,
           background:
-            "radial-gradient(ellipse at center, rgba(255, 230, 150, 0.25) 0%, transparent 70%)",
+            "radial-gradient(ellipse at center, rgba(255, 230, 150, 0.22) 0%, rgba(255, 230, 150, 0.08) 45%, transparent 70%)",
           opacity: flickerOpacity * 1.5,
-          filter: "blur(15px)",
         }}
       />
     </AbsoluteFill>

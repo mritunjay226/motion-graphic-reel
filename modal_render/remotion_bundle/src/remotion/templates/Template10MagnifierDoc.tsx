@@ -7,6 +7,7 @@ import { TypewriterParagraph } from "../components/TypewriterParagraph";
 import { GsapSvgGraphics } from "../components/GsapSvgGraphics";
 import { ExitAnimationWrapper } from "../components/ExitAnimationWrapper";
 import { WordByWordCaptions } from "../components/WordByWordCaptions";
+import { VoxVideoCard } from "../components/VoxVideoCard";
 
 interface TemplateProps {
   scene: Scene;
@@ -36,6 +37,7 @@ export const Template10MagnifierDoc: React.FC<TemplateProps> = ({ scene, theme }
 
   const events: any[] = (scene as any).events || [];
   const docEvent = events.find((e) => e.type === "typewriter_memo") || events[0];
+  const primaryStickerUrl = (scene as any).imageUrl || scene.imageKitUrls?.foreground || scene.imageKitUrls?.props?.[0] || "";
 
   const headlineText = sceneTitle
     ? sceneTitle.replace(/^SCENE \d+:\s*/i, "").toUpperCase()
@@ -73,37 +75,66 @@ export const Template10MagnifierDoc: React.FC<TemplateProps> = ({ scene, theme }
         />
       </AnimatedLayer>
 
-      {/* 2. CENTER ZONE: Document Clipping (Frame 6) */}
-      <ExitAnimationWrapper
-        startFrameOffset={6}
-        durationFrames={durationFrames - 12}
-        exitAnimation="fade_scale"
-        style={{
-          position: "absolute",
-          top: "27%",
-          left: "12%",
-          width: "76%",
-          zIndex: 15,
-        }}
-      >
-        <TypewriterParagraph
-          headline={docEvent?.headline || "EXPOSED LEAKED REPORT"}
-          content={docEvent?.content || narrationLine}
-          startFrameOffset={0}
-        />
-      </ExitAnimationWrapper>
+      {/* 2. MEDIA CARD OR DOCUMENT CLIPPING (Frame 6) */}
+      {(scene.videoUrl || scene.bRollUrl) ? (
+        <div
+          style={{
+            position: "absolute",
+            top: "25%",
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: 20,
+          }}
+        >
+          <VoxVideoCard
+            videoUrl={scene.videoUrl || scene.bRollUrl || ""}
+            fallbackImageUrl={primaryStickerUrl}
+            personalityStickerUrl={primaryStickerUrl}
+            personalityTag="EXPOSED"
+            title={docEvent?.headline || "EXPOSED EVIDENCE"}
+            subtitle="● LEAKED SURVEILLANCE"
+            tagText="CLASSIFIED"
+            variant="crt_monitor"
+            rotationDeg={-1.5}
+            enterAtFrame={6}
+            theme={theme}
+            width={820}
+          />
+        </div>
+      ) : (
+        <>
+          <ExitAnimationWrapper
+            startFrameOffset={6}
+            durationFrames={durationFrames}
+            exitAnimation="fade_scale"
+            style={{
+              position: "absolute",
+              top: "27%",
+              left: "12%",
+              width: "76%",
+              zIndex: 15,
+            }}
+          >
+            <TypewriterParagraph
+              headline={docEvent?.headline || "EXPOSED LEAKED REPORT"}
+              content={docEvent?.content || narrationLine}
+              startFrameOffset={0}
+            />
+          </ExitAnimationWrapper>
 
-      {/* 3. MAGNIFYING SPOTLIGHT LENS (Frame 16) */}
-      <AnimatedLayer
-        entrance="pop_in"
-        enterAtFrame={16}
-        position={{ top: "36%", left: "55%", width: "120px", height: "120px" }}
-        zIndex={25}
-        sceneStartFrame={startFrame}
-        sceneDurationFrames={durationFrames}
-      >
-        <div style={{ width: "100%", height: "100%", borderRadius: "50%", border: "4px solid #FFE600", boxShadow: "0 0 25px rgba(255,230,0,0.5), inset 0 0 15px rgba(255,230,0,0.3)", backgroundColor: "rgba(255,230,0,0.12)", backdropFilter: "brightness(1.2)" }} />
-      </AnimatedLayer>
+          {/* MAGNIFYING SPOTLIGHT LENS */}
+          <AnimatedLayer
+            entrance="pop_in"
+            enterAtFrame={16}
+            position={{ top: "36%", left: "55%", width: "120px", height: "120px" }}
+            zIndex={25}
+            sceneStartFrame={startFrame}
+            sceneDurationFrames={durationFrames}
+          >
+            <div style={{ width: "100%", height: "100%", borderRadius: "50%", border: "4px solid #FFE600", boxShadow: "0 0 25px rgba(255,230,0,0.5), inset 0 0 15px rgba(255,230,0,0.3)", backgroundColor: "rgba(255,230,0,0.18)" }} />
+          </AnimatedLayer>
+        </>
+      )}
 
       {/* 4. TOP RIGHT STAMP SEAL (Frame 26) */}
       <GsapSvgGraphics

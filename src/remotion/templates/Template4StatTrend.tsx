@@ -8,6 +8,7 @@ import { CharacterBoil } from "../components/CharacterBoil";
 import { GsapSvgGraphics } from "../components/GsapSvgGraphics";
 import { VoxRollingNumberTicker } from "../components/VoxKineticTypographySuite";
 import { WordByWordCaptions } from "../components/WordByWordCaptions";
+import { VoxVideoCard } from "../components/VoxVideoCard";
 
 interface TemplateProps {
   scene: Scene;
@@ -79,11 +80,11 @@ export const Template4StatTrend: React.FC<TemplateProps> = ({ scene, theme }) =>
         />
       </AnimatedLayer>
 
-      {/* 2. LEFT ZONE: Rolling Number Ticker Typography (Frame 6) */}
+      {/* 2. UPPER-MID ZONE: Rolling Number Ticker Typography (Frame 6) */}
       <AnimatedLayer
         entrance="pop_in"
         enterAtFrame={6}
-        position={{ top: "27%", left: "6%", width: "44%", height: "auto" }}
+        position={{ top: "20%", left: "6%", width: "44%", height: "auto" }}
         zIndex={15}
         sceneStartFrame={startFrame}
         sceneDurationFrames={durationFrames}
@@ -98,35 +99,50 @@ export const Template4StatTrend: React.FC<TemplateProps> = ({ scene, theme }) =>
         />
       </AnimatedLayer>
 
-      {/* 3. RIGHT ZONE: GSAP Upward Trend Arrow (Frame 12) */}
+      {/* 3. UPPER-MID RIGHT: GSAP Upward Trend Arrow (Frame 12) */}
       <GsapSvgGraphics
         type="trend_arrow"
         color="#FFE600"
         enterAtFrame={12}
-        style={{ top: "27%", right: "6%", width: "40%", height: "180px", zIndex: 15 }}
+        style={{ top: "20%", right: "6%", width: "42%", height: "160px", zIndex: 15 }}
       />
 
-      {/* 4. BOTTOM RIGHT: Evidence Subject Cutout Sticker (Frame 22) */}
-      <AnimatedLayer
-        entrance="slide_corner_bottom_right"
-        enterAtFrame={22}
-        position={{ top: "50%", left: "54%", width: "38%", height: "auto" }}
-        zIndex={20}
-        sceneStartFrame={startFrame}
-        sceneDurationFrames={durationFrames}
+      {/* 4. CENTER HERO: 2.5D Video Card or Cutout Sticker (Frame 20) */}
+      <div
+        style={{
+          position: "absolute",
+          top: "32%",
+          left: "50%",
+          transform: "translateX(-50%)",
+          zIndex: 20,
+        }}
       >
-        {primaryStickerUrl ? (
+        {scene.videoUrl || scene.bRollUrl ? (
+          <VoxVideoCard
+            videoUrl={scene.videoUrl || scene.bRollUrl || ""}
+            fallbackImageUrl={primaryStickerUrl}
+            personalityStickerUrl={primaryStickerUrl}
+            personalityTag="GROWTH"
+            title={sceneTitle ? sceneTitle.replace(/^SCENE \d+:\s*/i, "").slice(0, 24) : "GROWTH PROOF"}
+            subtitle="● VERIFIED FINANCIAL DATA"
+            tagText="+340% SURGE"
+            rotationDeg={-1.5}
+            enterAtFrame={16}
+            theme={theme}
+            width={820}
+          />
+        ) : primaryStickerUrl ? (
           <CharacterBoil config={boilConfig}>
             <PaperSticker
               src={primaryStickerUrl}
-              rotationDeg={2}
+              rotationDeg={-2}
               isSingleSubject={true}
-              width="100%"
+              width="550px"
               height="auto"
             />
           </CharacterBoil>
         ) : null}
-      </AnimatedLayer>
+      </div>
 
       {/* 5. BOTTOM ZONE: Kinetic Subtitles */}
       {whisperTokens && whisperTokens.length > 0 && (

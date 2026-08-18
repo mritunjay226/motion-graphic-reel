@@ -57,6 +57,14 @@ Every generated scene is assigned one of 5 strict Layout Presets that guarantee 
 ### Rule 1.10: Clean Paged Captions (Max 1-2 Lines Per Page)
 - Subtitles chunked into 5-6 word paged groups using Deepgram timestamps.
 
+### Rule 1.11: 39-Sound Tactile Foley Audio Suite ([sfxRegistry.ts](file:///c:/Users/mk/Documents/motion-graphic-reels/src/remotion/utils/sfxRegistry.ts))
+- Every visual interaction is synchronized with authentic physical sound effects via `<TactileSfxLayer />`:
+  - **Transitions (Frame 0)**: Paper rip on memo/editorial scenes, fast whip whoosh on dynamic scenes, sub-bass drop on hook/climax.
+  - **Headline Sweep (Frame 3)**: Yellow highlighter marker squeak.
+  - **Subject Landing (Frame 6-8)**: Crisp tactile pop card drop.
+  - **Graphic Entrances**: Rubber stamp seal slam (`rubber_stamp`), camera shutter snap on polaroids (`camera_shutter`), cash register cha-ching on revenue (`cash_register`), typewriter typing on memos (`typewriter_key`), and mechanical keyboard on matrix hacker scenes (`keyboard_typing`).
+- Mix hierarchy: Voiceover `0dB`, background music `-18dB`, tactile Foley `-14dB to -22dB`.
+
 ---
 
 ## 2. SaaS Database & Auth Architecture (Convex + Clerk + Deepgram)

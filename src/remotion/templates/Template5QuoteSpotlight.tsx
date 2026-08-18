@@ -6,6 +6,7 @@ import { VoxTypography } from "../components/VoxTypography";
 import { GsapSvgGraphics } from "../components/GsapSvgGraphics";
 import { ExitAnimationWrapper } from "../components/ExitAnimationWrapper";
 import { WordByWordCaptions } from "../components/WordByWordCaptions";
+import { VoxVideoCard } from "../components/VoxVideoCard";
 
 interface TemplateProps {
   scene: Scene;
@@ -35,6 +36,7 @@ export const Template5QuoteSpotlight: React.FC<TemplateProps> = ({ scene, theme 
 
   const events: any[] = (scene as any).events || [];
   const quoteEvent = events.find((e) => e.type === "quote_card") || events[0];
+  const primaryStickerUrl = (scene as any).imageUrl || scene.imageKitUrls?.foreground || scene.imageKitUrls?.props?.[0] || "";
 
   const headlineText = sceneTitle
     ? sceneTitle.replace(/^SCENE \d+:\s*/i, "").toUpperCase()
@@ -72,35 +74,62 @@ export const Template5QuoteSpotlight: React.FC<TemplateProps> = ({ scene, theme 
         />
       </AnimatedLayer>
 
-      {/* 2. CENTER ZONE: Spotlight Quote Card (Frame 8) */}
+      {/* 2. MEDIA CARD (Frame 6) */}
+      {(scene.videoUrl || scene.bRollUrl) && (
+        <div
+          style={{
+            position: "absolute",
+            top: "22%",
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: 15,
+          }}
+        >
+          <VoxVideoCard
+            videoUrl={scene.videoUrl || scene.bRollUrl || ""}
+            fallbackImageUrl={primaryStickerUrl}
+            personalityStickerUrl={primaryStickerUrl}
+            personalityTag="SPEAKER"
+            title={scene.sceneTitle ? scene.sceneTitle.replace(/^SCENE \d+:\s*/i, "").slice(0, 24) : "INSIGHT PROOF"}
+            subtitle="● KEY PAYOFF"
+            tagText="MOMENT OF TRUTH"
+            rotationDeg={-1}
+            enterAtFrame={6}
+            theme={theme}
+            width={820}
+          />
+        </div>
+      )}
+
+      {/* 3. CENTER ZONE: Spotlight Quote Card (Frame 8) */}
       <ExitAnimationWrapper
         startFrameOffset={8}
-        durationFrames={durationFrames - 16}
+        durationFrames={durationFrames}
         exitAnimation="fade_scale"
         style={{
           position: "absolute",
-          top: "27%",
-          left: "10%",
-          width: "80%",
-          zIndex: 15,
+          top: (scene.videoUrl || scene.bRollUrl) ? "54%" : "30%",
+          left: "8%",
+          width: "84%",
+          zIndex: 20,
         }}
       >
         <div
           style={{
-            background: theme?.badgeBg || "#111111",
-            color: theme?.badgeText || "#FFFFFF",
-            border: `4px solid ${theme?.badgeBorder || "#111111"}`,
-            padding: "26px 32px",
+            background: "rgba(12, 12, 14, 0.96)",
+            color: "#FFFFFF",
+            border: "3.5px solid #FFE600",
+            padding: "20px 26px",
             borderRadius: "20px",
             borderLeft: "10px solid #FFE600",
-            boxShadow: "0 16px 45px rgba(0,0,0,0.35)",
+            boxShadow: "0 20px 50px rgba(0,0,0,0.6)",
             position: "relative",
           }}
         >
-          <span style={{ fontSize: "36px", fontFamily: "Georgia, serif", color: "#FFE600", lineHeight: 0.5, display: "block", marginBottom: "8px" }}>
+          <span style={{ fontSize: "36px", fontFamily: "Georgia, serif", color: "#FFE600", lineHeight: 0.6, display: "block", marginBottom: "8px" }}>
             “
           </span>
-          <p style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "28px", fontWeight: 400, margin: 0, lineHeight: 1.2, letterSpacing: "1px", color: "#FFFFFF" }}>
+          <p style={{ fontFamily: theme?.fontFamily || "'Space Grotesk', sans-serif", fontSize: "26px", fontWeight: 800, margin: 0, lineHeight: 1.3, letterSpacing: "0.5px", color: "#FFFFFF" }}>
             {quoteEvent?.content || narrationLine}
           </p>
         </div>
@@ -110,7 +139,7 @@ export const Template5QuoteSpotlight: React.FC<TemplateProps> = ({ scene, theme 
       <GsapSvgGraphics
         type="stamp_seal"
         color="#FFE600"
-        label="VICTORY"
+        label={scene.sceneTitle ? scene.sceneTitle.replace(/^SCENE \d+:\s*/i, "").slice(0, 16).toUpperCase() : "KEY INSIGHT"}
         enterAtFrame={24}
         style={{ top: "24%", right: "8%", width: "36%", height: "140px", zIndex: 30 }}
       />

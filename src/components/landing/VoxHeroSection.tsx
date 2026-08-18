@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { UserButton, SignInButton, useUser } from "@clerk/nextjs";
 import FilmTreatment from "./FilmTreatment";
+import { Folder, Zap, Mic, Dices, Film, Scissors, ArrowRight } from "lucide-react";
 
 const SAMPLE_PROMPTS = [
   "Why OpenAI Fired Sam Altman in 2023",
@@ -16,7 +17,7 @@ const SAMPLE_PROMPTS = [
 ];
 
 const VOX_VOICES = [
-  { id: "62ae83ad-4f6a-430b-af41-a9bede9286ca", name: "Cartesia AI", sample: "Cartesia Sonic Neural Voice", tag: "RECOMMENDED" },
+  { id: "62ae83ad-4f6a-430b-af41-a9bede9286ca", name: "Studio Cinema", sample: "Ultra-Realistic Narrative Voice", tag: "RECOMMENDED" },
   { id: "ronald", name: "Ronald", sample: "Deep authoritative documentary voice", tag: "US MALE" },
   { id: "clive", name: "Clive", sample: "Measured expert UK narrative", tag: "UK MALE" },
   { id: "skylar", name: "Skylar", sample: "Friendly engaging explainer voice", tag: "US FEMALE" },
@@ -31,7 +32,7 @@ export default function VoxHeroSection() {
   const [selectedVoice, setSelectedVoice] = useState("62ae83ad-4f6a-430b-af41-a9bede9286ca");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isPlayingAudioSample, setIsPlayingAudioSample] = useState(false);
-  const [activeVoiceName, setActiveVoiceName] = useState("Cartesia AI");
+  const [activeVoiceName, setActiveVoiceName] = useState("Studio Cinema");
 
   // Mouse Parallax Physics State
   const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 });
@@ -145,17 +146,19 @@ export default function VoxHeroSection() {
 
         <div className="flex items-center gap-3">
           <Link
-            href="/reel"
+            href="/dashboard"
             className="px-4 py-2.5 rounded-lg text-xs font-black uppercase tracking-wider bg-white text-[#111111] hover:bg-[#FFE600] transition-all flex items-center gap-1.5 shadow-[3px_3px_0px_#111111] border-2 border-[#111111] transform hover:-translate-y-0.5 active:translate-y-0"
           >
-            <span>🎬 Gallery</span>
+            <Folder className="w-3.5 h-3.5" />
+            <span>My Reels</span>
           </Link>
 
           <Link
             href="/create-video"
             className="px-5 py-2.5 rounded-lg text-xs font-black uppercase tracking-wider bg-[#111111] text-white hover:bg-[#222222] transition-all flex items-center gap-2 shadow-[3px_3px_0px_#B5F500] border border-[#111111] transform hover:-translate-y-0.5 active:translate-y-0"
           >
-            <span>+ Create Video</span>
+            <Zap className="w-3.5 h-3.5 fill-current text-[#B5F500]" />
+            <span>Fast Create</span>
           </Link>
 
           <div className="pl-3 border-l-2 border-[#E2E2E8] flex items-center gap-2">
@@ -223,7 +226,7 @@ export default function VoxHeroSection() {
             +340% RETENTION
           </div>
           <p className="text-[9px] font-extrabold text-[#222222] mt-1 leading-tight">
-            Remotion Dynamic Motion Cutout
+            2.5D Multi-Plane Motion Dynamics
           </p>
         </div>
       </motion.div>
@@ -325,14 +328,15 @@ export default function VoxHeroSection() {
                   key={v.id}
                   type="button"
                   onClick={() => handleVoicePreview(v.id, v.name)}
-                  className={`px-2.5 py-1 rounded-md border-2 transition-all cursor-pointer font-bold ${
+                  className={`px-2.5 py-1 rounded-md border-2 transition-all cursor-pointer font-bold flex items-center gap-1.5 ${
                     selectedVoice === v.id
                       ? "bg-[#111111] text-[#B5F500] border-[#111111] shadow-xs"
                       : "bg-[#F4F4F6] text-[#333333] border-[#E2E2E8] hover:border-[#111111]"
                   }`}
                   title={v.sample}
                 >
-                  🎙️ {v.name}
+                  <Mic className="w-3 h-3" />
+                  <span>{v.name}</span>
                 </button>
               ))}
             </div>
@@ -358,42 +362,65 @@ export default function VoxHeroSection() {
               {isSubmitting ? (
                 <span>Generating...</span>
               ) : (
-                <span>⚡ GENERATE REEL →</span>
+                <>
+                  <Zap className="w-5 h-5 fill-current" />
+                  <span>GENERATE REEL</span>
+                  <ArrowRight className="w-5 h-5" />
+                </>
               )}
             </button>
           </form>
 
-          {/* Quick Clickable Typewriter Prompts */}
+          {/* Category Quick Chips & Clickable Typewriter Prompts */}
           <div className="mt-4 pt-3 border-t-2 border-[#E2E2E8] flex flex-wrap items-center justify-center sm:justify-start gap-2 text-xs">
-            <span className="font-bold text-[#111111] font-mono text-[11px] uppercase">
-              TYPEWRITER PRESETS:
-            </span>
-            {SAMPLE_PROMPTS.map((prompt) => (
+            <button
+              type="button"
+              onClick={() => {
+                const available = SAMPLE_PROMPTS.filter((p) => p !== topicInput);
+                const pick = available[Math.floor(Math.random() * available.length)] || SAMPLE_PROMPTS[0];
+                handlePromptTypewriter(pick);
+              }}
+              className="px-3 py-1 bg-[#FFE600] hover:bg-[#ffe100] border-2 border-[#111111] rounded-full text-[#111111] transition-all text-[11px] font-black shadow-xs cursor-pointer transform hover:scale-105 flex items-center gap-1.5"
+            >
+              <Dices className="w-3.5 h-3.5" />
+              <span>RANDOM HOOK</span>
+            </button>
+
+            {[
+              { label: "TECH", prompt: "How Nvidia Built a $3 Trillion AI Monopoly" },
+              { label: "HISTORY", prompt: "The Secret Engineering Flaw of Concorde" },
+              { label: "BUSINESS", prompt: "Why Blockbuster Rejected Netflix in 2000" },
+              { label: "FINANCE", prompt: "How Dyson Engineered a $500 Hairdryer" },
+            ].map((cat) => (
               <button
-                key={prompt}
+                key={cat.label}
                 type="button"
-                onClick={() => handlePromptTypewriter(prompt)}
-                className="px-3 py-1 bg-[#F4F4F6] hover:bg-[#FFE600] border-2 border-[#111111] rounded-full text-[#111111] transition-all text-[11px] font-bold shadow-xs cursor-pointer transform hover:scale-105"
+                onClick={() => handlePromptTypewriter(cat.prompt)}
+                className="px-3 py-1 bg-[#F4F4F6] hover:bg-[#B5F500] border-2 border-[#111111] rounded-full text-[#111111] transition-all text-[11px] font-bold shadow-xs cursor-pointer transform hover:scale-105"
               >
-                "{prompt}"
+                {cat.label}: "{cat.prompt.slice(0, 22)}..."
               </button>
             ))}
           </div>
         </motion.div>
 
-        {/* Tech Badges Row */}
+        {/* Feature Highlights Row */}
         <div className="flex flex-wrap items-center justify-center gap-3 text-xs font-mono font-bold text-[#444444]">
-          <span className="px-3 py-1 bg-white border-2 border-[#111111] rounded-full shadow-xs">
-            🎬 Remotion Lambda 30 FPS
+          <span className="px-3 py-1 bg-white border-2 border-[#111111] rounded-full shadow-xs flex items-center gap-1.5">
+            <Film className="w-3.5 h-3.5 text-[#111111]" />
+            <span>1080×1920 @ 30 FPS MP4</span>
           </span>
-          <span className="px-3 py-1 bg-white border-2 border-[#111111] rounded-full shadow-xs">
-            🎙️ Cartesia AI Audio
+          <span className="px-3 py-1 bg-white border-2 border-[#111111] rounded-full shadow-xs flex items-center gap-1.5">
+            <Mic className="w-3.5 h-3.5 text-[#111111]" />
+            <span>Cinema Voice Narration</span>
           </span>
-          <span className="px-3 py-1 bg-white border-2 border-[#111111] rounded-full shadow-xs">
-            ✂️ ImageKit 2.5D Cutouts
+          <span className="px-3 py-1 bg-white border-2 border-[#111111] rounded-full shadow-xs flex items-center gap-1.5">
+            <Scissors className="w-3.5 h-3.5 text-[#111111]" />
+            <span>2.5D Die-Cut Layer Rig</span>
           </span>
-          <span className="px-3 py-1 bg-white border-2 border-[#111111] rounded-full shadow-xs">
-            ⚡ Gemini 2.5 Pro Storyboards
+          <span className="px-3 py-1 bg-white border-2 border-[#111111] rounded-full shadow-xs flex items-center gap-1.5">
+            <Zap className="w-3.5 h-3.5 fill-current text-[#111111]" />
+            <span>Automated 6-Scene Story Arc</span>
           </span>
         </div>
 

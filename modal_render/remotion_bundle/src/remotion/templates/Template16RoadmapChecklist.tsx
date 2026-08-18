@@ -134,7 +134,7 @@ export const Template16RoadmapChecklist: React.FC<TemplateProps> = ({ scene, the
       <div
         style={{
           position: "absolute",
-          top: "50%",
+          top: "42%",
           left: "50%",
           transform: "translateX(-50%) rotate(3deg)",
           zIndex: 35,
@@ -142,6 +142,7 @@ export const Template16RoadmapChecklist: React.FC<TemplateProps> = ({ scene, the
       >
         <VoxPolaroidCard
           imageUrl={primaryStickerUrl}
+          videoUrl={scene.videoUrl || scene.bRollUrl}
           title="PRIMARY EVIDENCE"
           subtitle="AUDITED ROADMAP FINDINGS"
           cornerTag="VERIFIED"

@@ -28,6 +28,8 @@ async function main() {
   const inputProps = {
     plan: executionPlan,
     enableAudio: true,
+    enableSfx: true,
+    sfxVolume: 1.0,
     bgMusicUrl: "http://localhost:3000/music/without_me.mp3",
     bgMusicVolume: reel.bgMusicVolume ?? 0.15,
   };
@@ -40,7 +42,7 @@ async function main() {
   console.log(`\n⚡ Rendering Remotion composition "BlockbusterNetflixReel" to MP4...`);
   console.log(`   Output file: ${outputPath}`);
 
-  const renderCmd = `npx remotion render src/remotion/index.ts BlockbusterNetflixReel ${outputFileName} --props=temp_props.json --concurrency=4`;
+  const renderCmd = `npx remotion render src/remotion/index.ts BlockbusterNetflixReel ${outputFileName} --props=temp_props.json --concurrency=100% --jpeg-quality=90 --gl=angle`;
 
   try {
     execSync(renderCmd, { stdio: "inherit" });

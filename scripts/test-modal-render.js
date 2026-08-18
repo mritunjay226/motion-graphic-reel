@@ -3,7 +3,7 @@ const convexUrl = "https://festive-opossum-355.convex.cloud";
 const convex = new ConvexHttpClient(convexUrl);
 
 async function testModalRender() {
-  const reelId = "j575hy6y7fqr9ps7wctn1b0k218c41qx";
+  const reelId = process.argv[2] || "j57cvehetxv18wft780gmsv73n8ckacf";
   console.log(`\n🎬 Fetching reel "${reelId}" from Convex DB (${convexUrl})...`);
 
   const reel = await convex.query("reels:getReelById", { reelId });

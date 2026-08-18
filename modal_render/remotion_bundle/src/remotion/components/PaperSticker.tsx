@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { buildImageKitUrl, ImageKitTransformOptions } from "../utils/imagekit";
 import { TornPaper } from "./TornPaper";
+import { resolveAssetUrl } from "../utils/resolveAsset";
 
 interface PaperStickerProps {
   /** Image URL or path */
@@ -55,11 +56,15 @@ export const PaperSticker: React.FC<PaperStickerProps> = ({
   const [useRawFallback, setUseRawFallback] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Construct ImageKit URL (background removal disabled per user instruction)
-  const ikSrc = buildImageKitUrl(src, { removeBg: false, ...transformOptions });
+  // Construct ImageKit URL (enable AI background removal by default for single subjects)
+  const ikSrc = buildImageKitUrl(src, {
+    removeBg: isSingleSubject,
+    ...transformOptions,
+  });
 
-  // Use raw URL directly if fallback is needed
-  const finalSrc = useRawFallback ? src : ikSrc;
+  // Use raw URL directly if fallback is needed, and resolve /cache/ paths
+  const rawTarget = useRawFallback ? src : (src.startsWith("/cache/") ? src : ikSrc);
+  const finalSrc = resolveAssetUrl(rawTarget);
 
   // Render isolated transparent single subject cutout or bordered paper sticker
   const renderImageContent = () => (
@@ -108,9 +113,13 @@ export const PaperSticker: React.FC<PaperStickerProps> = ({
           height: "100%",
           objectFit,
           display: "block",
-          filter: isSingleSubject
-            ? `drop-shadow(3px 0 0 #FFFFFF) drop-shadow(-3px 0 0 #FFFFFF) drop-shadow(0 3px 0 #FFFFFF) drop-shadow(0 -3px 0 #FFFFFF) drop-shadow(2px 2px 0 #FFFFFF) drop-shadow(-2px -2px 0 #FFFFFF) drop-shadow(2px -2px 0 #FFFFFF) drop-shadow(-2px 2px 0 #FFFFFF) drop-shadow(0 12px 25px rgba(0, 0, 0, 0.35)) ${filter || ""}`
-            : filter || undefined,
+          // Use outline + boxShadow instead of drop-shadow filter chain for performance
+          outline: isSingleSubject ? "3px solid #FFFFFF" : "none",
+          outlineOffset: isSingleSubject ? "1px" : "0",
+          boxShadow: isSingleSubject
+            ? "0 12px 25px rgba(0, 0, 0, 0.35)"
+            : "none",
+          filter: isSingleSubject ? undefined : (filter || undefined),
           mixBlendMode: "normal",
           opacity: 1,
           transition: "opacity 0.3s ease-out",

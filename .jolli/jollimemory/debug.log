@@ -281,3 +281,493 @@
 [2026-08-12T06:49:21.402Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
 [2026-08-12T06:49:22.879Z] INFO  [SummaryStore] Tree hash match: 31fda5ba → 701c65ca (treeHash: fb5a4b62)
 [2026-08-12T06:49:23.004Z] WARN  [SummaryStore] scanTreeHashAliases: read side has 4 row(s) write side lacks — deferring alias write to avoid shadow clobber
+[2026-08-12T06:50:26.785Z] INFO  [PrepareMsgHook] === Prepare-commit-msg hook started (source: message) ===
+[2026-08-12T06:50:26.980Z] INFO  [PrepareMsgHook] === Prepare-commit-msg hook finished ===
+[2026-08-12T06:50:28.801Z] INFO  [PostCommitHook] [trace=a9f2439f414b52eb092c8d41dea9b60a] Detected operation: commit
+[2026-08-12T06:50:29.046Z] INFO  [PostCommitHook] [trace=a9f2439f414b52eb092c8d41dea9b60a] Enqueued: type=commit hash=458db08c
+[2026-08-12T06:50:29.047Z] INFO  [QueueWorker] [trace=a9f2439f414b52eb092c8d41dea9b60a] Launching background worker
+[2026-08-12T06:50:29.063Z] INFO  [QueueWorker] [trace=a9f2439f414b52eb092c8d41dea9b60a] Background worker spawned (PID: 15776)
+[2026-08-12T06:50:30.604Z] INFO  [QueueWorker] [trace=a9f2439f414b52eb092c8d41dea9b60a] === Queue worker started === node=22.23.2 kind=vscode-plugin source=antigravity-ide pkgVer=0.99.11 cliVer=0.99.11 dist=c:\Users\mk\.antigravity-ide\extensions\jolli.jollimemory-vscode-0.99.11-universal\dist
+[2026-08-12T06:50:30.611Z] WARN  [LockPrimitives] [trace=a9f2439f414b52eb092c8d41dea9b60a] Removing orphaned lock C:\Users\mk\.jolli\jollimemory\locks\vault-6199c6c0cd22a56971a74eb19af1da8969e11bef6d7b24e2035dd4de371c3f77.lock (PID 16240 no longer running)
+[2026-08-12T06:50:31.206Z] INFO  [StorageFactory] [trace=a9f2439f414b52eb092c8d41dea9b60a] StorageFactory.create: route=cutover, projectPath=C:\Users\mk\Documents\motion-graphic-reels
+[2026-08-12T06:50:31.953Z] WARN  [LockPrimitives] [trace=a9f2439f414b52eb092c8d41dea9b60a] Removing orphaned lock C:\Users\mk\Documents\motion-graphic-reels\.jolli\jollimemory\worker.lock (PID 16240 no longer running)
+[2026-08-12T06:50:31.986Z] INFO  [QueueWorker] [trace=a9f2439f414b52eb092c8d41dea9b60a] Processing queue entry: type=commit hash=458db08c
+[2026-08-12T06:50:32.210Z] INFO  [GitOps] [trace=a9f2439f414b52eb092c8d41dea9b60a] Commit 458db08c: fix: wrap useSearchParams in Suspense boundary for page /cre
+[2026-08-12T06:50:32.210Z] INFO  [QueueWorker] [trace=a9f2439f414b52eb092c8d41dea9b60a] Commit: 458db08c - fix: wrap useSearchParams in Suspense boundary for page /create-video (215ms)
+[2026-08-12T06:50:32.627Z] INFO  [QueueWorker] [trace=a9f2439f414b52eb092c8d41dea9b60a] Discovered 4 Antigravity session(s)
+[2026-08-12T06:50:32.674Z] INFO  [QueueWorker] [trace=a9f2439f414b52eb092c8d41dea9b60a] Transcript source: session=319682c6-43b7-4766-ab71-f0410ac1d2dc, lines=228→234, entries=1
+[2026-08-12T06:50:33.045Z] INFO  [QueueWorker] [trace=a9f2439f414b52eb092c8d41dea9b60a] Git diff: 12 files changed, +167 -1 (263ms)
+[2026-08-12T06:50:33.317Z] INFO  [QueueWorker] [trace=a9f2439f414b52eb092c8d41dea9b60a] Prompt blocks: plans=0 notes=0 references=0 (+0 track-only archived, not prompted) (AI soft-excluded 0)
+[2026-08-12T06:50:33.320Z] INFO  [Summarizer] [trace=a9f2439f414b52eb092c8d41dea9b60a] Generating summary for commit 458db08c
+[2026-08-12T06:50:33.320Z] INFO  [Summarizer] [trace=a9f2439f414b52eb092c8d41dea9b60a] Context: transcript=1, files=12, lines=167+1
+[2026-08-12T06:50:33.321Z] WARN  [QueueWorker] [trace=a9f2439f414b52eb092c8d41dea9b60a] First API attempt failed: No LLM provider available. Set an Anthropic API key (ANTHROPIC_API_KEY) or configure a Jolli Space API key (jolliApiKey).. Retrying in 2000ms...
+[2026-08-12T06:50:35.347Z] INFO  [Summarizer] [trace=a9f2439f414b52eb092c8d41dea9b60a] Generating summary for commit 458db08c
+[2026-08-12T06:50:35.348Z] INFO  [Summarizer] [trace=a9f2439f414b52eb092c8d41dea9b60a] Context: transcript=1, files=12, lines=167+1
+[2026-08-12T06:50:35.348Z] ERROR [QueueWorker] [trace=a9f2439f414b52eb092c8d41dea9b60a] API call failed after retry: No LLM provider available. Set an Anthropic API key (ANTHROPIC_API_KEY) or configure a Jolli Space API key (jolliApiKey).
+[2026-08-12T06:50:35.348Z] WARN  [QueueWorker] [trace=a9f2439f414b52eb092c8d41dea9b60a] Saving summary with empty topics + llm-failed marker for commit 458db08c
+[2026-08-12T06:50:35.349Z] INFO  [QueueWorker] [trace=a9f2439f414b52eb092c8d41dea9b60a] API summary generated (2.0s)
+[2026-08-12T06:50:35.356Z] INFO  [QueueWorker] [trace=a9f2439f414b52eb092c8d41dea9b60a] Plan registry scan: found 0 uncommitted slug(s) on main: []
+[2026-08-12T06:50:35.357Z] INFO  [QueueWorker] [trace=a9f2439f414b52eb092c8d41dea9b60a] Plan association: detected 0 slug(s) from transcripts: []
+[2026-08-12T06:50:35.358Z] INFO  [QueueWorker] [trace=a9f2439f414b52eb092c8d41dea9b60a] Note registry scan: found 0 uncommitted note(s) on main: []
+[2026-08-12T06:50:35.359Z] INFO  [QueueWorker] [trace=a9f2439f414b52eb092c8d41dea9b60a] Note association: detected 0 note(s): []
+[2026-08-12T06:50:35.361Z] INFO  [QueueWorker] [trace=a9f2439f414b52eb092c8d41dea9b60a] Reference association: detected 0 ref(s) for branch main
+[2026-08-12T06:50:35.396Z] INFO  [QueueWorker] [trace=a9f2439f414b52eb092c8d41dea9b60a] Summary built for 458db08c: recap=no, topics=0, plans=absent, notes=absent, references=absent
+[2026-08-12T06:50:36.004Z] INFO  [MetadataManager] [trace=a9f2439f414b52eb092c8d41dea9b60a] Manifest updated: main/fix-wrap-usesearchparams-in-suspense-boundary-for-458db08c.md (commit)
+[2026-08-12T06:50:36.004Z] INFO  [FolderStorage] [trace=a9f2439f414b52eb092c8d41dea9b60a] Markdown generated: main/fix-wrap-usesearchparams-in-suspense-boundary-for-458db08c.md
+[2026-08-12T06:50:36.011Z] INFO  [FolderStorage] [trace=a9f2439f414b52eb092c8d41dea9b60a] Wrote 4 files, deleted 0 (Add summary for 458db08c: fix: wrap useSearchParams in Suspense boundary for)
+[2026-08-12T06:50:36.012Z] INFO  [SummaryStore] [trace=a9f2439f414b52eb092c8d41dea9b60a] Summary stored successfully for commit 458db08c
+[2026-08-12T06:50:36.096Z] INFO  [QueueWorker] [trace=a9f2439f414b52eb092c8d41dea9b60a] Summary stored successfully for commit 458db08c (700ms, 0 plans, 0 notes, 0 references)
+[2026-08-12T06:50:36.097Z] INFO  [QueueWorker] [trace=a9f2439f414b52eb092c8d41dea9b60a] === Pipeline completed in 4.1s ===
+[2026-08-12T06:50:36.097Z] INFO  [QueueWorker] [trace=a9f2439f414b52eb092c8d41dea9b60a] === Summary content (0 topics) ===
+[2026-08-12T06:50:36.111Z] INFO  [QueueWorker] [trace=a9f2439f414b52eb092c8d41dea9b60a] Processed 1 queue entries
+[2026-08-12T06:50:36.151Z] INFO  [PushExecutor] [trace=a9f2439f414b52eb092c8d41dea9b60a] Post-queue push trigger: scheduling drain for 1 newly generated summar(ies)
+[2026-08-12T06:50:36.160Z] INFO  [PushExecutor] [trace=a9f2439f414b52eb092c8d41dea9b60a] processPushPending(post-queue): 3 pending entr(ies) (filtered to 1 hash(es))
+[2026-08-12T06:50:37.314Z] INFO  [GitOps] [trace=a9f2439f414b52eb092c8d41dea9b60a] Commit 458db08c: fix: wrap useSearchParams in Suspense boundary for page /cre
+[2026-08-12T06:50:37.826Z] INFO  [StorageFactory] [trace=a9f2439f414b52eb092c8d41dea9b60a] StorageFactory.create: route=cutover, projectPath=C:\Users\mk\Documents\motion-graphic-reels
+[2026-08-12T06:50:39.127Z] INFO  [QueueWorker] [trace=a9f2439f414b52eb092c8d41dea9b60a] === Queue worker finished ===
+[2026-08-12T06:50:39.135Z] INFO  [QueueWorker] [trace=a9f2439f414b52eb092c8d41dea9b60a] Processing queue entry: type=ingest triggeredBy=post-commit
+[2026-08-12T06:50:39.139Z] INFO  [QueueWorker] [trace=a9f2439f414b52eb092c8d41dea9b60a] No API key configured — skipping ingest (post-commit)
+[2026-08-12T06:50:39.396Z] INFO  [PlanService] detectPlans found 0 plans (0 in registry)
+[2026-08-12T06:50:39.396Z] INFO  [NoteService] detectNotes found 0 notes (0 in registry)
+[2026-08-12T06:50:39.397Z] INFO  [references] detectReferences(*) found 0 (0 in registry)
+[2026-08-12T06:50:39.397Z] INFO  [SkillProjection] projectActiveSkills: 0 active (0 in registry)
+[2026-08-12T06:50:44.916Z] INFO  [PrePushHook] [trace=11ef44aac7547b152a7038293acd560e] pre-push hook: remote=origin budget=3000ms
+[2026-08-12T06:50:45.156Z] INFO  [PushPendingStore] [trace=11ef44aac7547b152a7038293acd560e] Enqueued 1 new push-pending entries (branch=main)
+[2026-08-12T06:50:45.178Z] INFO  [PrePushHook] [trace=11ef44aac7547b152a7038293acd560e] pre-push: recorded 1 commit(s) across 1 pushed ref(s)
+[2026-08-12T06:50:45.381Z] INFO  [PrePushHook] [trace=11ef44aac7547b152a7038293acd560e] pre-push: worker spawned (pushId=11ef44aac7547b152a7038293acd560e) — watching for 2521ms
+[2026-08-12T06:50:45.831Z] INFO  [PushExecutor] [trace=11ef44aac7547b152a7038293acd560e] processPushPending(pre-push): 4 pending entr(ies) (filtered to 1 hash(es))
+[2026-08-12T06:50:45.997Z] INFO  [PushExecutor] [trace=11ef44aac7547b152a7038293acd560e] processPushPending(pre-push): claimed 1/1 candidate(s)
+[2026-08-12T06:50:46.331Z] INFO  [StorageFactory] [trace=11ef44aac7547b152a7038293acd560e] StorageFactory.create: route=cutover, projectPath=C:\Users\mk\Documents\motion-graphic-reels
+[2026-08-12T06:50:46.889Z] INFO  [PushExecutor] [trace=11ef44aac7547b152a7038293acd560e] processPushPending(pre-push): triage — withMemory=1 noMemory=0 mergedChildren=0
+[2026-08-12T06:50:47.773Z] INFO  [PushExecutor] [trace=11ef44aac7547b152a7038293acd560e] processPushPending(pre-push): pushing 1 commit(s)
+[2026-08-12T06:50:48.039Z] INFO  [PrePushHook] [trace=11ef44aac7547b152a7038293acd560e] pre-push: watch timed out — 0 of 1 settled
+[2026-08-12T06:50:50.117Z] INFO  [MetadataManager] [trace=11ef44aac7547b152a7038293acd560e] Manifest updated: main/fix-wrap-usesearchparams-in-suspense-boundary-for-458db08c.md (commit)
+[2026-08-12T06:50:50.118Z] INFO  [FolderStorage] [trace=11ef44aac7547b152a7038293acd560e] Markdown generated: main/fix-wrap-usesearchparams-in-suspense-boundary-for-458db08c.md
+[2026-08-12T06:50:50.123Z] INFO  [FolderStorage] [trace=11ef44aac7547b152a7038293acd560e] Wrote 3 files, deleted 0 (Overwrite summary for 458db08c: fix: wrap useSearchParams in Suspense boundary for)
+[2026-08-12T06:50:50.124Z] INFO  [SummaryStore] [trace=11ef44aac7547b152a7038293acd560e] Summary stored successfully for commit 458db08c
+[2026-08-12T06:50:50.372Z] INFO  [PushExecutor] [trace=11ef44aac7547b152a7038293acd560e] processPushPending(pre-push): pushed=1 failed=0
+[2026-08-12T06:50:50.372Z] INFO  [PrePushWorker] [trace=11ef44aac7547b152a7038293acd560e] PrePushWorker(pre-push): drain done — pushed=1 failed=0 noMemory=0
+[2026-08-12T06:50:50.377Z] INFO  [PushExecutor] [trace=11ef44aac7547b152a7038293acd560e] processPushPending(pre-push): 3 pending entr(ies)
+[2026-08-12T06:50:52.032Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-12T06:50:53.847Z] INFO  [SummaryStore] Tree hash match: 31fda5ba → 701c65ca (treeHash: fb5a4b62)
+[2026-08-12T06:50:53.943Z] WARN  [SummaryStore] scanTreeHashAliases: read side has 5 row(s) write side lacks — deferring alias write to avoid shadow clobber
+[2026-08-12T06:50:55.247Z] INFO  [PushExecutor] [trace=11ef44aac7547b152a7038293acd560e] processPushPending(pre-push): claimed 2/3 candidate(s)
+[2026-08-12T06:50:55.486Z] INFO  [PushExecutor] [trace=11ef44aac7547b152a7038293acd560e] processPushPending(pre-push): triage — withMemory=1 noMemory=1 mergedChildren=0
+[2026-08-12T06:50:56.753Z] INFO  [PushExecutor] [trace=11ef44aac7547b152a7038293acd560e] processPushPending(pre-push): pushing 1 commit(s)
+[2026-08-12T06:50:57.024Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-12T06:50:58.838Z] INFO  [SummaryStore] Tree hash match: 31fda5ba → 701c65ca (treeHash: fb5a4b62)
+[2026-08-12T06:50:58.990Z] WARN  [SummaryStore] scanTreeHashAliases: read side has 5 row(s) write side lacks — deferring alias write to avoid shadow clobber
+[2026-08-12T06:50:59.568Z] INFO  [MetadataManager] [trace=11ef44aac7547b152a7038293acd560e] Manifest updated: main/readme-83276a14.md (commit)
+[2026-08-12T06:50:59.568Z] INFO  [FolderStorage] [trace=11ef44aac7547b152a7038293acd560e] Markdown generated: main/readme-83276a14.md
+[2026-08-12T06:50:59.591Z] INFO  [FolderStorage] [trace=11ef44aac7547b152a7038293acd560e] Wrote 3 files, deleted 0 (Overwrite summary for 83276a14: readme)
+[2026-08-12T06:50:59.591Z] INFO  [SummaryStore] [trace=11ef44aac7547b152a7038293acd560e] Summary stored successfully for commit 83276a14
+[2026-08-12T06:50:59.813Z] INFO  [PushExecutor] [trace=11ef44aac7547b152a7038293acd560e] processPushPending(pre-push): pushed=1 failed=0
+[2026-08-12T06:50:59.813Z] INFO  [PrePushWorker] [trace=11ef44aac7547b152a7038293acd560e] PrePushWorker(pre-push): confirmed tail pass — pushed=1 failed=0
+[2026-08-12T06:51:00.822Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-12T06:51:02.096Z] INFO  [SummaryStore] Tree hash match: 31fda5ba → 701c65ca (treeHash: fb5a4b62)
+[2026-08-12T06:51:02.207Z] WARN  [SummaryStore] scanTreeHashAliases: read side has 5 row(s) write side lacks — deferring alias write to avoid shadow clobber
+[2026-08-12T19:10:11.067Z] INFO  [deactivate] Jolli Memory extension deactivating
+[2026-08-14T19:43:31.874Z] INFO  [activate] Activating JolliMemory extension {"workspaceRoot":"c:\\Users\\mk\\Documents\\motion-graphic-reels","extensionPath":"c:\\Users\\mk\\.antigravity-ide\\extensions\\jolli.jollimemory-vscode-0.99.11-universal"}
+[2026-08-14T19:43:32.799Z] INFO  [initialLoad] Loading all panels
+[2026-08-14T19:43:59.896Z] INFO  [PlanService] detectPlans found 0 plans (0 in registry)
+[2026-08-14T19:43:59.896Z] INFO  [NoteService] detectNotes found 0 notes (0 in registry)
+[2026-08-14T19:43:59.896Z] INFO  [references] detectReferences(*) found 0 (0 in registry)
+[2026-08-14T19:43:59.896Z] INFO  [SkillProjection] projectActiveSkills: 0 active (0 in registry)
+[2026-08-14T19:44:12.348Z] INFO  [Sync:VsCodeBootstrap] Memory Bank sync engine built (auto-sync off — manual only)
+[2026-08-14T19:44:17.954Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-08-14T19:44:19.482Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-14T19:44:21.098Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-14T19:44:21.099Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-14T19:44:24.012Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-08-14T19:44:29.610Z] INFO  [activate] Schema v5 migration already complete — skipping (no UI toggle)
+[2026-08-14T19:44:32.484Z] WARN  [activate] kbInitPromise watchdog fired after 60s — releasing sync gate; check initializeKB() for hangs
+[2026-08-14T19:44:34.783Z] INFO  [SummaryStore] Tree hash match: 31fda5ba → 701c65ca (treeHash: fb5a4b62)
+[2026-08-14T19:44:36.497Z] INFO  [MigrationEngine] 0.99.2 head-regen already completed at 2026-08-04T04:13:21.871Z — skipping phase 1
+[2026-08-14T19:44:36.881Z] INFO  [MigrationEngine] Stale-child sweep: deleted=0 failed=0
+[2026-08-14T19:44:36.884Z] INFO  [activate] KB stale-child reconcile: swept=0 completedAt=2026-08-04T04:13:21.871Z
+[2026-08-14T19:44:37.979Z] INFO  [FolderStorage] Wrote 1 files, deleted 0 (Add 1 tree hash alias(es))
+[2026-08-14T19:44:38.130Z] INFO  [commits] Tree hash aliases found — panel refresh recommended
+[2026-08-14T19:44:42.194Z] INFO  [PrePushWorker] [trace=1b663715dab7dc629812020c0cdfa558] PrePushWorker(vscode-activation): spawned compensation drain starting
+[2026-08-14T19:44:42.213Z] INFO  [PushExecutor] [trace=1b663715dab7dc629812020c0cdfa558] processPushPending(activation): 2 pending entr(ies)
+[2026-08-14T19:45:05.673Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=0, summaries=8, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-14T19:45:05.673Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=0, summaries=8, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-14T19:45:06.148Z] INFO  [initialLoad] All panels loaded — updating status bar
+[2026-08-14T19:45:06.148Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-14T19:45:06.150Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-14T19:45:13.437Z] INFO  [PushExecutor] [trace=1b663715dab7dc629812020c0cdfa558] processPushPending(activation): claimed 2/2 candidate(s)
+[2026-08-14T19:45:20.549Z] INFO  [StorageFactory] [trace=1b663715dab7dc629812020c0cdfa558] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-08-14T19:45:25.932Z] INFO  [PushExecutor] [trace=1b663715dab7dc629812020c0cdfa558] processPushPending(activation): triage — withMemory=1 noMemory=1 mergedChildren=0
+[2026-08-14T19:45:39.727Z] INFO  [PushExecutor] [trace=1b663715dab7dc629812020c0cdfa558] processPushPending(activation): pushing 1 commit(s)
+[2026-08-14T19:45:39.974Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-14T19:45:39.994Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=0, summaries=8, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-14T19:45:39.996Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=0, summaries=8, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-14T19:45:40.003Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-14T19:45:41.965Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-08-14T19:45:45.345Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=0, summaries=8, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-14T19:45:45.835Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-08-14T19:45:45.980Z] INFO  [MetadataManager] [trace=1b663715dab7dc629812020c0cdfa558] Manifest updated: main/fix-wrap-usesearchparams-in-suspense-boundary-for-43bcf796.md (commit)
+[2026-08-14T19:45:45.980Z] INFO  [FolderStorage] [trace=1b663715dab7dc629812020c0cdfa558] Markdown generated: main/fix-wrap-usesearchparams-in-suspense-boundary-for-43bcf796.md
+[2026-08-14T19:45:45.987Z] INFO  [FolderStorage] [trace=1b663715dab7dc629812020c0cdfa558] Wrote 3 files, deleted 0 (Overwrite summary for 43bcf796: fix: wrap useSearchParams in Suspense boundary for)
+[2026-08-14T19:45:45.987Z] INFO  [SummaryStore] [trace=1b663715dab7dc629812020c0cdfa558] Summary stored successfully for commit 43bcf796
+[2026-08-14T19:45:46.408Z] INFO  [PushExecutor] [trace=1b663715dab7dc629812020c0cdfa558] processPushPending(activation): pushed=1 failed=0
+[2026-08-14T19:45:46.408Z] INFO  [PrePushWorker] [trace=1b663715dab7dc629812020c0cdfa558] PrePushWorker(vscode-activation): drain done — attempted=1 pushed=1 failed=0
+[2026-08-14T19:45:46.519Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-14T19:45:54.565Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-14T19:51:31.288Z] INFO  [deactivate] Jolli Memory extension deactivating
+[2026-08-14T19:53:44.621Z] INFO  [activate] Activating JolliMemory extension {"workspaceRoot":"c:\\Users\\mk\\Documents\\motion-graphic-reels","extensionPath":"c:\\Users\\mk\\.antigravity-ide\\extensions\\jolli.jollimemory-vscode-0.99.11-universal"}
+[2026-08-14T19:53:45.184Z] INFO  [initialLoad] Loading all panels
+[2026-08-14T19:53:45.427Z] INFO  [PlanService] detectPlans found 0 plans (0 in registry)
+[2026-08-14T19:53:45.427Z] INFO  [NoteService] detectNotes found 0 notes (0 in registry)
+[2026-08-14T19:53:45.427Z] INFO  [references] detectReferences(*) found 0 (0 in registry)
+[2026-08-14T19:53:45.427Z] INFO  [SkillProjection] projectActiveSkills: 0 active (0 in registry)
+[2026-08-14T19:54:06.763Z] INFO  [Sync:VsCodeBootstrap] Memory Bank sync engine built (auto-sync off — manual only)
+[2026-08-14T19:54:10.943Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-08-14T19:54:11.076Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-14T19:54:13.973Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-14T19:54:13.974Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-14T19:54:17.410Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-08-14T19:54:22.322Z] INFO  [activate] Schema v5 migration already complete — skipping (no UI toggle)
+[2026-08-14T19:54:36.379Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=0, summaries=8, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-14T19:54:36.405Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=0, summaries=8, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-14T19:54:37.467Z] INFO  [initialLoad] All panels loaded — updating status bar
+[2026-08-14T19:54:37.467Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-14T19:54:37.469Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-14T19:54:38.864Z] INFO  [MigrationEngine] 0.99.2 head-regen already completed at 2026-08-04T04:13:21.871Z — skipping phase 1
+[2026-08-14T19:54:38.868Z] INFO  [MigrationEngine] Stale-child sweep: deleted=0 failed=0
+[2026-08-14T19:54:38.871Z] INFO  [activate] KB stale-child reconcile: swept=0 completedAt=2026-08-04T04:13:21.871Z
+[2026-08-14T19:54:40.552Z] INFO  [PrePushWorker] [trace=1cc7fe4987cc5b214ba0a9862bcc704a] PrePushWorker(vscode-activation): spawned compensation drain starting
+[2026-08-14T19:54:40.556Z] INFO  [PushExecutor] [trace=1cc7fe4987cc5b214ba0a9862bcc704a] processPushPending(activation): 1 pending entr(ies)
+[2026-08-14T19:54:51.745Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=0, summaries=8, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-14T19:54:51.785Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-14T19:54:52.563Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=0, summaries=8, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-14T19:54:53.411Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-08-14T19:54:54.889Z] INFO  [PushExecutor] [trace=1cc7fe4987cc5b214ba0a9862bcc704a] processPushPending(activation): claimed 1/1 candidate(s)
+[2026-08-14T19:54:55.618Z] INFO  [StorageFactory] [trace=1cc7fe4987cc5b214ba0a9862bcc704a] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-08-14T19:54:55.344Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=0, summaries=8, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-14T19:54:57.206Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-08-14T19:54:57.369Z] INFO  [PushExecutor] [trace=1cc7fe4987cc5b214ba0a9862bcc704a] processPushPending(activation): triage — withMemory=0 noMemory=1 mergedChildren=0
+[2026-08-14T19:54:57.369Z] INFO  [PrePushWorker] [trace=1cc7fe4987cc5b214ba0a9862bcc704a] PrePushWorker(vscode-activation): drain done — attempted=0 pushed=0 failed=0 (no candidates with memory)
+[2026-08-15T00:29:27.395Z] INFO  [activate] Activating JolliMemory extension {"workspaceRoot":"c:\\Users\\mk\\Documents\\motion-graphic-reels","extensionPath":"c:\\Users\\mk\\.antigravity-ide\\extensions\\jolli.jollimemory-vscode-0.99.13-universal"}
+[2026-08-15T00:29:33.496Z] INFO  [initialLoad] Loading all panels
+[2026-08-15T00:30:00.144Z] INFO  [bridge] Own dist-paths/antigravity-ide missing, stale, or pointing elsewhere — re-enabling
+[2026-08-15T00:30:00.144Z] INFO  [bridge] enable() called
+[2026-08-15T00:30:00.146Z] INFO  [Installer] Installing Jolli Memory hooks
+[2026-08-15T00:30:00.163Z] INFO  [PlanService] detectPlans found 0 plans (0 in registry)
+[2026-08-15T00:30:00.163Z] INFO  [NoteService] detectNotes found 0 notes (0 in registry)
+[2026-08-15T00:30:00.163Z] INFO  [references] detectReferences(*) found 0 (0 in registry)
+[2026-08-15T00:30:00.163Z] INFO  [SkillProjection] projectActiveSkills: 0 active (0 in registry)
+[2026-08-15T00:30:02.579Z] INFO  [Sync:VsCodeBootstrap] Memory Bank sync engine built (auto-sync off — manual only)
+[2026-08-15T00:30:05.770Z] INFO  [DispatchScripts] Wrote resolve-dist-path, run-hook, and run-cli scripts to C:\Users\mk\.jolli\jollimemory
+[2026-08-15T00:30:05.774Z] INFO  [DistPathWriter] Wrote dist-paths/antigravity-ide (version=0.99.13, distDir=c:\Users\mk\.antigravity-ide\extensions\jolli.jollimemory-vscode-0.99.13-universal\dist)
+[2026-08-15T00:30:06.547Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-08-15T00:30:07.142Z] INFO  [SkillInstaller] Wrote SKILL.md (revision 7) to C:\Users\mk\Documents\motion-graphic-reels\.agents\skills\jolli\SKILL.md
+[2026-08-15T00:30:08.825Z] INFO  [McpRegistration] Registered MCP server in C:\Users\mk\Documents\motion-graphic-reels\.mcp.json
+[2026-08-15T00:30:08.836Z] INFO  [JsonMcpWriter] Registered MCP server in C:\Users\mk\Documents\motion-graphic-reels\.cursor\mcp.json
+[2026-08-15T00:30:08.860Z] INFO  [JsonMcpWriter] Registered MCP server in C:\Users\mk\.gemini\settings.json
+[2026-08-15T00:30:08.888Z] INFO  [CodexTomlWriter] Registered Codex MCP server in C:\Users\mk\.codex\config.toml
+[2026-08-15T00:30:08.909Z] INFO  [JsonMcpWriter] Registered MCP server in C:\Users\mk\.config\opencode\opencode.json
+[2026-08-15T00:30:09.044Z] INFO  [JsonMcpWriter] Registered MCP server in C:\Users\mk\AppData\Roaming\Code\User\mcp.json
+[2026-08-15T00:30:09.049Z] INFO  [JsonMcpWriter] Registered MCP server in C:\Users\mk\.gemini\config\mcp_config.json
+[2026-08-15T00:30:09.302Z] INFO  [Installer] Skipping v5 migration on vscode-extension source — Extension.ts owns it with UI
+[2026-08-15T00:30:09.302Z] INFO  [Installer] Installation complete
+[2026-08-15T00:30:11.753Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-15T00:30:11.753Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-15T00:30:11.938Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-15T00:30:14.676Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-08-15T00:30:23.474Z] INFO  [activate] Schema v5 migration already complete — skipping (no UI toggle)
+[2026-08-15T00:30:30.652Z] WARN  [activate] kbInitPromise watchdog fired after 60s — releasing sync gate; check initializeKB() for hangs
+[2026-08-15T00:30:35.486Z] INFO  [MigrationEngine] 0.99.2 head-regen already completed at 2026-08-04T04:13:21.871Z — skipping phase 1
+[2026-08-15T00:30:35.999Z] INFO  [MigrationEngine] Stale-child sweep: deleted=0 failed=0
+[2026-08-15T00:30:36.043Z] INFO  [activate] KB stale-child reconcile: swept=0 completedAt=2026-08-04T04:13:21.871Z
+[2026-08-15T00:30:40.458Z] INFO  [PrePushWorker] [trace=5e7b7c95227961bab0855be691517d9f] PrePushWorker(vscode-activation): spawned compensation drain starting
+[2026-08-15T00:30:40.484Z] INFO  [PushExecutor] [trace=5e7b7c95227961bab0855be691517d9f] processPushPending(activation): 1 pending entr(ies)
+[2026-08-15T00:31:29.007Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=1, summaries=8, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-15T00:31:29.345Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-15T00:31:32.809Z] INFO  [PushExecutor] [trace=5e7b7c95227961bab0855be691517d9f] processPushPending(activation): claimed 1/1 candidate(s)
+[2026-08-15T00:31:32.903Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=1, summaries=8, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-15T00:31:32.907Z] INFO  [initialLoad] All panels loaded — updating status bar
+[2026-08-15T00:31:32.907Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-15T00:31:43.314Z] INFO  [StorageFactory] [trace=5e7b7c95227961bab0855be691517d9f] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-08-15T00:32:05.979Z] INFO  [PushExecutor] [trace=5e7b7c95227961bab0855be691517d9f] processPushPending(activation): triage — withMemory=0 noMemory=1 mergedChildren=0
+[2026-08-15T00:32:05.980Z] INFO  [PrePushWorker] [trace=5e7b7c95227961bab0855be691517d9f] PrePushWorker(vscode-activation): drain done — attempted=0 pushed=0 failed=0 (no candidates with memory)
+[2026-08-15T00:32:23.983Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=2, summaries=8, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-15T00:32:24.089Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-15T00:32:26.626Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=2, summaries=8, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-15T00:32:26.676Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-08-15T00:32:57.844Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=2, summaries=8, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-15T00:32:59.599Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-08-16T05:04:05.991Z] INFO  [activate] Activating JolliMemory extension {"workspaceRoot":"c:\\Users\\mk\\Documents\\motion-graphic-reels","extensionPath":"c:\\Users\\mk\\.antigravity-ide\\extensions\\jolli.jollimemory-vscode-0.99.13-universal"}
+[2026-08-16T05:04:07.196Z] INFO  [initialLoad] Loading all panels
+[2026-08-16T05:04:38.883Z] INFO  [PlanService] detectPlans found 0 plans (0 in registry)
+[2026-08-16T05:04:38.883Z] INFO  [NoteService] detectNotes found 0 notes (0 in registry)
+[2026-08-16T05:04:38.883Z] INFO  [references] detectReferences(*) found 0 (0 in registry)
+[2026-08-16T05:04:38.883Z] INFO  [SkillProjection] projectActiveSkills: 0 active (0 in registry)
+[2026-08-16T05:04:54.474Z] INFO  [Sync:VsCodeBootstrap] Memory Bank sync engine built (auto-sync off — manual only)
+[2026-08-16T05:04:58.443Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-08-16T05:05:01.151Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-16T05:05:01.152Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-16T05:05:01.197Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T05:05:02.382Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-08-16T05:05:06.811Z] WARN  [activate] kbInitPromise watchdog fired after 60s — releasing sync gate; check initializeKB() for hangs
+[2026-08-16T05:05:16.860Z] INFO  [activate] Schema v5 migration already complete — skipping (no UI toggle)
+[2026-08-16T05:05:47.780Z] INFO  [MigrationEngine] 0.99.2 head-regen already completed at 2026-08-04T04:13:21.871Z — skipping phase 1
+[2026-08-16T05:05:55.193Z] INFO  [PrePushWorker] [trace=6645c714fad1ebd2542fca68640694c4] PrePushWorker(vscode-activation): spawned compensation drain starting
+[2026-08-16T05:05:55.215Z] INFO  [PushExecutor] [trace=6645c714fad1ebd2542fca68640694c4] processPushPending(activation): 1 pending entr(ies)
+[2026-08-16T05:05:48.229Z] INFO  [MigrationEngine] Stale-child sweep: deleted=0 failed=0
+[2026-08-16T05:05:48.236Z] INFO  [activate] KB stale-child reconcile: swept=0 completedAt=2026-08-04T04:13:21.871Z
+[2026-08-16T05:06:49.489Z] INFO  [PushExecutor] [trace=6645c714fad1ebd2542fca68640694c4] processPushPending(activation): claimed 1/1 candidate(s)
+[2026-08-16T05:06:53.954Z] INFO  [StorageFactory] [trace=6645c714fad1ebd2542fca68640694c4] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-08-16T05:06:58.888Z] INFO  [PushExecutor] [trace=6645c714fad1ebd2542fca68640694c4] processPushPending(activation): triage — withMemory=0 noMemory=1 mergedChildren=0
+[2026-08-16T05:06:58.888Z] INFO  [PrePushWorker] [trace=6645c714fad1ebd2542fca68640694c4] PrePushWorker(vscode-activation): drain done — attempted=0 pushed=0 failed=0 (no candidates with memory)
+[2026-08-16T05:06:59.370Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=5, summaries=8, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-16T05:06:59.460Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-16T05:07:01.501Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=5, summaries=8, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-16T05:07:01.583Z] INFO  [initialLoad] All panels loaded — updating status bar
+[2026-08-16T05:07:01.583Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-16T05:07:09.202Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=5, summaries=8, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-16T05:07:09.206Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-16T05:07:12.634Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=5, summaries=8, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-16T05:07:12.740Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-08-16T05:07:16.489Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=5, summaries=8, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-16T05:07:21.649Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-08-16T17:35:55.196Z] INFO  [SidebarWebviewProvider] pushMemories: 0 item(s)
+[2026-08-16T17:35:56.204Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:35:57.361Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:36:03.263Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:36:05.185Z] INFO  [DashboardDb] dashboard schema migrated 5 → 7 (SCHEMA_MIGRATIONS_DDL, REPOS_DELETE_ALLOWED_DDL)
+[2026-08-16T17:36:05.917Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:36:06.432Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:36:06.970Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:36:07.676Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:36:08.517Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:36:08.716Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:36:09.370Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:36:10.130Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:36:59.836Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:37:01.812Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:37:02.746Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:37:03.474Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:37:05.536Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:37:05.549Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:37:06.611Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:37:08.260Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:37:58.491Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:38:00.061Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:38:01.209Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:38:01.949Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:38:03.247Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:38:03.531Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:38:04.933Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:38:06.748Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:39:14.938Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:39:20.855Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:39:21.945Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:39:22.591Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:39:23.425Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:39:23.599Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:39:25.708Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:39:27.031Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:39:58.084Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:39:58.670Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:39:59.353Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:39:59.870Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:40:00.565Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:40:01.050Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:40:02.388Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:40:03.633Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:41:02.361Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:41:08.437Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:41:10.999Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:41:11.561Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:41:12.389Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:41:12.396Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:41:13.171Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:41:14.284Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:42:06.172Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:42:06.798Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:42:07.481Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:42:08.407Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:42:10.188Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:42:10.264Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:42:11.344Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:42:12.314Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:43:02.289Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:43:03.224Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:43:05.860Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:43:06.152Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:43:07.974Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:43:08.337Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:43:09.974Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:43:11.176Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:43:57.394Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:43:57.737Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:43:58.261Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:43:58.875Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:43:59.546Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:43:59.720Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:44:00.512Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:44:01.632Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:45:13.358Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:45:14.510Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:45:15.688Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:45:16.542Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:45:19.825Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:45:20.200Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:45:23.391Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:45:31.744Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:45:57.366Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:45:57.758Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:45:58.312Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:45:59.164Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:45:59.801Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:45:59.941Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:46:00.631Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:46:01.617Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:46:58.776Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:46:59.049Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:46:59.508Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:47:00.098Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:47:00.519Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:47:00.678Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:47:01.229Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:47:01.908Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:48:57.120Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:48:57.467Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:48:57.939Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:48:58.447Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:48:58.823Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:48:58.961Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:48:59.411Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:49:00.063Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:49:56.860Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:49:57.278Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:49:57.837Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:49:58.402Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:49:58.854Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:49:59.004Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:49:59.637Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:50:01.810Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:51:00.439Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:51:00.870Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:51:01.339Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:51:01.886Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:51:02.273Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:51:02.447Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:51:02.928Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:51:03.528Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:52:02.956Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:52:03.295Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:52:03.777Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:52:04.320Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:52:04.708Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:52:04.859Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:52:05.300Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:52:06.013Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:52:57.961Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:52:58.323Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:52:58.816Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:52:59.338Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:52:59.734Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:52:59.902Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:53:00.445Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:53:02.081Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:53:57.355Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:53:57.692Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:53:58.116Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:53:58.641Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:53:59.057Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:53:59.143Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:53:59.653Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:54:00.307Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:56:13.874Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:56:14.635Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:56:15.427Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:56:16.486Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:58:59.414Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:59:00.819Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:59:01.642Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:59:02.154Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T17:59:02.768Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:59:02.975Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T17:59:03.786Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T17:59:05.314Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:00:02.984Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T18:00:05.079Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:00:07.252Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T18:00:08.096Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T18:00:14.681Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:00:15.667Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:00:17.176Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T18:00:21.447Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:01:09.730Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T18:01:15.612Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:01:21.066Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T18:01:21.749Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T18:01:24.944Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:01:25.401Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:01:31.096Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T18:01:36.243Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:02:27.102Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T18:02:30.131Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:02:31.165Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T18:02:31.914Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T18:02:32.894Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:02:32.944Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:02:34.092Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T18:02:36.931Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:02:59.832Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T18:03:00.382Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:03:00.958Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T18:03:01.854Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T18:03:02.740Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:03:02.834Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:03:03.654Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T18:03:05.492Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:04:03.683Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T18:04:05.007Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:04:05.596Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T18:04:06.681Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T18:04:07.560Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:04:07.589Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:04:09.560Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T18:04:10.414Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:05:05.558Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T18:05:08.275Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:05:09.836Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T18:05:10.495Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T18:05:11.171Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:05:11.255Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:05:12.266Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T18:05:13.293Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:06:00.010Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T18:06:00.895Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:06:01.436Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T18:06:02.062Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T18:06:02.758Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:06:02.786Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:06:03.613Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T18:06:04.455Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:07:01.550Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T18:07:01.959Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:07:02.466Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T18:07:03.073Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T18:07:03.546Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:07:03.696Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:07:04.380Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T18:07:05.426Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:07:59.373Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T18:07:59.811Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:08:00.462Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T18:08:01.238Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T18:08:02.413Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:08:02.646Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:08:03.422Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T18:08:04.408Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:10:59.915Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T18:11:00.447Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:11:01.079Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T18:11:01.763Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-16T18:11:02.513Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:11:02.570Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-16T18:11:03.402Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
+[2026-08-16T18:11:04.996Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}

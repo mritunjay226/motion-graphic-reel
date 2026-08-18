@@ -34,7 +34,11 @@ export default defineSchema({
         narration: v.string(),
         imagePrompt: v.optional(v.string()),
         imageUrl: v.optional(v.string()),
+        bgImageUrl: v.optional(v.string()),
         audioUrl: v.optional(v.string()),
+        audioDurationSec: v.optional(v.number()),
+        videoUrl: v.optional(v.string()),
+        bRollUrl: v.optional(v.string()),
         isSingleSubject: v.optional(v.boolean()),
         whisperTokens: v.optional(v.any()),
         visualType: v.optional(v.string()),
@@ -58,6 +62,25 @@ export default defineSchema({
     renderDurationMs: v.optional(v.number()),
     errorMessage: v.optional(v.string()),
     failedStep: v.optional(v.string()),
+    socialPosts: v.optional(
+      v.array(
+        v.object({
+          platform: v.string(),
+          accountId: v.string(),
+          accountName: v.optional(v.string()),
+          postId: v.optional(v.string()),
+          status: v.union(
+            v.literal("pending"),
+            v.literal("published"),
+            v.literal("scheduled"),
+            v.literal("failed")
+          ),
+          postUrl: v.optional(v.string()),
+          errorMessage: v.optional(v.string()),
+          publishedAt: v.optional(v.number()),
+        })
+      )
+    ),
     createdAt: v.number(),
     updatedAt: v.number(),
   })

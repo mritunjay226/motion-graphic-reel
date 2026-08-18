@@ -25,11 +25,13 @@ export interface StoryboardSceneOutput {
   subtitle: string;
   narration: string;
   imagePrompt: string;
+  bRollQuery?: string;
   isSingleSubject: boolean;
   removeBg?: boolean;
-  visualType: "side_by_side_infographic" | "center_cutout_hero" | "side_by_side_list" | "revenue_stat_trend" | "punchline_quote_hero";
-  gsapType: "grid_lines" | "bar_chart" | "pulse_nodes" | "stamp_seal" | "trend_arrow" | "confetti_burst";
-  entranceType: "slide_corner_top_left" | "slide_corner_top_right" | "slide_corner_bottom_left" | "slide_corner_bottom_right";
+  visualType: string;
+  gsapType?: string;
+  entranceType?: string;
+  sfxCue?: string;
   events?: SceneEventPayload[];
 }
 
@@ -86,9 +88,31 @@ VIRAL SCRIPT ENGINEERING & NARRATION CONTINUITY DIRECTIVES:
 5. PUNCHY 2-4 WORD UPPERCASE HEADLINES:
    - Every scene "headline" MUST be 2 to 4 punchy uppercase words max.
 
-6. STRICT IMAGE PLACEMENT RULE:
+6. MAXIMUM READABILITY & LARGE FONT SIZING DIRECTIVE:
+   - All on-screen text (headlines, subtitles, memo text, quotes, badges) MUST be short, concise, and ultra-punchy.
+   - Headlines MUST be 2 to 4 words MAX (e.g. "50M KI GALTI", "THE $50M MISTAKE").
+   - Subtitles MUST be 4 to 6 words MAX (e.g. "EK DECISION NE BADLA EMPIRE").
+   - Event content (memos, news headlines, quote cards) MUST be under 10-12 words MAX so text is rendered in massive, bold, crystal-clear typography on mobile screens.
+   - NEVER write long paragraphs or tiny verbose sentences for on-screen elements!
+
+7. STRICT IMAGE & CUTOUT PLACEMENT RULE:
    - Every scene MUST have a primary single-subject cutout prompt ("imagePrompt" on the scene object) featuring the main figure, product, or logo for that beat.
    - Set "isSingleSubject": true, "removeBg": true for isolated subjects.
+
+8. TACTILE SOUND DESIGN & FOLEY DIRECTIVE:
+   - Our 2.5D Motion Graphic Engine features a 39-sound Tactile Foley Library that plays frame-accurate sound effects.
+   - For each scene, specify an "sfxCue" field that matches the emotional weight of that scene:
+     • "cinematic_sub_boom": Shocking Scene 1 hook paradox or dramatic Scene 6 climax revelation.
+     • "rubber_stamp": Executive rejection, corporate approval, confidential seal, or final verdict.
+     • "cash_register": Massive dollar valuation ($50M, $100B), revenue surge, or financial peak.
+     • "coin_clink": Rapid stat increase, growth percentage, or financial comparison.
+     • "camera_shutter": Polaroid snapshot, executive quote spotlight, or archival evidence.
+     • "record_scratch": Counter-intuitive twist, sudden mistake, or unexpected turn of events.
+     • "typewriter_key": Leaked memo, confidential email, or newspaper article.
+     • "keyboard_typing": Cyber matrix, hacker algorithm, or technical telemetry.
+     • "paper_rip": Contract torn, division, or sharp transition.
+     • "bell_ding": Milestone achievement or checklist step completion.
+     • "glass_shatter": Bankruptcy, failure, or catastrophic collapse.
 
 Output ONLY a valid JSON array of 6 scene objects matching this exact structure:
 [
@@ -98,11 +122,13 @@ Output ONLY a valid JSON array of 6 scene objects matching this exact structure:
     "subtitle": "${isHindi ? "EK DECISION NE TABAH KIYA EMPIRE" : "HOW A SINGLE DECISION DESTROYED AN EMPIRE"}",
     "narration": "${isHindi ? "Is fifty million dollar ki galti ne raato-raat 9000 stores ke empire ko khatam kar diya... aur kisi ko iski bhanak tak nahi lagi." : "This fifty million dollar mistake wiped out a nine thousand store empire overnight... and nobody saw it coming."}",
     "imagePrompt": "Portrait cutout of main subject related to ${topic}, isolated single subject on solid white background, clean sticker",
+    "bRollQuery": "Cinematic 4k B-roll footage related to ${topic}, e.g. corporate boardroom meeting or stock exchange floor",
     "isSingleSubject": true,
     "removeBg": true,
     "visualType": "center_cutout_hero",
     "gsapType": "grid_lines",
     "entranceType": "slide_corner_bottom_left",
+    "sfxCue": "cinematic_sub_boom",
     "events": [
       {
         "id": "ev_1_1",
@@ -122,9 +148,27 @@ Rules:
 - Exactly 6 scenes.
 - headline: Uppercase 2-4 words max.
 - narration: Punchy, viral 1-2 sentence documentary script per scene in ${targetLanguage}.
-- visualType must be one of: "center_cutout_hero", "split_left_cutout_right_memo", "revenue_stat_trend", "punchline_quote_hero", "handwritten_roadmap_checklist", "editorial_strikethrough_swap". Vary this across scenes.
-- gsapType must be one of: "grid_lines", "bar_chart", "pulse_nodes", "stamp_seal", "trend_arrow", "confetti_burst". Vary this across scenes.
-- Output ONLY raw JSON array. No markdown formatting, no code blocks.`;
+- sfxCue: Choose one of ("cinematic_sub_boom", "rubber_stamp", "cash_register", "coin_clink", "camera_shutter", "record_scratch", "typewriter_key", "keyboard_typing", "paper_rip", "bell_ding", "glass_shatter").
+- visualType MUST be intelligently chosen from the full 17-template suite to visually PROVE what is being spoken (DO NOT use the same visualType more than once in the 6 scenes):
+  1. "center_hero_cutout": Iconic hero hook, key subject or product introduction.
+  2. "split_left_cutout_right_memo": Confidential internal memo, leaked email, corporate record.
+  3. "split_left_newspaper_right_cutout": Breaking news headline, newspaper clipping, media scandal.
+  4. "revenue_stat_trend": Huge revenue growth, metric surge (+340%), upward trend arrow.
+  5. "punchline_quote_spotlight": Dramatic executive quote, confession, or statement.
+  6. "infographic_bar_chart": Financial bar chart comparison, growth vs competition.
+  7. "dual_cutout_versus": Rivalry showdown, competitor battle, David vs Goliath.
+  8. "list_bullets_left_cutout_right": 3 key strategic takeaways or core principles.
+  9. "timeline_milestone_road": Chronology, evolution over years, multi-phase history.
+  10. "spotlight_magnifier_document": Forensic audit, magnifying hidden fine print or leaked contract.
+  11. "circular_orbit_infographic": Circular ecosystem, interconnected network.
+  12. "breaking_news_alert_ticker": Urgent breaking alert, market crash or emergency bulletin.
+  13. "matrix_scramble_hacker": Cyber attack, algorithmic secret, hacker code decryption, tech breakthrough.
+  14. "bento_grid_showcase": Multi-card bento grid, feature highlights.
+  15. "ecosystem_integration_hub": Connected ecosystem constellation, technology hub.
+  16. "handwritten_roadmap_checklist": Step-by-step masterplan, verified checklist audit with checkmarks.
+  17. "editorial_strikethrough_swap": Myth vs reality, striking through misconceptions, counter-intuitive truth.
+- gsapType must be one of: "grid_lines", "bar_chart", "pulse_nodes", "stamp_seal", "trend_arrow", "confetti_burst".
+- Output ONLY raw JSON array of 6 scene objects. No markdown formatting, no code blocks.`;
 
   // ─── 1. Call Native Google Gemini 2.5 REST API if GEMINI_API_KEY is present ───
   if (geminiApiKey) {
@@ -227,7 +271,7 @@ function generateDefaultVoxStoryboard(topic: string, language: string = "en"): S
         narration: `${topic} ke shuruati dino me, ek chhoti si team ne ek aisa khatarnak risk liya jisne puri industry ko hilakar rakh diya.`,
         imagePrompt: `Founder or key figure behind ${topic}, portrait cutout, isolated PNG sticker on white background`,
         isSingleSubject: true,
-        visualType: "center_cutout_hero",
+        visualType: "center_hero_cutout",
         gsapType: "grid_lines",
         entranceType: "slide_corner_bottom_left",
         events: [
@@ -249,31 +293,31 @@ function generateDefaultVoxStoryboard(topic: string, language: string = "en"): S
         narration: "Unhone ek aisi krantikari strategy pesh ki jis par shuruat me investors ne sawal uthaye the.",
         imagePrompt: `Stack of investment cash money for ${topic}, isolated PNG sticker on white background`,
         isSingleSubject: true,
-        visualType: "side_by_side_infographic",
+        visualType: "split_left_newspaper_right_cutout",
         gsapType: "bar_chart",
         entranceType: "slide_corner_top_left",
         events: [],
       },
       {
         sceneId: 3,
-        headline: "KRANTIKARI RULES",
+        headline: "MARKET KI JUNG",
         subtitle: "PURANE NIYAMO KO TODNA",
         narration: "Fizul kharcho ko khatam karke aur customer experience ko priority dekar, unhone record growth hasil ki.",
         imagePrompt: `Modern tech server glowing network for ${topic}, isolated PNG sticker on white background`,
         isSingleSubject: true,
-        visualType: "side_by_side_list",
+        visualType: "dual_cutout_versus",
         gsapType: "pulse_nodes",
         entranceType: "slide_corner_top_right",
         events: [],
       },
       {
         sceneId: 4,
-        headline: "COMPETITORS KA PATAN",
-        subtitle: "BADI COMPANIES HUI TABAH",
+        headline: "SECRET EVIDENCE",
+        subtitle: "LEAKED AUDIT REPORT",
         narration: "Paramparik companies ne samay ke sath badalne se inkar kar diya, jiske parinam swarup unka patan ho gaya.",
         imagePrompt: `Abandoned traditional store front representing competitors of ${topic}, isolated PNG sticker on white background`,
         isSingleSubject: true,
-        visualType: "center_cutout_hero",
+        visualType: "spotlight_magnifier_document",
         gsapType: "stamp_seal",
         entranceType: "slide_corner_bottom_right",
         events: [],
@@ -297,7 +341,7 @@ function generateDefaultVoxStoryboard(topic: string, language: string = "en"): S
         narration: "Yeh aadhunik business itihas ki sabse shandar aur prernadayak growth stories me se ek hai.",
         imagePrompt: `Royal gold crown symbol of business victory for ${topic}, isolated PNG sticker on white background`,
         isSingleSubject: true,
-        visualType: "punchline_quote_hero",
+        visualType: "editorial_strikethrough_swap",
         gsapType: "confetti_burst",
         entranceType: "slide_corner_top_right",
         events: [],
@@ -313,7 +357,7 @@ function generateDefaultVoxStoryboard(topic: string, language: string = "en"): S
       narration: `In the early days of ${topic}, a small team took a massive risk that changed the business landscape forever.`,
       imagePrompt: `Founder or key figure behind ${topic}, portrait cutout, isolated PNG sticker on white background`,
       isSingleSubject: true,
-      visualType: "center_cutout_hero",
+      visualType: "center_hero_cutout",
       gsapType: "grid_lines",
       entranceType: "slide_corner_bottom_left",
       events: [
@@ -344,7 +388,7 @@ function generateDefaultVoxStoryboard(topic: string, language: string = "en"): S
       narration: `They pitched a revolutionary business model that investors initially questioned.`,
       imagePrompt: `Stack of investment cash money for ${topic}, isolated PNG sticker on white background`,
       isSingleSubject: true,
-      visualType: "side_by_side_infographic",
+      visualType: "split_left_newspaper_right_cutout",
       gsapType: "bar_chart",
       entranceType: "slide_corner_top_left",
       events: [
@@ -362,12 +406,12 @@ function generateDefaultVoxStoryboard(topic: string, language: string = "en"): S
     },
     {
       sceneId: 3,
-      headline: `REVOLUTIONARY RULES`,
-      subtitle: `BREAKING INDUSTRY CONVENTIONS`,
+      headline: `MARKET RIVALRY`,
+      subtitle: `DAVID VS GOLIATH SHOWDOWN`,
       narration: `By eliminating unnecessary overhead and putting customer experience first, they scaled exponentially.`,
       imagePrompt: `Modern tech server glowing network for ${topic}, isolated PNG sticker on white background`,
       isSingleSubject: true,
-      visualType: "side_by_side_list",
+      visualType: "dual_cutout_versus",
       gsapType: "pulse_nodes",
       entranceType: "slide_corner_top_right",
       events: [
@@ -384,12 +428,12 @@ function generateDefaultVoxStoryboard(topic: string, language: string = "en"): S
     },
     {
       sceneId: 4,
-      headline: `COMPETITORS SHUTDOWN`,
-      subtitle: `LEGACY COMPANIES FILED BANKRUPTCY`,
+      headline: `AUDIT REVEALED`,
+      subtitle: `THE HIDDEN SPREADSHEET LEAK`,
       narration: `Traditional competitors refused to adapt, resulting in massive market shift and closures.`,
       imagePrompt: `Abandoned traditional store front representing legacy competitors of ${topic}, isolated PNG sticker on white background`,
       isSingleSubject: true,
-      visualType: "center_cutout_hero",
+      visualType: "spotlight_magnifier_document",
       gsapType: "stamp_seal",
       entranceType: "slide_corner_bottom_right",
       events: [
@@ -428,12 +472,12 @@ function generateDefaultVoxStoryboard(topic: string, language: string = "en"): S
     },
     {
       sceneId: 6,
-      headline: `THE GREATEST PIVOT IN HISTORY`,
+      headline: `THE GREATEST PIVOT`,
       subtitle: `FROM A BOLD IDEA TO A GLOBAL EMPIRE`,
       narration: `It stands as one of the most remarkable growth stories in modern business history.`,
       imagePrompt: `Royal gold crown symbol of business victory for ${topic}, isolated PNG sticker on white background`,
       isSingleSubject: true,
-      visualType: "punchline_quote_hero",
+      visualType: "editorial_strikethrough_swap",
       gsapType: "confetti_burst",
       entranceType: "slide_corner_top_right",
       events: [

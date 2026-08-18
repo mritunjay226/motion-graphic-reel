@@ -1,82 +1,190 @@
 "use client";
 
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, useRef, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { UserButton, SignInButton, useUser } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
+import { StudioNavbar } from "@/components/StudioNavbar";
 import { ReelGenerationProgress } from "@/components/ReelGenerationProgress";
+import {
+  Zap,
+  Sparkles,
+  Dices,
+  Mic,
+  Play,
+  Square,
+  Flame,
+  Briefcase,
+  Cpu,
+  Palette,
+  AlertTriangle,
+  ArrowRight,
+  ArrowLeft,
+  Loader2,
+  Pin,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
 
 export interface CartesiaVoice {
   id: string;
   name: string;
   lang: "hi" | "en" | "es" | "fr" | "de" | "all";
   desc: string;
+  sampleText: string;
+  accent: string;
 }
 
 const CARTESIA_VOICES: CartesiaVoice[] = [
   // Hindi Voices
-  { id: "7e8cb11d-37af-476b-ab8f-25da99b18644", name: "Anuj — Hindi Narrator", lang: "hi", desc: "Hindi Male — Energetic, high retention documentary narrator" },
-  { id: "9626c31c-bec5-4cca-baa8-f8ba9e84c8bc", name: "Jacquelin — Hindi Female", lang: "hi", desc: "Hindi Female — Smooth, engaging narrative voice" },
+  {
+    id: "7e8cb11d-37af-476b-ab8f-25da99b18644",
+    name: "Anuj",
+    lang: "hi",
+    accent: "Hindi Male",
+    desc: "Energetic, high retention documentary narrator",
+    sampleText: "नमस्ते! यह एक हाई-रिटेंशन 2.5D डॉक्यूमेंट्री वीडियो रील्स इंजन है।",
+  },
+  {
+    id: "9626c31c-bec5-4cca-baa8-f8ba9e84c8bc",
+    name: "Jacquelin",
+    lang: "hi",
+    accent: "Hindi Female",
+    desc: "Smooth, engaging cinematic narrative voice",
+    sampleText: "एक छोटे से फैसले ने कैसे पूरी कंपनी की तकदीर बदल दी?",
+  },
 
   // English & Multi-lingual Voices
-  { id: "62ae83ad-4f6a-430b-af41-a9bede9286ca", name: "Vox High-Retention Explainer", lang: "en", desc: "Dynamic, fast-paced, high energy viral documentary voice" },
-  { id: "b24f41fd-00a3-4cd8-992a-a0c9f13f3ef1", name: "Clive — Documentary Narrator", lang: "en", desc: "UK Male — Deep, suspenseful, cinematic tone for thrillers & crime" },
-  { id: "5ee9feff-1265-424a-9d7f-8e4d431a12c7", name: "Ronald — Deep Authority", lang: "en", desc: "US Male — Authoritative, high stakes narrator" },
-  { id: "db6b0ed5-d5d3-463d-ae85-518a07d3c2b4", name: "Skylar — High Tempo Guide", lang: "en", desc: "US Female — Energetic tech & innovation explainer" },
-  { id: "ef191366-f52f-447a-a398-ed8c0f2943a1", name: "Archie — Storyteller", lang: "en", desc: "UK Male — Fast engaging narrative voice" },
+  {
+    id: "62ae83ad-4f6a-430b-af41-a9bede9286ca",
+    name: "Vox Dynamic Explainer",
+    lang: "en",
+    accent: "US Male",
+    desc: "Fast-paced, high energy viral documentary voice",
+    sampleText: "How did a small Silicon Valley startup take down a multi-billion dollar legacy giant?",
+  },
+  {
+    id: "b24f41fd-00a3-4cd8-992a-a0c9f13f3ef1",
+    name: "Clive",
+    lang: "en",
+    accent: "UK Male",
+    desc: "Deep, suspenseful, cinematic tone for thrillers & mysteries",
+    sampleText: "Behind closed doors, a secret deal was signed that almost caused a catastrophe.",
+  },
+  {
+    id: "5ee9feff-1265-424a-9d7f-8e4d431a12c7",
+    name: "Ronald",
+    lang: "en",
+    accent: "US Authority",
+    desc: "Authoritative, deep high-stakes business narrator",
+    sampleText: "In 1997, they had just 90 days of cash left before total liquidation.",
+  },
+  {
+    id: "db6b0ed5-d5d3-463d-ae85-518a07d3c2b4",
+    name: "Skylar",
+    lang: "en",
+    accent: "US Female",
+    desc: "Energetic tech & modern innovation explainer",
+    sampleText: "Why does the world depend on one single microchip factory in Taiwan?",
+  },
 ];
 
 const LANGUAGES = [
-  { id: "hi", name: "Hindi (Hinglish)", flag: "🇮🇳", desc: "Hinglish subtitles with Hindi voiceover" },
-  { id: "en", name: "English", flag: "🇺🇸", desc: "Classic viral documentary script" },
-  { id: "es", name: "Spanish (Español)", flag: "🇪🇸", desc: "High-retention Spanish voiceover" },
-  { id: "fr", name: "French (Français)", flag: "🇫🇷", desc: "Cinematic French documentary" },
-  { id: "de", name: "German (Deutsch)", flag: "🇩🇪", desc: "Authoritative German narrative" },
+  { id: "hi", name: "Hindi (Hinglish)", flag: "🇮🇳", defaultVoice: "7e8cb11d-37af-476b-ab8f-25da99b18644" },
+  { id: "en", name: "English", flag: "🇺🇸", defaultVoice: "62ae83ad-4f6a-430b-af41-a9bede9286ca" },
+  { id: "es", name: "Spanish", flag: "🇪🇸", defaultVoice: "62ae83ad-4f6a-430b-af41-a9bede9286ca" },
+  { id: "fr", name: "French", flag: "🇫🇷", defaultVoice: "62ae83ad-4f6a-430b-af41-a9bede9286ca" },
+  { id: "de", name: "German", flag: "🇩🇪", defaultVoice: "62ae83ad-4f6a-430b-af41-a9bede9286ca" },
 ];
 
-const PRESET_TOPICS_EN = [
-  "Why OpenAI Fired Sam Altman in 2023",
-  "How Nvidia Became a $3 Trillion Empire",
-  "The Secret Engineering Behind Concorde",
-  "How Red Bull Built an Extreme Sports Empire",
-  "The Rise and Fall of BlackBerry",
-  "Why McDonald's Ice Cream Machines Always Break",
-  "How Spotify Re-engineered Music Streaming",
-];
-
-const PRESET_TOPICS_HI = [
-  "क्यों OpenAI ने Sam Altman को निकाला?",
-  "कैसे Nvidia $3 Trillion की कंपनी बनी",
-  "McDonald's की आइसक्रीम मशीनें हमेशा ख़राब क्यों रहती हैं?",
-  "Red Bull की सीक्रेट मार्केटिंग स्ट्रेटेजी",
-  "कैसे Spotify ने म्यूज़िक इंडस्ट्री को बदल दिया",
-  "BlackBerry के पतन की असली कहानी",
-];
+const CATEGORIZED_TRENDING_TOPICS = {
+  viral: {
+    label: "VIRAL SCANDALS",
+    icon: Flame,
+    topicsEn: [
+      "Why OpenAI Fired Sam Altman in 2023",
+      "The $100 Billion Scam of Theranos & Elizabeth Holmes",
+      "The 1983 Soviet Nuclear False Alarm That Saved Earth",
+      "The $1 Billion Heist of Bangladesh Central Bank",
+      "The Secret War Between Boeing and Airbus",
+    ],
+    topicsHi: [
+      "क्यों OpenAI ने Sam Altman को निकाला?",
+      "Theranos का $100 Billion का फ्रॉड कैसे पकड़ा गया?",
+      "1983 का वो न्यूक्लियर अलार्म जिसने दुनिया को बचा लिया",
+      "Dubai के बुर्ज खलीफा का सीक्रेट सीवेज सिस्टम",
+    ],
+  },
+  business: {
+    label: "BUSINESS & LUXURY",
+    icon: Briefcase,
+    topicsEn: [
+      "Why Ferrari Sues Its Own Billionaire Customers",
+      "How Rolex Created Artificial Scarcity",
+      "How Costco Makes Billions Selling Hot Dogs at a Loss",
+      "Why McDonald's Ice Cream Machines Always Break",
+      "How Netflix Crushed Blockbuster with $0 Ads",
+    ],
+    topicsHi: [
+      "Ferrari अपने ही अमीर ग्राहकों पर केस क्यों करती है?",
+      "Rolex कैसे घड़ियों की बनावटी कमी पैदा करता है?",
+      "McDonald's की आइसक्रीम मशीनें हमेशा ख़राब क्यों रहती हैं?",
+      "Costco सस्ते Hot Dog बेचकर भी अरबों कैसे कमाता है?",
+      "Netflix ने Blockbuster को 9000 स्टोर्स के साथ कैसे बर्बाद किया?",
+    ],
+  },
+  tech: {
+    label: "TECH DOMINANCE",
+    icon: Cpu,
+    topicsEn: [
+      "How Nvidia Became a $3 Trillion Empire",
+      "How TSMC Secretly Controls the World Economy",
+      "How Apple Nearly Went Bankrupt in 1997",
+      "The Rise and Fall of BlackBerry",
+      "How Amazon Created AWS by Complete Accident",
+    ],
+    topicsHi: [
+      "कैसे Nvidia $3 Trillion की कंपनी बनी",
+      "कैसे TSMC दुनिया की पूरी टेक इकोनॉमी को कंट्रोल करता है?",
+      "Apple 1997 में कैसे दिवालिया होने की कगार पर था?",
+      "BlackBerry के पतन की असली कहानी",
+      "Amazon ने गलती से AWS क्लाउड कैसे बना दिया?",
+    ],
+  },
+};
 
 function CreateVideoContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { isSignedIn, user } = useUser();
+  const { user } = useUser();
 
   const [selectedLanguage, setSelectedLanguage] = useState<string>("hi");
   const [topic, setTopic] = useState<string>("");
   const [selectedVoiceId, setSelectedVoiceId] = useState<string>("7e8cb11d-37af-476b-ab8f-25da99b18644");
+  const [activeCategory, setActiveCategory] = useState<"viral" | "business" | "tech">("viral");
+  const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
   const [model, setModel] = useState<string>("flux");
+
+  // State for generation & progress
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
+  const [isSuggestingAi, setIsSuggestingAi] = useState<boolean>(false);
   const [activeReelId, setActiveReelId] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // Switch default voice when language changes
+  // Audio preview state
+  const [playingVoiceId, setPlayingVoiceId] = useState<string | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  // Language auto-switch matching voice
   const handleLanguageChange = (langId: string) => {
     setSelectedLanguage(langId);
-    if (langId === "hi") {
-      setSelectedVoiceId("7e8cb11d-37af-476b-ab8f-25da99b18644");
-    } else {
-      setSelectedVoiceId("62ae83ad-4f6a-430b-af41-a9bede9286ca");
+    const targetLang = LANGUAGES.find((l) => l.id === langId);
+    if (targetLang) {
+      setSelectedVoiceId(targetLang.defaultVoice);
     }
   };
 
-  // Pre-fill topic from URL search param if available
+  // Pre-fill topic from URL parameter
   useEffect(() => {
     const urlTopic = searchParams.get("topic");
     if (urlTopic) {
@@ -84,8 +192,81 @@ function CreateVideoContent() {
     }
   }, [searchParams]);
 
-  const activePresets = selectedLanguage === "hi" ? PRESET_TOPICS_HI : PRESET_TOPICS_EN;
+  // Audio Preview Audition Handler
+  const handleAuditionVoice = async (voice: CartesiaVoice, e: React.MouseEvent) => {
+    e.stopPropagation();
 
+    if (playingVoiceId === voice.id && audioRef.current) {
+      audioRef.current.pause();
+      setPlayingVoiceId(null);
+      return;
+    }
+
+    try {
+      setPlayingVoiceId(voice.id);
+      const res = await fetch("/api/tts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          text: voice.sampleText,
+          voiceId: voice.id,
+          language: voice.lang === "hi" ? "hi" : "en",
+        }),
+      });
+
+      if (res.ok) {
+        const blob = await res.blob();
+        const audioUrl = URL.createObjectURL(blob);
+        if (audioRef.current) {
+          audioRef.current.src = audioUrl;
+          audioRef.current.play();
+          audioRef.current.onended = () => setPlayingVoiceId(null);
+        }
+      } else {
+        setPlayingVoiceId(null);
+      }
+    } catch {
+      setPlayingVoiceId(null);
+    }
+  };
+
+  // AI Live Topic Generation via Gemini 2.5
+  const handleSuggestTopicAi = async () => {
+    setIsSuggestingAi(true);
+    try {
+      const res = await fetch("/api/suggest-topic", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ language: selectedLanguage }),
+      });
+      const data = await res.json();
+      if (data.success && data.topic) {
+        setTopic(data.topic);
+      } else {
+        handleInstantRandomRoll();
+      }
+    } catch {
+      handleInstantRandomRoll();
+    } finally {
+      setIsSuggestingAi(false);
+    }
+  };
+
+  // Instant Random Roll
+  const handleInstantRandomRoll = () => {
+    const isHi = selectedLanguage === "hi";
+    const allTopics = [
+      ...(isHi ? CATEGORIZED_TRENDING_TOPICS.viral.topicsHi : CATEGORIZED_TRENDING_TOPICS.viral.topicsEn),
+      ...(isHi ? CATEGORIZED_TRENDING_TOPICS.business.topicsHi : CATEGORIZED_TRENDING_TOPICS.business.topicsEn),
+      ...(isHi ? CATEGORIZED_TRENDING_TOPICS.tech.topicsHi : CATEGORIZED_TRENDING_TOPICS.tech.topicsEn),
+    ];
+
+    const available = allTopics.filter((t) => t !== topic);
+    const randomChoice = available[Math.floor(Math.random() * available.length)] || allTopics[0];
+    setTopic(randomChoice);
+  };
+
+  // Submit Video Generation
   const handleCreateVideo = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!topic.trim()) return;
@@ -121,44 +302,23 @@ function CreateVideoContent() {
     }
   };
 
+  const currentCategoryData = CATEGORIZED_TRENDING_TOPICS[activeCategory];
+  const activeChips = selectedLanguage === "hi" ? currentCategoryData.topicsHi : currentCategoryData.topicsEn;
+  const currentVoiceObj = CARTESIA_VOICES.find((v) => v.id === selectedVoiceId) || CARTESIA_VOICES[0];
+
   return (
-    <main className="min-h-screen bg-[#F2F1EC] text-[#0C0C0E] flex flex-col font-sans selection:bg-[#B4F500] selection:text-black vox-paper-texture">
-      {/* Vox Editorial Navigation Header */}
-      <header className="border-b-2 border-[#0C0C0E] bg-[#F2F1EC]/90 backdrop-blur-md sticky top-0 z-50 px-6 sm:px-10 py-4 flex items-center justify-between shadow-xs">
-        <div className="flex items-center gap-3">
-          <Link
-            href="/"
-            className="px-3 py-1 bg-[#0C0C0E] text-[#B4F500] font-bebas text-lg tracking-wider rounded hover:bg-[#222224] transition-colors flex items-center gap-1"
-          >
-            <span>← STUDIO</span>
-          </Link>
-          <div>
-            <h1 className="font-bebas text-xl tracking-wide text-[#0C0C0E] leading-none">
-              CREATE VOX VIDEO REEL
-            </h1>
-            <p className="text-[10px] text-[#666666] font-utility font-bold uppercase tracking-wider">
-              Automated 2.5D Motion Generation Workstation
-            </p>
-          </div>
-        </div>
+    <main className="min-h-screen bg-[#F4F4F6] text-[#111111] flex flex-col font-sans selection:bg-[#FFE600] selection:text-black vox-paper-texture overflow-x-hidden">
+      {/* Hidden Audio Element for Voice Auditioning */}
+      <audio ref={audioRef} className="hidden" />
 
-        <div className="flex items-center gap-4">
-          {isSignedIn ? (
-            <UserButton appearance={{ elements: { userButtonAvatarBox: "w-9 h-9 rounded-full border-2 border-[#0C0C0E]" } }} />
-          ) : (
-            <SignInButton mode="modal">
-              <button type="button" className="px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider bg-[#B4F500] text-[#0C0C0E] hover:bg-[#a5e400] transition-all shadow-vox border border-[#0C0C0E]">
-                Sign In
-              </button>
-            </SignInButton>
-          )}
-        </div>
-      </header>
+      {/* Global Studio Navigation Header */}
+      <StudioNavbar />
 
-      {/* Main Studio Form & Progress Workstation */}
-      <div className="flex-1 max-w-[960px] w-full mx-auto p-6 sm:p-10 flex flex-col justify-center">
+      {/* Main Studio Fast-Lane Center */}
+      <div className="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 py-8 flex flex-col justify-center">
         {activeReelId ? (
-          <div className="flex flex-col gap-4">
+          /* Live Transparent AI Production Crew Workstation */
+          <div className="flex flex-col gap-5 animate-in fade-in duration-300 w-full items-center">
             <ReelGenerationProgress
               reelId={activeReelId}
               onComplete={(reelId) => {
@@ -176,141 +336,299 @@ function CreateVideoContent() {
                 setActiveReelId(null);
                 setIsGenerating(false);
               }}
-              className="text-xs text-[#666666] hover:text-[#0C0C0E] underline font-utility font-bold text-center"
+              className="px-5 py-2.5 rounded-xl bg-white border-2 border-[#111111] shadow-[3px_3px_0px_#111111] text-xs font-bold text-[#111111] hover:bg-[#FFE600] transition-all flex items-center justify-center gap-2 cursor-pointer transform hover:-translate-y-0.5 active:translate-y-0"
             >
-              ← Back to Video Creation Studio
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Cancel & Back to Prompt Workstation</span>
             </button>
           </div>
         ) : (
-          /* Vox Studio Form Card */
-          <div className="bg-white border-4 border-[#0C0C0E] rounded-3xl p-8 sm:p-10 shadow-vox relative overflow-hidden">
+          /* ⚡ THE FAST-LANE CREATION WORKSTATION */
+          <div className="bg-white border-4 border-[#0C0C0E] rounded-3xl p-6 sm:p-10 shadow-vox relative overflow-hidden">
             
-            {/* Header Badge & Title */}
-            <div className="mb-8">
-              <div className="inline-block bg-[#FFE500] text-[#0C0C0E] font-bebas text-xs px-3 py-1 font-bold uppercase tracking-widest mb-3 rounded border border-[#0C0C0E]">
-                DOCUMENTARY MOTION GENERATOR
+            {/* Top Badge & Tagline */}
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+              <div className="flex items-center gap-2">
+                <span className="bg-[#FFE600] text-[#0C0C0E] font-bebas text-xs px-3 py-1 font-bold uppercase tracking-widest rounded border border-[#0C0C0E] shadow-[2px_2px_0px_#0C0C0E] flex items-center gap-1.5">
+                  <Zap className="w-3.5 h-3.5 fill-current" />
+                  <span>FAST-LANE 2.5D REEL ENGINE</span>
+                </span>
+                <span className="text-[11px] font-utility font-bold text-[#666666] hidden sm:inline">
+                  • 60s Generation to Multi-Platform Publish
+                </span>
               </div>
-              <h2 className="font-bebas text-4xl sm:text-5xl text-[#0C0C0E] uppercase leading-none mb-3">
-                What Story Would You Like To Create?
-              </h2>
-              <p className="text-sm text-[#555555] font-medium leading-relaxed max-w-2xl">
-                Enter any documentary topic or business case study. Our automated pipeline generates the 6-scene script, Cartesia voiceover, Deepgram captions, and 2.5D paper cutout stickers.
-              </p>
+
+              {/* Language Pills (Instant 1-Tap Switch) */}
+              <div className="flex items-center gap-1 bg-[#F2F1EC] p-1 rounded-xl border-2 border-[#0C0C0E]">
+                {LANGUAGES.map((lang) => (
+                  <button
+                    key={lang.id}
+                    type="button"
+                    onClick={() => handleLanguageChange(lang.id)}
+                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
+                      selectedLanguage === lang.id
+                        ? "bg-[#0C0C0E] text-[#B4F500] shadow-xs"
+                        : "text-[#555555] hover:text-[#0C0C0E] hover:bg-white"
+                    }`}
+                  >
+                    <span>{lang.flag}</span>
+                    <span className="font-utility uppercase text-[11px]">{lang.id}</span>
+                  </button>
+                ))}
+              </div>
             </div>
+
+            {/* Main Headline */}
+            <h1 className="font-bebas text-4xl sm:text-6xl text-[#0C0C0E] uppercase leading-none tracking-tight mb-2">
+              WHAT STORY DO YOU WANT TO CREATE?
+            </h1>
+            <p className="text-sm text-[#555555] font-medium leading-relaxed max-w-2xl mb-8">
+              Enter any documentary topic or business scandal. Our automated pipeline writes the script, records voiceover, syncs captions, cuts out 2.5D stickers, and prepares 1-click publishing.
+            </p>
 
             {/* Creation Form */}
             <form onSubmit={handleCreateVideo} className="flex flex-col gap-6">
               
-              {/* Language Selector */}
-              <div className="bg-[#F7F7F5] p-5 rounded-2xl border-2 border-[#0C0C0E]">
-                <label className="font-bebas text-base text-[#0C0C0E] block mb-3 uppercase tracking-wide flex items-center justify-between">
-                  <span>🌐 Target Video Language</span>
-                  <span className="text-[10px] bg-[#B4F500] text-[#0C0C0E] px-2 py-0.5 rounded font-utility font-black uppercase">
-                    HIGH RETENTION VOICE & FONTS
-                  </span>
-                </label>
-                <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
-                  {LANGUAGES.map((lang) => (
+              {/* ── 1. SINGLE-INPUT POWERHOUSE PROMPT BAR ── */}
+              <div className="relative">
+                <div className="relative">
+                  <input
+                    type="text"
+                    required
+                    autoFocus
+                    placeholder={
+                      selectedLanguage === "hi"
+                        ? "e.g. क्यों OpenAI ने Sam Altman को निकाला?"
+                        : "e.g. How Apple Nearly Went Bankrupt in 1997"
+                    }
+                    value={topic}
+                    onChange={(e) => setTopic(e.target.value)}
+                    className="w-full bg-[#F7F7F5] border-3 border-[#0C0C0E] text-[#0C0C0E] placeholder-[#888888] rounded-2xl px-6 py-5 text-base sm:text-lg focus:outline-none focus:bg-white focus:border-[#0C0C0E] font-bold shadow-inner transition-all pr-28 sm:pr-36"
+                  />
+
+                  {/* Inside Input Action: 🎲 Surprise Me Button */}
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
                     <button
-                      key={lang.id}
                       type="button"
-                      onClick={() => handleLanguageChange(lang.id)}
-                      className={`p-3 rounded-xl border-2 text-center transition-all cursor-pointer flex flex-col items-center justify-center ${
-                        selectedLanguage === lang.id
-                          ? "bg-[#0C0C0E] text-white border-[#0C0C0E] shadow-sm"
-                          : "bg-white text-[#0C0C0E] border-[#D8D7D2] hover:border-[#0C0C0E]"
-                      }`}
+                      onClick={handleInstantRandomRoll}
+                      className="px-3 py-2 rounded-xl text-xs font-bold bg-white hover:bg-[#FFE600] text-[#0C0C0E] border-2 border-[#0C0C0E] shadow-[2px_2px_0px_#0C0C0E] hover:shadow-none hover:translate-x-[1px] hover:translate-y-[1px] transition-all cursor-pointer flex items-center gap-1.5"
+                      title="Instant Roll from viral documentary database"
                     >
-                      <span className="text-xl mb-1">{lang.flag}</span>
-                      <span className="text-xs font-bold">{lang.name}</span>
+                      <Dices className="w-3.5 h-3.5" />
+                      <span className="font-utility font-black uppercase text-[10px] hidden sm:inline">Surprise</span>
                     </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Prompt Input */}
-              <div>
-                <label className="font-bebas text-lg text-[#0C0C0E] block mb-2 uppercase tracking-wide">
-                  DOCUMENTARY TOPIC / STORY PROMPT
-                </label>
-                <input
-                  type="text"
-                  required
-                  placeholder={selectedLanguage === "hi" ? "e.g. क्यों OpenAI ने Sam Altman को निकाला?" : "e.g. How Apple Nearly Went Bankrupt in 1997"}
-                  value={topic}
-                  onChange={(e) => setTopic(e.target.value)}
-                  className="w-full bg-[#F7F7F5] border-2 border-[#0C0C0E] text-[#0C0C0E] placeholder-[#888888] rounded-2xl px-5 py-4 text-base focus:outline-none focus:bg-white font-semibold shadow-inner"
-                />
-              </div>
-
-              {/* Quick Topic Presets */}
-              <div>
-                <label className="text-[11px] font-utility font-bold text-[#666666] block mb-2 uppercase tracking-wider">
-                  OR CLICK A SIGNATURE {selectedLanguage === "hi" ? "HINDI" : "DOCUMENTARY"} TOPIC PRESET:
-                </label>
-                <div className="flex flex-wrap gap-2">
-                  {activePresets.map((preset) => (
-                    <button
-                      key={preset}
-                      type="button"
-                      onClick={() => setTopic(preset)}
-                      className={`text-xs px-3 py-1.5 rounded-lg border font-bold transition-all text-left cursor-pointer ${
-                        topic === preset
-                          ? "bg-[#0C0C0E] text-[#B4F500] border-[#0C0C0E]"
-                          : "bg-[#F7F7F5] text-[#333333] border-[#D8D7D2] hover:border-[#0C0C0E]"
-                      }`}
-                    >
-                      "{preset}"
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Voice & Image Model Selectors Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-                
-                {/* Voice Selection */}
-                <div className="bg-[#F7F7F5] p-5 rounded-2xl border-2 border-[#0C0C0E]">
-                  <label className="font-bebas text-base text-[#0C0C0E] block mb-3 uppercase tracking-wide flex items-center justify-between">
-                    <span>🎙️ Cartesia AI Voice</span>
-                    <span className="text-[10px] font-utility font-bold text-[#666666]">SONIC 3 MULTILINGUAL</span>
-                  </label>
-
-                  <div className="flex flex-col gap-2">
-                    {CARTESIA_VOICES.map((v) => (
-                      <button
-                        key={v.id}
-                        type="button"
-                        onClick={() => setSelectedVoiceId(v.id)}
-                        className={`p-3 rounded-xl border-2 text-left transition-all cursor-pointer ${
-                          selectedVoiceId === v.id
-                            ? "bg-[#0C0C0E] text-white border-[#0C0C0E]"
-                            : "bg-white text-[#0C0C0E] border-[#D8D7D2] hover:border-[#0C0C0E]"
-                        }`}
-                      >
-                        <div className="flex justify-between items-center text-xs font-bold mb-0.5">
-                          <span>{v.name}</span>
-                          {selectedVoiceId === v.id && (
-                            <span className="text-[10px] bg-[#B4F500] text-[#0C0C0E] px-1.5 py-0.2 rounded font-utility font-black">
-                              SELECTED
-                            </span>
-                          )}
-                        </div>
-                        <p className="text-[10px] opacity-75 font-mono">{v.desc}</p>
-                      </button>
-                    ))}
                   </div>
                 </div>
 
-                {/* AI Cutout Model Selection */}
-                <div className="bg-[#F7F7F5] p-5 rounded-2xl border-2 border-[#0C0C0E] flex flex-col justify-between">
-                  <div>
-                    <label className="font-bebas text-base text-[#0C0C0E] block mb-3 uppercase tracking-wide flex items-center justify-between">
-                      <span>🎨 AI Image Generator</span>
-                      <span className="text-[10px] font-utility font-bold text-[#666666]">DOCUMENTARY STYLE</span>
-                    </label>
+                {/* Sub-Bar Actions: AI Brainstormer & Voice Preview Callout */}
+                <div className="flex flex-wrap items-center justify-between gap-3 mt-3">
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      disabled={isSuggestingAi}
+                      onClick={handleSuggestTopicAi}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-[#FFE500] hover:bg-[#ffe100] disabled:opacity-60 text-[#0C0C0E] border-2 border-[#0C0C0E] shadow-[2px_2px_0px_#0C0C0E] hover:shadow-none hover:translate-x-[1px] hover:translate-y-[1px] transition-all cursor-pointer group active:scale-95"
+                    >
+                      {isSuggestingAi ? (
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      ) : (
+                        <Sparkles className="w-3.5 h-3.5 group-hover:rotate-45 transition-transform" />
+                      )}
+                      <span className="font-utility font-black uppercase text-[10px]">
+                        {isSuggestingAi ? "Thinking..." : "AI Brainstorm"}
+                      </span>
+                    </button>
 
-                    <div className="flex flex-col gap-2">
+                    {/* Active Voice Pill with Audio Audition */}
+                    <div className="flex items-center gap-2 bg-[#F2F1EC] border-2 border-[#0C0C0E] px-3 py-1 rounded-xl">
+                      <Mic className="w-3.5 h-3.5 text-[#0C0C0E]" />
+                      <span className="font-utility font-bold text-xs text-[#0C0C0E]">
+                        {currentVoiceObj.name}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={(e) => handleAuditionVoice(currentVoiceObj, e)}
+                        className={`px-1.5 py-0.5 rounded text-[10px] font-black uppercase border border-[#0C0C0E] transition-all flex items-center gap-1 ${
+                          playingVoiceId === currentVoiceObj.id
+                            ? "bg-[#B4F500] text-[#0C0C0E] animate-pulse"
+                            : "bg-white text-[#0C0C0E] hover:bg-[#FFE600]"
+                        }`}
+                      >
+                        {playingVoiceId === currentVoiceObj.id ? (
+                          <>
+                            <Square className="w-2.5 h-2.5 fill-current" />
+                            <span>STOP</span>
+                          </>
+                        ) : (
+                          <>
+                            <Play className="w-2.5 h-2.5 fill-current" />
+                            <span>SAMPLE</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setShowAdvanced(!showAdvanced)}
+                    className="text-xs font-utility font-bold text-[#444444] hover:text-[#0C0C0E] underline flex items-center gap-1"
+                  >
+                    {showAdvanced ? (
+                      <>
+                        <ChevronUp className="w-3.5 h-3.5" />
+                        <span>Hide Custom Settings</span>
+                      </>
+                    ) : (
+                      <>
+                        <ChevronDown className="w-3.5 h-3.5" />
+                        <span>Fine-Tune Voice & Model</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* ── 2. CATEGORIZED 1-CLICK VIRAL TOPIC CHIPS ── */}
+              <div className="bg-[#F7F7F5] border-2 border-[#0C0C0E] rounded-2xl p-4 sm:p-5">
+                <div className="flex flex-wrap items-center justify-between gap-2 mb-3 pb-2 border-b border-[#D8D7D2]">
+                  <div className="flex items-center gap-2">
+                    <Zap className="w-3.5 h-3.5 fill-[#0C0C0E] text-[#0C0C0E]" />
+                    <span className="font-utility font-black text-xs uppercase tracking-wider text-[#0C0C0E]">
+                      1-CLICK VIRAL IDEAS:
+                    </span>
+                  </div>
+
+                  {/* Niche Category Switcher */}
+                  <div className="flex items-center gap-1.5">
+                    {(["viral", "business", "tech"] as const).map((cat) => {
+                      const CatIcon = CATEGORIZED_TRENDING_TOPICS[cat].icon;
+                      return (
+                        <button
+                          key={cat}
+                          type="button"
+                          onClick={() => setActiveCategory(cat)}
+                          className={`px-2.5 py-1 rounded-lg text-[10px] font-utility font-black uppercase transition-all flex items-center gap-1 ${
+                            activeCategory === cat
+                              ? "bg-[#0C0C0E] text-[#FFE600]"
+                              : "bg-white text-[#555555] border border-[#D8D7D2] hover:border-[#0C0C0E]"
+                          }`}
+                        >
+                          <CatIcon className="w-3 h-3" />
+                          <span>{cat}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Topic Pill List */}
+                <div className="flex flex-wrap gap-2">
+                  {activeChips.map((chip) => (
+                    <button
+                      key={chip}
+                      type="button"
+                      onClick={() => setTopic(chip)}
+                      className={`text-xs px-3.5 py-2 rounded-xl border-2 font-bold transition-all text-left cursor-pointer flex items-center gap-2 ${
+                        topic === chip
+                          ? "bg-[#0C0C0E] text-[#B4F500] border-[#0C0C0E] shadow-[2px_2px_0px_#B4F500]"
+                          : "bg-white text-[#222222] border-[#D8D7D2] hover:border-[#0C0C0E] hover:bg-[#FAF9F5]"
+                      }`}
+                    >
+                      <Pin className="w-3 h-3 text-[#0C0C0E]/70 shrink-0" />
+                      <span>"{chip}"</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* ── 3. COLLAPSIBLE ADVANCED SETTINGS (VOICE AUDITIONING & MODELS) ── */}
+              {showAdvanced && (
+                <div className="bg-[#FAF9F5] p-5 rounded-2xl border-2 border-dashed border-[#0C0C0E] flex flex-col gap-4 animate-in fade-in duration-200">
+                  <div className="flex items-center justify-between pb-2 border-b border-[#D8D7D2]">
+                    <div className="flex items-center gap-2">
+                      <Mic className="w-4 h-4 text-[#0C0C0E]" />
+                      <span className="font-bebas text-lg text-[#0C0C0E] uppercase tracking-wide">
+                        VOICE ACTOR AUDITIONS & IMAGE ENGINE
+                      </span>
+                    </div>
+                    <span className="text-[10px] font-utility font-bold text-[#666666]">
+                      CINEMA STUDIO VOICE ENGINE
+                    </span>
+                  </div>
+
+                  {/* Voice Grid with Instant Play Buttons */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                    {CARTESIA_VOICES.map((v) => {
+                      const isSelected = selectedVoiceId === v.id;
+                      const isPlaying = playingVoiceId === v.id;
+
+                      return (
+                        <div
+                          key={v.id}
+                          onClick={() => setSelectedVoiceId(v.id)}
+                          className={`p-3.5 rounded-xl border-2 transition-all cursor-pointer flex flex-col justify-between ${
+                            isSelected
+                              ? "bg-[#0C0C0E] text-white border-[#0C0C0E] shadow-[3px_3px_0px_#B4F500]"
+                              : "bg-white text-[#0C0C0E] border-[#D8D7D2] hover:border-[#0C0C0E]"
+                          }`}
+                        >
+                          <div>
+                            <div className="flex items-center justify-between gap-1 mb-1">
+                              <span className="font-bold text-xs">{v.name}</span>
+                              <span className={`text-[9px] font-mono font-bold px-1.5 py-0.2 rounded uppercase ${
+                                isSelected ? "bg-[#B4F500] text-[#0C0C0E]" : "bg-neutral-100 text-neutral-600"
+                              }`}>
+                                {v.accent}
+                              </span>
+                            </div>
+                            <p className="text-[10px] opacity-75 font-mono line-clamp-2 mb-3">
+                              {v.desc}
+                            </p>
+                          </div>
+
+                          <div className="flex items-center justify-between pt-2 border-t border-white/10">
+                            <span className="text-[9px] font-mono opacity-60">
+                              {isSelected ? "✓ SELECTED" : "CLICK TO SET"}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={(e) => handleAuditionVoice(v, e)}
+                              className={`px-2 py-1 rounded text-[9px] font-utility font-black uppercase transition-all flex items-center gap-1 ${
+                                isPlaying
+                                  ? "bg-[#B4F500] text-[#0C0C0E] animate-pulse"
+                                  : isSelected
+                                  ? "bg-[#FFE600] text-[#0C0C0E] hover:bg-white"
+                                  : "bg-[#0C0C0E] text-[#FFE600] hover:bg-neutral-800"
+                              }`}
+                            >
+                              {isPlaying ? (
+                                <>
+                                  <Square className="w-2.5 h-2.5 fill-current" />
+                                  <span>STOP</span>
+                                </>
+                              ) : (
+                                <>
+                                  <Play className="w-2.5 h-2.5 fill-current" />
+                                  <span>PLAY</span>
+                                </>
+                              )}
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Image Generation Engine */}
+                  <div className="pt-3 border-t border-[#D8D7D2]">
+                    <div className="flex items-center gap-1.5 mb-2">
+                      <Palette className="w-3.5 h-3.5 text-[#0C0C0E]" />
+                      <label className="text-[11px] font-utility font-black text-[#0C0C0E] uppercase block">
+                        Background AI Image Style:
+                      </label>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                       {[
                         { id: "flux", name: "Flux.1 Schnell", desc: "Fastest 12-step documentary generator" },
                         { id: "flux-realism", name: "Flux Realism", desc: "Photorealistic archival documentary" },
@@ -320,51 +638,47 @@ function CreateVideoContent() {
                           key={m.id}
                           type="button"
                           onClick={() => setModel(m.id)}
-                          className={`p-3 rounded-xl border-2 text-left transition-all cursor-pointer ${
+                          className={`p-2.5 rounded-xl border-2 text-left transition-all ${
                             model === m.id
-                              ? "bg-[#0C0C0E] text-white border-[#0C0C0E]"
+                              ? "bg-[#0C0C0E] text-[#FFE600] border-[#0C0C0E]"
                               : "bg-white text-[#0C0C0E] border-[#D8D7D2] hover:border-[#0C0C0E]"
                           }`}
                         >
-                          <div className="flex justify-between items-center text-xs font-bold mb-0.5">
-                            <span>{m.name}</span>
-                            {model === m.id && (
-                              <span className="text-[10px] bg-[#FFE500] text-[#0C0C0E] px-1.5 py-0.2 rounded font-utility font-black">
-                                ACTIVE
-                              </span>
-                            )}
-                          </div>
-                          <p className="text-[10px] opacity-75 font-mono">{m.desc}</p>
+                          <p className="text-xs font-bold">{m.name}</p>
+                          <p className="text-[9px] opacity-75 font-mono">{m.desc}</p>
                         </button>
                       ))}
                     </div>
                   </div>
-
-                  <div className="mt-4 p-3 bg-[#FFE500] border-2 border-[#0C0C0E] rounded-xl text-[11px] font-mono font-bold text-[#0C0C0E]">
-                    ✨ Prompts automatically append Vox archival film grain & documentary lighting modifiers!
-                  </div>
                 </div>
+              )}
 
-              </div>
-
-              {/* Submit Launch Button */}
+              {/* ── 4. PRIMARY FAST-LANE LAUNCH BUTTON ── */}
               <button
                 type="submit"
                 disabled={isGenerating || !topic.trim()}
-                className="w-full py-5 rounded-2xl font-bebas text-2xl tracking-wider uppercase bg-[#B4F500] hover:bg-[#a5e400] disabled:opacity-50 text-[#0C0C0E] border-2 border-[#0C0C0E] transition-all shadow-vox flex items-center justify-center gap-2 cursor-pointer transform hover:-translate-y-0.5 active:translate-y-0"
+                className="w-full py-5 rounded-2xl font-bebas text-2xl sm:text-3xl tracking-wider uppercase bg-[#B4F500] hover:bg-[#a5e400] disabled:opacity-50 text-[#0C0C0E] border-3 border-[#0C0C0E] transition-all shadow-vox hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] flex items-center justify-center gap-3 cursor-pointer active:scale-98 select-none"
               >
                 {isGenerating ? (
-                  <span>Dispatching Inngest Pipeline...</span>
+                  <>
+                    <span className="w-6 h-6 border-3 border-[#0C0C0E] border-t-transparent rounded-full animate-spin" />
+                    <span>DISPATCHING 2.5D REEL PIPELINE...</span>
+                  </>
                 ) : (
-                  <span>⚡ DISPATCH VOX VIDEO PIPELINE →</span>
+                  <>
+                    <Zap className="w-6 h-6 fill-current" />
+                    <span>DISPATCH 2.5D REEL ENGINE (30s)</span>
+                    <ArrowRight className="w-6 h-6" />
+                  </>
                 )}
               </button>
             </form>
 
-            {/* Error Display */}
+            {/* Error Message Alert */}
             {errorMessage && (
-              <div className="mt-4 p-3.5 bg-red-50 border-2 border-red-600 rounded-xl text-xs font-mono font-bold text-red-700">
-                {errorMessage}
+              <div className="mt-4 p-4 bg-red-50 border-2 border-red-600 rounded-xl text-xs font-mono font-bold text-red-700 flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4 text-red-600 shrink-0" />
+                <span>{errorMessage}</span>
               </div>
             )}
           </div>
@@ -376,13 +690,14 @@ function CreateVideoContent() {
 
 export default function CreateVideoPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-[#F2F1EC] text-[#0C0C0E] flex flex-col items-center justify-center font-bebas text-2xl tracking-wider">
-        Loading Studio...
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-[#F2F1EC] text-[#0C0C0E] flex flex-col items-center justify-center font-bebas text-2xl tracking-wider">
+          Loading Fast-Lane Studio...
+        </div>
+      }
+    >
       <CreateVideoContent />
     </Suspense>
   );
 }
-

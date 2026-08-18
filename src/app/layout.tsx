@@ -15,8 +15,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Vox Reels SaaS — 2.5D Motion Graphic Reel Engine",
-  description: "High-retention 2.5D documentary video generation SaaS powered by Remotion, Next.js, Convex, and Clerk.",
+  title: "Vox Reel Engine — 2.5D Motion Graphic Video Studio",
+  description: "High-retention 2.5D documentary video generation SaaS. Create viral motion graphic reels in under 60 seconds with cinema-grade narration, dynamic paper cutouts, and 1-click social dispatch.",
 };
 
 export default function RootLayout({

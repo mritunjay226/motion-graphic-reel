@@ -1,7 +1,5 @@
-"use client";
-
 import React from "react";
-import { AbsoluteFill, useCurrentFrame, interpolate, spring } from "remotion";
+import { AbsoluteFill, Img, useCurrentFrame, interpolate, spring } from "remotion";
 import type { Scene } from "./types";
 import type { VideoTheme } from "./utils/themes";
 import { AnimatedLayer } from "./components/ParallaxLayer";
@@ -14,12 +12,16 @@ import { SwingingOverheadLamp } from "./components/SwingingOverheadLamp";
 import { VoxTypography } from "./components/VoxTypography";
 import { VoxLeaderLine } from "./components/VoxLeaderLine";
 import { GsapSvgGraphics } from "./components/GsapSvgGraphics";
-import { CurveCutTransition } from "./components/CurveCutTransition";
+import { CinematicDepthTransition, CinematicTransitionType } from "./components/CinematicDepthTransition";
 import { ExitAnimationWrapper } from "./components/ExitAnimationWrapper";
 import { TypewriterParagraph } from "./components/TypewriterParagraph";
 import { NewsArticleClipping } from "./components/NewsArticleClipping";
+import { SpotlightOverlay } from "./components/SpotlightOverlay";
 
 import { getLayoutTemplate } from "./templates/layouts";
+import { VoxCameraRig, CameraZoomPreset } from "./components/VoxCameraRig";
+import { RemotionVideoLayer } from "./components/RemotionVideoLayer";
+import { TactilePaperCanvas } from "./components/TactilePaperCanvas";
 
 interface SceneRendererProps {
   scene: Scene;
@@ -30,7 +32,8 @@ interface SceneRendererProps {
 
 /**
  * SceneRenderer orchestrates Vox documentary visual storytelling by routing scenes into 
- * broadcast-grade, collision-free 2.5D Vox layout templates (12 dynamic presets).
+ * broadcast-grade, collision-free 2.5D Vox layout templates with intelligent Steadicam
+ * camera choreography, keyword-synced punch zooms, and selective spotlight focus.
  */
 export const SceneRenderer: React.FC<SceneRendererProps> = ({
   scene,
@@ -45,108 +48,101 @@ export const SceneRenderer: React.FC<SceneRendererProps> = ({
     startFrame,
     durationFrames,
     animationRules,
+    whisperTokens = [],
   } = scene;
 
   const canvasBg = theme?.canvasBg || "#F4F4F6";
   const isGradientBg = canvasBg.includes("gradient");
 
-  // Continuous dynamic camera scale zoom (1.0 -> 1.05) over scene duration
-  const cameraScale = interpolate(frame, [0, Math.max(1, durationFrames)], [1.0, 1.05], {
-    extrapolateRight: "clamp",
-  });
+  const layoutType = (scene as any).layoutType || (scene as any).visualType || "center_hero_cutout";
 
   // Select dynamic layout template preset
   const LayoutTemplate = getLayoutTemplate(scene, sceneId);
+
+  // Dynamic cinematic camera presets rotating across the 6-scene story arc
+  const cameraPresets: CameraZoomPreset[] = [
+    "slow_push_in",     // Scene 1: Authoritative center hook push
+    "focal_pan_right",  // Scene 2: Smooth slider drift tracking right
+    "slow_pull_out",    // Scene 3: Wide context reveal
+    "punch_zoom_beat",  // Scene 4: Crisp impact snap with steady push
+    "focal_pan_left",   // Scene 5: Smooth slider drift tracking left
+    "slow_push_in",     // Scene 6: Dramatic climax push
+  ];
+  const activeCameraPreset = cameraPresets[(Number(sceneId) - 1 + cameraPresets.length) % cameraPresets.length];
+
+  // Determine if this scene features secondary evidence (charts, memos, clippings)
+  const normLayout = String(layoutType).toLowerCase();
+  const hasSecondaryEvidence =
+    normLayout.includes("split") ||
+    normLayout.includes("memo") ||
+    normLayout.includes("chart") ||
+    normLayout.includes("stat") ||
+    normLayout.includes("matrix") ||
+    normLayout.includes("document");
+
+  // Dynamic 2.5D depth transitions rotating across scenes
+  const transitionTypes: CinematicTransitionType[] = [
+    "depth_snap_whip",
+    "torn_paper_rip",
+    "anamorphic_light_leak",
+    "torn_paper_rip",
+    "film_shutter_snap",
+    "depth_snap_whip",
+  ];
+  const activeTransition = transitionTypes[(Number(sceneId) - 1 + transitionTypes.length) % transitionTypes.length];
+
+  const backgroundImageUrl = scene.imageKitUrls?.background || (scene as any).imageUrl || "";
 
   return (
     <AbsoluteFill
       style={{
         overflow: "hidden",
-        backgroundColor: isGradientBg ? "transparent" : canvasBg,
-        backgroundImage: isGradientBg
-          ? `${canvasBg}, radial-gradient(rgba(255,255,255,0.08) 1.5px, transparent 1.5px)`
-          : `radial-gradient(rgba(0,0,0,0.12) 1.5px, transparent 1.5px)`,
-        backgroundSize: isGradientBg ? "100% 100%, 24px 24px" : "24px 24px",
-        transform: `scale(${cameraScale})`,
-        transformOrigin: "center center",
-        filter: theme?.filter || "none",
       }}
     >
-      {/* ── VOX "CUTTING THE CURVE" VELOCITY-MATCHED SCENE TRANSITION ── */}
-      <CurveCutTransition
+      {/* ── 2.5D CINEMATIC DEPTH & TACTILE TRANSITION ENGINE ── */}
+      <CinematicDepthTransition
+        type={activeTransition}
         sceneStartFrame={startFrame}
         durationFrames={durationFrames}
-        cutWindowFrames={6}
+        transitionFrames={7}
       >
-        {/* Top Studio Stage Badges (Vox Reference Style) */}
-        <div
-          style={{
-            position: "absolute",
-            top: "40px",
-            left: "50px",
-            right: "50px",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            zIndex: 900,
-            pointerEvents: "none",
-          }}
+        {/* Broadcast-Grade 2.5D Vox Camera Controller Rig */}
+        <VoxCameraRig
+          zoomPreset={activeCameraPreset}
+          layoutType={layoutType}
+          tokens={whisperTokens}
+          enableHandheldWiggle={true}
+          durationFrames={durationFrames}
         >
-          {/* Left Theme Scene Opener Badge */}
-          <div
-            style={{
-              backgroundColor: theme?.badgeBg || "#FFE600",
-              border: `2.5px solid ${theme?.badgeBorder || "#111111"}`,
-              borderRadius: "4px",
-              padding: "4px 12px",
-              boxShadow: `3px 3px 0px ${theme?.badgeBorder || "#111111"}`,
-              fontFamily: `${theme?.fontFamily || "Bebas Neue"}, sans-serif`,
-              fontSize: "18px",
-              fontWeight: 800,
-              color: theme?.badgeText || "#111111",
-              letterSpacing: "1.5px",
-              display: "flex",
-              alignItems: "center",
-              gap: "6px",
-            }}
-          >
-            <span>SCENE {String(sceneId).padStart(2, "0")} • {scene.sceneTitle?.replace(/SCENE \d+:\s*/i, "").slice(0, 20).toUpperCase() || "STORY OPENER"}</span>
-          </div>
+          {/* ── ATMOSPHERIC SCENE B-ROLL / IMAGE BACKGROUND OVERLAY (LIGHT & SUBTLE BEHIND CONTENT) ── */}
+          {scene.bRollUrl || scene.videoUrl ? (
+            <RemotionVideoLayer
+              src={scene.bRollUrl || scene.videoUrl || ""}
+              opacity={0.12}
+              style={{
+                mixBlendMode: "soft-light",
+                filter: "contrast(0.9) brightness(1.3) saturate(0.35)",
+                zIndex: 1,
+              }}
+            />
+          ) : backgroundImageUrl ? (
+            <AbsoluteFill style={{ mixBlendMode: "soft-light", opacity: 0.14, pointerEvents: "none", zIndex: 1 }}>
+              <Img
+                src={backgroundImageUrl}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  filter: "contrast(0.9) brightness(1.3) saturate(0.35)",
+                }}
+              />
+            </AbsoluteFill>
+          ) : null}
 
-          {/* Right Dark Studio Status Badge */}
-          <div
-            style={{
-              backgroundColor: theme?.badgeBorder || "#1B2A10",
-              border: `2.5px solid ${theme?.badgeBorder || "#111111"}`,
-              borderRadius: "6px",
-              padding: "4px 12px",
-              boxShadow: "3px 3px 0px rgba(0,0,0,0.5)",
-              fontFamily: "Inter, sans-serif",
-              fontSize: "13px",
-              fontWeight: 800,
-              color: theme?.orbitRingColor || "#B4F500",
-              letterSpacing: "1px",
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-            }}
-          >
-            <span style={{ display: "inline-block", width: "8px", height: "8px", backgroundColor: theme?.orbitRingColor || "#B4F500", borderRadius: "1px" }} />
-            <span>{theme?.name.toUpperCase() || "PAUSE STAGE"}</span>
-          </div>
-        </div>
-
-        {/* Render Dynamic Broadcast Vox Layout Template */}
-        <LayoutTemplate scene={scene} theme={theme} />
-      </CurveCutTransition>
-
-      {/* Scene Transition Out */}
-      {animationRules?.transitionOut && (
-        <TransitionEffect
-          config={animationRules.transitionOut}
-          sceneStartFrame={startFrame}
-        />
-      )}
+          {/* Render Dynamic Broadcast Vox Layout Template */}
+          <LayoutTemplate scene={scene} theme={theme} />
+        </VoxCameraRig>
+      </CinematicDepthTransition>
     </AbsoluteFill>
   );
 };

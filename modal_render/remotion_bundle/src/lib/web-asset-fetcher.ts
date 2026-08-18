@@ -1,14 +1,16 @@
 /**
- * Smart Internet Asset Fetcher for Vox Video Reels SaaS.
+ * Multi-Source Authentic Web Image & Archival Media Fetcher for Vox Reels.
  *
- * Automatically detects if an image prompt refers to a real-world:
- * 1. Person (e.g. Sam Altman, Elon Musk, Stewart Butterfield, Steve Jobs, Jensen Huang)
- * 2. Brand / Company Logo (e.g. OpenAI, Netflix, Nvidia, Apple, Slack, Red Bull, McDonald's)
- * 3. Famous Place or Historical Object (e.g. Concorde, Wall Street, Silicon Valley)
+ * 100% Real-World Media Sourcing:
+ * - Brand Logos via Clearbit & Logo.dev
+ * - Famous People, Companies, Events & Objects via Wikipedia & Wikimedia REST APIs
+ * - 4K Stock Photography via Pexels & Pixabay Photo APIs
+ * - Clean 2.5D Vector Infographics via generateSvgVectorStickerUrl
  *
- * Fetches real high-resolution authentic photos & logos directly from Wikipedia API,
- * Clearbit Logo CDN, and Wikimedia Commons before routing to ImageKit for AI background removal.
+ * Replaces synthetic AI image generation with authentic internet media and vector graphics.
  */
+
+import { generateSvgVectorStickerUrl } from "@/remotion/utils/vector-assets";
 
 const LOGO_DOMAIN_MAP: Record<string, string> = {
   openai: "openai.com",
@@ -29,63 +31,81 @@ const LOGO_DOMAIN_MAP: Record<string, string> = {
   tesla: "tesla.com",
   bitcoin: "bitcoin.org",
   pixar: "pixar.com",
+  lego: "lego.com",
+  starwars: "starwars.com",
+  "star wars": "starwars.com",
+  disney: "disney.com",
+  marvel: "marvel.com",
+  nike: "nike.com",
+  adidas: "adidas.com",
+  rolex: "rolex.com",
+  boeing: "boeing.com",
+  spacex: "spacex.com",
+  uber: "uber.com",
+  airbnb: "airbnb.com",
+  spotify: "spotify.com",
 };
 
-interface RealWorldAssetMatch {
-  type: "person" | "logo" | "place";
-  entityName: string;
-  sourceUrl?: string;
-}
-
 /**
- * Detects if prompt contains a real-world entity and fetches authentic internet imagery.
+ * Searches Pexels Photo API for high-resolution photography.
  */
-export async function fetchRealWorldAssetImage(prompt: string): Promise<string | null> {
-  const cleanPrompt = prompt.trim();
-  const lowerPrompt = cleanPrompt.toLowerCase();
+async function searchPexelsPhotos(query: string): Promise<string | null> {
+  const pexelsKey = process.env.PEXELS_API_KEY || "";
+  if (!pexelsKey) return null;
 
-  // 1. Check for Company / Brand Logo matches
-  for (const [brand, domain] of Object.entries(LOGO_DOMAIN_MAP)) {
-    if (lowerPrompt.includes(brand)) {
-      console.log(`[Web Asset Fetcher] 🏷️ Detected Brand/Logo match: "${brand}" -> Domain: ${domain}`);
-      const clearbitUrl = `https://logo.clearbit.com/${domain}?size=800`;
-      
-      try {
-        const checkRes = await fetch(clearbitUrl, { method: "HEAD" });
-        if (checkRes.ok) {
-          console.log(`[Web Asset Fetcher] ✅ Retrieved official brand logo from Clearbit: ${clearbitUrl}`);
-          return clearbitUrl;
-        }
-      } catch (e) {
-        console.warn(`[Web Asset Fetcher Warning] Clearbit check failed for ${domain}`);
+  try {
+    const url = `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=3&orientation=square`;
+    const res = await fetch(url, {
+      headers: { Authorization: pexelsKey },
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      const photos: any[] = data.photos || [];
+      if (photos.length > 0 && photos[0].src?.large) {
+        return photos[0].src.large;
       }
     }
+  } catch (err: any) {
+    console.warn(`[Web Asset Fetcher] Pexels photo search warning:`, err.message);
   }
-
-  // 2. Extract potential famous person or place entity name
-  const entityName = extractEntityNameFromPrompt(cleanPrompt);
-
-  if (entityName) {
-    console.log(`[Web Asset Fetcher] 👤 Identified entity candidate: "${entityName}". Querying Wikipedia API...`);
-    const wikiImageUrl = await fetchWikipediaEntityImage(entityName);
-    if (wikiImageUrl) {
-      console.log(`[Web Asset Fetcher] ✅ Retrieved authentic Wikipedia image for "${entityName}": ${wikiImageUrl}`);
-      return wikiImageUrl;
-    }
-  }
-
   return null;
 }
 
 /**
- * Queries Wikipedia REST API for official lead article image of famous people, places, or landmarks.
+ * Searches Pixabay Photo API for royalty-free photography.
  */
-async function fetchWikipediaEntityImage(entityName: string): Promise<string | null> {
-  try {
-    const formattedTitle = encodeURIComponent(entityName.replace(/\s+/g, "_"));
-    const wikiUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${formattedTitle}`;
+async function searchPixabayPhotos(query: string): Promise<string | null> {
+  const pixabayKey = process.env.PIXABAY_API_KEY || "";
+  if (!pixabayKey) return null;
 
-    const res = await fetch(wikiUrl, {
+  try {
+    const url = `https://pixabay.com/api/?key=${pixabayKey}&q=${encodeURIComponent(query)}&image_type=photo&per_page=3`;
+    const res = await fetch(url);
+
+    if (res.ok) {
+      const data = await res.json();
+      const hits: any[] = data.hits || [];
+      if (hits.length > 0 && (hits[0].largeImageURL || hits[0].webformatURL)) {
+        return hits[0].largeImageURL || hits[0].webformatURL;
+      }
+    }
+  } catch (err: any) {
+    console.warn(`[Web Asset Fetcher] Pixabay photo search warning:`, err.message);
+  }
+  return null;
+}
+
+/**
+ * Searches Wikipedia REST API for lead images or search results.
+ */
+async function searchWikipediaImage(query: string): Promise<string | null> {
+  try {
+    // 1. Direct page summary
+    const formattedTitle = encodeURIComponent(query.trim().replace(/\s+/g, "_"));
+    const directUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${formattedTitle}`;
+
+    const res = await fetch(directUrl, {
       headers: { "User-Agent": "VoxReelsBot/1.0 (https://voxreels.com; contact@voxreels.com)" },
     });
 
@@ -96,29 +116,126 @@ async function fetchWikipediaEntityImage(entityName: string): Promise<string | n
         return imageUrl;
       }
     }
+
+    // 2. Wikipedia OpenSearch for fuzzy topic matches
+    const searchUrl = `https://en.wikipedia.org/w/api.php?action=query&generator=search&gsrsearch=${encodeURIComponent(query)}&gsrlimit=3&prop=pageimages&pithumbsize=800&format=json&origin=*`;
+    const searchRes = await fetch(searchUrl);
+
+    if (searchRes.ok) {
+      const sData = await searchRes.json();
+      const pages = sData.query?.pages;
+      if (pages) {
+        for (const pageId of Object.keys(pages)) {
+          const page = pages[pageId];
+          if (page.thumbnail?.source) {
+            return page.thumbnail.source;
+          }
+        }
+      }
+    }
   } catch (err: any) {
-    console.warn(`[Web Asset Fetcher] Wikipedia API lookup failed for "${entityName}":`, err.message);
+    console.warn(`[Web Asset Fetcher] Wikipedia lookup warning for "${query}":`, err.message);
   }
 
   return null;
 }
 
 /**
- * Parses image prompt to extract proper names of people or famous landmarks.
+ * Searches Wikimedia Commons for public domain & royalty-free photos.
  */
-function extractEntityNameFromPrompt(prompt: string): string | null {
-  // Regex to match proper names like "Sam Altman", "Stewart Butterfield", "Steve Jobs", "Elon Musk", "Concorde"
-  const namePatterns = [
-    /(?:portrait|cutout|photo|image|picture)\s+(?:of\s+)?([A-Z][a-z]+(?:\s+[A-Z][a-z]+)+)/i,
-    /(?:Stewart Butterfield|Sam Altman|Elon Musk|Steve Jobs|Bill Gates|Jensen Huang|Satya Nadella|Mark Zuckerberg|Jeff Bezos|Satoshi Nakamoto|Concorde|Wall Street)/i,
-  ];
+async function searchWikimediaCommonsImage(query: string): Promise<string | null> {
+  try {
+    const commonsUrl = `https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrnamespace=6&gsrsearch=${encodeURIComponent(query + " filetype:bitmap")}&gsrlimit=3&prop=imageinfo&iiprop=url&iiurlwidth=800&format=json&origin=*`;
+    const res = await fetch(commonsUrl);
 
-  for (const pattern of namePatterns) {
-    const match = prompt.match(pattern);
-    if (match) {
-      return match[1] || match[0];
+    if (res.ok) {
+      const data = await res.json();
+      const pages = data.query?.pages;
+      if (pages) {
+        for (const pageId of Object.keys(pages)) {
+          const page = pages[pageId];
+          const imageInfo = page.imageinfo?.[0];
+          const thumbUrl = imageInfo?.thumburl || imageInfo?.url;
+          if (thumbUrl && (thumbUrl.endsWith(".jpg") || thumbUrl.endsWith(".png") || thumbUrl.endsWith(".webp") || thumbUrl.includes("/thumb/"))) {
+            return thumbUrl;
+          }
+        }
+      }
     }
+  } catch (err: any) {
+    console.warn(`[Web Asset Fetcher] Wikimedia Commons search warning:`, err.message);
   }
 
   return null;
+}
+
+/**
+ * Cleans prompt into clean search keywords (removes filler terms like "isolated single subject on white background").
+ */
+function cleanPromptForSearch(prompt: string): string {
+  return prompt
+    .replace(/(?:isolated|single subject|on solid white background|clean sticker|png sticker|portrait cutout|cutout of|photo of|image of|picture of|detailed cutout|representing|related to)/gi, "")
+    .replace(/,.*$/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/**
+ * Fetches an authentic real-world asset image (Logo, Wikipedia photo, Pexels/Pixabay photo, or 2.5D Vector).
+ * Guaranteed to NEVER return null or make synthetic AI hallucination calls.
+ */
+export async function fetchRealWorldAssetImage(prompt: string): Promise<string> {
+  const cleanPrompt = cleanPromptForSearch(prompt);
+  const lowerPrompt = prompt.toLowerCase();
+
+  console.log(`[Web Asset Fetcher] 🌐 Sourcing authentic web asset for: "${cleanPrompt}"...`);
+
+  // 1. Check Brand / Company Logo Matches
+  for (const [brand, domain] of Object.entries(LOGO_DOMAIN_MAP)) {
+    if (lowerPrompt.includes(brand)) {
+      const clearbitUrl = `https://logo.clearbit.com/${domain}?size=800`;
+      try {
+        const checkRes = await fetch(clearbitUrl, { method: "HEAD" });
+        if (checkRes.ok) {
+          console.log(`[Web Asset Fetcher] ✅ Retrieved official brand logo for "${brand}": ${clearbitUrl}`);
+          return clearbitUrl;
+        }
+      } catch {
+        // Continue
+      }
+    }
+  }
+
+  // 2. Check Wikipedia & Wikimedia for historical entities, people, products, companies
+  if (cleanPrompt.length >= 3) {
+    const wikiPhoto = await searchWikipediaImage(cleanPrompt);
+    if (wikiPhoto) {
+      console.log(`[Web Asset Fetcher] ✅ Retrieved Wikipedia photo for "${cleanPrompt}": ${wikiPhoto.slice(0, 60)}...`);
+      return wikiPhoto;
+    }
+
+    const commonsPhoto = await searchWikimediaCommonsImage(cleanPrompt);
+    if (commonsPhoto) {
+      console.log(`[Web Asset Fetcher] ✅ Retrieved Wikimedia Commons photo for "${cleanPrompt}": ${commonsPhoto.slice(0, 60)}...`);
+      return commonsPhoto;
+    }
+  }
+
+  // 3. Search Pexels Photo API (HD 4K stock photography)
+  const pexelsPhoto = await searchPexelsPhotos(cleanPrompt);
+  if (pexelsPhoto) {
+    console.log(`[Web Asset Fetcher] ✅ Retrieved Pexels 4K photo for "${cleanPrompt}": ${pexelsPhoto.slice(0, 60)}...`);
+    return pexelsPhoto;
+  }
+
+  // 4. Search Pixabay Photo API
+  const pixabayPhoto = await searchPixabayPhotos(cleanPrompt);
+  if (pixabayPhoto) {
+    console.log(`[Web Asset Fetcher] ✅ Retrieved Pixabay photo for "${cleanPrompt}": ${pixabayPhoto.slice(0, 60)}...`);
+    return pixabayPhoto;
+  }
+
+  // 5. Instant 2.5D Vector Infographic Graphic (0ms, 0 cost, crisp Vox aesthetic)
+  console.log(`[Web Asset Fetcher] 🎨 Rendering instant 2.5D Vox Vector graphic for "${cleanPrompt}"`);
+  return generateSvgVectorStickerUrl(cleanPrompt, "VOX EVIDENCE");
 }

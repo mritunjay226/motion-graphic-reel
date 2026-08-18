@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ArrowRight, X } from "lucide-react";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -123,8 +124,9 @@ export default function HorizontalTemplatesScroll() {
 
             <div className="border-t-2 border-[#111111] pt-3 flex justify-between items-center text-[11px] font-bold">
               <span className="text-[#111111] font-mono">1080x1920 @ 30FPS</span>
-              <span className="text-red-600 uppercase font-mono group-hover:translate-x-1 transition-transform">
-                INSPECT →
+              <span className="text-red-600 uppercase font-mono group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                <span>INSPECT</span>
+                <ArrowRight className="w-3 h-3" />
               </span>
             </div>
           </motion.div>
@@ -134,7 +136,10 @@ export default function HorizontalTemplatesScroll() {
       {/* Footer Track Indicator */}
       <div className="px-8 font-mono text-xs text-gray-400 flex items-center justify-between z-10 border-t border-gray-800 pt-4">
         <span>VOX 2.5D LAYOUT MATRIX ENGINE</span>
-        <span className="text-[#B5F500] font-bold">DRAG OR SCROLL HORIZONTALLY TO EXPLORE →</span>
+        <span className="text-[#B5F500] font-bold flex items-center gap-1.5">
+          <span>DRAG OR SCROLL HORIZONTALLY TO EXPLORE</span>
+          <ArrowRight className="w-3.5 h-3.5" />
+        </span>
       </div>
 
       {/* Modal Preview Popover */}
@@ -157,9 +162,9 @@ export default function HorizontalTemplatesScroll() {
               <button
                 type="button"
                 onClick={() => setSelectedTemplate(null)}
-                className="absolute top-4 right-4 w-8 h-8 rounded-full bg-[#111111] text-white flex items-center justify-center font-bold text-sm cursor-pointer"
+                className="absolute top-4 right-4 w-8 h-8 rounded-full bg-[#111111] text-white flex items-center justify-center font-bold text-sm cursor-pointer hover:bg-neutral-800 transition-colors"
               >
-                ✕
+                <X className="w-4 h-4" />
               </button>
 
               <div className="inline-block bg-[#FFE600] text-[#111111] font-bebas text-xs px-2.5 py-0.5 font-bold uppercase mb-2 border border-[#111111]">

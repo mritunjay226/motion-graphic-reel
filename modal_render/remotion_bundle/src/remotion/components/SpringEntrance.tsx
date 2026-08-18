@@ -116,7 +116,7 @@ function computeEntranceTransform(
           ]
         )
       : 0;
-    extraStyles.filter = `drop-shadow(0 0 ${glowSize}px ${config.glowColor})`;
+    extraStyles.boxShadow = `0 0 ${glowSize}px ${config.glowColor}`;
   }
 
   return {

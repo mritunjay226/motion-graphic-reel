@@ -28,17 +28,17 @@ export const TypewriterParagraph: React.FC<TypewriterParagraphProps> = ({
 
   // Character-length based font scaling tuned for 1080px canvas
   const textLen = content.length;
-  let fontSize = 32;
-  let lineHeight = 1.35;
+  let fontSize = 38;
+  let lineHeight = 1.38;
   if (textLen > 140) {
-    fontSize = 24;
-    lineHeight = 1.28;
-  } else if (textLen > 90) {
-    fontSize = 27;
-    lineHeight = 1.3;
-  } else if (textLen > 50) {
     fontSize = 30;
     lineHeight = 1.32;
+  } else if (textLen > 90) {
+    fontSize = 34;
+    lineHeight = 1.34;
+  } else if (textLen > 50) {
+    fontSize = 36;
+    lineHeight = 1.36;
   }
 
   // Typewriter effect speed: 1 character every 1.1 frames
@@ -67,10 +67,10 @@ export const TypewriterParagraph: React.FC<TypewriterParagraphProps> = ({
       }}
     >
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px", borderBottom: "2.5px dashed #CCCCCC", paddingBottom: "8px" }}>
-        <span style={{ fontSize: "16px", fontWeight: 900, letterSpacing: "2px", color: "#666666", textTransform: "uppercase" }}>
+        <span style={{ fontSize: "20px", fontWeight: 900, letterSpacing: "2px", color: "#333333", textTransform: "uppercase" }}>
           ● {headline}
         </span>
-        <span style={{ fontSize: "14px", color: "#666666", fontWeight: 900, letterSpacing: "1.5px" }}>
+        <span style={{ fontSize: "18px", color: "#666666", fontWeight: 900, letterSpacing: "1.5px" }}>
           CLASSIFIED REF-99
         </span>
       </div>

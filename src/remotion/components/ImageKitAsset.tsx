@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { buildImageKitUrl, ImageKitTransformOptions } from "../utils/imagekit";
+import { resolveAssetUrl } from "../utils/resolveAsset";
 
 export type ImageMaskType = "none" | "radial_soft" | "oval_cutout" | "paper_card" | "circle_badge";
 
@@ -44,10 +45,11 @@ export const ImageKitAsset: React.FC<ImageKitAssetProps> = ({
   const [hasError, setHasError] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Apply ImageKit transformations if options are provided
-  const finalSrc = transformOptions
+  // Apply ImageKit transformations if options are provided and resolve local /cache/ paths
+  const rawSrc = transformOptions && !src.startsWith("/cache/")
     ? buildImageKitUrl(src, transformOptions)
     : src;
+  const finalSrc = resolveAssetUrl(rawSrc);
 
   if (hasError) {
     return (

@@ -87,7 +87,7 @@ export const Template3NewspaperCutout: React.FC<TemplateProps> = ({ scene, theme
       {/* 2. LEFT ZONE: Vintage Newspaper Clipping (Frame 6) */}
       <ExitAnimationWrapper
         startFrameOffset={6}
-        durationFrames={durationFrames - 12}
+        durationFrames={durationFrames}
         exitAnimation="slide_left"
         style={{
           position: "absolute",
@@ -101,6 +101,7 @@ export const Template3NewspaperCutout: React.FC<TemplateProps> = ({ scene, theme
           headline={newsEvent?.headline || "DAILY FINANCIAL TIMES"}
           content={newsEvent?.content || headlineText}
           imageUrl={primaryStickerUrl}
+          videoUrl={scene.videoUrl || scene.bRollUrl}
         />
       </ExitAnimationWrapper>
 

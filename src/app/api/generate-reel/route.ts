@@ -13,14 +13,20 @@ const convex = new ConvexHttpClient(convexUrl);
  */
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    const { userId, topic, voiceId, language = "en" } = body;
-
-    if (!topic) {
-      return NextResponse.json({ error: "Missing topic" }, { status: 400 });
+    let body: any = {};
+    try {
+      body = await req.json();
+    } catch {
+      return NextResponse.json({ error: "Invalid JSON request body" }, { status: 400 });
     }
 
-    // 1. Create or reset real Convex reel record
+    const { userId, topic, voiceId, language = "en" } = body;
+
+    if (!topic || typeof topic !== "string" || !topic.trim()) {
+      return NextResponse.json({ error: "Missing or invalid 'topic' parameter" }, { status: 400 });
+    }
+
+    // 1. Create or reset Convex reel record with safe fallback
     let reelId: string;
     if (body.reelId) {
       reelId = body.reelId;
@@ -30,37 +36,58 @@ export async function POST(req: Request) {
           status: "draft",
           errorMessage: undefined,
         });
-      } catch (dbErr) {
-        console.warn("[Convex DB Reset Note] Failed to reset existing reel status:", dbErr);
+      } catch (dbErr: any) {
+        console.warn("[Convex DB Reset Note] Failed to reset existing reel status:", dbErr?.message || dbErr);
       }
     } else {
       try {
         reelId = await convex.mutation(api.reels.createReelFromTopic, {
           userId: userId || "user_guest",
-          topic,
+          topic: topic.trim(),
           language,
         });
-      } catch (dbErr) {
-        console.warn("[Convex DB Insert Note] Failed to insert initial reel record via client, fallback to provided reelId.");
-        reelId = `reel_${Date.now()}`;
+      } catch (dbErr: any) {
+        console.warn("[Convex DB Insert Note] Failed to insert initial reel record via Convex client, using local ID fallback:", dbErr?.message || dbErr);
+        reelId = `reel_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
       }
     }
 
     // 2. Dispatch event to Inngest step-function pipeline
-    await inngest.send({
-      name: "reel/generate.requested",
-      data: {
-        reelId,
-        userId: userId || "user_guest",
-        topic,
-        voiceId: voiceId || "62ae83ad-4f6a-430b-af41-a9bede9286ca",
-        language,
-      },
-    });
+    try {
+      await inngest.send({
+        name: "reel/generate.requested",
+        data: {
+          reelId,
+          userId: userId || "user_guest",
+          topic: topic.trim(),
+          voiceId: voiceId || "62ae83ad-4f6a-430b-af41-a9bede9286ca",
+          language,
+        },
+      });
+    } catch (inngestErr: any) {
+      console.error("[Inngest Dispatch Error]", inngestErr);
+      return NextResponse.json(
+        {
+          error: `Inngest dispatch failed: ${inngestErr?.message || "Missing INNGEST_EVENT_KEY or local Inngest dev server unreachable."}`,
+          reelId,
+          hint: "Ensure INNGEST_EVENT_KEY and INNGEST_SIGNING_KEY are set in Vercel environment variables.",
+        },
+        { status: 500 }
+      );
+    }
 
-    return NextResponse.json({ success: true, reelId, message: "Inngest reel generation event dispatched." });
+    return NextResponse.json({
+      success: true,
+      reelId,
+      message: "Inngest reel generation event dispatched successfully.",
+    });
   } catch (error: any) {
-    console.error("[Inngest Trigger Error]", error);
-    return NextResponse.json({ error: error.message || "Failed to dispatch Inngest event" }, { status: 500 });
+    console.error("[Generate Reel Route Error]", error);
+    return NextResponse.json(
+      {
+        error: error?.message || "Internal server error during reel generation dispatch.",
+      },
+      { status: 500 }
+    );
   }
 }
