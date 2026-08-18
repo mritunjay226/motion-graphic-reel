@@ -771,3 +771,73 @@
 [2026-08-16T18:11:02.570Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
 [2026-08-16T18:11:03.402Z] INFO  [SidebarWebviewProvider] pushCommits: 10 item(s), mode=merged
 [2026-08-16T18:11:04.996Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-18T05:16:27.720Z] INFO  [PrepareMsgHook] === Prepare-commit-msg hook started (source: message) ===
+[2026-08-18T05:16:27.833Z] INFO  [PrepareMsgHook] === Prepare-commit-msg hook finished ===
+[2026-08-18T05:16:31.510Z] INFO  [PostCommitHook] [trace=4cc96f180e5022332bf77e3d2e27ed41] Detected operation: commit
+[2026-08-18T05:16:31.757Z] INFO  [PostCommitHook] [trace=4cc96f180e5022332bf77e3d2e27ed41] Enqueued: type=commit hash=095a4b62
+[2026-08-18T05:16:31.757Z] INFO  [QueueWorker] [trace=4cc96f180e5022332bf77e3d2e27ed41] Launching background worker
+[2026-08-18T05:16:31.774Z] INFO  [QueueWorker] [trace=4cc96f180e5022332bf77e3d2e27ed41] Background worker spawned (PID: 9268)
+[2026-08-18T05:16:31.797Z] INFO  [EnsureGlobalDaemon] [trace=4cc96f180e5022332bf77e3d2e27ed41] spawned global daemon ensure helper (pid 23368)
+[2026-08-18T05:16:37.778Z] INFO  [QueueWorker] [trace=4cc96f180e5022332bf77e3d2e27ed41] === Queue worker started === node=22.23.2 kind=vscode-plugin source=antigravity-ide pkgVer=0.99.13 cliVer=0.99.13 dist=c:\Users\mk\.antigravity-ide\extensions\jolli.jollimemory-vscode-0.99.13-universal\dist
+[2026-08-18T05:16:37.811Z] INFO  [StorageFactory] [trace=4cc96f180e5022332bf77e3d2e27ed41] StorageFactory.create: route=cutover, projectPath=C:\Users\mk\Documents\motion-graphic-reels
+[2026-08-18T05:16:39.000Z] INFO  [QueueWorker] [trace=4cc96f180e5022332bf77e3d2e27ed41] Processing queue entry: type=commit hash=095a4b62
+[2026-08-18T05:16:39.437Z] INFO  [GitOps] [trace=4cc96f180e5022332bf77e3d2e27ed41] Commit 095a4b62: complete almost
+[2026-08-18T05:16:39.437Z] INFO  [QueueWorker] [trace=4cc96f180e5022332bf77e3d2e27ed41] Commit: 095a4b62 - complete almost (422ms)
+[2026-08-18T05:16:43.108Z] INFO  [QueueWorker] [trace=4cc96f180e5022332bf77e3d2e27ed41] Discovered 6 Antigravity session(s)
+[2026-08-18T05:16:43.168Z] INFO  [QueueWorker] [trace=4cc96f180e5022332bf77e3d2e27ed41] Transcript source: session=1e00b842-16b5-4f77-9240-eef779332a51, lines=0→955, entries=70
+[2026-08-18T05:16:43.181Z] INFO  [QueueWorker] [trace=4cc96f180e5022332bf77e3d2e27ed41] Transcript source: session=2c4c5430-f048-4cc6-9583-56f8764d51ef, lines=0→110, entries=4
+[2026-08-18T05:16:43.205Z] INFO  [QueueWorker] [trace=4cc96f180e5022332bf77e3d2e27ed41] Transcript source: session=9efb7bdd-01fe-4e4d-87fc-bf82b4b1ef8e, lines=0→286, entries=4
+[2026-08-18T05:16:43.243Z] INFO  [QueueWorker] [trace=4cc96f180e5022332bf77e3d2e27ed41] Transcript source: session=c2ddf746-f516-41a9-8e68-21a2c0ee0115, lines=0→19, entries=14
+[2026-08-18T05:16:43.393Z] INFO  [QueueWorker] [trace=4cc96f180e5022332bf77e3d2e27ed41] Transcript source: session=dc8eb977-0f2b-4d10-9268-c2643d0a9099, lines=0→1830, entries=58
+[2026-08-18T05:16:43.590Z] INFO  [QueueWorker] [trace=4cc96f180e5022332bf77e3d2e27ed41] Transcript source: session=e167d621-0db9-495d-9b5c-4f0a5370174c, lines=0→1880, entries=62
+[2026-08-18T05:16:45.535Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-18T05:16:45.841Z] INFO  [PrepareMsgHook] === Prepare-commit-msg hook started (source: ) ===
+[2026-08-18T05:16:46.077Z] INFO  [PrepareMsgHook] === Prepare-commit-msg hook finished ===
+[2026-08-18T05:16:47.512Z] WARN  [GitOps] [trace=4cc96f180e5022332bf77e3d2e27ed41] Diff exceeds 150000-char budget (1149746 chars) — prepending --stat file list and truncating body
+[2026-08-18T05:16:49.986Z] INFO  [QueueWorker] [trace=4cc96f180e5022332bf77e3d2e27ed41] Git diff: 242 files changed, +16022 -3750 (6.4s)
+[2026-08-18T05:16:50.023Z] INFO  [TranscriptReader] [trace=4cc96f180e5022332bf77e3d2e27ed41] Conversation budget reached: kept 54/212 transcript entries (~149872/150000 chars); older turns dropped
+[2026-08-18T05:16:53.873Z] INFO  [SidebarWebviewProvider] pushMemories: 11 item(s)
+[2026-08-18T05:16:53.878Z] INFO  [SidebarWebviewProvider] pushCommits: 1 item(s), mode=single
+[2026-08-18T05:16:57.417Z] WARN  [GitOps] [trace=4cc96f180e5022332bf77e3d2e27ed41] Diff exceeds 60000-char budget (1149746 chars) — prepending --stat file list and truncating body
+[2026-08-18T05:16:57.445Z] INFO  [QueueWorker] [trace=4cc96f180e5022332bf77e3d2e27ed41] Prompt blocks: plans=0 notes=0 references=0 (+0 track-only archived, not prompted) (AI soft-excluded 0)
+[2026-08-18T05:16:57.448Z] INFO  [Summarizer] [trace=4cc96f180e5022332bf77e3d2e27ed41] Generating summary for commit 095a4b62
+[2026-08-18T05:16:57.448Z] INFO  [Summarizer] [trace=4cc96f180e5022332bf77e3d2e27ed41] Context: transcript=212, files=242, lines=16022+3750
+[2026-08-18T05:16:57.448Z] WARN  [QueueWorker] [trace=4cc96f180e5022332bf77e3d2e27ed41] First API attempt failed: No LLM provider available. Set an Anthropic API key (ANTHROPIC_API_KEY) or configure a Jolli Space API key (jolliApiKey).. Retrying in 2000ms...
+[2026-08-18T05:16:58.313Z] INFO  [SidebarWebviewProvider] pushCommits: 1 item(s), mode=single
+[2026-08-18T05:16:59.454Z] INFO  [Summarizer] [trace=4cc96f180e5022332bf77e3d2e27ed41] Generating summary for commit 095a4b62
+[2026-08-18T05:16:59.454Z] INFO  [Summarizer] [trace=4cc96f180e5022332bf77e3d2e27ed41] Context: transcript=212, files=242, lines=16022+3750
+[2026-08-18T05:16:59.455Z] ERROR [QueueWorker] [trace=4cc96f180e5022332bf77e3d2e27ed41] API call failed after retry: No LLM provider available. Set an Anthropic API key (ANTHROPIC_API_KEY) or configure a Jolli Space API key (jolliApiKey).
+[2026-08-18T05:16:59.455Z] WARN  [QueueWorker] [trace=4cc96f180e5022332bf77e3d2e27ed41] Saving summary with empty topics + llm-failed marker for commit 095a4b62
+[2026-08-18T05:16:59.455Z] INFO  [QueueWorker] [trace=4cc96f180e5022332bf77e3d2e27ed41] API summary generated (2.0s)
+[2026-08-18T05:16:59.456Z] INFO  [QueueWorker] [trace=4cc96f180e5022332bf77e3d2e27ed41] Plan registry scan: found 0 uncommitted slug(s) on main: []
+[2026-08-18T05:16:59.457Z] INFO  [QueueWorker] [trace=4cc96f180e5022332bf77e3d2e27ed41] Plan association: detected 0 slug(s) from transcripts: []
+[2026-08-18T05:16:59.458Z] INFO  [QueueWorker] [trace=4cc96f180e5022332bf77e3d2e27ed41] Note registry scan: found 0 uncommitted note(s) on main: []
+[2026-08-18T05:16:59.458Z] INFO  [QueueWorker] [trace=4cc96f180e5022332bf77e3d2e27ed41] Note association: detected 0 note(s): []
+[2026-08-18T05:16:59.459Z] INFO  [QueueWorker] [trace=4cc96f180e5022332bf77e3d2e27ed41] Reference association: detected 0 ref(s) for branch main
+[2026-08-18T05:16:59.465Z] INFO  [QueueWorker] [trace=4cc96f180e5022332bf77e3d2e27ed41] Summary built for 095a4b62: recap=no, topics=0, plans=absent, notes=absent, references=absent
+[2026-08-18T05:17:00.393Z] INFO  [MetadataManager] [trace=4cc96f180e5022332bf77e3d2e27ed41] Manifest updated: main/complete-almost-095a4b62.md (commit)
+[2026-08-18T05:17:00.393Z] INFO  [FolderStorage] [trace=4cc96f180e5022332bf77e3d2e27ed41] Markdown generated: main/complete-almost-095a4b62.md
+[2026-08-18T05:17:00.404Z] INFO  [FolderStorage] [trace=4cc96f180e5022332bf77e3d2e27ed41] Wrote 4 files, deleted 0 (Add summary for 095a4b62: complete almost)
+[2026-08-18T05:17:00.404Z] INFO  [SummaryStore] [trace=4cc96f180e5022332bf77e3d2e27ed41] Summary stored successfully for commit 095a4b62
+[2026-08-18T05:17:01.432Z] INFO  [QueueWorker] [trace=4cc96f180e5022332bf77e3d2e27ed41] Summary stored successfully for commit 095a4b62 (2.0s, 0 plans, 0 notes, 0 references)
+[2026-08-18T05:17:01.450Z] INFO  [QueueWorker] [trace=4cc96f180e5022332bf77e3d2e27ed41] === Pipeline completed in 22.4s ===
+[2026-08-18T05:17:01.450Z] INFO  [QueueWorker] [trace=4cc96f180e5022332bf77e3d2e27ed41] === Summary content (0 topics) ===
+[2026-08-18T05:17:01.539Z] INFO  [QueueWorker] [trace=4cc96f180e5022332bf77e3d2e27ed41] Processed 1 queue entries
+[2026-08-18T05:17:01.569Z] INFO  [PushExecutor] [trace=4cc96f180e5022332bf77e3d2e27ed41] Post-queue push trigger: scheduling drain for 1 newly generated summar(ies)
+[2026-08-18T05:17:01.592Z] INFO  [PushExecutor] [trace=4cc96f180e5022332bf77e3d2e27ed41] processPushPending(post-queue): 1 pending entr(ies) (filtered to 1 hash(es))
+[2026-08-18T05:17:02.901Z] INFO  [SidebarWebviewProvider] pushMemories: 12 item(s)
+[2026-08-18T05:17:04.524Z] INFO  [SidebarWebviewProvider] pushCommits: 1 item(s), mode=single
+[2026-08-18T05:17:05.419Z] INFO  [GitOps] [trace=4cc96f180e5022332bf77e3d2e27ed41] Commit 095a4b62: complete almost
+[2026-08-18T05:17:05.897Z] INFO  [SidebarWebviewProvider] pushMemories: 12 item(s)
+[2026-08-18T05:17:06.121Z] INFO  [StorageFactory] [trace=4cc96f180e5022332bf77e3d2e27ed41] StorageFactory.create: route=cutover, projectPath=C:\Users\mk\Documents\motion-graphic-reels
+[2026-08-18T05:17:07.976Z] INFO  [QueueWorker] [trace=4cc96f180e5022332bf77e3d2e27ed41] === Queue worker finished ===
+[2026-08-18T05:17:07.984Z] INFO  [SessionStartHook] [trace=4cc96f180e5022332bf77e3d2e27ed41] Briefing cache not warmed — nothing to brief on this branch
+[2026-08-18T05:17:09.058Z] INFO  [PlanService] detectPlans found 0 plans (0 in registry)
+[2026-08-18T05:17:09.059Z] INFO  [NoteService] detectNotes found 0 notes (0 in registry)
+[2026-08-18T05:17:09.059Z] INFO  [references] detectReferences(*) found 0 (0 in registry)
+[2026-08-18T05:17:09.059Z] INFO  [SkillProjection] projectActiveSkills: 0 active (0 in registry)
+[2026-08-18T05:17:09.825Z] INFO  [SidebarWebviewProvider] pushMemories: 12 item(s)
+[2026-08-18T05:17:10.699Z] INFO  [SidebarWebviewProvider] pushCommits: 1 item(s), mode=single
+[2026-08-18T05:17:12.035Z] INFO  [SidebarWebviewProvider] pushMemories: 12 item(s)
+[2026-08-18T05:17:14.818Z] INFO  [SidebarWebviewProvider] pushCommits: 1 item(s), mode=single
+[2026-08-18T05:17:15.411Z] INFO  [SidebarWebviewProvider] pushCommits: 1 item(s), mode=single
