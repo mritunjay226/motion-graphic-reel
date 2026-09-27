@@ -24,6 +24,7 @@ interface ReelGenerationProgressProps {
   reelId: string;
   onComplete?: (reelId: string) => void;
   onRetry?: () => void;
+  onRetryRender?: () => void;
 }
 
 interface LogEntry {
@@ -83,6 +84,7 @@ export const ReelGenerationProgress: React.FC<ReelGenerationProgressProps> = ({
   reelId,
   onComplete,
   onRetry,
+  onRetryRender,
 }) => {
   const [mounted, setMounted] = useState(false);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
@@ -105,22 +107,18 @@ export const ReelGenerationProgress: React.FC<ReelGenerationProgressProps> = ({
   );
 
   const status = reel?.status || "rendering";
-  const storyboard = reel?.storyboard || [];
   const errorMessage = reel?.errorMessage || "An unrecoverable error occurred during video generation.";
   const topic = reel?.topic || "Documentary Production";
 
-  // Calculate current active step based on storyboard scenes assembled
-  const assembledCount = Array.isArray(storyboard) ? storyboard.length : 0;
+  const dbCurrentStep = (reel as any)?.currentStep;
+  const dbProgressPercent = (reel as any)?.progressPercent;
+  const dbProgressMessage = (reel as any)?.progressMessage;
 
   let currentStep = 1;
   if (status === "completed") {
     currentStep = 6;
-  } else if (assembledCount >= 5) {
-    currentStep = 5;
-  } else if (assembledCount >= 3) {
-    currentStep = 4;
-  } else if (assembledCount >= 1) {
-    currentStep = 3;
+  } else if (typeof dbCurrentStep === "number" && dbCurrentStep >= 1) {
+    currentStep = dbCurrentStep;
   } else if (elapsedSeconds > 6) {
     currentStep = 2;
   } else {
@@ -225,6 +223,26 @@ export const ReelGenerationProgress: React.FC<ReelGenerationProgressProps> = ({
     logsEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [logs]);
 
+  // Append real pipeline progress messages from Convex to logs
+  useEffect(() => {
+    if (!dbProgressMessage) return;
+    setLogs((prev) => {
+      if (prev.length > 0 && prev[prev.length - 1].message === dbProgressMessage) {
+        return prev;
+      }
+      return [
+        ...prev,
+        {
+          id: `log_db_${Date.now()}`,
+          timestamp: `+${elapsedSeconds}s`,
+          type: "ai",
+          tag: "PIPELINE",
+          message: dbProgressMessage,
+        },
+      ];
+    });
+  }, [dbProgressMessage, elapsedSeconds]);
+
   // Trigger completion callback when status changes to completed
   useEffect(() => {
     if (status === "completed" && onComplete) {
@@ -237,8 +255,9 @@ export const ReelGenerationProgress: React.FC<ReelGenerationProgressProps> = ({
 
   const progressPercent = status === "completed"
     ? 100
-    : Math.min(95, Math.max(15, Math.round((currentStep / 6) * 100) + Math.min(elapsedSeconds * 1.5, 12)));
-
+    : (typeof dbProgressPercent === "number"
+        ? Math.min(98, Math.max(5, dbProgressPercent))
+        : Math.min(95, Math.max(10, Math.round((currentStep / 6) * 100))));
 
   return (
     <div className="w-full flex flex-col items-center select-none">
@@ -286,6 +305,14 @@ export const ReelGenerationProgress: React.FC<ReelGenerationProgressProps> = ({
             </div>
           </div>
         </div>
+
+        {/* Current Pipeline Status Sub-bar */}
+        {dbProgressMessage && (
+          <div className="flex items-center gap-2 mb-2 text-xs font-mono text-[#333333] font-semibold">
+            <span className="w-2 h-2 rounded-full bg-[#B5F500] border border-[#111111] animate-pulse" />
+            <span>{dbProgressMessage}</span>
+          </div>
+        )}
 
         {/* Glowing Tactile Progress Bar */}
         <div className="w-full bg-[#F4F4F6] rounded-full h-4 mb-6 p-0.5 border-2 border-[#111111] relative overflow-hidden z-10 shadow-inner">
@@ -395,27 +422,44 @@ export const ReelGenerationProgress: React.FC<ReelGenerationProgressProps> = ({
         </div>
 
         {/* Error Handling Card */}
-        {status === "failed" && (
-          <div className="mt-6 bg-red-50 border-3 border-red-600 rounded-2xl p-6 relative z-10 text-red-900 shadow-md">
-            <div className="flex items-center gap-2.5 mb-2">
-              <AlertTriangle className="w-5 h-5 text-red-600" />
-              <h3 className="font-bebas text-xl uppercase tracking-wide">Video Generation Pipeline Error</h3>
+        {status === "failed" && (() => {
+          const isRenderFailure =
+            (reel as any)?.failedStep === "render" ||
+            Boolean((reel?.storyboard?.length || 0) > 0 && status === "failed");
+
+          return (
+            <div className="mt-6 bg-red-50 border-3 border-red-600 rounded-2xl p-6 relative z-10 text-red-900 shadow-md">
+              <div className="flex items-center gap-2.5 mb-2">
+                <AlertTriangle className="w-5 h-5 text-red-600" />
+                <h3 className="font-bebas text-xl uppercase tracking-wide">
+                  {isRenderFailure ? "Cloud Video Render Failed" : "Video Generation Pipeline Error"}
+                </h3>
+              </div>
+              <p className="font-mono text-xs text-red-800 bg-white p-3 rounded-xl border border-red-300 mb-4">
+                {errorMessage || "An unexpected error occurred during processing."}
+              </p>
+              {isRenderFailure ? (
+                <button
+                  type="button"
+                  onClick={onRetryRender || onRetry}
+                  className="px-6 py-3 bg-[#FFE600] hover:bg-[#ffe100] text-[#111111] font-bebas text-lg tracking-wider uppercase rounded-xl border-2 border-[#111111] transition-all cursor-pointer flex items-center gap-2 shadow-xs"
+                >
+                  <RefreshCw className="w-4 h-4" />
+                  <span>Try Rendering Again</span>
+                </button>
+              ) : onRetry ? (
+                <button
+                  type="button"
+                  onClick={onRetry}
+                  className="px-6 py-3 bg-[#FFE600] hover:bg-[#ffe100] text-[#111111] font-bebas text-lg tracking-wider uppercase rounded-xl border-2 border-[#111111] transition-all cursor-pointer flex items-center gap-2 shadow-xs"
+                >
+                  <RefreshCw className="w-4 h-4" />
+                  <span>Try Generating Again</span>
+                </button>
+              ) : null}
             </div>
-            <p className="font-mono text-xs text-red-800 bg-white p-3 rounded-xl border border-red-300 mb-4">
-              {errorMessage}
-            </p>
-            {onRetry && (
-              <button
-                type="button"
-                onClick={onRetry}
-                className="px-6 py-3 bg-[#FFE600] hover:bg-[#ffe100] text-[#111111] font-bebas text-lg tracking-wider uppercase rounded-xl border-2 border-[#111111] transition-all cursor-pointer flex items-center gap-2 shadow-xs"
-              >
-                <RefreshCw className="w-4 h-4" />
-                <span>Try Generating Again</span>
-              </button>
-            )}
-          </div>
-        )}
+          );
+        })()}
 
       </div>
     </div>

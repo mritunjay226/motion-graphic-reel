@@ -21,6 +21,7 @@ export const NewsArticleClipping: React.FC<NewsArticleClippingProps> = ({
   imageUrl,
   videoUrl,
 }) => {
+  const [videoError, setVideoError] = React.useState(false);
   return (
     <div
       style={{
@@ -80,16 +81,20 @@ export const NewsArticleClipping: React.FC<NewsArticleClippingProps> = ({
           </h3>
           {(videoUrl || imageUrl) && (
             <div style={{ width: "130px", height: "105px", borderRadius: "6px", overflow: "hidden", border: "2px solid #111", flexShrink: 0, backgroundColor: "#000" }}>
-              {videoUrl ? (
+              {videoUrl && !videoError ? (
                 <OffthreadVideo
                   src={resolveAssetUrl(videoUrl)}
                   volume={0}
                   muted={true}
+                  onError={(e) => {
+                    console.warn("[NewsArticleClipping] Video load failed, fallback to image:", videoUrl, e);
+                    setVideoError(true);
+                  }}
                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
               ) : (
                 <Img
-                  src={resolveAssetUrl(imageUrl || "")}
+                  src={resolveAssetUrl(imageUrl || "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400&q=80")}
                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
               )}

@@ -9,6 +9,7 @@ import { FilmTreatment } from "./components/FilmTreatment";
 import { TactilePaperCanvas } from "./components/TactilePaperCanvas";
 import { TactileSfxLayer } from "./components/TactileSfxLayer";
 import { getVideoTheme, resolveVideoTheme, DEFAULT_STYLE_ID, DEFAULT_PALETTE_ID } from "./utils/themes";
+import { PRESET_MUSIC_URL_MAP } from "./utils/resolveAsset";
 
 export interface BlockbusterNetflixReelProps {
   plan?: ExecutionPlan;
@@ -16,6 +17,9 @@ export interface BlockbusterNetflixReelProps {
   themeId?: string;
   styleId?: string;
   colorPaletteId?: string;
+  textureType?: string;
+  paperTextureOpacity?: number;
+  customTextureUrl?: string;
   enableAudio?: boolean;
   enableSfx?: boolean;
   sfxVolume?: number;
@@ -34,10 +38,13 @@ export const BlockbusterNetflixReel: React.FC<BlockbusterNetflixReelProps> = ({
   themeId,
   styleId,
   colorPaletteId,
+  textureType,
+  paperTextureOpacity,
+  customTextureUrl,
   enableAudio = true,
   enableSfx = true,
   sfxVolume = 1.0,
-  bgMusicUrl = "/music/without_me.mp3",
+  bgMusicUrl = "/music/documentary_pulse.mp3",
   bgMusicVolume = 0.15,
 }) => {
   const frame = useCurrentFrame();
@@ -59,32 +66,78 @@ export const BlockbusterNetflixReel: React.FC<BlockbusterNetflixReelProps> = ({
     !masterAudioUrl.includes("cdn.saas.com")
   );
 
-  // Dynamic Audio Ducking via frame callback (prevents timeline re-renders and volume warnings)
+  // Smooth Exponential Sidechain Ducking:
+  // Ducks music to ~ -22dB during speech, smoothly eases up to ~ -14dB during narrative pauses
+  const duckedVolume = Math.max(0.06, bgMusicVolume * 0.55);
+  const swelledVolume = Math.min(0.35, bgMusicVolume * 1.5);
+
   const getDynamicMusicVolume = (f: number) => {
-    const isSpeechAtFrame = scenes.some(
-      (sc) => f >= sc.startFrame && f <= sc.startFrame + sc.durationFrames - 2
+    const activeScene = scenes.find(
+      (sc) => f >= sc.startFrame && f <= sc.startFrame + sc.durationFrames
     );
-    return isSpeechAtFrame ? bgMusicVolume : Math.min(0.35, bgMusicVolume * 1.4);
+
+    if (!activeScene) {
+      return swelledVolume;
+    }
+
+    const localF = f - activeScene.startFrame;
+    const remainingF = activeScene.startFrame + activeScene.durationFrames - f;
+    const fadeFrames = 6;
+
+    // Smooth ease-in duck at speech onset
+    if (localF < fadeFrames) {
+      return interpolate(localF, [0, fadeFrames], [swelledVolume, duckedVolume], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+      });
+    }
+
+    // Smooth ease-out swell at speech conclusion
+    if (remainingF < fadeFrames) {
+      return interpolate(fadeFrames - remainingF, [0, fadeFrames], [duckedVolume, swelledVolume], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+      });
+    }
+
+    return duckedVolume;
   };
 
   let resolvedBgMusicUrl = (bgMusicUrl && !bgMusicUrl.includes("cdn.saas.com")) ? bgMusicUrl : "";
   if (resolvedBgMusicUrl.includes("localhost:3000")) {
     resolvedBgMusicUrl = resolvedBgMusicUrl.replace("http://localhost:3000", "");
   }
+  // Auto-map local preset paths to permanent Cloudinary CDN URLs so cloud renders never 404
+  for (const [key, cdnUrl] of Object.entries(PRESET_MUSIC_URL_MAP)) {
+    if (resolvedBgMusicUrl === key || resolvedBgMusicUrl.endsWith(key)) {
+      resolvedBgMusicUrl = cdnUrl;
+      break;
+    }
+  }
   if (resolvedBgMusicUrl.startsWith("/")) {
-    resolvedBgMusicUrl = staticFile(resolvedBgMusicUrl);
+    try {
+      resolvedBgMusicUrl = staticFile(resolvedBgMusicUrl);
+    } catch {
+      // Keep URL as-is
+    }
   }
 
   const isGradientBg = activeTheme.canvasBg.includes("gradient");
 
+  const effectiveTextureType = textureType || activeTheme.textureType || "paper_fiber";
+  const effectiveTextureOpacity = paperTextureOpacity ?? activeTheme.paperTextureOpacity ?? (effectiveTextureType === "clean_studio" ? 0 : 0.18);
+
   return (
     <TactilePaperCanvas
       baseColor={activeTheme.canvasBg || "#FAF8F2"}
-      vignetteStrength={activeTheme.vignette ?? 0.12}
-      gridOpacity={activeTheme.paperGridOpacity ?? 0.08}
-      gridSize={36}
-      showSubGrid={true}
-      showCreases={true}
+      textureType={effectiveTextureType}
+      customTextureUrl={customTextureUrl}
+      paperTextureOpacity={effectiveTextureOpacity}
+      vignetteStrength={activeTheme.vignette ?? 0.08}
+      gridOpacity={activeTheme.paperGridOpacity ?? 0}
+      gridSize={activeTheme.paperGridSize ?? 36}
+      showSubGrid={false}
+      showCreases={activeTheme.showCreases ?? false}
     >
       {/* ── BACKGROUND MUSIC TRACK (DYNAMICALLY DUCKED & LOOPED ACROSS REEL) ── */}
       {enableAudio && resolvedBgMusicUrl && (

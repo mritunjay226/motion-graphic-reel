@@ -62,6 +62,9 @@ export default defineSchema({
     renderDurationMs: v.optional(v.number()),
     errorMessage: v.optional(v.string()),
     failedStep: v.optional(v.string()),
+    currentStep: v.optional(v.number()),
+    progressPercent: v.optional(v.number()),
+    progressMessage: v.optional(v.string()),
     socialPosts: v.optional(
       v.array(
         v.object({

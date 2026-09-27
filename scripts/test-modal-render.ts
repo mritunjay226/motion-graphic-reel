@@ -1,5 +1,6 @@
 import { ConvexHttpClient } from "convex/browser";
 import { convertConvexReelToExecutionPlan } from "../src/remotion/data/execution-plan";
+import { resolveAssetUrl } from "../src/remotion/utils/resolveAsset";
 
 const convexUrl = process.env.NEXT_PUBLIC_CONVEX_URL || "https://festive-opossum-355.convex.cloud";
 const convex = new ConvexHttpClient(convexUrl);
@@ -25,7 +26,7 @@ async function testModalRender() {
     enableAudio: true,
     enableSfx: true,
     sfxVolume: 1.0,
-    bgMusicUrl: reel.bgMusicUrl || "/music/without_me.mp3",
+    bgMusicUrl: resolveAssetUrl(reel.bgMusicUrl || "https://res.cloudinary.com/diah8zonu/video/upload/v1788713679/vox-reels/music/documentary_pulse.mp3"),
     bgMusicVolume: reel.bgMusicVolume ?? 0.15,
   };
 

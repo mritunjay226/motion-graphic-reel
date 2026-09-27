@@ -75,7 +75,7 @@ remotion_image = (
         copy=True,
     )
     .run_commands(
-        "echo 'build_v24_replaced_all_dark_textures_with_light_assets' && cd /app && npm install --legacy-peer-deps --no-audit",
+        "echo 'build_v25_cloudinary_preset_music_assets' && cd /app && npm install --legacy-peer-deps --no-audit",
         "cd /app && npx remotion browser ensure",
         "cd /app && npx remotion bundle src/remotion/index.ts build --public-dir=public",
     )

@@ -841,3 +841,470 @@
 [2026-08-18T05:17:12.035Z] INFO  [SidebarWebviewProvider] pushMemories: 12 item(s)
 [2026-08-18T05:17:14.818Z] INFO  [SidebarWebviewProvider] pushCommits: 1 item(s), mode=single
 [2026-08-18T05:17:15.411Z] INFO  [SidebarWebviewProvider] pushCommits: 1 item(s), mode=single
+[2026-08-18T05:17:30.492Z] INFO  [PrepareMsgHook] === Prepare-commit-msg hook started (source: message) ===
+[2026-08-18T05:17:30.582Z] INFO  [PrepareMsgHook] === Prepare-commit-msg hook finished ===
+[2026-08-18T05:17:31.765Z] INFO  [PostCommitHook] [trace=a1242f9beab0f06af69db664e6ac2bc2] Detected operation: commit
+[2026-08-18T05:17:31.980Z] INFO  [PostCommitHook] [trace=a1242f9beab0f06af69db664e6ac2bc2] Enqueued: type=commit hash=f04e93c6
+[2026-08-18T05:17:31.980Z] INFO  [QueueWorker] [trace=a1242f9beab0f06af69db664e6ac2bc2] Launching background worker
+[2026-08-18T05:17:31.997Z] INFO  [QueueWorker] [trace=a1242f9beab0f06af69db664e6ac2bc2] Background worker spawned (PID: 9328)
+[2026-08-18T05:17:32.029Z] INFO  [EnsureGlobalDaemon] [trace=a1242f9beab0f06af69db664e6ac2bc2] spawned global daemon ensure helper (pid 2404)
+[2026-08-18T05:17:33.079Z] INFO  [QueueWorker] [trace=a1242f9beab0f06af69db664e6ac2bc2] === Queue worker started === node=22.23.2 kind=vscode-plugin source=antigravity-ide pkgVer=0.99.13 cliVer=0.99.13 dist=c:\Users\mk\.antigravity-ide\extensions\jolli.jollimemory-vscode-0.99.13-universal\dist
+[2026-08-18T05:17:33.112Z] INFO  [StorageFactory] [trace=a1242f9beab0f06af69db664e6ac2bc2] StorageFactory.create: route=cutover, projectPath=C:\Users\mk\Documents\motion-graphic-reels
+[2026-08-18T05:17:33.645Z] INFO  [QueueWorker] [trace=a1242f9beab0f06af69db664e6ac2bc2] Processing queue entry: type=commit hash=f04e93c6
+[2026-08-18T05:17:33.820Z] INFO  [GitOps] [trace=a1242f9beab0f06af69db664e6ac2bc2] Commit f04e93c6: almost
+[2026-08-18T05:17:33.820Z] INFO  [QueueWorker] [trace=a1242f9beab0f06af69db664e6ac2bc2] Commit: f04e93c6 - almost (166ms)
+[2026-08-18T05:17:35.028Z] INFO  [QueueWorker] [trace=a1242f9beab0f06af69db664e6ac2bc2] Discovered 6 Antigravity session(s)
+[2026-08-18T05:17:36.102Z] INFO  [QueueWorker] [trace=a1242f9beab0f06af69db664e6ac2bc2] Git diff: 14 files changed, +108 -28 (158ms)
+[2026-08-18T05:17:36.297Z] INFO  [QueueWorker] [trace=a1242f9beab0f06af69db664e6ac2bc2] Prompt blocks: plans=0 notes=0 references=0 (+0 track-only archived, not prompted) (AI soft-excluded 0)
+[2026-08-18T05:17:36.299Z] INFO  [Summarizer] [trace=a1242f9beab0f06af69db664e6ac2bc2] Generating summary for commit f04e93c6
+[2026-08-18T05:17:36.299Z] INFO  [Summarizer] [trace=a1242f9beab0f06af69db664e6ac2bc2] Context: transcript=0, files=14, lines=108+28
+[2026-08-18T05:17:36.299Z] WARN  [QueueWorker] [trace=a1242f9beab0f06af69db664e6ac2bc2] First API attempt failed: No LLM provider available. Set an Anthropic API key (ANTHROPIC_API_KEY) or configure a Jolli Space API key (jolliApiKey).. Retrying in 2000ms...
+[2026-08-18T05:17:38.309Z] INFO  [Summarizer] [trace=a1242f9beab0f06af69db664e6ac2bc2] Generating summary for commit f04e93c6
+[2026-08-18T05:17:38.309Z] INFO  [Summarizer] [trace=a1242f9beab0f06af69db664e6ac2bc2] Context: transcript=0, files=14, lines=108+28
+[2026-08-18T05:17:38.310Z] ERROR [QueueWorker] [trace=a1242f9beab0f06af69db664e6ac2bc2] API call failed after retry: No LLM provider available. Set an Anthropic API key (ANTHROPIC_API_KEY) or configure a Jolli Space API key (jolliApiKey).
+[2026-08-18T05:17:38.310Z] WARN  [QueueWorker] [trace=a1242f9beab0f06af69db664e6ac2bc2] Saving summary with empty topics + llm-failed marker for commit f04e93c6
+[2026-08-18T05:17:38.310Z] INFO  [QueueWorker] [trace=a1242f9beab0f06af69db664e6ac2bc2] API summary generated (2.0s)
+[2026-08-18T05:17:38.311Z] INFO  [QueueWorker] [trace=a1242f9beab0f06af69db664e6ac2bc2] Plan registry scan: found 0 uncommitted slug(s) on main: []
+[2026-08-18T05:17:38.311Z] INFO  [QueueWorker] [trace=a1242f9beab0f06af69db664e6ac2bc2] Plan association: detected 0 slug(s) from transcripts: []
+[2026-08-18T05:17:38.312Z] INFO  [QueueWorker] [trace=a1242f9beab0f06af69db664e6ac2bc2] Note registry scan: found 0 uncommitted note(s) on main: []
+[2026-08-18T05:17:38.312Z] INFO  [QueueWorker] [trace=a1242f9beab0f06af69db664e6ac2bc2] Note association: detected 0 note(s): []
+[2026-08-18T05:17:38.313Z] INFO  [QueueWorker] [trace=a1242f9beab0f06af69db664e6ac2bc2] Reference association: detected 0 ref(s) for branch main
+[2026-08-18T05:17:38.361Z] INFO  [QueueWorker] [trace=a1242f9beab0f06af69db664e6ac2bc2] Summary built for f04e93c6: recap=no, topics=0, plans=absent, notes=absent, references=absent
+[2026-08-18T05:17:39.025Z] INFO  [MetadataManager] [trace=a1242f9beab0f06af69db664e6ac2bc2] Manifest updated: main/almost-f04e93c6.md (commit)
+[2026-08-18T05:17:39.025Z] INFO  [FolderStorage] [trace=a1242f9beab0f06af69db664e6ac2bc2] Markdown generated: main/almost-f04e93c6.md
+[2026-08-18T05:17:39.042Z] INFO  [FolderStorage] [trace=a1242f9beab0f06af69db664e6ac2bc2] Wrote 3 files, deleted 0 (Add summary for f04e93c6: almost)
+[2026-08-18T05:17:39.042Z] INFO  [SummaryStore] [trace=a1242f9beab0f06af69db664e6ac2bc2] Summary stored successfully for commit f04e93c6
+[2026-08-18T05:17:39.153Z] INFO  [QueueWorker] [trace=a1242f9beab0f06af69db664e6ac2bc2] Summary stored successfully for commit f04e93c6 (792ms, 0 plans, 0 notes, 0 references)
+[2026-08-18T05:17:39.201Z] INFO  [QueueWorker] [trace=a1242f9beab0f06af69db664e6ac2bc2] === Pipeline completed in 5.5s ===
+[2026-08-18T05:17:39.201Z] INFO  [QueueWorker] [trace=a1242f9beab0f06af69db664e6ac2bc2] === Summary content (0 topics) ===
+[2026-08-18T05:17:39.242Z] INFO  [QueueWorker] [trace=a1242f9beab0f06af69db664e6ac2bc2] Processed 1 queue entries
+[2026-08-18T05:17:39.245Z] INFO  [PushExecutor] [trace=a1242f9beab0f06af69db664e6ac2bc2] Post-queue push trigger: scheduling drain for 1 newly generated summar(ies)
+[2026-08-18T05:17:39.253Z] INFO  [PushExecutor] [trace=a1242f9beab0f06af69db664e6ac2bc2] processPushPending(post-queue): 1 pending entr(ies) (filtered to 1 hash(es))
+[2026-08-18T05:17:39.837Z] INFO  [SidebarWebviewProvider] pushMemories: 13 item(s)
+[2026-08-18T05:17:40.271Z] INFO  [GitOps] [trace=a1242f9beab0f06af69db664e6ac2bc2] Commit f04e93c6: almost
+[2026-08-18T05:17:41.626Z] INFO  [StorageFactory] [trace=a1242f9beab0f06af69db664e6ac2bc2] StorageFactory.create: route=cutover, projectPath=C:\Users\mk\Documents\motion-graphic-reels
+[2026-08-18T05:17:43.566Z] INFO  [QueueWorker] [trace=a1242f9beab0f06af69db664e6ac2bc2] === Queue worker finished ===
+[2026-08-18T05:17:43.570Z] INFO  [SessionStartHook] [trace=a1242f9beab0f06af69db664e6ac2bc2] Briefing cache not warmed — nothing to brief on this branch
+[2026-08-18T05:17:44.290Z] INFO  [PlanService] detectPlans found 0 plans (0 in registry)
+[2026-08-18T05:17:44.290Z] INFO  [NoteService] detectNotes found 0 notes (0 in registry)
+[2026-08-18T05:17:44.290Z] INFO  [references] detectReferences(*) found 0 (0 in registry)
+[2026-08-18T05:17:44.290Z] INFO  [SkillProjection] projectActiveSkills: 0 active (0 in registry)
+[2026-08-18T05:17:44.299Z] INFO  [SidebarWebviewProvider] pushCommits: 2 item(s), mode=multi
+[2026-08-18T05:17:45.621Z] INFO  [SidebarWebviewProvider] pushMemories: 13 item(s)
+[2026-08-18T05:17:46.242Z] INFO  [SidebarWebviewProvider] pushMemories: 13 item(s)
+[2026-08-18T05:17:48.452Z] INFO  [SidebarWebviewProvider] pushCommits: 2 item(s), mode=multi
+[2026-08-18T05:17:48.822Z] INFO  [SidebarWebviewProvider] pushCommits: 2 item(s), mode=multi
+[2026-08-18T05:17:49.544Z] INFO  [SidebarWebviewProvider] pushMemories: 13 item(s)
+[2026-08-18T05:17:51.037Z] INFO  [SidebarWebviewProvider] pushCommits: 2 item(s), mode=multi
+[2026-08-18T05:17:52.793Z] INFO  [PrePushHook] [trace=cd788d79cd6453df39313c56b1893830] pre-push hook: remote=origin budget=3000ms
+[2026-08-18T05:17:52.967Z] INFO  [PushPendingStore] [trace=cd788d79cd6453df39313c56b1893830] Enqueued 2 new push-pending entries (branch=main)
+[2026-08-18T05:17:52.997Z] INFO  [PrePushHook] [trace=cd788d79cd6453df39313c56b1893830] pre-push: recorded 2 commit(s) across 1 pushed ref(s)
+[2026-08-18T05:17:53.150Z] INFO  [PrePushHook] [trace=cd788d79cd6453df39313c56b1893830] pre-push: worker spawned (pushId=cd788d79cd6453df39313c56b1893830) — watching for 2616ms
+[2026-08-18T05:17:54.121Z] INFO  [PushExecutor] [trace=cd788d79cd6453df39313c56b1893830] processPushPending(pre-push): 3 pending entr(ies) (filtered to 2 hash(es))
+[2026-08-18T05:17:54.401Z] INFO  [PushExecutor] [trace=cd788d79cd6453df39313c56b1893830] processPushPending(pre-push): claimed 2/2 candidate(s)
+[2026-08-18T05:17:54.595Z] INFO  [StorageFactory] [trace=cd788d79cd6453df39313c56b1893830] StorageFactory.create: route=cutover, projectPath=C:\Users\mk\Documents\motion-graphic-reels
+[2026-08-18T05:17:55.308Z] INFO  [PushExecutor] [trace=cd788d79cd6453df39313c56b1893830] processPushPending(pre-push): triage — withMemory=2 noMemory=0 mergedChildren=0
+[2026-08-18T05:17:55.845Z] INFO  [PrePushHook] [trace=cd788d79cd6453df39313c56b1893830] pre-push: watch timed out — 0 of 2 settled
+[2026-08-18T05:17:57.237Z] INFO  [PushExecutor] [trace=cd788d79cd6453df39313c56b1893830] processPushPending(pre-push): pushing 2 commit(s)
+[2026-08-18T05:18:03.228Z] INFO  [MetadataManager] [trace=cd788d79cd6453df39313c56b1893830] Manifest updated: main/complete-almost-095a4b62.md (commit)
+[2026-08-18T05:18:03.228Z] INFO  [FolderStorage] [trace=cd788d79cd6453df39313c56b1893830] Markdown generated: main/complete-almost-095a4b62.md
+[2026-08-18T05:18:03.236Z] INFO  [FolderStorage] [trace=cd788d79cd6453df39313c56b1893830] Wrote 3 files, deleted 0 (Overwrite summary for 095a4b62: complete almost)
+[2026-08-18T05:18:03.237Z] INFO  [SummaryStore] [trace=cd788d79cd6453df39313c56b1893830] Summary stored successfully for commit 095a4b62
+[2026-08-18T05:18:05.523Z] INFO  [MetadataManager] [trace=cd788d79cd6453df39313c56b1893830] Manifest updated: main/almost-f04e93c6.md (commit)
+[2026-08-18T05:18:05.523Z] INFO  [FolderStorage] [trace=cd788d79cd6453df39313c56b1893830] Markdown generated: main/almost-f04e93c6.md
+[2026-08-18T05:18:05.527Z] INFO  [FolderStorage] [trace=cd788d79cd6453df39313c56b1893830] Wrote 3 files, deleted 0 (Overwrite summary for f04e93c6: almost)
+[2026-08-18T05:18:05.528Z] INFO  [SummaryStore] [trace=cd788d79cd6453df39313c56b1893830] Summary stored successfully for commit f04e93c6
+[2026-08-18T05:18:06.494Z] INFO  [PushExecutor] [trace=cd788d79cd6453df39313c56b1893830] processPushPending(pre-push): pushed=2 failed=0
+[2026-08-18T05:18:06.495Z] INFO  [PrePushWorker] [trace=cd788d79cd6453df39313c56b1893830] PrePushWorker(pre-push): drain done — pushed=2 failed=0 noMemory=0
+[2026-08-18T05:18:06.506Z] INFO  [PushExecutor] [trace=cd788d79cd6453df39313c56b1893830] processPushPending(pre-push): 1 pending entr(ies)
+[2026-08-18T05:18:07.096Z] INFO  [SidebarWebviewProvider] pushMemories: 13 item(s)
+[2026-08-18T05:18:12.254Z] INFO  [SidebarWebviewProvider] pushCommits: 2 item(s), mode=multi
+[2026-08-18T05:18:14.082Z] INFO  [SidebarWebviewProvider] pushMemories: 13 item(s)
+[2026-08-18T05:18:17.021Z] INFO  [SidebarWebviewProvider] pushCommits: 2 item(s), mode=multi
+[2026-08-18T05:18:17.361Z] INFO  [PushExecutor] [trace=cd788d79cd6453df39313c56b1893830] processPushPending(pre-push): claimed 1/1 candidate(s)
+[2026-08-18T05:18:17.695Z] INFO  [PushExecutor] [trace=cd788d79cd6453df39313c56b1893830] processPushPending(pre-push): triage — withMemory=0 noMemory=1 mergedChildren=0
+[2026-08-18T05:18:17.695Z] INFO  [PrePushWorker] [trace=cd788d79cd6453df39313c56b1893830] PrePushWorker(pre-push): confirmed tail pass — pushed=0 failed=0 (no candidates with memory)
+[2026-08-18T07:16:45.037Z] INFO  [SidebarWebviewProvider] pushMemories: 13 item(s)
+[2026-08-18T07:16:45.436Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-18T07:16:47.153Z] INFO  [SidebarWebviewProvider] pushMemories: 13 item(s)
+[2026-08-18T07:16:47.188Z] INFO  [SidebarWebviewProvider] pushCommits: 12 item(s), mode=merged
+[2026-08-18T07:16:47.667Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-18T07:16:47.874Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-18T07:16:48.164Z] INFO  [SidebarWebviewProvider] pushCommits: 12 item(s), mode=merged
+[2026-08-18T07:16:48.810Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-18T08:16:45.171Z] INFO  [SidebarWebviewProvider] pushMemories: 13 item(s)
+[2026-08-18T08:16:45.920Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-18T08:16:46.855Z] INFO  [SidebarWebviewProvider] pushCommits: 12 item(s), mode=merged
+[2026-08-18T08:16:47.494Z] INFO  [SidebarWebviewProvider] pushMemories: 13 item(s)
+[2026-08-18T08:16:48.340Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-18T08:16:48.399Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-18T08:16:49.306Z] INFO  [SidebarWebviewProvider] pushCommits: 12 item(s), mode=merged
+[2026-08-18T08:16:50.476Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-18T09:16:45.076Z] INFO  [SidebarWebviewProvider] pushMemories: 13 item(s)
+[2026-08-18T09:16:45.527Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-18T09:16:46.079Z] INFO  [SidebarWebviewProvider] pushCommits: 12 item(s), mode=merged
+[2026-08-18T09:16:46.614Z] INFO  [SidebarWebviewProvider] pushMemories: 13 item(s)
+[2026-08-18T09:16:47.130Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-18T09:16:47.436Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-18T09:16:48.011Z] INFO  [SidebarWebviewProvider] pushCommits: 12 item(s), mode=merged
+[2026-08-18T09:16:48.646Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-18T10:09:17.260Z] INFO  [deactivate] Jolli Memory extension deactivating
+[2026-08-20T16:14:27.424Z] INFO  [activate] Activating JolliMemory extension {"workspaceRoot":"c:\\Users\\mk\\Documents\\motion-graphic-reels","extensionPath":"c:\\Users\\mk\\.antigravity-ide\\extensions\\jolli.jollimemory-vscode-0.99.13-universal"}
+[2026-08-20T16:14:28.395Z] INFO  [initialLoad] Loading all panels
+[2026-08-20T16:14:29.169Z] INFO  [PlanService] detectPlans found 0 plans (0 in registry)
+[2026-08-20T16:14:29.169Z] INFO  [NoteService] detectNotes found 0 notes (0 in registry)
+[2026-08-20T16:14:29.169Z] INFO  [references] detectReferences(*) found 0 (0 in registry)
+[2026-08-20T16:14:29.169Z] INFO  [SkillProjection] projectActiveSkills: 0 active (0 in registry)
+[2026-08-20T16:14:42.440Z] INFO  [Sync:VsCodeBootstrap] Memory Bank sync engine built (auto-sync off — manual only)
+[2026-08-20T16:14:44.410Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-08-20T16:14:44.669Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-20T16:14:45.742Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-20T16:14:45.742Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-20T16:14:46.427Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-08-20T16:14:48.530Z] INFO  [activate] Schema v5 migration already complete — skipping (no UI toggle)
+[2026-08-20T16:14:48.998Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-20T16:14:50.991Z] INFO  [MigrationEngine] 0.99.2 head-regen already completed at 2026-08-04T04:13:21.871Z — skipping phase 1
+[2026-08-20T16:14:51.041Z] INFO  [MigrationEngine] Stale-child sweep: deleted=0 failed=0
+[2026-08-20T16:14:51.043Z] INFO  [activate] KB stale-child reconcile: swept=0 completedAt=2026-08-04T04:13:21.871Z
+[2026-08-20T16:14:53.255Z] INFO  [PrePushWorker] [trace=e2f9426dd7e071ea6a0972ef538be7cd] PrePushWorker(vscode-activation): spawned compensation drain starting
+[2026-08-20T16:14:53.276Z] INFO  [PushPendingStore] [trace=e2f9426dd7e071ea6a0972ef538be7cd] Pruned 1 stale push-pending entries (>168h old)
+[2026-08-20T16:14:53.289Z] INFO  [PrePushWorker] [trace=e2f9426dd7e071ea6a0972ef538be7cd] PrePushWorker(vscode-activation): drain done — attempted=0 pushed=0 failed=0 (no pending entries)
+[2026-08-20T16:14:54.887Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=0, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-20T16:14:54.891Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-20T16:15:20.879Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=0, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-20T16:15:27.261Z] INFO  [initialLoad] All panels loaded — updating status bar
+[2026-08-20T16:15:27.261Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-20T16:15:55.352Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=0, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-20T16:15:55.367Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-20T16:15:55.896Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=0, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-20T16:15:55.933Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-08-20T16:15:58.441Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, worktreeHooks=true, sessions=0, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-20T16:15:59.047Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-08-29T11:27:37.844Z] INFO  [activate] Activating JolliMemory extension {"workspaceRoot":"c:\\Users\\mk\\Documents\\motion-graphic-reels","extensionPath":"c:\\Users\\mk\\.antigravity-ide\\extensions\\jolli.jollimemory-vscode-0.99.16-universal"}
+[2026-08-29T11:27:45.730Z] INFO  [initialLoad] Loading all panels
+[2026-08-29T11:28:06.927Z] INFO  [PlanService] detectPlans found 0 plans (0 in registry)
+[2026-08-29T11:28:06.927Z] INFO  [NoteService] detectNotes found 0 notes (0 in registry)
+[2026-08-29T11:28:06.927Z] INFO  [references] detectReferences(*) found 0 (0 in registry)
+[2026-08-29T11:28:06.927Z] INFO  [SkillProjection] projectActiveSkills: 0 active (0 in registry)
+[2026-08-29T11:28:22.168Z] INFO  [Sync:VsCodeBootstrap] Memory Bank sync engine built (auto-sync off — manual only)
+[2026-08-29T11:28:22.390Z] INFO  [RepoProfile] manual-disable MIGRATE → manuallyDisabled=false (pid=1184, profile=c:\Users\mk\Documents\motion-graphic-reels\.jolli\jollimemory\profile.json, fence=2026-08-12T06:02:32.760Z, from=userDisabled) ←  at fY (c:\Users\mk\.antigravity-ide\extensions\jolli.jollimemory-vscode-0.99.16-universal\dist\Extension.js:115:909) | at c:\Users\mk\.antigravity-ide\extensions\jolli.jollimemory-vscode-0.99.16-universal\dist\Extension.js:116:953 | at Ef (c:\Users\mk\.antigravity-ide\extensions\jolli.jollimemory-vscode-0.99.16-universal\dist\Extension.js:3:5846) | at uY (c:\Users\mk\.antigravity-ide\extensions\jolli.jollimemory-vscode-0.99.16-universal\dist\Extension.js:116:572) | at yo (c:\Users\mk\.antigravity-ide\extensions\jolli.jollimemory-vscode-0.99.16-universal\dist\Extension.js:116:273) | at t.refreshHookPathsIfStale (c:\Users\mk\.antigravity-ide\extensions\jolli.jollimemory-vscode-0.99.16-universal\dist\Extension.js:4021:18339)
+[2026-08-29T11:28:26.217Z] INFO  [RepoProfile] manual-disable read → false (by=migrate:userDisabled, pid=1184, cwd=c:\Users\mk\Documents\motion-graphic-reels, profile=c:\Users\mk\Documents\motion-graphic-reels\.jolli\jollimemory\profile.json, raw: userDisabled=false manuallyDisabled=true fence=2026-08-12T06:02:32.760Z)
+[2026-08-29T11:28:26.301Z] INFO  [bridge] Own dist-paths/antigravity-ide missing, stale, or pointing elsewhere — re-enabling
+[2026-08-29T11:28:26.301Z] INFO  [bridge] enable() called
+[2026-08-29T11:28:26.303Z] INFO  [Installer] Installing Jolli Memory hooks
+[2026-08-29T11:28:27.883Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-08-29T11:28:28.632Z] INFO  [DispatchScripts] Wrote resolve-dist-path, run-hook, and run-cli scripts to C:\Users\mk\.jolli\jollimemory
+[2026-08-29T11:28:28.648Z] INFO  [DistPathWriter] Wrote dist-paths/antigravity-ide (version=0.99.16, distDir=c:\Users\mk\.antigravity-ide\extensions\jolli.jollimemory-vscode-0.99.16-universal\dist)
+[2026-08-29T11:28:28.703Z] INFO  [SkillInstaller] Wrote SKILL.md (revision 3) to C:\Users\mk\Documents\motion-graphic-reels\.agents\skills\jolli-recall\SKILL.md
+[2026-08-29T11:28:28.712Z] INFO  [SkillInstaller] Wrote SKILL.md (revision 3) to C:\Users\mk\Documents\motion-graphic-reels\.agents\skills\jolli-search\SKILL.md
+[2026-08-29T11:28:28.717Z] INFO  [SkillInstaller] Wrote SKILL.md (revision 6) to C:\Users\mk\Documents\motion-graphic-reels\.agents\skills\jolli-local-run\SKILL.md
+[2026-08-29T11:28:28.726Z] INFO  [SkillInstaller] Wrote SKILL.md (revision 5) to C:\Users\mk\Documents\motion-graphic-reels\.agents\skills\jolli-remote-run\SKILL.md
+[2026-08-29T11:28:28.730Z] INFO  [SkillInstaller] Wrote SKILL.md (revision 9) to C:\Users\mk\Documents\motion-graphic-reels\.agents\skills\jolli\SKILL.md
+[2026-08-29T11:28:30.844Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-29T11:28:32.661Z] INFO  [McpRegistration] Registered MCP server in C:\Users\mk\Documents\motion-graphic-reels\.mcp.json
+[2026-08-29T11:28:32.682Z] INFO  [JsonMcpWriter] Registered MCP server in C:\Users\mk\Documents\motion-graphic-reels\.cursor\mcp.json
+[2026-08-29T11:28:32.709Z] INFO  [JsonMcpWriter] Registered MCP server in C:\Users\mk\.gemini\settings.json
+[2026-08-29T11:28:32.748Z] INFO  [CodexTomlWriter] Registered Codex MCP server in C:\Users\mk\.codex\config.toml
+[2026-08-29T11:28:32.813Z] INFO  [JsonMcpWriter] Registered MCP server in C:\Users\mk\.config\opencode\opencode.json
+[2026-08-29T11:28:32.844Z] INFO  [JsonMcpWriter] Registered MCP server in C:\Users\mk\AppData\Roaming\Code\User\mcp.json
+[2026-08-29T11:28:32.851Z] INFO  [JsonMcpWriter] Registered MCP server in C:\Users\mk\.gemini\config\mcp_config.json
+[2026-08-29T11:28:33.223Z] INFO  [Installer] Skipping v5 migration on vscode-extension source — Extension.ts owns it with UI
+[2026-08-29T11:28:33.223Z] INFO  [Installer] Installation complete
+[2026-08-29T11:28:33.225Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-29T11:28:34.303Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-08-29T11:28:35.761Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-08-29T11:28:43.382Z] WARN  [activate] kbInitPromise watchdog fired after 60s — releasing sync gate; check initializeKB() for hangs
+[2026-08-29T11:28:54.344Z] INFO  [activate] Schema v5 migration already complete — skipping (no UI toggle)
+[2026-08-29T11:29:02.548Z] INFO  [MigrationEngine] 0.99.2 head-regen already completed at 2026-08-04T04:13:21.871Z — skipping phase 1
+[2026-08-29T11:29:02.605Z] INFO  [MigrationEngine] Stale-child sweep: deleted=0 failed=0
+[2026-08-29T11:29:02.607Z] INFO  [activate] KB stale-child reconcile: swept=0 completedAt=2026-08-04T04:13:21.871Z
+[2026-08-29T11:29:07.704Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=0, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-29T11:29:07.713Z] INFO  [initialLoad] All panels loaded — updating status bar
+[2026-08-29T11:29:07.713Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-29T11:29:08.541Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=0, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-29T11:29:08.546Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-29T11:29:12.624Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=0, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-29T11:29:12.714Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-08-29T11:29:13.563Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=0, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-29T11:29:13.600Z] INFO  [Installer] Checking Jolli Memory status
+[2026-08-29T11:29:18.353Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=0, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-08-29T11:29:18.355Z] INFO  [RepoProfile] manual-disable read → false (by=manuallyDisabled, pid=1184, cwd=c:\Users\mk\Documents\motion-graphic-reels, profile=c:\Users\mk\Documents\motion-graphic-reels\.jolli\jollimemory\profile.json, raw: userDisabled=undefined manuallyDisabled=false fence=2026-08-12T06:02:32.760Z)
+[2026-08-29T11:29:19.207Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-08-29T12:30:56.753Z] INFO  [deactivate] Jolli Memory extension deactivating
+[2026-09-01T08:30:38.909Z] INFO  [activate] Activating JolliMemory extension {"workspaceRoot":"c:\\Users\\mk\\Documents\\motion-graphic-reels","extensionPath":"c:\\Users\\mk\\.antigravity-ide\\extensions\\jolli.jollimemory-vscode-0.99.17-universal"}
+[2026-09-01T08:30:40.146Z] INFO  [initialLoad] Loading all panels
+[2026-09-01T08:30:40.560Z] INFO  [RepoProfile] manual-disable read → false (by=manuallyDisabled, pid=9320, cwd=c:\Users\mk\Documents\motion-graphic-reels, profile=c:\Users\mk\Documents\motion-graphic-reels\.jolli\jollimemory\profile.json, raw: userDisabled=undefined manuallyDisabled=false fence=2026-08-12T06:02:32.760Z)
+[2026-09-01T08:30:40.578Z] INFO  [bridge] Own dist-paths/antigravity-ide missing, stale, or pointing elsewhere — re-enabling
+[2026-09-01T08:30:40.578Z] INFO  [bridge] enable() called
+[2026-09-01T08:30:40.580Z] INFO  [Installer] Installing Jolli Memory hooks
+[2026-09-01T08:30:40.589Z] INFO  [PlanService] detectPlans found 0 plans (0 in registry)
+[2026-09-01T08:30:40.589Z] INFO  [NoteService] detectNotes found 0 notes (0 in registry)
+[2026-09-01T08:30:40.589Z] INFO  [references] detectReferences(*) found 0 (0 in registry)
+[2026-09-01T08:30:40.589Z] INFO  [SkillProjection] projectActiveSkills: 0 active (0 in registry)
+[2026-09-01T08:30:45.580Z] INFO  [Sync:VsCodeBootstrap] Memory Bank sync engine built (auto-sync off — manual only)
+[2026-09-01T08:30:58.886Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-09-01T08:30:58.988Z] INFO  [DispatchScripts] Wrote resolve-dist-path, run-hook, and run-cli scripts to C:\Users\mk\.jolli\jollimemory
+[2026-09-01T08:30:59.014Z] INFO  [DistPathWriter] Wrote dist-paths/antigravity-ide (version=0.99.17, distDir=c:\Users\mk\.antigravity-ide\extensions\jolli.jollimemory-vscode-0.99.17-universal\dist)
+[2026-09-01T08:30:59.354Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-09-01T08:31:00.411Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-01T08:31:00.982Z] INFO  [McpRegistration] Registered MCP server in C:\Users\mk\Documents\motion-graphic-reels\.mcp.json
+[2026-09-01T08:31:01.182Z] INFO  [JsonMcpWriter] Registered MCP server in C:\Users\mk\Documents\motion-graphic-reels\.cursor\mcp.json
+[2026-09-01T08:31:01.212Z] INFO  [JsonMcpWriter] Registered MCP server in C:\Users\mk\.gemini\settings.json
+[2026-09-01T08:31:01.311Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-09-01T08:31:01.321Z] INFO  [CodexTomlWriter] Registered Codex MCP server in C:\Users\mk\.codex\config.toml
+[2026-09-01T08:31:01.354Z] INFO  [JsonMcpWriter] Registered MCP server in C:\Users\mk\.config\opencode\opencode.json
+[2026-09-01T08:31:01.377Z] INFO  [JsonMcpWriter] Registered MCP server in C:\Users\mk\AppData\Roaming\Code\User\mcp.json
+[2026-09-01T08:31:01.381Z] INFO  [JsonMcpWriter] Registered MCP server in C:\Users\mk\.gemini\config\mcp_config.json
+[2026-09-01T08:31:01.434Z] INFO  [Installer] Skipping v5 migration on vscode-extension source — Extension.ts owns it with UI
+[2026-09-01T08:31:01.434Z] INFO  [Installer] Installation complete
+[2026-09-01T08:31:01.436Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-01T08:31:03.702Z] INFO  [activate] Schema v5 migration already complete — skipping (no UI toggle)
+[2026-09-01T08:31:04.811Z] INFO  [MigrationEngine] 0.99.2 head-regen already completed at 2026-08-04T04:13:21.871Z — skipping phase 1
+[2026-09-01T08:31:04.889Z] INFO  [MigrationEngine] Stale-child sweep: deleted=0 failed=0
+[2026-09-01T08:31:04.893Z] INFO  [activate] KB stale-child reconcile: swept=0 completedAt=2026-08-04T04:13:21.871Z
+[2026-09-01T08:31:06.984Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=0, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-01T08:31:07.147Z] INFO  [initialLoad] All panels loaded — updating status bar
+[2026-09-01T08:31:07.147Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-01T08:31:07.499Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=0, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-01T08:31:07.501Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-01T08:31:10.905Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=0, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-01T08:31:11.654Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-09-01T08:31:11.663Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=0, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-01T08:31:11.665Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-01T08:31:18.453Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=0, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-01T08:31:37.831Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-09-01T08:57:13.763Z] INFO  [deactivate] Jolli Memory extension deactivating
+[2026-09-02T12:19:39.057Z] INFO  [activate] Activating JolliMemory extension {"workspaceRoot":"c:\\Users\\mk\\Documents\\motion-graphic-reels","extensionPath":"c:\\Users\\mk\\.antigravity-ide\\extensions\\jolli.jollimemory-vscode-0.99.17-universal"}
+[2026-09-02T12:19:46.259Z] INFO  [initialLoad] Loading all panels
+[2026-09-02T12:20:36.571Z] INFO  [RepoProfile] manual-disable read → false (by=manuallyDisabled, pid=5836, cwd=c:\Users\mk\Documents\motion-graphic-reels, profile=c:\Users\mk\Documents\motion-graphic-reels\.jolli\jollimemory\profile.json, raw: userDisabled=undefined manuallyDisabled=false fence=2026-08-12T06:02:32.760Z)
+[2026-09-02T12:20:36.843Z] INFO  [PlanService] detectPlans found 0 plans (0 in registry)
+[2026-09-02T12:20:36.844Z] INFO  [NoteService] detectNotes found 0 notes (0 in registry)
+[2026-09-02T12:20:36.844Z] INFO  [references] detectReferences(*) found 0 (0 in registry)
+[2026-09-02T12:20:36.844Z] INFO  [SkillProjection] projectActiveSkills: 0 active (0 in registry)
+[2026-09-02T12:20:46.928Z] WARN  [activate] kbInitPromise watchdog fired after 60s — releasing sync gate; check initializeKB() for hangs
+[2026-09-02T12:20:48.929Z] INFO  [Sync:VsCodeBootstrap] Memory Bank sync engine built (auto-sync off — manual only)
+[2026-09-02T12:20:54.209Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-09-02T12:20:55.643Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-09-02T12:20:57.773Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-02T12:20:57.774Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-02T12:20:58.913Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-09-02T12:21:02.749Z] INFO  [activate] Schema v5 migration already complete — skipping (no UI toggle)
+[2026-09-02T12:21:14.132Z] INFO  [MigrationEngine] 0.99.2 head-regen already completed at 2026-08-04T04:13:21.871Z — skipping phase 1
+[2026-09-02T12:21:14.558Z] INFO  [MigrationEngine] Stale-child sweep: deleted=0 failed=0
+[2026-09-02T12:21:14.573Z] INFO  [activate] KB stale-child reconcile: swept=0 completedAt=2026-08-04T04:13:21.871Z
+[2026-09-02T12:41:39.336Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=0, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-02T12:41:39.349Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-02T12:41:39.653Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=0, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-02T12:41:39.656Z] INFO  [initialLoad] All panels loaded — updating status bar
+[2026-09-02T12:41:39.656Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-02T12:41:44.557Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=0, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-02T12:41:44.561Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-02T12:41:46.015Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=0, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-02T12:41:46.059Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-09-02T12:41:48.293Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=0, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-02T12:41:49.035Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-09-02T13:16:27.019Z] INFO  [deactivate] Jolli Memory extension deactivating
+[2026-09-06T10:35:35.714Z] INFO  [activate] Activating JolliMemory extension {"workspaceRoot":"c:\\Users\\mk\\Documents\\motion-graphic-reels","extensionPath":"c:\\Users\\mk\\.antigravity-ide\\extensions\\jolli.jollimemory-vscode-0.99.17-universal"}
+[2026-09-06T10:35:41.026Z] INFO  [initialLoad] Loading all panels
+[2026-09-06T10:36:19.375Z] INFO  [RepoProfile] manual-disable read → false (by=manuallyDisabled, pid=16580, cwd=c:\Users\mk\Documents\motion-graphic-reels, profile=c:\Users\mk\Documents\motion-graphic-reels\.jolli\jollimemory\profile.json, raw: userDisabled=undefined manuallyDisabled=false fence=2026-08-12T06:02:32.760Z)
+[2026-09-06T10:36:19.972Z] INFO  [PlanService] detectPlans found 0 plans (0 in registry)
+[2026-09-06T10:36:19.972Z] INFO  [NoteService] detectNotes found 0 notes (0 in registry)
+[2026-09-06T10:36:19.972Z] INFO  [references] detectReferences(*) found 0 (0 in registry)
+[2026-09-06T10:36:19.973Z] INFO  [SkillProjection] projectActiveSkills: 0 active (0 in registry)
+[2026-09-06T10:36:28.149Z] INFO  [Sync:VsCodeBootstrap] Memory Bank sync engine built (auto-sync off — manual only)
+[2026-09-06T10:36:36.014Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-09-06T10:36:40.727Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-06T10:36:40.728Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-06T10:36:40.747Z] WARN  [activate] kbInitPromise watchdog fired after 60s — releasing sync gate; check initializeKB() for hangs
+[2026-09-06T10:36:40.860Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-09-06T10:36:42.799Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-09-06T10:36:50.175Z] INFO  [activate] Schema v5 migration already complete — skipping (no UI toggle)
+[2026-09-06T10:37:13.129Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=0, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-06T10:37:13.551Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-06T10:37:19.111Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=0, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-06T10:37:32.067Z] INFO  [MigrationEngine] 0.99.2 head-regen already completed at 2026-08-04T04:13:21.871Z — skipping phase 1
+[2026-09-06T10:37:32.112Z] INFO  [MigrationEngine] Stale-child sweep: deleted=0 failed=0
+[2026-09-06T10:37:32.115Z] INFO  [activate] KB stale-child reconcile: swept=0 completedAt=2026-08-04T04:13:21.871Z
+[2026-09-06T10:37:32.424Z] INFO  [initialLoad] All panels loaded — updating status bar
+[2026-09-06T10:37:32.424Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-06T10:37:42.397Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-09-06T10:37:48.804Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=0, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-06T10:37:48.832Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-09-06T10:37:49.189Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=0, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-06T10:37:49.191Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-06T10:37:51.219Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-09-06T10:37:52.058Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=0, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-06T11:32:05.930Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-09-06T12:32:06.702Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-09-06T12:57:03.878Z] INFO  [activate] Activating JolliMemory extension {"workspaceRoot":"c:\\Users\\mk\\Documents\\motion-graphic-reels","extensionPath":"c:\\Users\\mk\\.antigravity-ide\\extensions\\jolli.jollimemory-vscode-0.99.17-universal"}
+[2026-09-06T12:57:04.914Z] INFO  [initialLoad] Loading all panels
+[2026-09-06T12:57:05.550Z] INFO  [RepoProfile] manual-disable read → false (by=manuallyDisabled, pid=3360, cwd=c:\Users\mk\Documents\motion-graphic-reels, profile=c:\Users\mk\Documents\motion-graphic-reels\.jolli\jollimemory\profile.json, raw: userDisabled=undefined manuallyDisabled=false fence=2026-08-12T06:02:32.760Z)
+[2026-09-06T12:57:05.593Z] INFO  [PlanService] detectPlans found 0 plans (0 in registry)
+[2026-09-06T12:57:05.593Z] INFO  [NoteService] detectNotes found 0 notes (0 in registry)
+[2026-09-06T12:57:05.594Z] INFO  [references] detectReferences(*) found 0 (0 in registry)
+[2026-09-06T12:57:05.594Z] INFO  [SkillProjection] projectActiveSkills: 0 active (0 in registry)
+[2026-09-06T12:57:39.890Z] INFO  [Sync:VsCodeBootstrap] Memory Bank sync engine built (auto-sync off — manual only)
+[2026-09-06T12:57:42.513Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-09-06T12:57:43.244Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-09-06T12:57:44.207Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-06T12:57:44.207Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-06T12:57:45.319Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-09-06T12:57:47.769Z] INFO  [activate] Schema v5 migration already complete — skipping (no UI toggle)
+[2026-09-06T12:57:52.105Z] INFO  [MigrationEngine] 0.99.2 head-regen already completed at 2026-08-04T04:13:21.871Z — skipping phase 1
+[2026-09-06T12:57:52.147Z] INFO  [MigrationEngine] Stale-child sweep: deleted=0 failed=0
+[2026-09-06T12:57:52.149Z] INFO  [activate] KB stale-child reconcile: swept=0 completedAt=2026-08-04T04:13:21.871Z
+[2026-09-06T12:58:13.250Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=2, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-06T12:58:13.342Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-06T12:58:13.617Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=2, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-06T12:58:17.202Z] INFO  [initialLoad] All panels loaded — updating status bar
+[2026-09-06T12:58:17.202Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-06T12:58:21.858Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=2, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-06T12:58:21.861Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-06T12:58:22.342Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=2, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-06T12:58:22.373Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-09-06T12:58:23.962Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=2, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-06T12:58:24.363Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-09-07T09:41:51.734Z] INFO  [activate] Activating JolliMemory extension {"workspaceRoot":"c:\\Users\\mk\\Documents\\motion-graphic-reels","extensionPath":"c:\\Users\\mk\\.antigravity-ide\\extensions\\jolli.jollimemory-vscode-0.99.17-universal"}
+[2026-09-07T09:41:54.359Z] INFO  [initialLoad] Loading all panels
+[2026-09-07T09:42:36.616Z] INFO  [RepoProfile] manual-disable read → false (by=manuallyDisabled, pid=14356, cwd=c:\Users\mk\Documents\motion-graphic-reels, profile=c:\Users\mk\Documents\motion-graphic-reels\.jolli\jollimemory\profile.json, raw: userDisabled=undefined manuallyDisabled=false fence=2026-08-12T06:02:32.760Z)
+[2026-09-07T09:42:37.025Z] INFO  [PlanService] detectPlans found 0 plans (0 in registry)
+[2026-09-07T09:42:37.025Z] INFO  [NoteService] detectNotes found 0 notes (0 in registry)
+[2026-09-07T09:42:37.025Z] INFO  [references] detectReferences(*) found 0 (0 in registry)
+[2026-09-07T09:42:37.025Z] INFO  [SkillProjection] projectActiveSkills: 0 active (0 in registry)
+[2026-09-07T09:43:12.004Z] WARN  [activate] kbInitPromise watchdog fired after 60s — releasing sync gate; check initializeKB() for hangs
+[2026-09-07T09:43:12.378Z] INFO  [Sync:VsCodeBootstrap] Memory Bank sync engine built (auto-sync off — manual only)
+[2026-09-07T09:43:17.467Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-09-07T09:43:21.368Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-07T09:43:21.368Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-07T09:43:23.195Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-09-07T09:43:23.749Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-09-07T09:43:28.102Z] INFO  [activate] Schema v5 migration already complete — skipping (no UI toggle)
+[2026-09-07T09:43:44.218Z] INFO  [MigrationEngine] 0.99.2 head-regen already completed at 2026-08-04T04:13:21.871Z — skipping phase 1
+[2026-09-07T09:43:44.261Z] INFO  [MigrationEngine] Stale-child sweep: deleted=0 failed=0
+[2026-09-07T09:43:44.264Z] INFO  [activate] KB stale-child reconcile: swept=0 completedAt=2026-08-04T04:13:21.871Z
+[2026-09-07T09:45:19.294Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=4, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-07T09:45:19.316Z] INFO  [initialLoad] All panels loaded — updating status bar
+[2026-09-07T09:45:19.317Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-07T09:45:20.777Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=4, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-07T09:45:20.779Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-07T09:45:52.384Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=4, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-07T09:45:52.619Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-09-07T09:45:55.615Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=4, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-07T09:45:55.665Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-07T09:46:26.112Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-09-07T09:46:32.493Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=4, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-08T08:55:57.118Z] INFO  [deactivate] Jolli Memory extension deactivating
+[2026-09-11T09:37:00.338Z] INFO  [activate] Activating JolliMemory extension {"workspaceRoot":"c:\\Users\\mk\\Documents\\motion-graphic-reels","extensionPath":"c:\\Users\\mk\\.antigravity-ide\\extensions\\jolli.jollimemory-vscode-0.99.17-universal"}
+[2026-09-11T09:37:04.123Z] INFO  [initialLoad] Loading all panels
+[2026-09-11T09:37:54.669Z] INFO  [RepoProfile] manual-disable read → false (by=manuallyDisabled, pid=3424, cwd=c:\Users\mk\Documents\motion-graphic-reels, profile=c:\Users\mk\Documents\motion-graphic-reels\.jolli\jollimemory\profile.json, raw: userDisabled=undefined manuallyDisabled=false fence=2026-08-12T06:02:32.760Z)
+[2026-09-11T09:37:54.738Z] INFO  [PlanService] detectPlans found 0 plans (0 in registry)
+[2026-09-11T09:37:54.738Z] INFO  [NoteService] detectNotes found 0 notes (0 in registry)
+[2026-09-11T09:37:54.738Z] INFO  [references] detectReferences(*) found 0 (0 in registry)
+[2026-09-11T09:37:54.738Z] INFO  [SkillProjection] projectActiveSkills: 0 active (0 in registry)
+[2026-09-11T09:38:07.451Z] WARN  [activate] kbInitPromise watchdog fired after 60s — releasing sync gate; check initializeKB() for hangs
+[2026-09-11T09:38:07.787Z] INFO  [Sync:VsCodeBootstrap] Memory Bank sync engine built (auto-sync off — manual only)
+[2026-09-11T09:38:10.882Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-09-11T09:38:13.082Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-11T09:38:13.082Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-11T09:38:13.701Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-09-11T09:38:13.732Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-09-11T09:38:16.864Z] INFO  [activate] Schema v5 migration already complete — skipping (no UI toggle)
+[2026-09-11T09:38:31.781Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=1, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-11T09:38:31.990Z] INFO  [MigrationEngine] 0.99.2 head-regen already completed at 2026-08-04T04:13:21.871Z — skipping phase 1
+[2026-09-11T09:38:32.031Z] INFO  [MigrationEngine] Stale-child sweep: deleted=0 failed=0
+[2026-09-11T09:38:32.034Z] INFO  [activate] KB stale-child reconcile: swept=0 completedAt=2026-08-04T04:13:21.871Z
+[2026-09-11T09:38:34.467Z] INFO  [initialLoad] All panels loaded — updating status bar
+[2026-09-11T09:38:34.467Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-11T09:38:34.469Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=1, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-11T09:38:34.812Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-11T09:39:14.861Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=1, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-11T09:39:14.869Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-11T09:39:15.031Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=1, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-11T09:39:15.065Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-09-11T09:39:16.605Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=1, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-11T09:39:17.127Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-09-18T22:50:21.708Z] INFO  [activate] Activating JolliMemory extension {"workspaceRoot":"c:\\Users\\mk\\Documents\\motion-graphic-reels","extensionPath":"c:\\Users\\mk\\.antigravity-ide\\extensions\\jolli.jollimemory-vscode-0.99.17-universal"}
+[2026-09-18T22:50:23.450Z] INFO  [initialLoad] Loading all panels
+[2026-09-18T22:50:50.039Z] INFO  [RepoProfile] manual-disable read → false (by=manuallyDisabled, pid=4536, cwd=c:\Users\mk\Documents\motion-graphic-reels, profile=c:\Users\mk\Documents\motion-graphic-reels\.jolli\jollimemory\profile.json, raw: userDisabled=undefined manuallyDisabled=false fence=2026-08-12T06:02:32.760Z)
+[2026-09-18T22:50:50.487Z] INFO  [PlanService] detectPlans found 0 plans (0 in registry)
+[2026-09-18T22:50:50.487Z] INFO  [NoteService] detectNotes found 0 notes (0 in registry)
+[2026-09-18T22:50:50.487Z] INFO  [references] detectReferences(*) found 0 (0 in registry)
+[2026-09-18T22:50:50.487Z] INFO  [SkillProjection] projectActiveSkills: 0 active (0 in registry)
+[2026-09-18T22:50:59.596Z] INFO  [Sync:VsCodeBootstrap] Memory Bank sync engine built (auto-sync off — manual only)
+[2026-09-18T22:51:03.233Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-09-18T22:51:05.583Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-18T22:51:05.583Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-18T22:51:05.603Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-09-18T22:51:06.610Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-09-18T22:51:08.770Z] INFO  [activate] Schema v5 migration already complete — skipping (no UI toggle)
+[2026-09-18T22:51:11.085Z] INFO  [MigrationEngine] 0.99.2 head-regen already completed at 2026-08-04T04:13:21.871Z — skipping phase 1
+[2026-09-18T22:51:11.129Z] INFO  [MigrationEngine] Stale-child sweep: deleted=0 failed=0
+[2026-09-18T22:51:11.131Z] INFO  [activate] KB stale-child reconcile: swept=0 completedAt=2026-08-04T04:13:21.871Z
+[2026-09-18T22:51:16.531Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=0, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-18T22:51:16.568Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-18T22:51:17.099Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=0, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-18T22:51:17.101Z] INFO  [initialLoad] All panels loaded — updating status bar
+[2026-09-18T22:51:17.101Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-18T22:51:23.198Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=1, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-18T22:51:23.264Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-09-18T22:51:23.492Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=1, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-18T22:51:23.496Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-18T22:51:27.660Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=1, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-18T22:51:28.511Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-09-21T07:02:41.033Z] INFO  [deactivate] Jolli Memory extension deactivating
+[2026-09-21T15:44:21.438Z] INFO  [activate] Activating JolliMemory extension {"workspaceRoot":"c:\\Users\\mk\\Documents\\motion-graphic-reels","extensionPath":"c:\\Users\\mk\\.antigravity-ide\\extensions\\jolli.jollimemory-vscode-0.99.17-universal"}
+[2026-09-21T15:44:23.925Z] INFO  [initialLoad] Loading all panels
+[2026-09-21T15:44:24.373Z] INFO  [RepoProfile] manual-disable read → false (by=manuallyDisabled, pid=6924, cwd=c:\Users\mk\Documents\motion-graphic-reels, profile=c:\Users\mk\Documents\motion-graphic-reels\.jolli\jollimemory\profile.json, raw: userDisabled=undefined manuallyDisabled=false fence=2026-08-12T06:02:32.760Z)
+[2026-09-21T15:44:24.411Z] INFO  [PlanService] detectPlans found 0 plans (0 in registry)
+[2026-09-21T15:44:24.411Z] INFO  [NoteService] detectNotes found 0 notes (0 in registry)
+[2026-09-21T15:44:24.411Z] INFO  [references] detectReferences(*) found 0 (0 in registry)
+[2026-09-21T15:44:24.411Z] INFO  [SkillProjection] projectActiveSkills: 0 active (0 in registry)
+[2026-09-21T15:44:48.885Z] INFO  [Sync:VsCodeBootstrap] Memory Bank sync engine built (auto-sync off — manual only)
+[2026-09-21T15:44:50.914Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-09-21T15:44:50.961Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-09-21T15:44:52.790Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-21T15:44:52.790Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-21T15:44:53.826Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-09-21T15:44:55.927Z] INFO  [activate] Schema v5 migration already complete — skipping (no UI toggle)
+[2026-09-21T15:44:59.703Z] INFO  [MigrationEngine] 0.99.2 head-regen already completed at 2026-08-04T04:13:21.871Z — skipping phase 1
+[2026-09-21T15:44:59.743Z] INFO  [MigrationEngine] Stale-child sweep: deleted=0 failed=0
+[2026-09-21T15:44:59.745Z] INFO  [activate] KB stale-child reconcile: swept=0 completedAt=2026-08-04T04:13:21.871Z
+[2026-09-21T15:45:18.028Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=1, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-21T15:45:24.149Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-21T15:45:24.428Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=1, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-21T15:45:24.649Z] INFO  [initialLoad] All panels loaded — updating status bar
+[2026-09-21T15:45:24.650Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-21T15:45:27.684Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=1, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-21T15:45:27.685Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=1, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-21T15:45:27.691Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-21T15:45:27.731Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-09-21T15:45:30.071Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-09-21T15:45:30.144Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=1, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-22T18:12:57.567Z] INFO  [activate] Activating JolliMemory extension {"workspaceRoot":"c:\\Users\\mk\\Documents\\motion-graphic-reels","extensionPath":"c:\\Users\\mk\\.antigravity-ide\\extensions\\jolli.jollimemory-vscode-0.99.17-universal"}
+[2026-09-22T18:12:59.288Z] INFO  [initialLoad] Loading all panels
+[2026-09-22T18:13:16.043Z] INFO  [RepoProfile] manual-disable read → false (by=manuallyDisabled, pid=19352, cwd=c:\Users\mk\Documents\motion-graphic-reels, profile=c:\Users\mk\Documents\motion-graphic-reels\.jolli\jollimemory\profile.json, raw: userDisabled=undefined manuallyDisabled=false fence=2026-08-12T06:02:32.760Z)
+[2026-09-22T18:13:16.189Z] INFO  [PlanService] detectPlans found 0 plans (0 in registry)
+[2026-09-22T18:13:16.189Z] INFO  [NoteService] detectNotes found 0 notes (0 in registry)
+[2026-09-22T18:13:16.190Z] INFO  [references] detectReferences(*) found 0 (0 in registry)
+[2026-09-22T18:13:16.190Z] INFO  [SkillProjection] projectActiveSkills: 0 active (0 in registry)
+[2026-09-22T18:13:24.295Z] INFO  [Sync:VsCodeBootstrap] Memory Bank sync engine built (auto-sync off — manual only)
+[2026-09-22T18:13:25.978Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-09-22T18:13:27.152Z] INFO  [bridge] Merged mode activated {"branch":"main","creationPoint":"95c7ec9d","author":"mritunjay226"}
+[2026-09-22T18:13:28.224Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-22T18:13:28.224Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-22T18:13:28.887Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-09-22T18:13:31.915Z] INFO  [activate] Schema v5 migration already complete — skipping (no UI toggle)
+[2026-09-22T18:13:34.280Z] INFO  [MigrationEngine] 0.99.2 head-regen already completed at 2026-08-04T04:13:21.871Z — skipping phase 1
+[2026-09-22T18:13:34.320Z] INFO  [MigrationEngine] Stale-child sweep: deleted=0 failed=0
+[2026-09-22T18:13:34.322Z] INFO  [activate] KB stale-child reconcile: swept=0 completedAt=2026-08-04T04:13:21.871Z
+[2026-09-22T18:13:37.443Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=1, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-22T18:13:37.449Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-22T18:13:37.717Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=1, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-22T18:13:37.722Z] INFO  [initialLoad] All panels loaded — updating status bar
+[2026-09-22T18:13:37.722Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-22T18:13:39.178Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=1, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-22T18:13:39.186Z] INFO  [Installer] Checking Jolli Memory status
+[2026-09-22T18:13:40.484Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=1, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-22T18:13:42.381Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels
+[2026-09-22T18:13:58.706Z] INFO  [Installer] Status: enabled=true, claude=true, git=true, geminiHook=true, hermesHook=false, worktreeHooks=true, sessions=1, summaries=10, codex=true/true, gemini=true/true, enabledWorktrees=1, opencode=true/true, cursor=true/true, copilot=false/true, copilotChat=true, cline=false/true
+[2026-09-22T18:14:01.172Z] INFO  [StorageFactory] StorageFactory.create: route=cutover, projectPath=c:\Users\mk\Documents\motion-graphic-reels

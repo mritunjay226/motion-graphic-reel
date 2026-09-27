@@ -11,19 +11,30 @@ const deepgramApiKey = process.env.DEEPGRAM_API_KEY || "";
  * 3. Microsecond audio frame synchronization spanning the full actual audio duration.
  * 4. NEVER truncates the final words of any sentence.
  */
-export async function transcribeAudioWithDeepgram(
+export interface DeepgramTranscriptionResult {
+  tokens: WhisperToken[];
+  durationSec: number;
+}
+
+/**
+ * Transcribes audio via Deepgram Nova-2 STT API and enforces 100% Script-Aligned Timestamps.
+ * Also captures exact physical audio duration directly from Deepgram metadata.
+ */
+export async function transcribeAudioWithDeepgramDetailed(
   narrationText: string,
   audioUrlOrBuffer?: string | Buffer,
   language?: string,
   audioDurationSec?: number
-): Promise<WhisperToken[]> {
+): Promise<DeepgramTranscriptionResult> {
   const fallbackText = narrationText || "In the early days of this story, a bold risk changed everything.";
   const cleanScriptWords = fallbackText.trim().split(/\s+/).filter(Boolean);
   const targetLanguage = language || "en";
 
   try {
     if (!deepgramApiKey || !audioUrlOrBuffer) {
-      return generateFallbackTokens(cleanScriptWords, audioDurationSec);
+      const tokens = generateFallbackTokens(cleanScriptWords, audioDurationSec);
+      const estSec = audioDurationSec && audioDurationSec > 0 ? audioDurationSec : cleanScriptWords.length * 0.35;
+      return { tokens, durationSec: estSec };
     }
 
     // Require Deepgram SDK
@@ -31,7 +42,9 @@ export async function transcribeAudioWithDeepgram(
     const createClient = DeepgramSDK.createClient || DeepgramSDK.default?.createClient;
 
     if (!createClient) {
-      return generateFallbackTokens(cleanScriptWords, audioDurationSec);
+      const tokens = generateFallbackTokens(cleanScriptWords, audioDurationSec);
+      const estSec = audioDurationSec && audioDurationSec > 0 ? audioDurationSec : cleanScriptWords.length * 0.35;
+      return { tokens, durationSec: estSec };
     }
 
     const deepgram = createClient(deepgramApiKey);
@@ -61,9 +74,13 @@ export async function transcribeAudioWithDeepgram(
     }
 
     const words = response?.result?.results?.channels?.[0]?.alternatives?.[0]?.words || [];
+    const metadataDuration: number | undefined = response?.result?.metadata?.duration;
 
     if (!words || words.length === 0) {
-      return generateFallbackTokens(cleanScriptWords, audioDurationSec);
+      const effectiveSec = metadataDuration && metadataDuration > 0 ? metadataDuration : audioDurationSec;
+      const tokens = generateFallbackTokens(cleanScriptWords, effectiveSec);
+      const estSec = effectiveSec && effectiveSec > 0 ? effectiveSec : cleanScriptWords.length * 0.35;
+      return { tokens, durationSec: estSec };
     }
 
     // ── SCRIPT-FORCED TIMING ALIGNMENT ALGORITHM ──
@@ -72,15 +89,21 @@ export async function transcribeAudioWithDeepgram(
 
     // Actual physical speech end bound
     const lastDgWordEnd = words[words.length - 1]?.end ?? 0;
+    const measuredDuration = metadataDuration && metadataDuration > 0
+      ? metadataDuration
+      : (lastDgWordEnd > 0 ? lastDgWordEnd + 0.2 : (audioDurationSec || numScriptWords * 0.35));
+
     const physicalAudioEnd = Math.max(
-      audioDurationSec ? audioDurationSec - 0.2 : 0,
+      measuredDuration - 0.1,
       lastDgWordEnd,
       numScriptWords * 0.32
     );
 
+    let tokens: WhisperToken[];
+
     // Direct 1-to-1 exact alignment
     if (numScriptWords === numDgWords) {
-      return cleanScriptWords.map((word, i) => {
+      tokens = cleanScriptWords.map((word, i) => {
         const w = words[i];
         const isLast = i === numScriptWords - 1;
         const startSec = w.start || 0;
@@ -99,43 +122,71 @@ export async function transcribeAudioWithDeepgram(
           endFrame,
         };
       });
+    } else {
+      // Proportional acoustic mapping across the full spoken audio duration
+      const audioStartSec = Math.max(0, words[0]?.start ?? 0);
+      const audioEndSec = Math.max(audioStartSec + 0.5, physicalAudioEnd);
+      const totalAudioDurationSec = audioEndSec - audioStartSec;
+
+      tokens = cleanScriptWords.map((word, i) => {
+        const startRatio = i / numScriptWords;
+        const endRatio = (i + 1) / numScriptWords;
+
+        // Find nearest Deepgram word timestamp boundary
+        const dgIndex = Math.min(numDgWords - 1, Math.floor(startRatio * numDgWords));
+        const dgEndIndex = Math.min(numDgWords - 1, Math.floor(endRatio * numDgWords));
+
+        const rawStartSec = words[dgIndex]?.start ?? (audioStartSec + startRatio * totalAudioDurationSec);
+        const rawEndSec = (i === numScriptWords - 1)
+          ? audioEndSec
+          : (words[dgEndIndex]?.end ?? (audioStartSec + endRatio * totalAudioDurationSec));
+
+        const startMs = Math.round(rawStartSec * 1000);
+        const endMs = Math.max(startMs + 150, Math.round(rawEndSec * 1000));
+        const startFrame = Math.floor(rawStartSec * 30);
+        const endFrame = Math.max(startFrame + 2, Math.ceil(rawEndSec * 30));
+
+        return {
+          word,
+          startMs,
+          endMs,
+          startFrame,
+          endFrame,
+        };
+      });
     }
 
-    // Proportional acoustic mapping across the full spoken audio duration
-    const audioStartSec = Math.max(0, words[0]?.start ?? 0);
-    const audioEndSec = Math.max(audioStartSec + 0.5, physicalAudioEnd);
-    const totalAudioDurationSec = audioEndSec - audioStartSec;
+    const effectiveDurationSec = Math.max(measuredDuration, (tokens[tokens.length - 1]?.endFrame || 0) / 30);
 
-    return cleanScriptWords.map((word, i) => {
-      const startRatio = i / numScriptWords;
-      const endRatio = (i + 1) / numScriptWords;
-
-      // Find nearest Deepgram word timestamp boundary
-      const dgIndex = Math.min(numDgWords - 1, Math.floor(startRatio * numDgWords));
-      const dgEndIndex = Math.min(numDgWords - 1, Math.floor(endRatio * numDgWords));
-
-      const rawStartSec = words[dgIndex]?.start ?? (audioStartSec + startRatio * totalAudioDurationSec);
-      const rawEndSec = (i === numScriptWords - 1)
-        ? audioEndSec
-        : (words[dgEndIndex]?.end ?? (audioStartSec + endRatio * totalAudioDurationSec));
-
-      const startMs = Math.round(rawStartSec * 1000);
-      const endMs = Math.max(startMs + 150, Math.round(rawEndSec * 1000));
-      const startFrame = Math.floor(rawStartSec * 30);
-      const endFrame = Math.max(startFrame + 2, Math.ceil(rawEndSec * 30));
-
-      return {
-        word,
-        startMs,
-        endMs,
-        startFrame,
-        endFrame,
-      };
-    });
+    return {
+      tokens,
+      durationSec: effectiveDurationSec,
+    };
   } catch (error) {
     console.error("[Deepgram Error]", error);
-    return generateFallbackTokens(cleanScriptWords, audioDurationSec);
+    const tokens = generateFallbackTokens(cleanScriptWords, audioDurationSec);
+    const estSec = audioDurationSec && audioDurationSec > 0 ? audioDurationSec : cleanScriptWords.length * 0.35;
+    return { tokens, durationSec: estSec };
   }
+}
+
+/**
+ * Transcribes audio via Deepgram Nova-2 STT API and enforces 100% Script-Aligned Timestamps.
+ * Backwards-compatible wrapper returning WhisperToken[].
+ */
+export async function transcribeAudioWithDeepgram(
+  narrationText: string,
+  audioUrlOrBuffer?: string | Buffer,
+  language?: string,
+  audioDurationSec?: number
+): Promise<WhisperToken[]> {
+  const result = await transcribeAudioWithDeepgramDetailed(
+    narrationText,
+    audioUrlOrBuffer,
+    language,
+    audioDurationSec
+  );
+  return result.tokens;
 }
 
 /**

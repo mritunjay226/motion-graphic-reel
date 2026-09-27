@@ -49,6 +49,7 @@ export const VoxPolaroidCard: React.FC<VoxPolaroidCardProps> = ({
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
+  const [videoError, setVideoError] = React.useState(false);
   const localFrame = Math.max(0, frame - enterAtFrame);
 
   // Entrance spring animation
@@ -213,11 +214,15 @@ export const VoxPolaroidCard: React.FC<VoxPolaroidCardProps> = ({
             position: "relative",
           }}
         >
-          {videoUrl ? (
+          {videoUrl && !videoError ? (
             <OffthreadVideo
               src={resolveAssetUrl(videoUrl)}
               volume={0}
               muted={true}
+              onError={(e) => {
+                console.warn("[VoxPolaroidCard] Video playback error, falling back:", videoUrl, e);
+                setVideoError(true);
+              }}
               style={{
                 width: "100%",
                 height: "100%",

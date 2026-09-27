@@ -18,64 +18,57 @@ export interface BgMusicTrack {
 export const PRESET_MUSIC_TRACKS: BgMusicTrack[] = [
   {
     id: "documentary_pulse",
-    name: "Volatile Pulse (Investigative Vox)",
-    artist: "Kevin MacLeod • CC-BY 4.0",
-    url: "/music/documentary_pulse.mp3",
-    badge: "INVESTIGATIVE",
+    name: "Volatile Pulse",
+    artist: "Investigative documentary",
+    url: "https://res.cloudinary.com/diah8zonu/video/upload/v1788713679/vox-reels/music/documentary_pulse.mp3",
+    badge: "Recommended",
   },
   {
     id: "tech_explainer",
-    name: "Screen Saver (Modular Tech Arp)",
-    artist: "Kevin MacLeod • CC-BY 4.0",
-    url: "/music/tech_explainer.mp3",
-    badge: "TECH / SAAS",
+    name: "Screen Saver",
+    artist: "Modular tech arpeggio",
+    url: "https://res.cloudinary.com/diah8zonu/video/upload/v1788713682/vox-reels/music/tech_explainer.mp3",
+    badge: "Tech",
   },
   {
     id: "cyber_beat",
-    name: "Urban Gauntlet (Fast Cyber Beat)",
-    artist: "Kevin MacLeod • CC-BY 4.0",
-    url: "/music/cyber_beat.mp3",
-    badge: "RETENTION HOOK",
+    name: "Urban Gauntlet",
+    artist: "Fast kinetic rhythm",
+    url: "https://res.cloudinary.com/diah8zonu/video/upload/v1788713674/vox-reels/music/cyber_beat.mp3",
+    badge: "Fast",
   },
   {
     id: "chill_lofi",
-    name: "Cool Vibes (Late Night Lo-Fi)",
-    artist: "Kevin MacLeod • CC-BY 4.0",
-    url: "/music/chill_lofi.mp3",
-    badge: "LO-FI / HABITS",
+    name: "Cool Vibes",
+    artist: "Late night lo-fi",
+    url: "https://res.cloudinary.com/diah8zonu/video/upload/v1788713666/vox-reels/music/chill_lofi.mp3",
+    badge: "Lo-Fi",
   },
   {
     id: "cinematic_strings",
-    name: "Impact Moderato (Cinematic Strings)",
-    artist: "Kevin MacLeod • CC-BY 4.0",
-    url: "/music/cinematic_strings.mp3",
-    badge: "CINEMATIC",
+    name: "Impact Moderato",
+    artist: "Cinematic orchestral strings",
+    url: "https://res.cloudinary.com/diah8zonu/video/upload/v1788713668/vox-reels/music/cinematic_strings.mp3",
+    badge: "Cinematic",
   },
   {
     id: "dark_suspense",
-    name: "Darkling (Ominous Mystery)",
-    artist: "Kevin MacLeod • CC-BY 4.0",
-    url: "/music/dark_suspense.mp3",
-    badge: "MYSTERY",
+    name: "Darkling",
+    artist: "Ominous suspense",
+    url: "https://res.cloudinary.com/diah8zonu/video/upload/v1788713676/vox-reels/music/dark_suspense.mp3",
+    badge: "Mystery",
   },
   {
     id: "curious_explainer",
-    name: "Industrious Ferret (Curious Explainer)",
-    artist: "Kevin MacLeod • CC-BY 4.0",
-    url: "/music/curious_explainer.mp3",
-    badge: "ANALYTICAL",
-  },
-  {
-    id: "without_me",
-    name: "Without Me (Beat Instrumental)",
-    artist: "Eminem Instrumental Cover",
-    url: "/music/without_me.mp3",
-    badge: "LEGACY",
+    name: "Industrious Ferret",
+    artist: "Curious storytelling",
+    url: "https://res.cloudinary.com/diah8zonu/video/upload/v1788713671/vox-reels/music/curious_explainer.mp3",
+    badge: "Explainer",
   },
   {
     id: "none",
-    name: "Mute (No Background Music)",
-    artist: "Narration & Tactile Foley Only",
+    name: "No Music",
+    artist: "Voice and Foley sound effects only",
     url: "",
   },
 ];
@@ -89,7 +82,7 @@ interface BgMusicSelectorProps {
 
 export const BgMusicSelector: React.FC<BgMusicSelectorProps> = ({
   reelId,
-  currentBgMusicUrl = "/music/documentary_pulse.mp3",
+  currentBgMusicUrl = "https://res.cloudinary.com/diah8zonu/video/upload/v1788713679/vox-reels/music/documentary_pulse.mp3",
   currentBgMusicVolume = 0.15,
   onBgMusicChange,
 }) => {
@@ -157,24 +150,31 @@ export const BgMusicSelector: React.FC<BgMusicSelectorProps> = ({
   };
 
   return (
-    <div className="bg-[#111111] text-white p-5 rounded-2xl border border-gray-800 shadow-xl space-y-4">
+    <div className="bg-white/80 backdrop-blur-xl border border-black/[0.06] rounded-2xl p-5 shadow-xs font-sans text-[#1D1D1F] space-y-3.5">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-gray-800 pb-3">
-        <div className="flex items-center gap-2">
-          <Music className="w-5 h-5 text-[#FFE600]" />
-          <h3 className="text-base font-extrabold tracking-wide uppercase text-white">
-            Background Music Selector
-          </h3>
+      <div className="flex items-center justify-between border-b border-black/[0.06] pb-3">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-xl bg-black/[0.04] flex items-center justify-center text-[#1D1D1F]">
+            <Music className="w-4 h-4 text-[#0071E3]" />
+          </div>
+          <div>
+            <h3 className="text-xs font-semibold text-[#1D1D1F] tracking-tight">
+              Background Score
+            </h3>
+            <p className="text-[11px] text-[#86868B]">
+              Soundtrack selection and ducking level
+            </p>
+          </div>
         </div>
         {isUpdating && (
-          <span className="text-xs font-mono text-[#FFE600] animate-pulse">
-            SAVING TRACK...
+          <span className="text-[11px] text-[#0071E3] font-medium animate-pulse">
+            Saving...
           </span>
         )}
       </div>
 
       {/* Track List */}
-      <div className="space-y-2">
+      <div className="space-y-1.5 max-h-72 overflow-y-auto pr-1">
         {PRESET_MUSIC_TRACKS.map((track) => {
           const isSelected = selectedUrl === track.url;
           const isPlaying = playingTrackUrl === track.url;
@@ -183,13 +183,13 @@ export const BgMusicSelector: React.FC<BgMusicSelectorProps> = ({
             <div
               key={track.id}
               onClick={() => handleSelectTrack(track.url)}
-              className={`flex items-center justify-between p-3 rounded-xl cursor-pointer transition-all ${
+              className={`flex items-center justify-between p-2.5 rounded-xl cursor-pointer transition-all ${
                 isSelected
-                  ? "bg-gray-800/90 border-2 border-[#FFE600]"
-                  : "bg-gray-900/60 border border-gray-800 hover:border-gray-700"
+                  ? "bg-white border-[#0071E3] shadow-xs ring-2 ring-[#0071E3]/20 border"
+                  : "bg-neutral-50/70 border border-black/[0.04] hover:bg-white hover:border-black/[0.1]"
               }`}
             >
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2.5">
                 <button
                   type="button"
                   onClick={(e) => {
@@ -197,33 +197,33 @@ export const BgMusicSelector: React.FC<BgMusicSelectorProps> = ({
                     togglePreviewAudio(track.url);
                   }}
                   disabled={!track.url}
-                  className={`w-9 h-9 rounded-full flex items-center justify-center transition-all ${
+                  className={`w-7 h-7 rounded-full flex items-center justify-center transition-all ${
                     isPlaying
-                      ? "bg-[#FFE600] text-black"
-                      : "bg-gray-800 text-white hover:bg-gray-700"
+                      ? "bg-[#0071E3] text-white"
+                      : "bg-black/[0.05] text-[#1D1D1F] hover:bg-black/[0.1]"
                   }`}
                 >
-                  {isPlaying ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current ml-0.5" />}
+                  {isPlaying ? <Pause className="w-3 h-3 fill-current" /> : <Play className="w-3 h-3 fill-current ml-0.5" />}
                 </button>
 
                 <div>
-                  <div className="flex items-center gap-2">
-                    <p className="text-sm font-bold text-white">{track.name}</p>
+                  <div className="flex items-center gap-1.5">
+                    <p className="text-xs font-semibold text-[#1D1D1F]">{track.name}</p>
                     {track.badge && (
-                      <span className="px-2 py-0.5 text-[10px] font-extrabold bg-[#FFE600] text-black rounded-full">
+                      <span className="px-1.5 py-0.2 text-[9px] font-medium bg-black/[0.05] text-[#86868B] rounded-full">
                         {track.badge}
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-gray-400 font-mono">
+                  <p className="text-[10px] text-[#86868B]">
                     {track.artist}
                   </p>
                 </div>
               </div>
 
               {isSelected && (
-                <div className="w-6 h-6 rounded-full bg-[#FFE600] text-black flex items-center justify-center">
-                  <Check className="w-4 h-4 stroke-[3]" />
+                <div className="w-5 h-5 rounded-full bg-[#0071E3] text-white flex items-center justify-center">
+                  <Check className="w-3 h-3 stroke-[2.5]" />
                 </div>
               )}
             </div>
@@ -233,13 +233,13 @@ export const BgMusicSelector: React.FC<BgMusicSelectorProps> = ({
 
       {/* Volume Slider */}
       {selectedUrl && (
-        <div className="pt-2 border-t border-gray-800 space-y-2">
-          <div className="flex items-center justify-between text-xs text-gray-300 font-mono">
-            <div className="flex items-center gap-1.5">
-              <Volume2 className="w-4 h-4 text-[#FFE600]" />
-              <span>MUSIC VOLUME DUCKING</span>
+        <div className="pt-3 border-t border-black/[0.05] flex flex-col gap-1.5">
+          <div className="flex items-center justify-between text-[11px] text-[#86868B] font-medium">
+            <div className="flex items-center gap-1.5 text-[#1D1D1F]">
+              <Volume2 className="w-3.5 h-3.5 text-[#86868B]" />
+              <span>Music ducking volume</span>
             </div>
-            <span className="font-bold text-[#FFE600]">
+            <span className="font-mono text-[#1D1D1F]">
               {Math.round(volume * 100)}%
             </span>
           </div>
@@ -251,7 +251,7 @@ export const BgMusicSelector: React.FC<BgMusicSelectorProps> = ({
             step="0.01"
             value={volume}
             onChange={(e) => handleVolumeChange(parseFloat(e.target.value))}
-            className="w-full h-2 bg-gray-800 rounded-lg appearance-none cursor-pointer accent-[#FFE600]"
+            className="w-full h-1.5 bg-black/[0.08] rounded-full appearance-none cursor-pointer accent-[#0071E3]"
           />
         </div>
       )}

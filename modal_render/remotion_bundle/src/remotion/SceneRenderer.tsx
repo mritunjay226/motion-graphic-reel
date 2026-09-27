@@ -91,7 +91,7 @@ export const SceneRenderer: React.FC<SceneRendererProps> = ({
   ];
   const activeTransition = transitionTypes[(Number(sceneId) - 1 + transitionTypes.length) % transitionTypes.length];
 
-  const backgroundImageUrl = scene.imageKitUrls?.background || scene.imageUrl;
+  const backgroundImageUrl = scene.imageKitUrls?.background || (scene as any).imageUrl || "";
 
   return (
     <AbsoluteFill
@@ -114,31 +114,6 @@ export const SceneRenderer: React.FC<SceneRendererProps> = ({
           enableHandheldWiggle={true}
           durationFrames={durationFrames}
         >
-          {/* ── ATMOSPHERIC SCENE B-ROLL / IMAGE BACKGROUND OVERLAY (LIGHT & SUBTLE BEHIND CONTENT) ── */}
-          {scene.bRollUrl || scene.videoUrl ? (
-            <RemotionVideoLayer
-              src={scene.bRollUrl || scene.videoUrl || ""}
-              opacity={0.12}
-              style={{
-                mixBlendMode: "soft-light",
-                filter: "contrast(0.9) brightness(1.3) saturate(0.35)",
-                zIndex: 1,
-              }}
-            />
-          ) : backgroundImageUrl ? (
-            <AbsoluteFill style={{ mixBlendMode: "soft-light", opacity: 0.14, pointerEvents: "none", zIndex: 1 }}>
-              <Img
-                src={backgroundImageUrl}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  filter: "contrast(0.9) brightness(1.3) saturate(0.35)",
-                }}
-              />
-            </AbsoluteFill>
-          ) : null}
-
           {/* Render Dynamic Broadcast Vox Layout Template */}
           <LayoutTemplate scene={scene} theme={theme} />
         </VoxCameraRig>

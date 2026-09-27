@@ -3,6 +3,7 @@ import { ConvexHttpClient } from "convex/browser";
 import { api } from "../../../convex/_generated/api";
 import { Id } from "../../../convex/_generated/dataModel";
 import { convertConvexReelToExecutionPlan } from "@/remotion/data/execution-plan";
+import { resolveAssetUrl } from "@/remotion/utils/resolveAsset";
 
 const convexUrl = process.env.NEXT_PUBLIC_CONVEX_URL || "";
 const convex = new ConvexHttpClient(convexUrl);
@@ -58,7 +59,7 @@ export const renderReelPipeline = (inngest.createFunction as any)(
         enableAudio: true,
         enableSfx: true,
         sfxVolume: 1.0,
-        bgMusicUrl: bgMusicUrl || reel.bgMusicUrl || "/music/documentary_pulse.mp3",
+        bgMusicUrl: resolveAssetUrl(bgMusicUrl || reel.bgMusicUrl || "https://res.cloudinary.com/diah8zonu/video/upload/v1788713679/vox-reels/music/documentary_pulse.mp3"),
         bgMusicVolume: bgMusicVolume ?? reel.bgMusicVolume ?? 0.15,
       };
 

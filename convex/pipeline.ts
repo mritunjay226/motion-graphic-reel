@@ -3,7 +3,11 @@ import { internal } from "./_generated/api";
 import { v } from "convex/values";
 
 /**
- * Convex One-Shot Voiceover & Timestamp Pipeline
+ * [LEGACY] Convex Action-Based Voiceover & Timestamp Pipeline
+ *
+ * NOTE: The primary, high-performance, durable video generation pipeline is now
+ * executed via Inngest step functions in `src/inngest/functions/generateReel.ts`.
+ * Functions in this file are preserved for backward-compatibility.
  */
 
 /**

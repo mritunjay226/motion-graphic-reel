@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import { Volume2, VolumeX, Sparkles, Play, Check, Sliders, Layers } from "lucide-react";
+import { Volume2, VolumeX, Sparkles, Play, Sliders } from "lucide-react";
 import { SFX_CATALOG, type SfxSoundId } from "@/remotion/utils/sfxRegistry";
 
 interface TactileSfxSelectorProps {
@@ -11,20 +11,17 @@ interface TactileSfxSelectorProps {
   onToggleEnable: (enabled: boolean) => void;
 }
 
-const FEATURED_SFX_DEMOS: { id: SfxSoundId; label: string; tag: string; color: string }[] = [
-  { id: "paper_rip", label: "Paper Tear Rip", tag: "TRANSITION", color: "bg-[#FFE600] text-[#111111]" },
-  { id: "rubber_stamp", label: "Rubber Stamp Slam", tag: "SEAL BADGE", color: "bg-[#FF3366] text-white" },
-  { id: "camera_shutter", label: "Polaroid Shutter Snap", tag: "PHOTO SNAP", color: "bg-[#00F0FF] text-[#111111]" },
-  { id: "marker_highlighter", label: "Yellow Highlighter", tag: "HEADLINE", color: "bg-[#B5F500] text-[#111111]" },
-  { id: "cash_register", label: "Cash Register Ding", tag: "STAT PEAK", color: "bg-[#10B981] text-white" },
-  { id: "typewriter_key", label: "Typewriter Keystroke", tag: "MEMO/DOC", color: "bg-[#8B5CF6] text-white" },
-  { id: "cinematic_sub_boom", label: "Cinematic Sub Boom", tag: "HOOK/DROP", color: "bg-[#111111] text-[#FFE600]" },
-  { id: "bell_ding", label: "Milestone Bell Ding", tag: "CHECKLIST", color: "bg-[#F59E0B] text-white" },
+const FEATURED_SFX_DEMOS: { id: SfxSoundId; label: string; tag: string }[] = [
+  { id: "paper_rip", label: "Paper Tear Rip", tag: "Transition" },
+  { id: "rubber_stamp", label: "Rubber Stamp", tag: "Badge" },
+  { id: "camera_shutter", label: "Shutter Snap", tag: "Photo" },
+  { id: "marker_highlighter", label: "Highlighter", tag: "Headline" },
+  { id: "cash_register", label: "Cash Register", tag: "Milestone" },
+  { id: "typewriter_key", label: "Typewriter", tag: "Text" },
+  { id: "cinematic_sub_boom", label: "Sub Boom", tag: "Impact" },
+  { id: "bell_ding", label: "Bell Ding", tag: "Highlight" },
 ];
 
-/**
- * Interactive Tactile SFX Studio Card for auditioning and calibrating physical sound effects.
- */
 export const TactileSfxSelector: React.FC<TactileSfxSelectorProps> = ({
   sfxVolume,
   enableSfx,
@@ -51,54 +48,59 @@ export const TactileSfxSelector: React.FC<TactileSfxSelectorProps> = ({
   };
 
   return (
-    <div className="bg-white border-4 border-[#111111] rounded-3xl p-6 shadow-[10px_10px_0px_#111111] relative overflow-hidden">
+    <div className="bg-white/80 backdrop-blur-xl border border-black/[0.06] rounded-2xl p-5 shadow-xs font-sans text-[#1D1D1F]">
       {/* Header Bar */}
-      <div className="flex items-center justify-between mb-4 border-b-2 border-[#E2E2E8] pb-3">
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-bebas tracking-wider text-[#111111] bg-[#B5F500] px-3 py-1 rounded-md border border-[#111111] uppercase flex items-center gap-1.5 font-bold shadow-xs">
-            <Sparkles className="w-3.5 h-3.5 fill-current" />
-            <span>2.5D TACTILE FOLEY ENGINE</span>
-          </span>
-          <span className="text-[10px] font-mono text-emerald-600 font-bold bg-emerald-50 border border-emerald-300 px-2 py-0.5 rounded-full flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            39 SOUNDS LOADED
-          </span>
+      <div className="flex items-center justify-between mb-4 border-b border-black/[0.06] pb-3">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-xl bg-black/[0.04] flex items-center justify-center text-[#1D1D1F]">
+            <Sparkles className="w-4 h-4 text-[#0071E3]" />
+          </div>
+          <div>
+            <h3 className="text-xs font-semibold text-[#1D1D1F] tracking-tight">
+              Tactile Sound Effects
+            </h3>
+            <p className="text-[11px] text-[#86868B]">
+              Foley frame synchronization
+            </p>
+          </div>
         </div>
 
         {/* Master SFX Enable Toggle */}
         <button
           type="button"
           onClick={() => onToggleEnable(!enableSfx)}
-          className={`text-xs font-mono font-bold px-3 py-1 rounded-lg border-2 border-[#111111] transition-all cursor-pointer shadow-xs active:translate-y-0.5 flex items-center gap-1.5 ${
-            enableSfx ? "bg-[#111111] text-[#FFE600]" : "bg-red-100 text-red-700"
+          className={`text-xs font-medium px-3 py-1 rounded-full transition-all cursor-pointer flex items-center gap-1.5 ${
+            enableSfx
+              ? "bg-[#0071E3] text-white shadow-xs"
+              : "bg-black/[0.05] text-[#86868B] hover:text-[#1D1D1F]"
           }`}
         >
           {enableSfx ? (
             <>
-              <Volume2 className="w-3 h-3" />
-              <span>FOLEY ON</span>
+              <Volume2 className="w-3.5 h-3.5" />
+              <span>Enabled</span>
             </>
           ) : (
             <>
-              <VolumeX className="w-3 h-3" />
-              <span>FOLEY MUTED</span>
+              <VolumeX className="w-3.5 h-3.5" />
+              <span>Muted</span>
             </>
           )}
         </button>
       </div>
 
-      <p className="text-xs text-[#555555] font-medium leading-relaxed mb-4">
-        Every graphic element (rubber stamps, paper rips, camera clicks, marker strokes) is frame-locked to authentic physical sound effects.
+      <p className="text-xs text-[#86868B] font-normal leading-relaxed mb-4">
+        Sound effects are synchronized to keyframe moments: paper rips, rubber stamps, polaroid snaps, and highlighter marker sweeps.
       </p>
 
-      {/* SFX Volume Calibration Slider */}
-      <div className="bg-[#F8F8FA] border-2 border-[#111111] rounded-2xl p-4 mb-4">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-xs font-mono font-bold text-[#111111] flex items-center gap-1.5">
-            <Sliders className="w-3.5 h-3.5" />
-            FOLEY MASTER MIX VOLUME
+      {/* SFX Volume Slider */}
+      <div className="bg-neutral-50/70 border border-black/[0.04] rounded-xl p-3 mb-4">
+        <div className="flex items-center justify-between mb-1.5">
+          <span className="text-xs font-medium text-[#1D1D1F] flex items-center gap-1.5">
+            <Sliders className="w-3 h-3 text-[#86868B]" />
+            Master volume
           </span>
-          <span className="text-xs font-mono font-bold bg-[#FFE600] text-[#111111] px-2 py-0.5 rounded border border-[#111111]">
+          <span className="text-[11px] font-mono text-[#1D1D1F]">
             {Math.round(sfxVolume * 100)}%
           </span>
         </div>
@@ -111,19 +113,14 @@ export const TactileSfxSelector: React.FC<TactileSfxSelectorProps> = ({
           value={sfxVolume}
           disabled={!enableSfx}
           onChange={(e) => onVolumeChange(parseFloat(e.target.value))}
-          className="w-full accent-[#111111] cursor-pointer h-2 bg-[#E2E2E8] rounded-lg disabled:opacity-40"
+          className="w-full accent-[#0071E3] cursor-pointer h-1.5 bg-black/[0.08] rounded-full disabled:opacity-40"
         />
-        <div className="flex justify-between text-[9px] font-mono text-[#777777] mt-1 font-bold">
-          <span>Subtle (-18dB)</span>
-          <span>Broadcast Default (100%)</span>
-          <span>Punchy Viral (+3dB)</span>
-        </div>
       </div>
 
       {/* Interactive Sound Audition Grid */}
       <div>
-        <span className="text-[10px] font-mono font-black uppercase text-[#666666] block mb-2">
-          AUDITION TACTILE SOUND SAMPLES:
+        <span className="text-[11px] font-medium text-[#86868B] block mb-2">
+          Sound samples:
         </span>
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -135,27 +132,23 @@ export const TactileSfxSelector: React.FC<TactileSfxSelectorProps> = ({
                 key={demo.id}
                 type="button"
                 onClick={() => playSfxPreview(demo.id)}
-                className={`p-2.5 rounded-xl border-2 text-left transition-all cursor-pointer flex flex-col justify-between relative group ${
+                className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between group ${
                   isPlaying
-                    ? "bg-[#FFFEEB] border-[#111111] shadow-[2px_2px_0px_#111111] scale-[0.98]"
-                    : "bg-[#F9F9FB] border-[#E2E2E8] hover:border-[#111111] hover:bg-white hover:shadow-xs"
+                    ? "bg-white border-[#0071E3] ring-2 ring-[#0071E3]/20 shadow-xs"
+                    : "bg-neutral-50/70 border-black/[0.04] hover:border-black/[0.1] hover:bg-white"
                 }`}
               >
                 <div className="flex items-center justify-between w-full mb-1">
-                  <span className={`text-[8px] font-mono font-black uppercase tracking-wider px-1.5 py-0.5 rounded border border-[#111111] ${demo.color}`}>
+                  <span className="text-[9px] font-medium px-1.5 py-0.2 rounded-full bg-black/[0.05] text-[#86868B]">
                     {demo.tag}
                   </span>
-                  <div className={`w-5 h-5 rounded-full border border-[#111111] flex items-center justify-center transition-all ${
-                    isPlaying ? "bg-[#B5F500] animate-pulse" : "bg-white group-hover:bg-[#FFE600]"
+                  <div className={`w-4 h-4 rounded-full flex items-center justify-center transition-all ${
+                    isPlaying ? "bg-[#0071E3] text-white animate-pulse" : "bg-black/[0.06] text-[#1D1D1F]"
                   }`}>
-                    {isPlaying ? (
-                      <span className="w-2 h-2 rounded-full bg-[#111111] animate-ping" />
-                    ) : (
-                      <Play className="w-2.5 h-2.5 fill-current text-[#111111] ml-0.5" />
-                    )}
+                    <Play className="w-2 h-2 fill-current ml-0.2" />
                   </div>
                 </div>
-                <span className="font-bebas text-sm text-[#111111] leading-tight block">
+                <span className="text-xs font-semibold text-[#1D1D1F] leading-snug block">
                   {demo.label}
                 </span>
               </button>

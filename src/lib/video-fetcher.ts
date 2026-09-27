@@ -20,15 +20,16 @@ export interface FetchedBRollVideo {
 /**
  * Searches Pexels Video API for high-definition B-Roll video clips.
  */
-async function searchPexelsVideos(
+export async function searchPexelsVideos(
   query: string,
-  minDuration: number = 4
+  minDuration: number = 4,
+  perPage: number = 10
 ): Promise<FetchedBRollVideo[]> {
   const pexelsKey = process.env.PEXELS_API_KEY || "";
   if (!pexelsKey) return [];
 
   try {
-    const url = `https://api.pexels.com/videos/search?query=${encodeURIComponent(query)}&per_page=6&orientation=landscape`;
+    const url = `https://api.pexels.com/videos/search?query=${encodeURIComponent(query)}&per_page=${perPage}&orientation=landscape`;
     const res = await fetch(url, {
       headers: { Authorization: pexelsKey },
     });
@@ -72,15 +73,16 @@ async function searchPexelsVideos(
 /**
  * Searches Pixabay Video API for royalty-free stock MP4 clips.
  */
-async function searchPixabayVideos(
+export async function searchPixabayVideos(
   query: string,
-  minDuration: number = 4
+  minDuration: number = 4,
+  perPage: number = 10
 ): Promise<FetchedBRollVideo[]> {
   const pixabayKey = process.env.PIXABAY_API_KEY || "";
   if (!pixabayKey) return [];
 
   try {
-    const url = `https://pixabay.com/api/videos/?key=${pixabayKey}&q=${encodeURIComponent(query)}&video_type=film&per_page=6`;
+    const url = `https://pixabay.com/api/videos/?key=${pixabayKey}&q=${encodeURIComponent(query)}&video_type=film&per_page=${perPage}`;
     const res = await fetch(url);
 
     if (!res.ok) return [];
@@ -118,24 +120,108 @@ async function searchPixabayVideos(
 }
 
 /**
- * Curated Fallback B-Roll Direct CDN Clips mapped by visual theme categories.
+ * Curated Fallback B-Roll Direct CDN Clips with high-quality preview thumbnails.
  */
-const CURATED_THEMATIC_BROLL: Record<string, string[]> = {
-  tech_servers: [
-    "https://assets.mixkit.co/videos/preview/mixkit-server-room-with-blinking-lights-42861-large.mp4",
-    "https://assets.mixkit.co/videos/preview/mixkit-circuit-board-microchip-processing-data-42862-large.mp4",
-  ],
-  finance_trading: [
-    "https://assets.mixkit.co/videos/preview/mixkit-stock-market-figures-on-a-digital-screen-42863-large.mp4",
-    "https://assets.mixkit.co/videos/preview/mixkit-hands-of-a-businessman-working-on-charts-42864-large.mp4",
-  ],
-  corporate_office: [
-    "https://assets.mixkit.co/videos/preview/mixkit-business-people-walking-in-modern-office-42865-large.mp4",
-  ],
-  newspaper_vintage: [
-    "https://assets.mixkit.co/videos/preview/mixkit-printing-machine-running-fast-newspaper-production-42866-large.mp4",
-  ],
-};
+export const CURATED_PREVIEW_VIDEOS: FetchedBRollVideo[] = [
+  {
+    videoUrl: "https://res.cloudinary.com/demo/video/upload/c_scale,w_1280/cld-sample-video.mp4",
+    previewThumbnailUrl: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=640&q=80",
+    durationSeconds: 10,
+    width: 1920,
+    height: 1080,
+    source: "web_archive",
+    confidenceScore: 9,
+  },
+  {
+    videoUrl: "https://res.cloudinary.com/demo/video/upload/c_scale,w_1280/sea_turtle.mp4",
+    previewThumbnailUrl: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=640&q=80",
+    durationSeconds: 12,
+    width: 1920,
+    height: 1080,
+    source: "web_archive",
+    confidenceScore: 9,
+  },
+  {
+    videoUrl: "https://res.cloudinary.com/demo/video/upload/c_scale,w_1280/snow_horses.mp4",
+    previewThumbnailUrl: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=640&q=80",
+    durationSeconds: 14,
+    width: 1920,
+    height: 1080,
+    source: "web_archive",
+    confidenceScore: 9,
+  },
+  {
+    videoUrl: "https://res.cloudinary.com/demo/video/upload/c_scale,w_1280/elephants.mp4",
+    previewThumbnailUrl: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=640&q=80",
+    durationSeconds: 11,
+    width: 1920,
+    height: 1080,
+    source: "web_archive",
+    confidenceScore: 9,
+  },
+  {
+    videoUrl: "https://res.cloudinary.com/demo/video/upload/c_scale,w_1280/dog.mp4",
+    previewThumbnailUrl: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=640&q=80",
+    durationSeconds: 12,
+    width: 1920,
+    height: 1080,
+    source: "web_archive",
+    confidenceScore: 9,
+  },
+  {
+    videoUrl: "https://res.cloudinary.com/demo/video/upload/c_scale,w_1280/kitten_fighting.mp4",
+    previewThumbnailUrl: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=640&q=80",
+    durationSeconds: 15,
+    width: 1920,
+    height: 1080,
+    source: "web_archive",
+    confidenceScore: 9,
+  },
+];
+
+/**
+ * Searches stock videos across Pexels, Pixabay, and curated fallbacks.
+ * Designed for realtime interactive search in the video editor.
+ */
+export async function searchStockVideos(
+  query: string,
+  perPage: number = 10
+): Promise<FetchedBRollVideo[]> {
+  const cleanQuery = (query || "").trim();
+
+  try {
+    const [pexelsResults, pixabayResults] = await Promise.all([
+      searchPexelsVideos(cleanQuery || "cinematic documentary", 3, perPage),
+      searchPixabayVideos(cleanQuery || "documentary archive", 3, perPage),
+    ]);
+
+    const combined = [...pexelsResults, ...pixabayResults];
+
+    if (combined.length > 0) {
+      return combined.slice(0, perPage * 2);
+    }
+  } catch (err: any) {
+    console.warn("[searchStockVideos Error]", err.message);
+  }
+
+  // Fallback to curated category matches
+  const qLower = cleanQuery.toLowerCase();
+  const filtered = CURATED_PREVIEW_VIDEOS.filter((v) => {
+    if (!cleanQuery) return true;
+    if (qLower.includes("server") || qLower.includes("tech") || qLower.includes("code") || qLower.includes("ai")) {
+      return v.videoUrl.includes("server") || v.videoUrl.includes("circuit");
+    }
+    if (qLower.includes("stock") || qLower.includes("money") || qLower.includes("market") || qLower.includes("finance")) {
+      return v.videoUrl.includes("stock") || v.videoUrl.includes("chart");
+    }
+    if (qLower.includes("news") || qLower.includes("paper") || qLower.includes("press")) {
+      return v.videoUrl.includes("newspaper");
+    }
+    return true;
+  });
+
+  return filtered.length > 0 ? filtered : CURATED_PREVIEW_VIDEOS;
+}
 
 /**
  * Fetches and verifies the best B-Roll video clip for a documentary scene.
@@ -156,34 +242,23 @@ export async function fetchVerifiedVideoBRoll(
     ...(await searchPixabayVideos(bRollQuery)),
   ];
 
-  // Step 2: If no candidates found, extract category keywords for curated high-speed fallback
+  // Step 2: If no candidates found, fallback to curated high-speed clips
   if (candidates.length === 0) {
     const qLower = bRollQuery.toLowerCase();
-    let categoryKey = "";
-    if (qLower.includes("server") || qLower.includes("chip") || qLower.includes("ai") || qLower.includes("code") || qLower.includes("tech")) {
-      categoryKey = "tech_servers";
-    } else if (qLower.includes("stock") || qLower.includes("market") || qLower.includes("money") || qLower.includes("trade") || qLower.includes("finance")) {
-      categoryKey = "finance_trading";
-    } else if (qLower.includes("newspaper") || qLower.includes("press") || qLower.includes("print")) {
-      categoryKey = "newspaper_vintage";
-    } else {
-      categoryKey = "corporate_office";
-    }
+    const match = CURATED_PREVIEW_VIDEOS.find((v) => {
+      if (qLower.includes("server") || qLower.includes("tech") || qLower.includes("code")) {
+        return v.videoUrl.includes("server") || v.videoUrl.includes("circuit");
+      }
+      if (qLower.includes("stock") || qLower.includes("finance") || qLower.includes("trade")) {
+        return v.videoUrl.includes("stock") || v.videoUrl.includes("chart");
+      }
+      if (qLower.includes("newspaper") || qLower.includes("press")) {
+        return v.videoUrl.includes("newspaper");
+      }
+      return true;
+    });
 
-    const fallbacks = CURATED_THEMATIC_BROLL[categoryKey];
-    if (fallbacks && fallbacks.length > 0) {
-      const selected = fallbacks[Math.floor(Math.random() * fallbacks.length)];
-      return {
-        videoUrl: selected,
-        previewThumbnailUrl: "",
-        durationSeconds: 10,
-        width: 1920,
-        height: 1080,
-        source: "web_archive",
-        confidenceScore: 8,
-      };
-    }
-    return null;
+    return match || CURATED_PREVIEW_VIDEOS[0] || null;
   }
 
   // Step 3: Verify the top candidates with Gemini Flash Vision QA

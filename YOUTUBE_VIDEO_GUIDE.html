@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vox Reel Engine 2.5D — YouTube Video Master Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0C0C0E;
+      --card-bg: #151518;
+      --border: #26262B;
+      --accent-yellow: #FFE600;
+      --accent-cyan: #00F0FF;
+      --text-main: #EDEDF0;
+      --text-muted: #9E9EA8;
+      --code-bg: #1A1A1E;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, sans-serif;
+      line-height: 1.65;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    header {
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 30px;
+      margin-bottom: 40px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(255, 230, 0, 0.15);
+      color: var(--accent-yellow);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 15px;
+      border: 1px solid rgba(255, 230, 0, 0.3);
+    }
+
+    h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #FFF;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: #FFF;
+      margin-top: 40px;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-left: 4px solid var(--accent-yellow);
+      padding-left: 14px;
+    }
+
+    h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--accent-cyan);
+      margin-top: 25px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      margin-bottom: 16px;
+      color: var(--text-muted);
+    }
+
+    strong {
+      color: #FFF;
+    }
+
+    .meta-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 30px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .meta-item span {
+      display: block;
+      font-size: 12px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .meta-item strong {
+      font-size: 15px;
+      color: #FFF;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      margin-bottom: 30px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      text-align: left;
+    }
+
+    th {
+      background: #1A1A1E;
+      color: #FFF;
+      padding: 12px 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .cue-box {
+      background: rgba(0, 240, 255, 0.05);
+      border-left: 4px solid var(--accent-cyan);
+      padding: 14px 18px;
+      border-radius: 0 8px 8px 0;
+      margin: 15px 0 20px 0;
+      font-size: 14px;
+      color: #C0F0F8;
+    }
+
+    .prompt-box {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      margin: 15px 0 30px 0;
+      position: relative;
+    }
+
+    .prompt-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--accent-yellow);
+    }
+
+    pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: #E2E8F0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      line-height: 1.6;
+    }
+
+    .btn-print {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      background: var(--accent-yellow);
+      color: #000;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(255, 230, 0, 0.3);
+      transition: all 0.2s ease;
+    }
+
+    .btn-print:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 230, 0, 0.4);
+    }
+
+    @media print {
+      body {
+        background: #FFF !important;
+        color: #111 !important;
+        padding: 0;
+      }
+      .container {
+        max-width: 100% !important;
+      }
+      .btn-print {
+        display: none !important;
+      }
+      .badge {
+        background: #EEE !important;
+        color: #111 !important;
+        border: 1px solid #CCC !important;
+      }
+      h1, h2, strong {
+        color: #000 !important;
+      }
+      h2 {
+        border-left-color: #000 !important;
+      }
+      p, td {
+        color: #333 !important;
+      }
+      .meta-box, .prompt-box {
+        background: #F9F9FA !important;
+        border-color: #E2E2E6 !important;
+      }
+      .cue-box {
+        background: #F0F8FF !important;
+        border-left-color: #0070F3 !important;
+        color: #004080 !important;
+      }
+      pre {
+        color: #111 !important;
+      }
+      th {
+        background: #EAEAEA !important;
+        color: #000 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <button class="btn-print" onclick="window.print()">🖨️ Save as PDF / Print</button>
+
+  <div class="container">
+    <header>
+      <div class="badge">YouTube Video Master Playbook</div>
+      <h1>Building an AI Motion Graphics SaaS with Google Antigravity</h1>
+      <p>A complete 15–20 minute step-by-step recording guide, teleprompter cues, and exact copy-paste prompt list.</p>
+    </header>
+
+    <div class="meta-box">
+      <div class="meta-item">
+        <span>Target Duration</span>
+        <strong>15 – 20 Minutes</strong>
+      </div>
+      <div class="meta-item">
+        <span>Core Tech Stack</span>
+        <strong>Next.js 16 + Remotion + Convex</strong>
+      </div>
+      <div class="meta-item">
+        <span>AI Engines</span>
+        <strong>Gemini 2.5 + Deepgram + Cartesia</strong>
+      </div>
+      <div class="meta-item">
+        <span>IDE Focus</span>
+        <strong>Google Antigravity</strong>
+      </div>
+    </div>
+
+    <h2>⏱️ Master Episode Timeline</h2>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Timestamp</th>
+            <th>Segment</th>
+            <th>On-Screen Action</th>
+            <th>Goal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>00:00 - 01:45</strong></td>
+            <td>The Hook</td>
+            <td>Fullscreen 9:16 generated reel with Foley audio</td>
+            <td>Instant WOW factor & retention hook</td>
+          </tr>
+          <tr>
+            <td><strong>01:45 - 03:00</strong></td>
+            <td>Architecture</td>
+            <td>Mermaid architecture chart & Antigravity IDE</td>
+            <td>Explain why Next.js + Remotion + Convex</td>
+          </tr>
+          <tr>
+            <td><strong>03:00 - 05:15</strong></td>
+            <td>Prompt 1</td>
+            <td>Antigravity scaffolding Clerk proxy auth</td>
+            <td>Explain modern proxy.ts convention</td>
+          </tr>
+          <tr>
+            <td><strong>05:15 - 07:45</strong></td>
+            <td>Prompt 2</td>
+            <td>Convex schema & mutations generating</td>
+            <td>Highlight real-time reactive WebSockets</td>
+          </tr>
+          <tr>
+            <td><strong>07:45 - 10:30</strong></td>
+            <td>Prompt 3</td>
+            <td>Remotion 2.5D MoSidd parallax & film grain</td>
+            <td>Show character boil and film treatment</td>
+          </tr>
+          <tr>
+            <td><strong>10:30 - 13:15</strong></td>
+            <td>Prompt 4</td>
+            <td>39-Sound Foley Suite & templates</td>
+            <td>Highlight tactile audio keyframe triggers</td>
+          </tr>
+          <tr>
+            <td><strong>13:15 - 15:45</strong></td>
+            <td>Prompt 5</td>
+            <td>Inngest background pipeline function</td>
+            <td>Gemini 2.5 script + Deepgram timestamps</td>
+          </tr>
+          <tr>
+            <td><strong>15:45 - 17:15</strong></td>
+            <td>Prompt 6</td>
+            <td>Word-by-word kinetic captions engine</td>
+            <td>Spring scale pop synced to audio tokens</td>
+          </tr>
+          <tr>
+            <td><strong>17:15 - 18:45</strong></td>
+            <td>Prompt 7</td>
+            <td>Creation Studio & live progress bar</td>
+            <td>Voice audition & Convex reactive sync</td>
+          </tr>
+          <tr>
+            <td><strong>18:45 - 19:45</strong></td>
+            <td>Prompt 8 & Demo</td>
+            <td>Live test: "How Netflix Killed Blockbuster"</td>
+            <td>The Grand Climax: Generate & Play live!</td>
+          </tr>
+          <tr>
+            <td><strong>19:45 - 20:30</strong></td>
+            <td>Outro</td>
+            <td>Facecam + code recap</td>
+            <td>Call to action: Like & Subscribe</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>📋 The Detailed Antigravity Prompt Suite</h2>
+
+    <h3>Phase 1: Project Scaffolding & Clerk Proxy Auth (03:00)</h3>
+    <div class="cue-box">
+      <strong>🎙️ Voiceover Cue:</strong> "First, we initialize the project with Next.js 16 and modern Clerk Auth. In modern Clerk, middleware.ts is deprecated in favor of proxy.ts. Watch how Antigravity handles this modern setup."
+    </div>
+    <div class="prompt-box">
+      <div class="prompt-header">
+        <span>PROMPT 1 — SCAFFOLDING & CLERK PROXY AUTH</span>
+        <span>COPY & PASTE</span>
+      </div>
+      <pre>We are building "Vox Reel Engine", a full-stack SaaS for automated 2.5D documentary-style video generation (styled after Vox and Johnny Harris).
+
+Please scaffold the foundation:
+1. Setup Next.js App Router with TypeScript, Tailwind CSS v4, and Lucide icons.
+2. Configure Clerk Authentication using the modern `src/proxy.ts` convention (note: `middleware.ts` is deprecated in newer Clerk versions).
+   - Configure public routes: `/`, `/sign-in(.*)`, `/sign-up(.*)`, `/reel(.*)`, `/create-video(.*)`, and all `/api/(.*)` endpoints.
+   - All other routes must require authentication via `await auth.protect()`.
+3. Create `src/components/StudioNavbar.tsx`:
+   - Sleek editorial broadcast header: Dark glassmorphism (`#0A0A0C` background, subtle border `#1F1F24`).
+   - Left: Animated reel filmstrip logo with "VOX REEL 2.5D" badge.
+   - Right: "Create Reel" action button, navigation links (Dashboard, Templates), and Clerk `<UserButton />`.
+4. Style `src/app/layout.tsx` and `src/app/globals.css` with a high-retention dark editorial theme:
+   - Fonts: Inter or Outfit.
+   - Theme accents: Vibrant archival yellow `#FFE600`, broadcast cyan `#00F0FF`, and paper fiber textures.</pre>
+    </div>
+
+    <h3>Phase 2: Convex Real-Time Reactive Database (05:15)</h3>
+    <div class="cue-box">
+      <strong>🎙️ Voiceover Cue:</strong> "Video rendering takes multi-stage processing. Convex lets our frontend react live over WebSockets without polling heavy REST endpoints."
+    </div>
+    <div class="prompt-box">
+      <div class="prompt-header">
+        <span>PROMPT 2 — CONVEX REAL-TIME DATABASE ENGINE</span>
+        <span>COPY & PASTE</span>
+      </div>
+      <pre>Configure the Convex real-time database under `convex/`:
+
+1. In `convex/schema.ts`, define strict validators (`v.object`, `v.string`, `v.array`, `v.union`):
+   - `users` table: `clerkId`, `email`, `name`, `imageUrl`, indexed by `by_clerk_id`.
+   - `reels` table:
+     - `userId`: v.string()
+     - `title`: v.string(), `topic`: v.string(), `language`: v.optional(v.string())
+     - `status`: v.union(v.literal("draft"), v.literal("rendering"), v.literal("completed"), v.literal("failed"))
+     - `storyboard`: v.array of scene objects containing: `sceneId`, `headline`, `subtitle`, `narration`, `imagePrompt`, `imageUrl`, `bgImageUrl`, `audioUrl`, `audioDurationSec`, `visualType`, `whisperTokens`, `startFrame`, `durationFrames`, `events`
+     - `fullVoiceoverUrl`: v.optional(v.string())
+     - `masterWhisperTokens`: v.optional(v.any())
+     - `bgMusicUrl`: v.optional(v.string()), `themeId`: v.optional(v.string())
+     - `progressPercent`: v.optional(v.number()), `progressMessage`: v.optional(v.string()), `currentStep`: v.optional(v.number())
+     - Indexes: `.index("by_user", ["userId"])` and `.index("by_status", ["status"])`
+
+2. In `convex/reels.ts`, implement:
+   - `createDraftReel` (mutation): Creates a reel in "draft" state with user ID.
+   - `updatePipelineProgress` (mutation): Updates `progressPercent` (0-100), `progressMessage`, and `currentStep`.
+   - `saveGeneratedStoryboard` (mutation): Saves the complete AI scenes, audio URLs, and whisper tokens.
+   - `getReelById` (query): Reactive query fetching a single reel by ID.
+   - `listUserReels` (query): Fetches all reels for a specific user ordered descending.
+
+Rule: Always await mutations and queries. Use ConvexError for user-facing errors.</pre>
+    </div>
+
+    <h3>Phase 3: Remotion 2.5D MoSidd Rig & Film Treatment (07:45)</h3>
+    <div class="cue-box">
+      <strong>🎙️ Voiceover Cue:</strong> "Now for the secret sauce: the 2.5D documentary engine. We separate the background from cutouts, add character boil scale wiggles, and overlay 35mm film grain."
+    </div>
+    <div class="prompt-box">
+      <div class="prompt-header">
+        <span>PROMPT 3 — REMOTION 2.5D RIG & FILM TREATMENT</span>
+        <span>COPY & PASTE</span>
+      </div>
+      <pre>Build the Remotion 2.5D video composition engine in `src/remotion/`:
+
+1. `src/remotion/Root.tsx`:
+   - Register `<Composition id="BlockbusterNetflixReel" />`.
+   - Set 9:16 vertical resolution: 1080x1920 @ 30 FPS.
+   - Dynamically calculate total duration in frames using `calculateMetadata` by summing scene duration frames.
+
+2. `src/remotion/components/FilmTreatment.tsx`:
+   - Create a documentary camera overlay:
+   - SVG turbulence film grain filter with randomized frame offset (`frame % 10`).
+   - CRT horizontal scanlines and viewport camera grid crosshairs.
+   - Radial lens vignette (`rgba(0,0,0,0.6)` edges fading to transparent center).
+
+3. `src/remotion/components/TactilePaperCanvas.tsx` & `VoxCameraRig.tsx`:
+   - 2.5D MoSidd style parallax: Separate background archival texture from foreground cutouts.
+   - Add continuous subtle scale drift and character boil wiggle using `spring({ fps, frame })` and `interpolate()` with smooth easing curves (NEVER use linear transitions).
+   - Torn paper drop-shadows (`filter: drop-shadow(0px 15px 25px rgba(0,0,0,0.45))`).</pre>
+    </div>
+
+    <h3>Phase 4: 39-Sound Tactile Foley Suite & Templates (10:30)</h3>
+    <div class="cue-box">
+      <strong>🎙️ Voiceover Cue:</strong> "Retention is driven by audio. Notice how every visual transition triggers an authentic paper rip, rubber stamp thud, or highlighter squeak."
+    </div>
+    <div class="prompt-box">
+      <div class="prompt-header">
+        <span>PROMPT 4 — TACTILE FOLEY SUITE & TEMPLATES</span>
+        <span>COPY & PASTE</span>
+      </div>
+      <pre>Implement the physical Foley sound engine and documentary templates:
+
+1. `src/remotion/utils/sfxRegistry.ts`:
+   - Define a registry of tactile sound effects categorized by physical event:
+     - `paper_rip_fast` / `paper_slide` for scene transitions.
+     - `rubber_stamp_thud` for archival stamp reveals.
+     - `highlighter_marker_sweep` for keyword text highlights.
+     - `camera_shutter_snap` for polaroid and photo popups.
+     - `sub_bass_drop` for hook climax beats.
+
+2. `src/remotion/components/TactileSfxLayer.tsx`:
+   - Render Remotion `<Audio />` tags synced to exact scene keyframes.
+   - Enforce mix hierarchy: Voiceover `0dB`, background music ducked to `-18dB`, tactile Foley at `-16dB`.
+
+3. Create the motion templates under `src/remotion/templates/`:
+   - `Template3NewspaperCutout.tsx`: Vintage archive newspaper clipping with animated yellow highlighter sweep over the key phrase.
+   - `Template13MatrixHacker.tsx`: Dark cyber HUD telemetry grid, pulsing cyan coordinate lines, and dynamic ticker counters.
+   - `Template1CenterHero.tsx`: Dramatic 2.5D cutout hero with floating badge elements and paper torn edge borders.</pre>
+    </div>
+
+    <h3>Phase 5: Autonomous AI Pipeline with Inngest (13:15)</h3>
+    <div class="cue-box">
+      <strong>🎙️ Voiceover Cue:</strong> "We use Inngest step functions to coordinate Gemini 2.5 for the storyboard, Cartesia for voiceover, and Deepgram Nova-2 for word timestamps with automatic retry safety."
+    </div>
+    <div class="prompt-box">
+      <div class="prompt-header">
+        <span>PROMPT 5 — INNGEST MULTI-STAGE PIPELINE</span>
+        <span>COPY & PASTE</span>
+      </div>
+      <pre>Create the autonomous background generation pipeline in `src/inngest/functions/generateReel.ts` and `src/app/api/inngest/route.ts`:
+
+1. Define the Inngest function `generateReelPipeline` listening to event `reel/generate.requested`.
+2. Multi-step execution flow:
+   - **Step 1 (`1-generate-script`)**: Call Gemini 2.5 with a structured JSON prompt:
+     - Input: topic and language.
+     - Output: Title, theme, and 4 to 6 scene storyboards (sceneId, headline, subtitle, narration, imagePrompt, visualType).
+     - Update Convex progress to 20%: "Script & storyboards generated...".
+   - **Step 2 (`2-generate-voiceover`)**:
+     - Synthesize realistic voiceover audio using the Cartesia AI API.
+     - Upload audio buffer and update Convex progress to 45%: "Voiceover synthesized...".
+   - **Step 3 (`3-transcribe-timestamps`)**:
+     - Send audio to Deepgram Nova-2 STT to extract exact word-level start/end millisecond timestamps (`whisperTokens`).
+     - Calculate frame-accurate `startFrame` and `durationFrames` for each scene beat at 30 FPS.
+     - Update Convex progress to 75%: "Syncing kinetic subtitles...".
+   - **Step 4 (`4-finalize-assets`)**:
+     - Save storyboard, audio URLs, and master whisper tokens to Convex DB.
+     - Update status to "completed" and progress to 100%.</pre>
+    </div>
+
+    <h3>Phase 6: Word-by-Word Kinetic Captions (15:45)</h3>
+    <div class="cue-box">
+      <strong>🎙️ Voiceover Cue:</strong> "Now we link Deepgram's word timestamps to Remotion's frame clock to create dynamic jumping captions."
+    </div>
+    <div class="prompt-box">
+      <div class="prompt-header">
+        <span>PROMPT 6 — KINETIC WORD CAPTIONS</span>
+        <span>COPY & PASTE</span>
+      </div>
+      <pre>Build `<WordByWordCaptions />` in `src/remotion/components/WordByWordCaptions.tsx`:
+
+1. Props: `tokens` (Deepgram whisper word tokens: { word, start, end }), `currentFrame` (number at 30 FPS), `theme` (styling configuration).
+2. Logic:
+   - Convert `currentFrame` to seconds: `currentTime = currentFrame / 30`.
+   - Find active word where `currentTime >= token.start && currentTime <= token.end`.
+   - Chunk captions into legible 3-4 word phrases so the screen isn't overwhelmed.
+3. Animation & Typography:
+   - Active spoken word pops with a spring scale bounce (`1.0 -> 1.18`).
+   - Highlight active word in archival yellow `#FFE600` or electric cyan `#00F0FF`.
+   - Heavy drop-shadow (`0 4px 12px rgba(0,0,0,0.8)`) and high-contrast bold font to guarantee legibility over busy 2.5D backgrounds.</pre>
+    </div>
+
+    <h3>Phase 7: Creation Studio & Live Progress (17:15)</h3>
+    <div class="cue-box">
+      <strong>🎙️ Voiceover Cue:</strong> "Here is our studio creation form with voice audition buttons and live WebSocket progress telemetry."
+    </div>
+    <div class="prompt-box">
+      <div class="prompt-header">
+        <span>PROMPT 7 — STUDIO CREATION WIZARD</span>
+        <span>COPY & PASTE</span>
+      </div>
+      <pre>Build the creation studio in `src/app/create-video/page.tsx`:
+
+1. `TopicPromptBar`:
+   - Hero prompt input with quick-start starter chips ("How Netflix Beat Blockbuster", "The Secret of the Golden Arches", "The 1970s CIA Acoustic Kitty").
+   - "Generate 2.5D Reel" submit button with glowing pulse effect.
+2. `NarratorVoiceGrid`:
+   - Selection grid of Cartesia narrator voices (e.g., Editorial Documentary, British Historian, Energetic Explainer).
+   - Audition button on each card allowing the user to preview the voice audio before generating.
+3. Real-Time Generation Modal (`ReelGenerationProgress.tsx`):
+   - When submitted, call Convex mutation `createDraftReel` and trigger Inngest event `/api/inngest`.
+   - Subscribe via Convex reactive query: `useQuery(api.reels.getReelById, { reelId })`.
+   - Display a live progress bar (0% to 100%) with animated pulsating step dots and current step message ("Analyzing topic with Gemini 2.5...", "Generating Foley sound effects...").
+   - Auto-redirect to `/reel/${reelId}` when status reaches "completed".</pre>
+    </div>
+
+    <h3>Phase 8: Interactive Remotion Studio & Live Test (18:45)</h3>
+    <div class="cue-box">
+      <strong>🎙️ Voiceover Cue:</strong> "The final step: the interactive video studio. We memoize input props in Remotion Player so scrubbing is buttery smooth without lag."
+    </div>
+    <div class="prompt-box">
+      <div class="prompt-header">
+        <span>PROMPT 8 — REMOTION PLAYER STUDIO</span>
+        <span>COPY & PASTE</span>
+      </div>
+      <pre>Implement the full video editor playback monitor in `src/app/reel/[reelId]/page.tsx`:
+
+1. Integrate `@remotion/player`:
+   - Center a 9:16 vertical video player (1080x1920 aspect ratio) with glassmorphism backdrop.
+   - CRITICAL: Wrap `inputProps` inside React `useMemo()` to prevent unnecessary component re-renders during playback scrubbing.
+2. `TransportControls`:
+   - Play/Pause toggle with spacebar shortcut.
+   - Current frame / total duration timecode display (e.g., `00:04:12 / 00:30:00`).
+   - Frame step forward/backward buttons.
+3. `SceneTimelineStrip`:
+   - Horizontal thumbnail strip showing each storyboard scene beat.
+   - Clicking a scene jumps the player directly to that scene's `startFrame`.
+4. Inspector Drawer Tabs:
+   - Storyboard Tab: Edit scene headlines and narration in real time.
+   - Audio & Themes Tab: Switch background music tracks, change color themes, adjust Foley volume.
+   - Export Tab: "Render 1080x1920 MP4" button triggering serverless rendering.</pre>
+    </div>
+
+    <h2>🚀 The Live Demo Test on Camera</h2>
+    <div class="cue-box">
+      <strong>Prompt to Type Live at http://localhost:3000/create-video:</strong><br>
+      <code>How the Netflix red envelope killed Blockbuster's $800M late-fee empire</code><br>
+      <em>Narrator: Brian (Documentary Explainer) | Theme: Vox 2.5D Archival Cutout</em>
+    </div>
+  </div>
+
+</body>
+</html>

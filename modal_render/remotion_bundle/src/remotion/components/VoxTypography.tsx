@@ -135,11 +135,11 @@ export const VoxTypography: React.FC<VoxTypographyProps> = ({
       wordOpacity = interpolate(s, [0, 1], [0, 1]);
     }
 
-    const finalWordScale = isHighlight ? wordScale * highlightScale : wordScale;
+    const finalWordScale = isHighlight ? wordScale * 1.05 : wordScale;
     const isRedHighlight = highlightColor === "#D61C1C" || highlightColor === "#E50914";
-    const boxBg = isHighlight ? (highlightBg || (isRedHighlight ? "#FFFFFF" : "#FFE600")) : "transparent";
+    const boxBg = isHighlight ? (highlightBg || (isRedHighlight ? "#FFE600" : "#FFE600")) : "transparent";
     const finalWordColor = isHighlight
-      ? (boxBg === "#FFFFFF" ? "#D61C1C" : "#111111")
+      ? (highlightColor && highlightColor !== "#D61C1C" ? highlightColor : "#111111")
       : color;
 
     return (
@@ -151,12 +151,11 @@ export const VoxTypography: React.FC<VoxTypographyProps> = ({
           opacity: wordOpacity,
           transform: `translateY(${wordTranslateY}px) scale(${finalWordScale})`,
           transformOrigin: "center bottom",
-          marginRight: "14px",
-          padding: isHighlight ? "6px 20px" : "0",
+          marginRight: "10px",
+          padding: isHighlight ? "4px 14px" : "0",
           backgroundColor: isHighlight ? boxBg : "transparent",
-          border: isHighlight ? "4.5px solid #111111" : "none",
           borderRadius: isHighlight ? "6px" : "0",
-          boxShadow: isHighlight ? "8px 8px 0px #111111" : "none",
+          boxShadow: isHighlight ? "0 4px 12px rgba(0,0,0,0.12)" : "none",
           color: finalWordColor,
           fontWeight: 900,
           lineHeight: 1.1,

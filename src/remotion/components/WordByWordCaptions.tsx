@@ -28,6 +28,40 @@ interface WordByWordCaptionsProps {
   stylePreset?: CaptionAestheticStyle;
 }
 
+const KEYWORD_ICONS: Record<string, string> = {
+  billion: "💰",
+  million: "💵",
+  money: "💸",
+  revenue: "📊",
+  profit: "📈",
+  loss: "📉",
+  collapse: "💥",
+  bankrupt: "🛑",
+  disrupted: "⚡",
+  growth: "🚀",
+  secret: "🔒",
+  rejected: "❌",
+  approved: "✅",
+  warning: "⚠️",
+  founder: "👤",
+  ceo: "👔",
+  deal: "🤝",
+  pitch: "🎯",
+  netflix: "🎬",
+  blockbuster: "📼",
+};
+
+// High-Retention Sentiment & Entity Dictionaries for Dynamic Visual Highlights
+const FINANCIAL_GROWTH_KEYWORDS = new Set([
+  "billion", "million", "money", "revenue", "profit", "growth", "crore", "dollar", "dollars",
+  "rich", "valuable", "cash", "fund", "scale", "scaleup", "10x", "2x", "5x", "roi", "approved", "win"
+]);
+
+const CRISIS_LOSS_KEYWORDS = new Set([
+  "collapse", "bankrupt", "loss", "losses", "rejected", "warning", "mistake", "galti", "tabah",
+  "fail", "failed", "scam", "died", "destroy", "destroyed", "crash", "dead", "crisis", "drop"
+]);
+
 /**
  * High-Readability, Zero-Layout-Shift Kinetic Caption System.
  *
@@ -35,6 +69,8 @@ interface WordByWordCaptionsProps {
  * 2. Continuous Visibility: Subtitle card stays smoothly present on screen with zero flashing.
  * 3. Exact Syllable Highlighting: Words highlight during their spoken acoustic window and relax afterwards.
  * 4. Zero Layout Shift: Fixed geometry on all words prevents reflow jumping.
+ * 5. 9:16 Mobile Safe Zone: Positioned above 340px to clear TikTok/Instagram UI controls.
+ * 6. Rapid Eye-Tracking: 2 to 3 word bursts maximize viewer watch-time retention.
  */
 export const WordByWordCaptions: React.FC<WordByWordCaptionsProps> = ({
   tokens,
@@ -44,7 +80,7 @@ export const WordByWordCaptions: React.FC<WordByWordCaptionsProps> = ({
   themeHighlightColor,
   themeHighlightBg,
   themeShadowColor,
-  maxWordsPerPage = 5,
+  maxWordsPerPage = 3,
   stylePreset = "vox_marker",
 }) => {
   const frame = useCurrentFrame();
@@ -56,7 +92,8 @@ export const WordByWordCaptions: React.FC<WordByWordCaptionsProps> = ({
   const activeHighlightBg = themeHighlightBg || "#FFE500";
   const baseTextColor = themeTextColor || config.textColor || "#FFFFFF";
 
-  const positionBottom = config.position?.bottom ?? 96;
+  // Mobile Safe Zone: Default bottom offset 340px clears TikTok/Reels sound/description overlays
+  const positionBottom = config.position?.bottom ?? 340;
 
   // ─── 0. AUTOMATIC TIMECODE NORMALIZATION (0-RELATIVE TO SCENE) ─────────────
   const normalizedTokens = useMemo(() => {
@@ -223,10 +260,30 @@ export const WordByWordCaptions: React.FC<WordByWordCaptionsProps> = ({
         let textStroke = "none";
         let wordBorder = "2.5px solid transparent"; // Fixed border thickness prevents layout shift!
 
+        const cleanWord = token.word.replace(/[.,!?;:—$]/g, "").toLowerCase();
+        const iconBadge = isCurrentlyActive ? KEYWORD_ICONS[cleanWord] : null;
+
+        const isFinancial = FINANCIAL_GROWTH_KEYWORDS.has(cleanWord) || /^\$?\d+([kmb]|cr)?$/i.test(cleanWord);
+        const isCrisis = CRISIS_LOSS_KEYWORDS.has(cleanWord);
+
+        let activeMarkerBg = activeHighlightBg;
+        let activeMarkerColor = "#0C0C0E";
+        let activeGlowColor = "#FFE600";
+
+        if (isFinancial) {
+          activeMarkerBg = "#00FF66"; // Neon Emerald for revenue / profit / millions
+          activeMarkerColor = "#04200E";
+          activeGlowColor = "#00FF66";
+        } else if (isCrisis) {
+          activeMarkerBg = "#FF2E54"; // Crimson Warning for bankrupt / loss / collapse
+          activeMarkerColor = "#FFFFFF";
+          activeGlowColor = "#FF2E54";
+        }
+
         if (stylePreset === "vox_marker") {
           if (isCurrentlyActive) {
-            wordColor = "#0C0C0E";
-            wordBg = activeHighlightBg; // High-visibility yellow marker
+            wordColor = activeMarkerColor;
+            wordBg = activeMarkerBg;
             wordBorder = "2.5px solid #111111";
             wordShadow = "3px 3px 0px #111111";
           } else if (isSpoken) {
@@ -239,8 +296,8 @@ export const WordByWordCaptions: React.FC<WordByWordCaptionsProps> = ({
         } else if (stylePreset === "hormozi_glow") {
           textStroke = "3.5px #000000";
           if (isCurrentlyActive) {
-            wordColor = "#FFE600"; // Glowing yellow
-            wordShadow = "0 0 16px rgba(255, 230, 0, 0.8)";
+            wordColor = activeGlowColor;
+            wordShadow = `0 0 16px ${activeGlowColor}`;
           } else if (isSpoken) {
             wordColor = "#FFFFFF";
           } else {
@@ -249,8 +306,8 @@ export const WordByWordCaptions: React.FC<WordByWordCaptionsProps> = ({
         } else {
           // karaoke_fade
           if (isCurrentlyActive) {
-            wordColor = "#FFE500";
-            wordShadow = "0 0 12px rgba(255, 229, 0, 0.6)";
+            wordColor = activeGlowColor;
+            wordShadow = `0 0 12px ${activeGlowColor}`;
           } else if (isSpoken) {
             wordColor = "#FFFFFF";
           } else {
@@ -284,6 +341,21 @@ export const WordByWordCaptions: React.FC<WordByWordCaptionsProps> = ({
               transition: "background-color 0.1s ease-out, color 0.1s ease-out",
             }}
           >
+            {iconBadge && (
+              <span
+                style={{
+                  position: "absolute",
+                  top: "-24px",
+                  left: "50%",
+                  transform: "translateX(-50%) scale(1.1)",
+                  fontSize: "20px",
+                  filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.5))",
+                  pointerEvents: "none",
+                }}
+              >
+                {iconBadge}
+              </span>
+            )}
             {token.word}
           </span>
         );

@@ -74,6 +74,7 @@ export const VoxVideoCard: React.FC<VoxVideoCardProps> = ({
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
+  const [videoError, setVideoError] = React.useState(false);
   const localFrame = Math.max(0, frame - enterAtFrame);
 
   // Card entrance spring
@@ -151,20 +152,24 @@ export const VoxVideoCard: React.FC<VoxVideoCardProps> = ({
                 border: "3px solid #333338",
               }}
             >
-              {videoUrl ? (
+              {videoUrl && !videoError ? (
                 <OffthreadVideo
                   src={resolveAssetUrl(videoUrl)}
                   volume={0}
                   muted={true}
+                  onError={(e) => {
+                    console.warn("[VoxVideoCard] Video playback error, falling back to image:", videoUrl, e);
+                    setVideoError(true);
+                  }}
                   style={{
                     width: "100%",
                     height: "100%",
                     objectFit: "cover",
                   }}
                 />
-              ) : fallbackImageUrl ? (
+              ) : (fallbackImageUrl || "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80") ? (
                 <img
-                  src={resolveAssetUrl(fallbackImageUrl)}
+                  src={resolveAssetUrl(fallbackImageUrl || "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80")}
                   alt=""
                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
@@ -368,20 +373,24 @@ export const VoxVideoCard: React.FC<VoxVideoCardProps> = ({
               boxShadow: "inset 0 4px 14px rgba(0, 0, 0, 0.45)",
             }}
           >
-            {videoUrl ? (
+            {videoUrl && !videoError ? (
               <OffthreadVideo
                 src={resolveAssetUrl(videoUrl)}
                 volume={0}
                 muted={true}
+                onError={(e) => {
+                  console.warn("[VoxVideoCard] Video playback error, falling back to image:", videoUrl, e);
+                  setVideoError(true);
+                }}
                 style={{
                   width: "100%",
                   height: "100%",
                   objectFit: "cover",
                 }}
               />
-            ) : fallbackImageUrl ? (
+            ) : (fallbackImageUrl || "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80") ? (
               <img
-                src={resolveAssetUrl(fallbackImageUrl)}
+                src={resolveAssetUrl(fallbackImageUrl || "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80")}
                 alt=""
                 style={{ width: "100%", height: "100%", objectFit: "cover" }}
               />

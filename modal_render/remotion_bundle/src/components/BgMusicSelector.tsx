@@ -17,16 +17,65 @@ export interface BgMusicTrack {
 
 export const PRESET_MUSIC_TRACKS: BgMusicTrack[] = [
   {
+    id: "documentary_pulse",
+    name: "Volatile Pulse (Investigative Vox)",
+    artist: "Kevin MacLeod • CC-BY 4.0",
+    url: "https://res.cloudinary.com/diah8zonu/video/upload/v1788713679/vox-reels/music/documentary_pulse.mp3",
+    badge: "INVESTIGATIVE",
+  },
+  {
+    id: "tech_explainer",
+    name: "Screen Saver (Modular Tech Arp)",
+    artist: "Kevin MacLeod • CC-BY 4.0",
+    url: "https://res.cloudinary.com/diah8zonu/video/upload/v1788713682/vox-reels/music/tech_explainer.mp3",
+    badge: "TECH / SAAS",
+  },
+  {
+    id: "cyber_beat",
+    name: "Urban Gauntlet (Fast Cyber Beat)",
+    artist: "Kevin MacLeod • CC-BY 4.0",
+    url: "https://res.cloudinary.com/diah8zonu/video/upload/v1788713674/vox-reels/music/cyber_beat.mp3",
+    badge: "RETENTION HOOK",
+  },
+  {
+    id: "chill_lofi",
+    name: "Cool Vibes (Late Night Lo-Fi)",
+    artist: "Kevin MacLeod • CC-BY 4.0",
+    url: "https://res.cloudinary.com/diah8zonu/video/upload/v1788713666/vox-reels/music/chill_lofi.mp3",
+    badge: "LO-FI / HABITS",
+  },
+  {
+    id: "cinematic_strings",
+    name: "Impact Moderato (Cinematic Strings)",
+    artist: "Kevin MacLeod • CC-BY 4.0",
+    url: "https://res.cloudinary.com/diah8zonu/video/upload/v1788713668/vox-reels/music/cinematic_strings.mp3",
+    badge: "CINEMATIC",
+  },
+  {
+    id: "dark_suspense",
+    name: "Darkling (Ominous Mystery)",
+    artist: "Kevin MacLeod • CC-BY 4.0",
+    url: "https://res.cloudinary.com/diah8zonu/video/upload/v1788713676/vox-reels/music/dark_suspense.mp3",
+    badge: "MYSTERY",
+  },
+  {
+    id: "curious_explainer",
+    name: "Industrious Ferret (Curious Explainer)",
+    artist: "Kevin MacLeod • CC-BY 4.0",
+    url: "https://res.cloudinary.com/diah8zonu/video/upload/v1788713671/vox-reels/music/curious_explainer.mp3",
+    badge: "ANALYTICAL",
+  },
+  {
     id: "without_me",
-    name: "Without Me (Documentary Beat)",
-    artist: "Eminem Instrumental",
-    url: "/music/without_me.mp3",
-    badge: "DEFAULT",
+    name: "Without Me (Beat Instrumental)",
+    artist: "Eminem Instrumental Cover",
+    url: "https://res.cloudinary.com/diah8zonu/video/upload/v1788713683/vox-reels/music/without_me.mp3",
+    badge: "LEGACY",
   },
   {
     id: "none",
     name: "Mute (No Background Music)",
-    artist: "Narration Only",
+    artist: "Narration & Tactile Foley Only",
     url: "",
   },
 ];
@@ -40,7 +89,7 @@ interface BgMusicSelectorProps {
 
 export const BgMusicSelector: React.FC<BgMusicSelectorProps> = ({
   reelId,
-  currentBgMusicUrl = "/music/without_me.mp3",
+  currentBgMusicUrl = "https://res.cloudinary.com/diah8zonu/video/upload/v1788713679/vox-reels/music/documentary_pulse.mp3",
   currentBgMusicVolume = 0.15,
   onBgMusicChange,
 }) => {

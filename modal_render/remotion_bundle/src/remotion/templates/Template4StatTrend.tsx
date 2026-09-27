@@ -6,7 +6,8 @@ import { VoxTypography } from "../components/VoxTypography";
 import { PaperSticker } from "../components/PaperSticker";
 import { CharacterBoil } from "../components/CharacterBoil";
 import { GsapSvgGraphics } from "../components/GsapSvgGraphics";
-import { VoxRollingNumberTicker } from "../components/VoxKineticTypographySuite";
+import { AnimatedNumberCounter } from "../components/AnimatedNumberCounter";
+import { LiveMarkerAnnotation } from "../components/LiveMarkerAnnotation";
 import { WordByWordCaptions } from "../components/WordByWordCaptions";
 import { VoxVideoCard } from "../components/VoxVideoCard";
 
@@ -25,8 +26,9 @@ const boilConfig = {
  *
  * Meticulous 2.5D Spatial Math & Keyframe Staggering:
  * - Frame 2: Headline Typography enters with `stamp_in` slam effect
- * - Frame 6: Big Stat Badge pops in (`left: 8%`, `width: 44%`, `top: 27%`) with elastic spring
+ * - Frame 6: Big Stat Counter enters (`left: 8%`, `width: 44%`, `top: 27%`) with elastic spring
  * - Frame 12: GSAP Vector Trend Arrow draws upward (`left: 54%`, `width: 40%`, `top: 27%`)
+ * - Frame 18: Live Hand-Drawn Marker Circle draws around the counter
  * - Frame 22: Evidence Subject Cutout Sticker slides from bottom-right (`slide_corner_bottom_right`)
  * - Frame 12+: Kinetic Subtitles at bottom 140px
  */
@@ -80,24 +82,46 @@ export const Template4StatTrend: React.FC<TemplateProps> = ({ scene, theme }) =>
         />
       </AnimatedLayer>
 
-      {/* 2. UPPER-MID ZONE: Rolling Number Ticker Typography (Frame 6) */}
-      <AnimatedLayer
-        entrance="pop_in"
-        enterAtFrame={6}
-        position={{ top: "20%", left: "6%", width: "44%", height: "auto" }}
-        zIndex={15}
-        sceneStartFrame={startFrame}
-        sceneDurationFrames={durationFrames}
+      {/* 2. UPPER-MID ZONE: High-Speed Animated Number Counter (Frame 6) */}
+      <div
+        style={{
+          position: "absolute",
+          top: "18%",
+          left: "6%",
+          zIndex: 18,
+        }}
       >
-        <VoxRollingNumberTicker
-          prefix="+"
-          targetValue={340}
-          suffix="%"
-          label="ANNUAL REVENUE SURGE"
-          enterAtFrame={6}
-          color="#FFE600"
-        />
-      </AnimatedLayer>
+        <div style={{ position: "relative", display: "inline-block" }}>
+          <AnimatedNumberCounter
+            prefix="+"
+            toValue={340}
+            suffix="%"
+            enterAtFrame={6}
+            durationFrames={26}
+            fontSize={78}
+            color={theme?.captionHighlightBg || "#FFE600"}
+            deltaBadgeText="SURGE RECORD"
+            deltaBadgeColor="green"
+          />
+
+          {/* Live Hand-Drawn Marker Circle around the Number */}
+          <LiveMarkerAnnotation
+            type="circle"
+            color="#D61C1C"
+            enterAtFrame={16}
+            drawDurationFrames={16}
+            width={260}
+            height={110}
+            strokeWidth={5}
+            style={{
+              position: "absolute",
+              top: "-10px",
+              left: "-18px",
+              zIndex: 22,
+            }}
+          />
+        </div>
+      </div>
 
       {/* 3. UPPER-MID RIGHT: GSAP Upward Trend Arrow (Frame 12) */}
       <GsapSvgGraphics

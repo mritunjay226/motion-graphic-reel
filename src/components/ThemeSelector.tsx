@@ -77,10 +77,8 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
 
   const handleSelectStyle = (style: VisualStyle) => {
     setSelectedStyleId(style.id);
-    // Assign style's assigned default color palette when switching styles
     const assignedPaletteId = style.defaultPaletteId || DEFAULT_PALETTE_ID;
     setSelectedPaletteId(assignedPaletteId);
-
     persistThemeSelection(style.id, assignedPaletteId);
   };
 
@@ -90,59 +88,59 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
   };
 
   return (
-    <div className="bg-neutral-900 border border-neutral-800 rounded-2xl p-5 shadow-2xl font-sans">
+    <div className="bg-white/80 backdrop-blur-xl border border-black/[0.06] rounded-2xl p-5 shadow-xs font-sans text-[#1D1D1F]">
       {/* ── 1. HEADER & TAB NAVIGATION ── */}
-      <div className="flex items-center justify-between mb-4 pb-3 border-b border-neutral-800">
+      <div className="flex items-center justify-between mb-4 pb-3 border-b border-black/[0.06]">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
-            <Sparkles className="w-4 h-4" />
+          <div className="w-8 h-8 rounded-xl bg-black/[0.04] flex items-center justify-center text-[#1D1D1F]">
+            <Sparkles className="w-4 h-4 text-[#0071E3]" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-white uppercase tracking-wide flex items-center gap-2">
-              <span>VISUAL STYLE & COLOR THEME</span>
+            <h3 className="text-xs font-semibold text-[#1D1D1F] tracking-tight flex items-center gap-2">
+              <span>Visual Style & Theme</span>
               {isUpdating && (
-                <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
+                <span className="w-1.5 h-1.5 rounded-full bg-[#0071E3] animate-ping" />
               )}
             </h3>
-            <p className="text-[11px] text-neutral-400 font-mono">
-              Independent Art Direction & Palette System
+            <p className="text-[11px] text-[#86868B]">
+              Art direction and color palette
             </p>
           </div>
         </div>
 
-        {/* Tab Selector: Visual Styles vs Color Themes */}
-        <div className="flex items-center bg-neutral-950 p-1 rounded-lg border border-neutral-800 text-[11px] font-bold">
+        {/* Tab Selector */}
+        <div className="flex items-center bg-black/[0.04] p-1 rounded-full text-xs">
           <button
             type="button"
             onClick={() => setActiveTab("style")}
-            className={`px-3 py-1.5 rounded-md transition-all flex items-center gap-1.5 ${
+            className={`px-3 py-1 rounded-full transition-all flex items-center gap-1.5 cursor-pointer ${
               activeTab === "style"
-                ? "bg-amber-400 text-neutral-950 shadow-sm"
-                : "text-neutral-400 hover:text-white"
+                ? "bg-white text-[#1D1D1F] font-semibold shadow-xs"
+                : "text-[#86868B] hover:text-[#1D1D1F] font-medium"
             }`}
           >
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Visual Styles</span>
+            <Sparkles className="w-3 h-3" />
+            <span>Style</span>
           </button>
           <button
             type="button"
             onClick={() => setActiveTab("palette")}
-            className={`px-3 py-1.5 rounded-md transition-all flex items-center gap-1.5 ${
+            className={`px-3 py-1 rounded-full transition-all flex items-center gap-1.5 cursor-pointer ${
               activeTab === "palette"
-                ? "bg-amber-400 text-neutral-950 shadow-sm"
-                : "text-neutral-400 hover:text-white"
+                ? "bg-white text-[#1D1D1F] font-semibold shadow-xs"
+                : "text-[#86868B] hover:text-[#1D1D1F] font-medium"
             }`}
           >
-            <Palette className="w-3.5 h-3.5" />
-            <span>Color Palettes</span>
+            <Palette className="w-3 h-3" />
+            <span>Palette</span>
           </button>
         </div>
       </div>
 
-      {/* ── 2. VISUAL STYLES TAB (7 Distinct Graphic Aesthetics) ── */}
+      {/* ── 2. VISUAL STYLES TAB ── */}
       {activeTab === "style" && (
         <div className="space-y-3">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-[380px] overflow-y-auto pr-1 custom-scrollbar">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-[380px] overflow-y-auto pr-1">
             {ALL_VIDEO_STYLES.map((style) => {
               const isSelected = selectedStyleId === style.id;
               const assignedPalette = ALL_COLOR_PALETTES.find((p) => p.id === style.defaultPaletteId);
@@ -152,49 +150,42 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
                   key={style.id}
                   type="button"
                   onClick={() => handleSelectStyle(style)}
-                  className={`p-3.5 rounded-xl border text-left transition-all duration-200 flex flex-col justify-between relative overflow-hidden group ${
+                  className={`p-3.5 rounded-xl border text-left transition-all flex flex-col justify-between relative overflow-hidden group cursor-pointer ${
                     isSelected
-                      ? "bg-amber-950/20 border-amber-500/80 shadow-lg shadow-amber-500/10 ring-1 ring-amber-500/50"
-                      : "bg-neutral-950/60 border-neutral-800/80 hover:border-neutral-700 hover:bg-neutral-800/40"
+                      ? "bg-white border-[#0071E3] shadow-sm ring-2 ring-[#0071E3]/20"
+                      : "bg-neutral-50/70 border-black/[0.04] hover:border-black/[0.1] hover:bg-white"
                   }`}
                 >
-                  {/* Top Badge & Check */}
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-[9px] font-mono font-bold uppercase bg-neutral-900 text-amber-400 border border-neutral-800 px-2 py-0.5 rounded">
+                    <span className="text-[10px] font-medium capitalize px-2 py-0.5 rounded-full bg-black/[0.05] text-[#86868B]">
                       {style.frameStyle.replace("_", " ")}
                     </span>
 
-                    {isSelected ? (
-                      <span className="w-5 h-5 rounded-full bg-amber-400 text-neutral-950 flex items-center justify-center font-bold text-xs shadow-md">
-                        <Check className="w-3.5 h-3.5 stroke-[3]" />
-                      </span>
-                    ) : (
-                      <span className="text-[10px] font-mono text-neutral-500 opacity-0 group-hover:opacity-100 transition-opacity">
-                        SELECT
+                    {isSelected && (
+                      <span className="w-4 h-4 rounded-full bg-[#0071E3] text-white flex items-center justify-center font-bold text-[10px]">
+                        <Check className="w-2.5 h-2.5 stroke-[3]" />
                       </span>
                     )}
                   </div>
 
-                  {/* Style Info */}
                   <div>
-                    <h4 className="text-xs font-black text-white tracking-wide mb-0.5">
+                    <h4 className="text-xs font-semibold text-[#1D1D1F] tracking-tight mb-0.5">
                       {style.name}
                     </h4>
-                    <p className="text-[10px] text-neutral-400 line-clamp-2 leading-relaxed">
+                    <p className="text-[10px] text-[#86868B] line-clamp-2 leading-relaxed">
                       {style.description}
                     </p>
                   </div>
 
-                  {/* Default Palette Swatch Tag */}
-                  <div className="mt-3 pt-2 border-t border-neutral-800/60 flex items-center justify-between text-[9px] font-mono">
-                    <span className="text-neutral-400">Default Palette:</span>
-                    <div className="flex items-center gap-1.5 text-amber-300 font-bold">
+                  <div className="mt-2.5 pt-2 border-t border-black/[0.04] flex items-center justify-between text-[10px]">
+                    <span className="text-[#86868B]">Default palette:</span>
+                    <div className="flex items-center gap-1 text-[#1D1D1F] font-medium">
                       <span>{assignedPalette?.name.split(" ")[0]}</span>
                       <div className="flex items-center -space-x-1">
                         {assignedPalette?.previewColors.slice(0, 3).map((c, i) => (
                           <span
                             key={i}
-                            className="w-2.5 h-2.5 rounded-full border border-black"
+                            className="w-2 h-2 rounded-full border border-white"
                             style={{ backgroundColor: c }}
                           />
                         ))}
@@ -208,14 +199,10 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
         </div>
       )}
 
-      {/* ── 3. COLOR PALETTES TAB (8 Independent Color Themes) ── */}
+      {/* ── 3. COLOR PALETTES TAB ── */}
       {activeTab === "palette" && (
         <div className="space-y-3">
-          <p className="text-[11px] text-neutral-400 mb-2 font-mono">
-            Override Color Theme for active style ({activeResolvedTheme.name}):
-          </p>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-[380px] overflow-y-auto pr-1 custom-scrollbar">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-[380px] overflow-y-auto pr-1">
             {ALL_COLOR_PALETTES.map((palette) => {
               const isSelected = selectedPaletteId === palette.id;
 
@@ -224,52 +211,46 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
                   key={palette.id}
                   type="button"
                   onClick={() => handleSelectPalette(palette)}
-                  className={`p-3.5 rounded-xl border text-left transition-all duration-200 flex flex-col justify-between relative overflow-hidden group ${
+                  className={`p-3.5 rounded-xl border text-left transition-all flex flex-col justify-between relative overflow-hidden group cursor-pointer ${
                     isSelected
-                      ? "bg-amber-950/20 border-amber-500/80 shadow-lg shadow-amber-500/10 ring-1 ring-amber-500/50"
-                      : "bg-neutral-950/60 border-neutral-800/80 hover:border-neutral-700 hover:bg-neutral-800/40"
+                      ? "bg-white border-[#0071E3] shadow-sm ring-2 ring-[#0071E3]/20"
+                      : "bg-neutral-50/70 border-black/[0.04] hover:border-black/[0.1] hover:bg-white"
                   }`}
                 >
-                  {/* Swatches & Active Check */}
                   <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center -space-x-1.5">
+                    <div className="flex items-center -space-x-1">
                       {palette.previewColors.map((color, i) => (
                         <span
                           key={i}
-                          className="w-4 h-4 rounded-full border border-neutral-900 shadow-sm"
+                          className="w-3.5 h-3.5 rounded-full border border-white shadow-2xs"
                           style={{ backgroundColor: color }}
                         />
                       ))}
                     </div>
 
-                    {isSelected ? (
-                      <span className="w-5 h-5 rounded-full bg-amber-400 text-neutral-950 flex items-center justify-center font-bold text-xs shadow-md">
-                        <Check className="w-3.5 h-3.5 stroke-[3]" />
-                      </span>
-                    ) : (
-                      <span className="text-[10px] font-mono text-neutral-500 opacity-0 group-hover:opacity-100 transition-opacity">
-                        APPLY
+                    {isSelected && (
+                      <span className="w-4 h-4 rounded-full bg-[#0071E3] text-white flex items-center justify-center font-bold text-[10px]">
+                        <Check className="w-2.5 h-2.5 stroke-[3]" />
                       </span>
                     )}
                   </div>
 
                   <div>
-                    <h4 className="text-xs font-black text-white tracking-wide">
+                    <h4 className="text-xs font-semibold text-[#1D1D1F] tracking-tight">
                       {palette.name}
                     </h4>
-                    <p className="text-[10px] text-neutral-400 line-clamp-2 leading-relaxed mt-0.5">
+                    <p className="text-[10px] text-[#86868B] line-clamp-2 leading-relaxed mt-0.5">
                       {palette.description}
                     </p>
                   </div>
 
-                  {/* Marker Sweep Swatch */}
-                  <div className="mt-2.5 pt-2 border-t border-neutral-800/60 flex items-center justify-between text-[9px] font-mono">
-                    <span className="text-neutral-400">Marker Highlight:</span>
+                  <div className="mt-2 pt-2 border-t border-black/[0.04] flex items-center justify-between text-[10px]">
+                    <span className="text-[#86868B]">Highlight:</span>
                     <span
-                      className="px-2 py-0.5 rounded text-black font-extrabold border border-black"
+                      className="px-2 py-0.2 rounded-full text-black font-semibold text-[9px]"
                       style={{ backgroundColor: palette.captionHighlightBg }}
                     >
-                      TEXT
+                      Text
                     </span>
                   </div>
                 </button>
@@ -279,10 +260,10 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
         </div>
       )}
 
-      {/* Footer Active Combination Summary */}
-      <div className="mt-4 pt-3 border-t border-neutral-800 flex items-center justify-between text-[10px] font-mono text-neutral-400">
-        <span>Active Combo:</span>
-        <span className="text-amber-400 font-bold">
+      {/* Footer Summary */}
+      <div className="mt-3.5 pt-3 border-t border-black/[0.05] flex items-center justify-between text-[11px] text-[#86868B]">
+        <span>Active theme:</span>
+        <span className="text-[#1D1D1F] font-medium">
           {activeResolvedTheme.name}
         </span>
       </div>

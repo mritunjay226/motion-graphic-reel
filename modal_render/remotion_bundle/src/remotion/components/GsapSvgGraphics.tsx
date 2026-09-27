@@ -51,67 +51,67 @@ export const GsapSvgGraphics: React.FC<GsapSvgGraphicsProps> = ({
   if (localFrame < 0) return null;
 
   // 1. Grid lines math
-  const lineDashoffset = interpolate(localFrame, [0, fps * 0.7], [600, 0], {
+  const lineDashoffset = interpolate(localFrame, [0, fps * 0.6], [600, 0], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
     easing: Easing.bezier(0.16, 1, 0.3, 1),
   });
-  const lineOpacity = interpolate(localFrame, [0, fps * 0.3], [0, 0.8], {
+  const lineOpacity = interpolate(localFrame, [0, fps * 0.3], [0, 0.7], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
 
   // 2. Bar chart math
-  const bar1Scale = spring({ frame: localFrame, fps, config: { damping: 12, stiffness: 140 } });
-  const bar2Scale = spring({ frame: Math.max(0, localFrame - 3), fps, config: { damping: 12, stiffness: 140 } });
-  const bar3Scale = spring({ frame: Math.max(0, localFrame - 6), fps, config: { damping: 12, stiffness: 140 } });
+  const bar1Scale = spring({ frame: localFrame, fps, config: { damping: 16, stiffness: 120 } });
+  const bar2Scale = spring({ frame: Math.max(0, localFrame - 3), fps, config: { damping: 16, stiffness: 120 } });
+  const bar3Scale = spring({ frame: Math.max(0, localFrame - 6), fps, config: { damping: 16, stiffness: 120 } });
   const barTextOpacity = interpolate(localFrame, [6, 14], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
 
   // 3. Pulse nodes math
-  const node1 = spring({ frame: localFrame, fps, config: { damping: 12, stiffness: 180 } });
-  const node2 = spring({ frame: Math.max(0, localFrame - 3), fps, config: { damping: 12, stiffness: 180 } });
-  const node3 = spring({ frame: Math.max(0, localFrame - 6), fps, config: { damping: 12, stiffness: 180 } });
-  const node4 = spring({ frame: Math.max(0, localFrame - 9), fps, config: { damping: 12, stiffness: 180 } });
+  const node1 = spring({ frame: localFrame, fps, config: { damping: 16, stiffness: 140 } });
+  const node2 = spring({ frame: Math.max(0, localFrame - 3), fps, config: { damping: 16, stiffness: 140 } });
+  const node3 = spring({ frame: Math.max(0, localFrame - 6), fps, config: { damping: 16, stiffness: 140 } });
+  const node4 = spring({ frame: Math.max(0, localFrame - 9), fps, config: { damping: 16, stiffness: 140 } });
 
   // 4. Stamp seal math
-  const sealSpring = spring({ frame: localFrame, fps, config: { damping: 11, stiffness: 220 } });
-  const sealScale = interpolate(sealSpring, [0, 1], [2.8, 1]);
-  const sealRot = interpolate(sealSpring, [0, 1], [-28, -6]);
+  const sealSpring = spring({ frame: localFrame, fps, config: { damping: 16, stiffness: 140 } });
+  const sealScale = interpolate(sealSpring, [0, 1], [1.6, 1]);
+  const sealRot = interpolate(sealSpring, [0, 1], [-12, -4]);
   const sealOpacity = interpolate(sealSpring, [0, 0.2, 1], [0, 1, 1]);
 
   // 5. Counter ring math
-  const ringDash = interpolate(localFrame, [0, fps * 0.9], [534, 100], {
+  const ringDash = interpolate(localFrame, [0, fps * 0.8], [534, 100], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
-    easing: Easing.inOut(Easing.ease),
+    easing: Easing.out(Easing.cubic),
   });
-  const ringTextScale = spring({ frame: Math.max(0, localFrame - 4), fps, config: { damping: 12, stiffness: 160 } });
+  const ringTextScale = spring({ frame: Math.max(0, localFrame - 4), fps, config: { damping: 16, stiffness: 130 } });
 
   // 6. Trend arrow math
-  const arrowDash = interpolate(localFrame, [0, fps * 0.9], [600, 0], {
+  const arrowDash = interpolate(localFrame, [0, fps * 0.8], [600, 0], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
-    easing: Easing.out(Easing.ease),
+    easing: Easing.bezier(0.16, 1, 0.3, 1),
   });
-  const dotScale = spring({ frame: Math.max(0, localFrame - 8), fps, config: { damping: 10, stiffness: 200 } });
+  const dotScale = spring({ frame: Math.max(0, localFrame - 6), fps, config: { damping: 15, stiffness: 150 } });
 
   // 8. Ticker tape math
-  const tickerSpring = spring({ frame: localFrame, fps, config: { damping: 13, stiffness: 140 } });
-  const tickerX = interpolate(tickerSpring, [0, 1], [-300, 0]);
+  const tickerSpring = spring({ frame: localFrame, fps, config: { damping: 16, stiffness: 120 } });
+  const tickerX = interpolate(tickerSpring, [0, 1], [-200, 0]);
   const tickerOpacity = interpolate(tickerSpring, [0, 0.3, 1], [0, 1, 1]);
 
   // 9. Dossier card math
-  const dossierSpring = spring({ frame: localFrame, fps, config: { damping: 14, stiffness: 130 } });
-  const dossierY = interpolate(dossierSpring, [0, 1], [150, 0]);
-  const dossierStampSpring = spring({ frame: Math.max(0, localFrame - 6), fps, config: { damping: 10, stiffness: 220 } });
+  const dossierSpring = spring({ frame: localFrame, fps, config: { damping: 16, stiffness: 110 } });
+  const dossierY = interpolate(dossierSpring, [0, 1], [100, 0]);
+  const dossierStampSpring = spring({ frame: Math.max(0, localFrame - 6), fps, config: { damping: 16, stiffness: 150 } });
 
   // 10. Magnifier lens math
-  const lensSpring = spring({ frame: localFrame, fps, config: { damping: 12, stiffness: 160 } });
+  const lensSpring = spring({ frame: localFrame, fps, config: { damping: 16, stiffness: 130 } });
 
   // 11. Polaroid cutout math
-  const polaroidSpring = spring({ frame: localFrame, fps, config: { damping: 13, stiffness: 130 } });
-  const polaroidY = interpolate(polaroidSpring, [0, 1], [100, 0]);
-  const polaroidRot = interpolate(polaroidSpring, [0, 1], [-15, 3]);
+  const polaroidSpring = spring({ frame: localFrame, fps, config: { damping: 16, stiffness: 110 } });
+  const polaroidY = interpolate(polaroidSpring, [0, 1], [80, 0]);
+  const polaroidRot = interpolate(polaroidSpring, [0, 1], [-8, 2]);
 
   return (
     <div

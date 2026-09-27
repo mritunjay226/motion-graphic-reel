@@ -8,6 +8,7 @@ import { GsapSvgGraphics } from "../components/GsapSvgGraphics";
 import { ExitAnimationWrapper } from "../components/ExitAnimationWrapper";
 import { WordByWordCaptions } from "../components/WordByWordCaptions";
 import { VoxVideoCard } from "../components/VoxVideoCard";
+import { MagnifierSpotlightLens } from "../components/MagnifierSpotlightLens";
 
 interface TemplateProps {
   scene: Scene;
@@ -122,17 +123,19 @@ export const Template10MagnifierDoc: React.FC<TemplateProps> = ({ scene, theme }
             />
           </ExitAnimationWrapper>
 
-          {/* MAGNIFYING SPOTLIGHT LENS */}
-          <AnimatedLayer
-            entrance="pop_in"
-            enterAtFrame={16}
-            position={{ top: "36%", left: "55%", width: "120px", height: "120px" }}
-            zIndex={25}
-            sceneStartFrame={startFrame}
-            sceneDurationFrames={durationFrames}
-          >
-            <div style={{ width: "100%", height: "100%", borderRadius: "50%", border: "4px solid #FFE600", boxShadow: "0 0 25px rgba(255,230,0,0.5), inset 0 0 15px rgba(255,230,0,0.3)", backgroundColor: "rgba(255,230,0,0.18)" }} />
-          </AnimatedLayer>
+          {/* FORENSIC MAGNIFYING SPOTLIGHT LENS */}
+          <MagnifierSpotlightLens
+            diameter={180}
+            color="#FFE600"
+            enterAtFrame={14}
+            startX={40}
+            endX={120}
+            startY={20}
+            endY={60}
+            sweepDurationFrames={35}
+            label="EVIDENCE // 3.2X"
+            style={{ top: "34%", left: "48%", zIndex: 28 }}
+          />
         </>
       )}
 

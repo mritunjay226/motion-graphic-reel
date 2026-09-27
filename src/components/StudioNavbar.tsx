@@ -4,119 +4,104 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { UserButton, SignInButton, useUser } from "@clerk/nextjs";
-import { Zap, Folder } from "lucide-react";
+import { Plus, Video } from "lucide-react";
 
 export function StudioNavbar() {
   const pathname = usePathname();
   const { isSignedIn, isLoaded } = useUser();
 
   const isCreate = pathname === "/create-video";
-  const isDashboard = pathname === "/dashboard";
+  const isDashboard = pathname === "/dashboard" || pathname === "/reel";
   const isHome = pathname === "/";
 
   return (
-    <header className="border-b-2 border-[#0C0C0E] bg-[#F2F1EC]/95 backdrop-blur-md sticky top-0 z-50 px-4 sm:px-8 py-3.5 transition-all shadow-xs select-none">
-      <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
-        
-        {/* Brand & Studio Identity */}
-        <div className="flex items-center gap-4 sm:gap-6">
+    <header className="sticky top-0 z-50 w-full bg-[#FBFBFD]/80 backdrop-blur-xl backdrop-saturate-150 border-b border-black/[0.06] transition-all select-none">
+      <div className="max-w-6xl mx-auto px-4 sm:px-8 h-14 flex items-center justify-between gap-4">
+
+        {/* Brand & Mark */}
+        <div className="flex items-center gap-3">
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-8 h-8 rounded-lg bg-[#0C0C0E] text-[#B4F500] font-bebas text-lg flex items-center justify-center border-2 border-[#0C0C0E] shadow-[2px_2px_0px_#0C0C0E] group-hover:scale-105 group-hover:bg-[#B4F500] group-hover:text-[#0C0C0E] transition-all">
-              <Zap className="w-4 h-4 fill-current" />
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#0071E3] to-[#47A3FF] text-white flex items-center justify-center shadow-[0_2px_8px_rgba(0,113,227,0.3)] group-hover:scale-105 transition-transform">
+              <Video className="w-4 h-4 text-white" />
             </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="font-bebas text-xl sm:text-2xl text-[#0C0C0E] tracking-wider leading-none">
-                  VOX REEL ENGINE
-                </span>
-                <span className="text-[9px] bg-[#B4F500] text-[#0C0C0E] border border-[#0C0C0E] px-1.5 py-0.2 rounded font-utility font-black uppercase">
-                  2.5D
-                </span>
-              </div>
-              <p className="text-[9px] text-[#666666] font-utility font-bold uppercase tracking-wider hidden sm:block">
-                High-Retention Motion Graphics Workstation
-              </p>
+            <div className="flex items-center gap-2">
+              <span className="font-semibold text-sm tracking-tight text-[#1D1D1F]">
+                ReelStudio
+              </span>
+              <span className="text-[10px] font-medium text-[#86868B] bg-black/[0.04] px-2 py-0.5 rounded-full border border-black/[0.04]">
+                Pro
+              </span>
             </div>
           </Link>
-
-          {/* Navigation Links */}
-          <nav className="hidden md:flex items-center gap-1.5 ml-4 bg-[#E7E6E0] p-1 rounded-xl border border-[#D8D7D2]">
-            <Link
-              href="/"
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                isHome
-                  ? "bg-[#0C0C0E] text-[#B4F500] shadow-xs"
-                  : "text-[#444444] hover:text-[#0C0C0E] hover:bg-white/60"
-              }`}
-            >
-              Overview
-            </Link>
-
-            <Link
-              href="/create-video"
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all ${
-                isCreate
-                  ? "bg-[#0C0C0E] text-[#B4F500] shadow-xs"
-                  : "text-[#444444] hover:text-[#0C0C0E] hover:bg-white/60"
-              }`}
-            >
-              <Zap className="w-3.5 h-3.5 fill-current" />
-              <span>Fast Create</span>
-            </Link>
-
-            <Link
-              href="/dashboard"
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all ${
-                isDashboard
-                  ? "bg-[#0C0C0E] text-[#B4F500] shadow-xs"
-                  : "text-[#444444] hover:text-[#0C0C0E] hover:bg-white/60"
-              }`}
-            >
-              <Folder className="w-3.5 h-3.5" />
-              <span>My Reels Library</span>
-            </Link>
-          </nav>
         </div>
 
+        {/* Center: iOS Segmented Pill Navigation */}
+        <nav className="hidden sm:flex items-center bg-black/[0.04] p-1 rounded-full border border-black/[0.04]">
+          <Link
+            href="/"
+            className={`px-3.5 py-1 rounded-full text-xs font-medium transition-all ${isHome
+                ? "bg-white text-[#1D1D1F] shadow-sm"
+                : "text-[#86868B] hover:text-[#1D1D1F]"
+              }`}
+          >
+            Overview
+          </Link>
+
+          <Link
+            href="/create-video"
+            className={`px-3.5 py-1 rounded-full text-xs font-medium transition-all flex items-center gap-1.5 ${isCreate
+                ? "bg-white text-[#1D1D1F] shadow-sm"
+                : "text-[#86868B] hover:text-[#1D1D1F]"
+              }`}
+          >
+            <span>Create</span>
+          </Link>
+
+          <Link
+            href="/reel"
+            className={`px-3.5 py-1 rounded-full text-xs font-medium transition-all flex items-center gap-1.5 ${isDashboard
+                ? "bg-white text-[#1D1D1F] shadow-sm"
+                : "text-[#86868B] hover:text-[#1D1D1F]"
+              }`}
+          >
+            <span>Library</span>
+          </Link>
+        </nav>
+
         {/* Right CTA & User Controls */}
-        <div className="flex items-center gap-3">
-          
-          {/* Quick Create Highlight Button (Hidden if already on /create-video) */}
+        <div className="flex items-center gap-2.5">
           {!isCreate && (
             <Link
               href="/create-video"
-              className="px-3.5 sm:px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider bg-[#B4F500] hover:bg-[#a5e400] text-[#0C0C0E] border-2 border-[#0C0C0E] shadow-[2px_2px_0px_#0C0C0E] hover:shadow-none hover:translate-x-[1px] hover:translate-y-[1px] transition-all flex items-center gap-1.5"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium bg-[#0071E3] hover:bg-[#0077ED] text-white shadow-sm hover:shadow-[0_4px_14px_rgba(0,113,227,0.3)] active:scale-95 transition-all"
             >
-              <Zap className="w-3.5 h-3.5 fill-current" />
-              <span className="hidden sm:inline">CREATE REEL</span>
-              <span className="sm:hidden">CREATE</span>
+              <Plus className="w-3.5 h-3.5" />
+              <span>New Reel</span>
             </Link>
           )}
 
           {/* User Auth Profile */}
           {isLoaded && (
-            <>
+            <div className="flex items-center pl-1">
               {isSignedIn ? (
-                <div className="flex items-center gap-2">
-                  <UserButton
-                    appearance={{
-                      elements: {
-                        userButtonAvatarBox: "w-8 h-8 rounded-lg border-2 border-[#0C0C0E] shadow-[2px_2px_0px_#0C0C0E]",
-                      },
-                    }}
-                  />
-                </div>
+                <UserButton
+                  appearance={{
+                    elements: {
+                      userButtonAvatarBox: "w-7 h-7 ring-1 ring-black/10 rounded-full",
+                    },
+                  }}
+                />
               ) : (
                 <SignInButton mode="modal">
                   <button
                     type="button"
-                    className="px-3 py-1.5 rounded-lg text-xs font-bold bg-white text-[#0C0C0E] hover:bg-[#E7E6E0] transition-all border border-[#0C0C0E]"
+                    className="px-3 py-1.5 rounded-full text-xs font-medium text-[#1D1D1F] hover:bg-black/[0.04] transition-colors cursor-pointer"
                   >
                     Sign In
                   </button>
                 </SignInButton>
               )}
-            </>
+            </div>
           )}
         </div>
 

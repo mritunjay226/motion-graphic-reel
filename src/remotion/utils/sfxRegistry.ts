@@ -446,21 +446,21 @@ export function computeSceneTactileCues(scene: Scene, sceneIndex: number, totalS
       label: "Climax Revelation Sub Boom",
     });
   } else {
-    // Inter-scene cuts: Paper Rip for document/editorial, Speed Whip for dynamic scenes
+    // Inter-scene cuts: Synchronized to frame 3 (exact midpoint of 7-frame transition cut)
     const isPaperTheme = layout.includes("memo") || layout.includes("newspaper") || layout.includes("editorial") || layout.includes("document");
     cues.push({
       id: `trans-${scene.sceneId}`,
       soundId: isPaperTheme ? "paper_rip" : "whip_fast",
-      frame: sceneStart,
+      frame: sceneStart + 3,
       durationFrames: 14,
-      volume: 0.18,
-      label: `Scene ${scene.sceneId} Transition Cut`,
+      volume: 0.20,
+      label: `Scene ${scene.sceneId} Midpoint Transition Cut`,
     });
   }
 
-  // ── 2. CONTEXTUAL ACTION ACCENT FOLEY (Frame 8 to 14: Exactly 1 per scene) ──
+  // ── 2. CONTEXTUAL ACTION ACCENT FOLEY (Keyframe-locked & Composite Stacks) ──
   if (explicitCue && SFX_CATALOG[explicitCue]) {
-    // Explicit AI-assigned cue takes priority
+    // Explicit AI-assigned cue
     cues.push({
       id: `accent-explicit-${scene.sceneId}`,
       soundId: explicitCue,
@@ -486,7 +486,7 @@ export function computeSceneTactileCues(scene: Scene, sceneIndex: number, totalS
       label: `Scene ${scene.sceneId} Twist Record Scratch`,
     });
   } else if (isFinancial || layout === "revenue_stat_trend" || layout === "infographic_bar_chart") {
-    // Financial revenue / stat peak
+    // Financial revenue / stat peak (Composite: register + tactile pop)
     cues.push({
       id: `accent-stat-${scene.sceneId}`,
       soundId: isFinancial ? "cash_register" : "coin_clink",
@@ -495,8 +495,16 @@ export function computeSceneTactileCues(scene: Scene, sceneIndex: number, totalS
       volume: 0.22,
       label: `Scene ${scene.sceneId} Financial Revenue Ding`,
     });
+    cues.push({
+      id: `accent-stat-pop-${scene.sceneId}`,
+      soundId: "tactile_pop",
+      frame: sceneStart + 15,
+      durationFrames: 10,
+      volume: 0.14,
+      label: `Scene ${scene.sceneId} Stat Pop Accent`,
+    });
   } else if (layout === "punchline_quote_spotlight") {
-    // Polaroid photo snapshot
+    // Polaroid photo snapshot + flash snap
     cues.push({
       id: `accent-shutter-${scene.sceneId}`,
       soundId: "camera_shutter",
@@ -526,14 +534,22 @@ export function computeSceneTactileCues(scene: Scene, sceneIndex: number, totalS
       label: `Scene ${scene.sceneId} Roadmap Success Chime`,
     });
   } else if (layout === "editorial_strikethrough_swap" || layout === "center_hero_cutout") {
-    // Stamp seal slam
+    // Composite Heavy Stamp: rubber stamp at keyframe 18 + subtle sub boom for tactile weight
     cues.push({
       id: `accent-stamp-${scene.sceneId}`,
       soundId: "rubber_stamp",
-      frame: sceneStart + 16,
+      frame: sceneStart + 18,
       durationFrames: 22,
       volume: 0.26,
-      label: `Scene ${scene.sceneId} Rubber Stamp Seal`,
+      label: `Scene ${scene.sceneId} Keyframe-18 Rubber Stamp Impact`,
+    });
+    cues.push({
+      id: `accent-stamp-boom-${scene.sceneId}`,
+      soundId: "cinematic_sub_boom",
+      frame: sceneStart + 18,
+      durationFrames: 24,
+      volume: 0.14,
+      label: `Scene ${scene.sceneId} Stamp Sub-Weight`,
     });
   } else if (layout === "split_left_cutout_right_memo" || layout === "spotlight_magnifier_document") {
     // Document / memo paper slide

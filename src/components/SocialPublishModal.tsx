@@ -3,23 +3,20 @@
 import React, { useState, useEffect } from "react";
 import { ZernioAccount } from "@/lib/zernio";
 import {
-  Rocket,
+  Share2,
   X,
-  CheckCircle2,
-  RefreshCw,
-  Zap,
   Sparkles,
   Hash,
-  FileText,
-  Search,
-  MessageSquare,
   Send,
-  ExternalLink,
-  Globe,
 } from "lucide-react";
 import { YoutubeIcon as Youtube, InstagramIcon as Instagram } from "@/components/icons/BrandIcons";
 
-interface SocialPublishModalProps {
+import { SocialAccountSelector } from "./social/SocialAccountSelector";
+import { YouTubePublishForm } from "./social/YouTubePublishForm";
+import { InstagramPublishForm } from "./social/InstagramPublishForm";
+import { PublishResultBanner } from "./social/PublishResultBanner";
+
+export interface SocialPublishModalProps {
   isOpen: boolean;
   onClose: () => void;
   reelId: string;
@@ -66,20 +63,19 @@ export function SocialPublishModal({
   const [useManualMode, setUseManualMode] = useState(false);
 
   // ── YouTube Specific Metadata ──
-  const [ytTitle, setYtTitle] = useState(`The $50M Mistake That Changed ${topic} Forever 🤯`);
+  const [ytTitle, setYtTitle] = useState(`${topic} — Story Breakdown`);
   const [ytDescription, setYtDescription] = useState(
-    `The shocking untold documentary breakdown of ${topic}.\n\n⚡ 60-Second Business Story\n👉 Subscribe for daily motion-graphic breakdowns!`
+    `An in-depth documentary breakdown of ${topic}.\n\nMotion graphic story created with AI.`
   );
-  const [ytTags, setYtTags] = useState(`${topic}, business documentary, case study, startup failure, motion graphics, viral shorts`);
+  const [ytTags, setYtTags] = useState(`${topic}, documentary, case study, motion graphics`);
   const [ytVisibility, setYtVisibility] = useState<"public" | "unlisted" | "private">("public");
 
   // ── Instagram Specific Metadata ──
   const [igCaption, setIgCaption] = useState(
-    `THE CRAZY TRUTH ABOUT ${topic.toUpperCase()} 🚨\n\n📌 How one decision sparked an industry revolution.\n⚡ The multi-million risk that almost destroyed everything.\n\nDid they make the right move, or was it pure luck? Let me know below! 👇\n\nSave this reel 🔖 & follow for more!`
+    `The story of ${topic}.\n\nHow one decision changed everything. What would you have done in their position?\n\nFollow for more daily stories.`
   );
-  const [igFirstComment, setIgFirstComment] = useState(`What would you have done in their position? Comment below 👇`);
-  const [hashtags, setHashtags] = useState("#shorts #reels #viral #businessdocumentary #motiongraphics #mindset");
-  const [shareToFeed, setShareToFeed] = useState(true);
+  const [igFirstComment, setIgFirstComment] = useState(`What do you think about this? Let us know below.`);
+  const [hashtags, setHashtags] = useState("#shorts #reels #documentary #storytelling");
   const [useHeroThumbnail, setUseHeroThumbnail] = useState(Boolean(heroImageUrl));
 
   // AI Generation State
@@ -119,7 +115,6 @@ export function SocialPublishModal({
     }
   };
 
-  // Fetch connected accounts on open
   useEffect(() => {
     if (isOpen) {
       fetchAccounts();
@@ -143,7 +138,6 @@ export function SocialPublishModal({
     }
   };
 
-  // AI generate viral copy handler
   const handleGenerateCopy = async () => {
     setIsGeneratingCopy(true);
     try {
@@ -177,7 +171,6 @@ export function SocialPublishModal({
     }
   };
 
-  // Publish handler
   const handlePublish = async () => {
     setIsPublishing(true);
     setPublishError(null);
@@ -283,268 +276,102 @@ export function SocialPublishModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="bg-neutral-900 border border-neutral-800 rounded-3xl w-full max-w-3xl max-h-[92vh] flex flex-col shadow-2xl overflow-hidden text-neutral-100">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-200">
+      <div className="bg-[#1C1C1E] border border-white/10 rounded-[28px] sm:rounded-[32px] w-full max-w-2xl max-h-[90vh] flex flex-col shadow-[0_24px_64px_rgba(0,0,0,0.5)] overflow-hidden text-[#F5F5F7]">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-neutral-800 flex items-center justify-between bg-neutral-950/80">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-fuchsia-600 via-pink-600 to-amber-500 flex items-center justify-center text-white text-lg font-bold shadow-lg shadow-fuchsia-500/25">
-              <Rocket className="w-5 h-5 text-white" />
+        <div className="px-6 py-4 border-b border-white/10 flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white">
+              <Share2 className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="font-extrabold text-base text-white flex items-center gap-2">
-                Viral Social Studio
-                <span className="text-[10px] font-mono font-bold bg-fuchsia-500/15 text-fuchsia-400 border border-fuchsia-500/30 px-2.5 py-0.5 rounded-full">
-                  INSTAGRAM & YOUTUBE
-                </span>
+              <h3 className="font-semibold text-sm text-white">
+                Publish Reel
               </h3>
-              <p className="text-xs text-neutral-400">
-                1-Click auto-upload, viral hook optimization & SEO tags
+              <p className="text-[11px] text-white/50">
+                Direct export to YouTube Shorts and Instagram Reels
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-lg bg-neutral-800 hover:bg-neutral-700 flex items-center justify-center text-neutral-400 hover:text-white transition-colors"
+            className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/15 flex items-center justify-center text-white/70 hover:text-white transition-colors cursor-pointer"
           >
-            <X className="w-4 h-4" />
+            <X className="w-3.5 h-3.5" />
           </button>
         </div>
 
         {/* Content Body */}
-        <div className="p-6 overflow-y-auto space-y-6">
-          {/* Success Banner */}
-          {publishSuccess && (
-            <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-2xl p-4 text-emerald-300 space-y-2.5 animate-in fade-in">
-              <div className="flex items-center gap-2 font-bold text-sm">
-                <CheckCircle2 className="w-5 h-5 text-emerald-400" />
-                <span>Video Dispatched to Social Platforms!</span>
-              </div>
-              <p className="text-xs text-emerald-200/80 leading-relaxed">
-                The social auto-publisher is now transcoding, applying your custom hooks, and publishing directly to your connected channels.
-              </p>
-              {publishResultData?.platformResults && (
-                <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {publishResultData.platformResults.map((pr: any, idx: number) => (
-                    <div key={idx} className="flex items-center justify-between text-xs bg-emerald-950/60 p-2.5 rounded-xl border border-emerald-500/20">
-                      <span className="font-mono uppercase font-bold text-white">{pr.platform}</span>
-                      {pr.postUrl ? (
-                        <a
-                          href={pr.postUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-emerald-400 underline hover:text-emerald-300 font-bold flex items-center gap-1"
-                        >
-                          <span>Live Post</span>
-                          <ExternalLink className="w-3 h-3" />
-                        </a>
-                      ) : (
-                        <span className="text-emerald-400 font-mono font-semibold">Status: {pr.status}</span>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
+        <div className="p-6 overflow-y-auto space-y-5">
+          {/* Success Banner & Previous History */}
+          <PublishResultBanner
+            publishSuccess={publishSuccess}
+            publishResultData={publishResultData}
+            existingSocialPosts={existingSocialPosts}
+            publishError={publishError}
+          />
 
-          {/* Section 1: Channel Connection & Selection */}
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <label className="text-xs font-extrabold uppercase tracking-wider text-neutral-400 flex items-center gap-2">
-                <span>1.</span> Connected Channels
-              </label>
-              <button
-                type="button"
-                onClick={() => setUseManualMode(!useManualMode)}
-                className="text-[11px] text-amber-400 hover:underline font-semibold"
-              >
-                {useManualMode ? "Switch to Auto-Detected Channels" : "Custom Account IDs Mode"}
-              </button>
-            </div>
-
-            {/* 1-Click Connect Buttons & Refresh */}
-            {!useManualMode && (
-              <div className="flex items-center gap-2.5">
-                <button
-                  type="button"
-                  onClick={() => handleConnect("youtube")}
-                  disabled={connectingPlatform === "youtube"}
-                  className="flex-1 px-3.5 py-2.5 rounded-xl text-xs font-bold bg-red-600/10 hover:bg-red-600/20 text-red-400 border border-red-500/30 flex items-center justify-center gap-2 transition-all shadow-sm"
-                >
-                  {connectingPlatform === "youtube" ? (
-                    <span className="w-3.5 h-3.5 border-2 border-red-400 border-t-transparent rounded-full animate-spin" />
-                  ) : (
-                    <Youtube className="w-4 h-4" />
-                  )}
-                  <span>Connect YouTube Channel</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => handleConnect("instagram")}
-                  disabled={connectingPlatform === "instagram"}
-                  className="flex-1 px-3.5 py-2.5 rounded-xl text-xs font-bold bg-fuchsia-600/10 hover:bg-fuchsia-600/20 text-fuchsia-400 border border-fuchsia-500/30 flex items-center justify-center gap-2 transition-all shadow-sm"
-                >
-                  {connectingPlatform === "instagram" ? (
-                    <span className="w-3.5 h-3.5 border-2 border-fuchsia-400 border-t-transparent rounded-full animate-spin" />
-                  ) : (
-                    <Instagram className="w-4 h-4" />
-                  )}
-                  <span>Connect Instagram Reel</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={fetchAccounts}
-                  title="Refresh connected channels"
-                  className="px-3.5 py-2.5 rounded-xl text-xs font-bold bg-neutral-800 hover:bg-neutral-700 text-neutral-300 transition-colors flex items-center gap-1.5"
-                >
-                  <RefreshCw className="w-3.5 h-3.5" />
-                  <span>Refresh</span>
-                </button>
-              </div>
-            )}
-
-            {useManualMode ? (
-              <div className="space-y-3 bg-neutral-950 border border-neutral-800 p-4 rounded-2xl">
-                <div>
-                  <label className="text-xs text-neutral-300 font-semibold mb-1 flex items-center gap-1.5">
-                    <Youtube className="w-3.5 h-3.5 text-red-500" />
-                    <span>YouTube Account / Channel ID:</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={manualYtId}
-                    onChange={(e) => setManualYtId(e.target.value)}
-                    placeholder="e.g. UCxxxxxx or Channel ID"
-                    className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3.5 py-2 text-xs font-mono text-white focus:outline-none focus:border-amber-400"
-                  />
-                </div>
-                <div>
-                  <label className="text-xs text-neutral-300 font-semibold mb-1 flex items-center gap-1.5">
-                    <Instagram className="w-3.5 h-3.5 text-fuchsia-500" />
-                    <span>Instagram Account ID:</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={manualIgId}
-                    onChange={(e) => setManualIgId(e.target.value)}
-                    placeholder="e.g. 178414xxxxxx or Instagram ID"
-                    className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3.5 py-2 text-xs font-mono text-white focus:outline-none focus:border-amber-400"
-                  />
-                </div>
-              </div>
-            ) : loadingAccounts ? (
-              <div className="p-4 bg-neutral-950 border border-neutral-800 rounded-2xl flex items-center justify-center gap-2 text-neutral-400 text-xs font-mono">
-                <span className="w-4 h-4 border-2 border-amber-400 border-t-transparent rounded-full animate-spin" />
-                Fetching connected social channels...
-              </div>
-            ) : accounts.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {accounts.map((acc) => {
-                  const isSelected = Boolean(selectedAccountIds[acc.id]);
-                  const isYT = acc.platform.includes("youtube");
-                  const isIG = acc.platform.includes("instagram");
-
-                  return (
-                    <div
-                      key={acc.id}
-                      onClick={() =>
-                        setSelectedAccountIds((prev) => ({
-                          ...prev,
-                          [acc.id]: !prev[acc.id],
-                        }))
-                      }
-                      className={`p-3.5 rounded-2xl border cursor-pointer transition-all flex items-center justify-between ${
-                        isSelected
-                          ? "bg-neutral-800/90 border-amber-400 shadow-lg shadow-amber-400/10"
-                          : "bg-neutral-950 border-neutral-800 opacity-60 hover:opacity-90"
-                      }`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <div
-                          className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-sm ${
-                            isYT
-                              ? "bg-red-600/20 text-red-400 border border-red-500/30"
-                              : isIG
-                              ? "bg-fuchsia-600/20 text-fuchsia-400 border border-fuchsia-500/30"
-                              : "bg-blue-600/20 text-blue-400 border border-blue-500/30"
-                          }`}
-                        >
-                          {isYT ? <Youtube className="w-4 h-4" /> : isIG ? <Instagram className="w-4 h-4" /> : <Globe className="w-4 h-4" />}
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-white truncate max-w-[150px]">
-                            {acc.name}
-                          </p>
-                          <p className="text-[10px] text-neutral-400 font-mono capitalize">
-                            {acc.platform}
-                          </p>
-                        </div>
-                      </div>
-                      <input
-                        type="checkbox"
-                        checked={isSelected}
-                        onChange={() => {}}
-                        className="w-4 h-4 accent-amber-400 rounded cursor-pointer"
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-            ) : (
-              <div className="p-4 bg-amber-500/5 border border-amber-500/20 rounded-2xl space-y-1.5">
-                <p className="text-xs text-amber-300 font-semibold">
-                  {accountError || "No channels connected yet."}
-                </p>
-                <p className="text-[11px] text-neutral-400 leading-relaxed">
-                  Click the <strong>Connect YouTube</strong> or <strong>Connect Instagram</strong> buttons above to authenticate in 1 click!
-                </p>
-              </div>
-            )}
-          </div>
+          {/* Section 1: Connected Channels Selector */}
+          <SocialAccountSelector
+            useManualMode={useManualMode}
+            setUseManualMode={setUseManualMode}
+            connectingPlatform={connectingPlatform}
+            onConnect={handleConnect}
+            onRefresh={fetchAccounts}
+            manualYtId={manualYtId}
+            setManualYtId={setManualYtId}
+            manualIgId={manualIgId}
+            setManualIgId={setManualIgId}
+            loadingAccounts={loadingAccounts}
+            accounts={accounts}
+            accountError={accountError}
+            selectedAccountIds={selectedAccountIds}
+            onToggleAccount={(id) =>
+              setSelectedAccountIds((prev) => ({
+                ...prev,
+                [id]: !prev[id],
+              }))
+            }
+          />
 
           {/* Section 2: Platform Customization Tabs & AI Copy Generator */}
-          <div className="space-y-4 pt-4 border-t border-neutral-800">
+          <div className="space-y-3.5 pt-4 border-t border-white/10">
             <div className="flex items-center justify-between">
-              {/* Platform Switcher Tabs */}
-              <div className="flex items-center gap-1.5 bg-neutral-950 p-1 rounded-xl border border-neutral-800">
+              <div className="flex items-center gap-1 bg-white/[0.06] p-1 rounded-full">
                 <button
                   type="button"
                   onClick={() => setActiveTab("all")}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                  className={`px-3 py-1 rounded-full text-xs transition-all cursor-pointer ${
                     activeTab === "all"
-                      ? "bg-amber-400 text-black shadow-md shadow-amber-400/20"
-                      : "text-neutral-400 hover:text-white"
+                      ? "bg-white/20 text-white font-semibold shadow-xs"
+                      : "text-white/60 hover:text-white font-medium"
                   }`}
                 >
-                  <Zap className="w-3.5 h-3.5 fill-current" />
-                  <span>All Channels</span>
+                  All Channels
                 </button>
                 <button
                   type="button"
                   onClick={() => setActiveTab("youtube")}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                  className={`px-3 py-1 rounded-full text-xs transition-all flex items-center gap-1.5 cursor-pointer ${
                     activeTab === "youtube"
-                      ? "bg-red-600 text-white shadow-md shadow-red-600/20"
-                      : "text-neutral-400 hover:text-white"
+                      ? "bg-white/20 text-white font-semibold shadow-xs"
+                      : "text-white/60 hover:text-white font-medium"
                   }`}
                 >
-                  <Youtube className="w-3.5 h-3.5" />
-                  <span>YouTube Shorts</span>
+                  <Youtube className="w-3 h-3 text-red-400" />
+                  <span>YouTube</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setActiveTab("instagram")}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                  className={`px-3 py-1 rounded-full text-xs transition-all flex items-center gap-1.5 cursor-pointer ${
                     activeTab === "instagram"
-                      ? "bg-gradient-to-r from-fuchsia-600 to-pink-600 text-white shadow-md shadow-fuchsia-600/20"
-                      : "text-neutral-400 hover:text-white"
+                      ? "bg-white/20 text-white font-semibold shadow-xs"
+                      : "text-white/60 hover:text-white font-medium"
                   }`}
                 >
-                  <Instagram className="w-3.5 h-3.5" />
-                  <span>Instagram Reels</span>
+                  <Instagram className="w-3 h-3 text-pink-400" />
+                  <span>Instagram</span>
                 </button>
               </div>
 
@@ -553,33 +380,32 @@ export function SocialPublishModal({
                 type="button"
                 onClick={handleGenerateCopy}
                 disabled={isGeneratingCopy}
-                className="px-3.5 py-1.5 rounded-xl text-xs font-extrabold bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-500 text-neutral-950 hover:opacity-90 transition-all shadow-md shadow-amber-400/20 flex items-center gap-1.5 disabled:opacity-50"
+                className="px-3 py-1.5 rounded-full text-xs font-medium bg-white/10 hover:bg-white/15 text-white transition-all flex items-center gap-1.5 disabled:opacity-50 cursor-pointer"
               >
                 {isGeneratingCopy ? (
                   <>
-                    <span className="w-3.5 h-3.5 border-2 border-black border-t-transparent rounded-full animate-spin" />
-                    Generating Viral Copy...
+                    <span className="w-3 h-3 border-2 border-white/60 border-t-transparent rounded-full animate-spin" />
+                    <span>Generating...</span>
                   </>
                 ) : (
                   <>
-                    <Sparkles className="w-3.5 h-3.5" />
-                    <span>Auto-Draft with AI</span>
+                    <Sparkles className="w-3 h-3" />
+                    <span>Auto-draft</span>
                   </>
                 )}
               </button>
             </div>
 
-            {/* ─── TAB 1: ALL CHANNELS SYNCED ─── */}
+            {/* TAB 1: ALL CHANNELS */}
             {activeTab === "all" && (
-              <div className="space-y-4 animate-in fade-in">
-                {/* YouTube Title */}
+              <div className="space-y-3 animate-in fade-in">
                 <div>
-                  <div className="flex items-center justify-between mb-1.5">
-                    <label className="text-xs text-neutral-300 font-bold flex items-center gap-1.5">
-                      <Youtube className="w-3.5 h-3.5 text-red-500" />
-                      <span>YouTube Shorts Title (High-CTR Hook)</span>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-xs text-white/80 font-medium flex items-center gap-1.5">
+                      <Youtube className="w-3.5 h-3.5 text-red-400" />
+                      <span>YouTube title</span>
                     </label>
-                    <span className="text-[10px] text-neutral-500 font-mono">
+                    <span className="text-[10px] text-white/40 font-mono">
                       {ytTitle.length}/100
                     </span>
                   </div>
@@ -588,244 +414,95 @@ export function SocialPublishModal({
                     value={ytTitle}
                     onChange={(e) => setYtTitle(e.target.value)}
                     maxLength={100}
-                    placeholder="The $50M Mistake That Changed Everything"
-                    className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder:text-neutral-600 focus:outline-none focus:border-amber-400 font-medium"
+                    placeholder="Shorts title"
+                    className="w-full bg-white/[0.04] border border-white/10 rounded-xl px-3.5 py-2 text-xs text-white placeholder-white/30 focus:outline-none focus:border-[#0071E3] font-medium"
                   />
                 </div>
 
-                {/* Instagram Caption */}
                 <div>
-                  <label className="text-xs text-neutral-300 font-bold flex items-center gap-1.5 mb-1.5">
-                    <Instagram className="w-3.5 h-3.5 text-fuchsia-500" />
-                    <span>Instagram Reel Caption & Story Hook</span>
+                  <label className="text-xs text-white/80 font-medium flex items-center gap-1.5 mb-1">
+                    <Instagram className="w-3.5 h-3.5 text-pink-400" />
+                    <span>Instagram caption</span>
                   </label>
                   <textarea
                     value={igCaption}
                     onChange={(e) => setIgCaption(e.target.value)}
-                    rows={4}
-                    placeholder="THE SHOCKING TRUTH BEHIND..."
-                    className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder:text-neutral-600 focus:outline-none focus:border-amber-400 leading-relaxed resize-none font-medium"
+                    rows={3}
+                    placeholder="Reel caption..."
+                    className="w-full bg-white/[0.04] border border-white/10 rounded-xl px-3.5 py-2 text-xs text-white placeholder-white/30 focus:outline-none focus:border-[#0071E3] leading-relaxed resize-none font-normal"
                   />
                 </div>
 
-                {/* Hashtags */}
                 <div>
-                  <label className="text-xs text-neutral-300 font-bold flex items-center gap-1.5 mb-1.5">
-                    <Hash className="w-3.5 h-3.5 text-amber-400" />
-                    <span>Viral Hashtags</span>
+                  <label className="text-xs text-white/80 font-medium flex items-center gap-1.5 mb-1">
+                    <Hash className="w-3.5 h-3.5 text-white/50" />
+                    <span>Hashtags</span>
                   </label>
                   <input
                     type="text"
                     value={hashtags}
                     onChange={(e) => setHashtags(e.target.value)}
-                    placeholder="#shorts #reels #viral #businessdocumentary"
-                    className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-xs font-mono text-amber-300 placeholder:text-neutral-600 focus:outline-none focus:border-amber-400"
+                    placeholder="#shorts #reels #documentary"
+                    className="w-full bg-white/[0.04] border border-white/10 rounded-xl px-3.5 py-2 text-xs text-white placeholder-white/30 focus:outline-none focus:border-[#0071E3]"
                   />
                 </div>
               </div>
             )}
 
-            {/* ─── TAB 2: YOUTUBE SHORTS ─── */}
+            {/* TAB 2: YOUTUBE SHORTS */}
             {activeTab === "youtube" && (
-              <div className="space-y-4 animate-in fade-in bg-red-950/10 border border-red-500/20 p-4 rounded-2xl">
-                <div>
-                  <div className="flex items-center justify-between mb-1.5">
-                    <label className="text-xs text-red-300 font-bold flex items-center gap-1.5">
-                      <Youtube className="w-3.5 h-3.5 text-red-400" />
-                      <span>YouTube Shorts Title</span>
-                    </label>
-                    <span className="text-[10px] text-neutral-500 font-mono">
-                      {ytTitle.length}/100
-                    </span>
-                  </div>
-                  <input
-                    type="text"
-                    value={ytTitle}
-                    onChange={(e) => setYtTitle(e.target.value)}
-                    maxLength={100}
-                    className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-red-400 font-medium"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-xs text-red-300 font-bold flex items-center gap-1.5 mb-1.5">
-                    <FileText className="w-3.5 h-3.5 text-red-400" />
-                    <span>YouTube Description & SEO Summary</span>
-                  </label>
-                  <textarea
-                    value={ytDescription}
-                    onChange={(e) => setYtDescription(e.target.value)}
-                    rows={3}
-                    className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-red-400 leading-relaxed resize-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-xs text-red-300 font-bold flex items-center gap-1.5 mb-1.5">
-                    <Search className="w-3.5 h-3.5 text-red-400" />
-                    <span>Search & SEO Tags (Comma Separated)</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={ytTags}
-                    onChange={(e) => setYtTags(e.target.value)}
-                    placeholder="documentary, business story, case study, viral"
-                    className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-xs font-mono text-white focus:outline-none focus:border-red-400"
-                  />
-                </div>
-
-                <div className="flex items-center justify-between pt-1">
-                  <label className="text-xs text-neutral-300 font-semibold">YouTube Visibility:</label>
-                  <select
-                    value={ytVisibility}
-                    onChange={(e: any) => setYtVisibility(e.target.value)}
-                    className="bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-1.5 text-xs text-neutral-200 focus:outline-none focus:border-red-400 font-mono"
-                  >
-                    <option value="public">Public (Instant Live)</option>
-                    <option value="unlisted">Unlisted (Share via Link)</option>
-                    <option value="private">Private (Draft)</option>
-                  </select>
-                </div>
-              </div>
+              <YouTubePublishForm
+                ytTitle={ytTitle}
+                setYtTitle={setYtTitle}
+                ytDescription={ytDescription}
+                setYtDescription={setYtDescription}
+                ytTags={ytTags}
+                setYtTags={setYtTags}
+                ytVisibility={ytVisibility}
+                setYtVisibility={setYtVisibility}
+              />
             )}
 
-            {/* ─── TAB 3: INSTAGRAM REELS ─── */}
+            {/* TAB 3: INSTAGRAM REELS */}
             {activeTab === "instagram" && (
-              <div className="space-y-4 animate-in fade-in bg-fuchsia-950/10 border border-fuchsia-500/20 p-4 rounded-2xl">
-                <div>
-                  <label className="text-xs text-fuchsia-300 font-bold flex items-center gap-1.5 mb-1.5">
-                    <Instagram className="w-3.5 h-3.5 text-fuchsia-400" />
-                    <span>Instagram Reel Caption</span>
-                  </label>
-                  <textarea
-                    value={igCaption}
-                    onChange={(e) => setIgCaption(e.target.value)}
-                    rows={4}
-                    className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-fuchsia-400 leading-relaxed resize-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-xs text-fuchsia-300 font-bold flex items-center gap-1.5 mb-1.5">
-                    <MessageSquare className="w-3.5 h-3.5 text-fuchsia-400" />
-                    <span>Algorithmic First Comment (Auto-Posted)</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={igFirstComment}
-                    onChange={(e) => setIgFirstComment(e.target.value)}
-                    placeholder="Did they make the biggest mistake in history? Drop your thoughts below"
-                    className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-fuchsia-400"
-                  />
-                  <p className="text-[10px] text-neutral-500 mt-1">
-                    Auto-posted immediately to trigger comment velocity & algorithmic reach.
-                  </p>
-                </div>
-
-                {heroImageUrl && (
-                  <div className="flex items-center justify-between p-3 bg-neutral-950 rounded-xl border border-neutral-800">
-                    <div className="flex items-center gap-3">
-                      <img
-                        src={heroImageUrl}
-                        alt="Hero Thumbnail"
-                        className="w-10 h-10 rounded-lg object-cover border border-neutral-700"
-                      />
-                      <div>
-                        <p className="text-xs font-bold text-white">AI Hero Scene Thumbnail</p>
-                        <p className="text-[10px] text-neutral-400">Use Scene 1 high-res cutout as cover</p>
-                      </div>
-                    </div>
-                    <input
-                      type="checkbox"
-                      checked={useHeroThumbnail}
-                      onChange={(e) => setUseHeroThumbnail(e.target.checked)}
-                      className="w-4 h-4 accent-fuchsia-500 rounded cursor-pointer"
-                    />
-                  </div>
-                )}
-              </div>
+              <InstagramPublishForm
+                igCaption={igCaption}
+                setIgCaption={setIgCaption}
+                igFirstComment={igFirstComment}
+                setIgFirstComment={setIgFirstComment}
+                heroImageUrl={heroImageUrl}
+                useHeroThumbnail={useHeroThumbnail}
+                setUseHeroThumbnail={setUseHeroThumbnail}
+              />
             )}
           </div>
-
-          {/* Previous Publishing History on this Reel */}
-          {existingSocialPosts && existingSocialPosts.length > 0 && (
-            <div className="pt-3 border-t border-neutral-800 space-y-2">
-              <label className="text-[11px] font-bold uppercase tracking-wider text-neutral-500">
-                Publishing History on this Reel
-              </label>
-              <div className="space-y-1.5">
-                {existingSocialPosts.map((p, idx) => (
-                  <div
-                    key={idx}
-                    className="flex items-center justify-between text-xs bg-neutral-950 p-2.5 rounded-xl border border-neutral-800 font-mono"
-                  >
-                    <div className="flex items-center gap-2">
-                      <span
-                        className={`w-2 h-2 rounded-full ${
-                          p.status === "published"
-                            ? "bg-emerald-400"
-                            : p.status === "failed"
-                            ? "bg-red-400"
-                            : "bg-amber-400 animate-pulse"
-                        }`}
-                      />
-                      <span className="capitalize font-bold text-neutral-300">
-                        {p.platform}
-                      </span>
-                    </div>
-                    {p.postUrl ? (
-                      <a
-                        href={p.postUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-amber-400 hover:underline font-bold flex items-center gap-1"
-                      >
-                        <span>View Live Post</span>
-                        <ExternalLink className="w-3 h-3" />
-                      </a>
-                    ) : (
-                      <span className="text-neutral-500 uppercase">{p.status}</span>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Error Message */}
-          {publishError && (
-            <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-3.5 text-red-300 text-xs">
-              <span className="font-bold">Error: </span>
-              {publishError}
-            </div>
-          )}
         </div>
 
         {/* Footer Actions */}
-        <div className="px-6 py-4 border-t border-neutral-800 bg-neutral-950 flex items-center justify-between">
+        <div className="px-6 py-4 border-t border-white/10 flex items-center justify-between">
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 rounded-xl text-xs font-semibold text-neutral-400 hover:text-white transition-colors"
+            className="px-4 py-2 rounded-full text-xs font-medium text-white/60 hover:text-white transition-colors cursor-pointer"
           >
-            Close
+            Cancel
           </button>
 
           <button
             type="button"
             onClick={handlePublish}
             disabled={isPublishing}
-            className="px-6 py-3 rounded-2xl text-xs font-extrabold bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-500 hover:from-amber-300 hover:to-yellow-400 text-neutral-950 transition-all shadow-xl shadow-amber-400/20 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-5 py-2.5 rounded-full text-xs font-semibold bg-[#0071E3] hover:bg-[#0077ED] text-white shadow-sm flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] transition-all cursor-pointer"
           >
             {isPublishing ? (
               <>
-                <span className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin" />
-                Publishing to Social Channels...
+                <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                <span>Publishing...</span>
               </>
             ) : (
               <>
-                <Send className="w-4 h-4" />
-                <span>Publish to Selected Channels</span>
+                <Send className="w-3.5 h-3.5" />
+                <span>Publish now</span>
               </>
             )}
           </button>

@@ -62,40 +62,11 @@ export const FilmTreatment: React.FC<FilmTreatmentProps> = ({
 
   return (
     <AbsoluteFill style={{ pointerEvents: "none", zIndex: 0 }}>
-      {/* ── 1. BLUEPRINT PAPER GRID / GRAPH PAPER OVERLAY ── */}
-      {paperGrid && paperGridOpacity > 0 && (
-        <AbsoluteFill
-          style={{
-            mixBlendMode: "multiply",
-            opacity: paperGridOpacity,
-            backgroundImage: `
-              linear-gradient(to right, rgba(20, 20, 25, 0.22) 1px, transparent 1px),
-              linear-gradient(to bottom, rgba(20, 20, 25, 0.22) 1px, transparent 1px),
-              radial-gradient(circle at center, rgba(0,0,0,0.3) 1.5px, transparent 1.5px)
-            `,
-            backgroundSize: `${paperGridSize}px ${paperGridSize}px, ${paperGridSize}px ${paperGridSize}px, ${paperGridSize}px ${paperGridSize}px`,
-          }}
-        />
-      )}
-
-      {/* ── 2. STUDIO PAPER FIBERS & VINTAGE CREASE TEXTURE ── */}
+      {/* ── 1. OPTIONAL MINIMAL STUDIO PAPER TOOTH ── */}
       {paperTexture && paperTextureOpacity > 0 && (
         <PaperFiberOverlay
           type={paperTextureType}
-          opacity={paperTextureOpacity}
-        />
-      )}
-
-      {/* ── 3. HALFTONE STIPPLE DOT MESH (RETRO NEWSPRINT) ── */}
-      {halftoneDots && halftoneOpacity > 0 && (
-        <AbsoluteFill
-          style={{
-            mixBlendMode: "overlay",
-            opacity: halftoneOpacity,
-            backgroundImage: "radial-gradient(rgba(0, 0, 0, 0.8) 1px, transparent 0)",
-            backgroundSize: "6px 6px",
-            backgroundPosition: "0 0, 3px 3px",
-          }}
+          opacity={paperTextureOpacity * 0.5}
         />
       )}
 

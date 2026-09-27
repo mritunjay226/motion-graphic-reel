@@ -97,6 +97,36 @@ async function prefetchInputPropsAssets(props, publicCacheDir, rootCacheDir) {
   if (!props || typeof props !== 'object') return props;
   const clone = JSON.parse(JSON.stringify(props));
 
+  const PRESET_MUSIC_URL_MAP = {
+    '/music/documentary_pulse.mp3': 'https://res.cloudinary.com/diah8zonu/video/upload/v1788713679/vox-reels/music/documentary_pulse.mp3',
+    'documentary_pulse.mp3': 'https://res.cloudinary.com/diah8zonu/video/upload/v1788713679/vox-reels/music/documentary_pulse.mp3',
+    '/music/tech_explainer.mp3': 'https://res.cloudinary.com/diah8zonu/video/upload/v1788713682/vox-reels/music/tech_explainer.mp3',
+    'tech_explainer.mp3': 'https://res.cloudinary.com/diah8zonu/video/upload/v1788713682/vox-reels/music/tech_explainer.mp3',
+    '/music/cyber_beat.mp3': 'https://res.cloudinary.com/diah8zonu/video/upload/v1788713674/vox-reels/music/cyber_beat.mp3',
+    'cyber_beat.mp3': 'https://res.cloudinary.com/diah8zonu/video/upload/v1788713674/vox-reels/music/cyber_beat.mp3',
+    '/music/chill_lofi.mp3': 'https://res.cloudinary.com/diah8zonu/video/upload/v1788713666/vox-reels/music/chill_lofi.mp3',
+    'chill_lofi.mp3': 'https://res.cloudinary.com/diah8zonu/video/upload/v1788713666/vox-reels/music/chill_lofi.mp3',
+    '/music/cinematic_strings.mp3': 'https://res.cloudinary.com/diah8zonu/video/upload/v1788713668/vox-reels/music/cinematic_strings.mp3',
+    'cinematic_strings.mp3': 'https://res.cloudinary.com/diah8zonu/video/upload/v1788713668/vox-reels/music/cinematic_strings.mp3',
+    '/music/dark_suspense.mp3': 'https://res.cloudinary.com/diah8zonu/video/upload/v1788713676/vox-reels/music/dark_suspense.mp3',
+    'dark_suspense.mp3': 'https://res.cloudinary.com/diah8zonu/video/upload/v1788713676/vox-reels/music/dark_suspense.mp3',
+    '/music/curious_explainer.mp3': 'https://res.cloudinary.com/diah8zonu/video/upload/v1788713671/vox-reels/music/curious_explainer.mp3',
+    'curious_explainer.mp3': 'https://res.cloudinary.com/diah8zonu/video/upload/v1788713671/vox-reels/music/curious_explainer.mp3',
+    '/music/without_me.mp3': 'https://res.cloudinary.com/diah8zonu/video/upload/v1788713683/vox-reels/music/without_me.mp3',
+    'without_me.mp3': 'https://res.cloudinary.com/diah8zonu/video/upload/v1788713683/vox-reels/music/without_me.mp3',
+  };
+
+  const resolveMusicUrl = (u) => {
+    if (!u || typeof u !== 'string') return u;
+    for (const [key, cdn] of Object.entries(PRESET_MUSIC_URL_MAP)) {
+      if (u === key || u.endsWith(key)) return cdn;
+    }
+    return u;
+  };
+
+  if (clone.bgMusicUrl) clone.bgMusicUrl = resolveMusicUrl(clone.bgMusicUrl);
+  if (clone.plan && clone.plan.bgMusicUrl) clone.plan.bgMusicUrl = resolveMusicUrl(clone.plan.bgMusicUrl);
+
   const downloadQueue = [];
 
   const queueUrlDownload = (obj, key) => {

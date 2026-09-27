@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "sync:modal": "node scripts/sync-modal-bundle.mjs"
   },
   "dependencies": {
     "@clerk/nextjs": "^7.6.4",

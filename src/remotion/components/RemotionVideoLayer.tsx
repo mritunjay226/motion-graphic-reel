@@ -1,27 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { AbsoluteFill, OffthreadVideo, useCurrentFrame, interpolate } from "remotion";
 import { resolveAssetUrl } from "../utils/resolveAsset";
 
 export interface RemotionVideoLayerProps {
+  /** Video source (direct CDN MP4 stream) */
   src: string;
-  /** Opacity of the background video (default: 0.45 for atmospheric blend) */
+  /** Opacity of the background video layer (default: 0.92) */
   opacity?: number;
-  /** Visual color grade filter */
-  filter?: string;
-  /** Start offset frame within local scene */
+  /** Frame offset if video should start mid-clip */
   startFromFrame?: number;
-  /** If true, renders as a standalone 16:9 archival video plate with border and metadata badge */
+  /** Archival plate frame mode with bordered matte & scanlines */
   isArchivalPlate?: boolean;
-  /** Archival label text e.g. "HISTORICAL B-ROLL" */
+  /** Archival label text */
   archivalBadgeText?: string;
   style?: React.CSSProperties;
 }
 
 /**
- * High-performance 2.5D Remotion Video B-Roll Layer.
- *
+ * High-performance background / B-roll video layer.
  * Uses OffthreadVideo + local /cache/ resolution for instant zero-stall frame extraction.
- * Mutes embedded audio so voiceover/music remains clean and crisp.
  */
 export const RemotionVideoLayer: React.FC<RemotionVideoLayerProps> = ({
   src,
@@ -32,8 +29,9 @@ export const RemotionVideoLayer: React.FC<RemotionVideoLayerProps> = ({
   style,
 }) => {
   const frame = useCurrentFrame();
+  const [videoError, setVideoError] = useState(false);
 
-  if (!src) return null;
+  if (!src || videoError) return null;
 
   const resolvedSrc = resolveAssetUrl(src);
 
@@ -63,6 +61,10 @@ export const RemotionVideoLayer: React.FC<RemotionVideoLayerProps> = ({
           volume={0}
           muted={true}
           startFrom={startFromFrame}
+          onError={(e) => {
+            console.warn("[RemotionVideoLayer] OffthreadVideo error:", resolvedSrc, e);
+            setVideoError(true);
+          }}
           style={{
             width: "100%",
             height: "100%",
@@ -132,6 +134,10 @@ export const RemotionVideoLayer: React.FC<RemotionVideoLayerProps> = ({
         volume={0}
         muted={true}
         startFrom={startFromFrame}
+        onError={(e) => {
+          console.warn("[RemotionVideoLayer] OffthreadVideo error:", resolvedSrc, e);
+          setVideoError(true);
+        }}
         style={{
           width: "100%",
           height: "100%",

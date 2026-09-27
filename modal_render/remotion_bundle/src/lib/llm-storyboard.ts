@@ -24,6 +24,7 @@ export interface StoryboardSceneOutput {
   headline: string;
   subtitle: string;
   narration: string;
+  narrationTts?: string;
   imagePrompt: string;
   bRollQuery?: string;
   isSingleSubject: boolean;
@@ -51,17 +52,24 @@ export async function generateLLMStoryboard(topic: string, language: string = "e
   const isHindi = language.toLowerCase() === "hi";
 
   const languagePromptDirective = isHindi
-    ? `CRITICAL MULTI-LANGUAGE DIRECTIVE FOR HINDI (HINGLISH / ROMAN ALPHABET):
-- The target language requested by the user is HINDI (spoken voiceover), BUT ALL ON-SCREEN TEXT MUST BE WRITTEN IN HINGLISH (Romanized Hindi using standard English/Latin A-Z alphabet).
-- Every 'headline', 'subtitle', 'narration', and event 'content/headline' MUST be written in natural, viral, suspenseful HINGLISH (Roman script).
-- DO NOT USE Devanagari script (like हिंदी). Use English/Roman letters (A-Z) to spell out spoken Hindi words!
-- Example Hinglish Headline: "50M KI SABSE BADI GALTI"
-- Example Hinglish Subtitle: "EK DECISION NE BADAL DI PURI DUNIYA"
-- Example Hinglish Narration: "Is fifty million dollar ki galti ne raato-raat 9000 stores ke empire ko khatam kar diya... aur kisi ko iski bhanak tak nahi lagi!"
-- IMPORTANT: All 'imagePrompt' fields MUST STILL BE WRITTEN IN DETAILED ENGLISH so image generation models (Gemini Flash / Flux) render accurate visual assets!`
+    ? `CRITICAL DUAL-SCRIPT DIRECTIVE FOR HINDI (ON-SCREEN HINGLISH + SPOKEN DEVANAGARI):
+1. ON-SCREEN TEXT ('headline', 'subtitle', 'narration', and event 'content/headline'):
+   - MUST be written in high-retention, viral HINGLISH (Romanized Hindi using standard English/Latin A-Z alphabet).
+   - This ensures captions and typography on mobile screens look ultra-clean, modern, and viral.
+   - Example Hinglish Headline: "50M KI SABSE BADI GALTI"
+   - Example Hinglish Subtitle: "EK DECISION NE BADAL DI PURI DUNIYA"
+   - Example Hinglish Narration: "Is fifty million dollar ki galti ne raato-raat 9000 stores ke empire ko khatam kar diya... aur kisi ko iski bhanak tak nahi lagi!"
+
+2. SPOKEN AUDIO VOICEOVER ('narrationTts'):
+   - MUST be written in natural, fluent DEVANAGARI HINDI (हिंदी लिपि) matching the exact same meaning and phrasing as the narration.
+   - The multilingual TTS voiceover engine requires authentic Devanagari script for flawless, native Indian accent, correct grammar, and emotional cadence.
+   - Example narrationTts (Devanagari): "इस पचास मिलियन डॉलर की गलती ने रातों-रात नौ हज़ार स्टोर्स के साम्राज्य को ख़त्म कर दिया... और किसी को इसकी भनक तक नहीं लगी!"
+
+3. IMAGE PROMPTS:
+   - All 'imagePrompt' fields MUST STILL BE WRITTEN IN DETAILED ENGLISH so image generation models (Gemini Flash / Flux) render accurate visual assets!`
     : `CRITICAL MULTI-LANGUAGE DIRECTIVE FOR ${targetLanguage.toUpperCase()}:
 - The target language requested by the user is ${targetLanguage}.
-- Every 'headline', 'subtitle', and 'narration' MUST be written in natural, fluent ${targetLanguage}.
+- Every 'headline', 'subtitle', 'narration', and 'narrationTts' MUST be written in natural, fluent ${targetLanguage}.
 - IMPORTANT: All 'imagePrompt' fields MUST STILL BE WRITTEN IN DETAILED ENGLISH so image generation models (Gemini Flash / Flux) render accurate visual assets!`;
 
   const systemInstruction = `You are an elite Vox Video Creative Director & Viral Script Engineer (Vox / Alex Hormozi / MagnatesMedia style). Generate a 6-scene 30-second documentary reel JSON for the topic: "${topic}".
@@ -81,9 +89,11 @@ VIRAL SCRIPT ENGINEERING & NARRATION CONTINUITY DIRECTIVES:
    - Scene 6 narration MUST end with a high-impact punchline and a closing phrase structured to transition SEAMLESSLY back into Scene 1's hook.
    - This causes short-form algorithms (TikTok / Reels / Shorts) to loop the video seamlessly, doubling viewer watch-time retention!
 
-4. CONTINUOUS VOICEOVER FLOW:
+4. CONTINUOUS VOICEOVER FLOW & ACOUSTIC PACING:
    - Write all 6 scene narrations as one fluid, interconnected documentary story stream.
-   - Each narration sentence should connect smoothly to the next beat without abrupt standalone drops.
+   - Keep each scene narration between 12 to 20 words max for punchy, high-retention pacing.
+   - Use ellipses (...) for dramatic 250ms suspense pauses before revelations (e.g. "And then... it collapsed.").
+   - For English scripts, you may strategically inject one paralinguistic emotion tag ([chuckle], [sigh], [gasp], [whisper]) right before a twist or ironical punchline (e.g. "Blockbuster laughed. [chuckle] Big mistake.") to produce ultra-realistic human vocal inflection!
 
 5. PUNCHY 2-4 WORD UPPERCASE HEADLINES:
    - Every scene "headline" MUST be 2 to 4 punchy uppercase words max.
@@ -121,6 +131,7 @@ Output ONLY a valid JSON array of 6 scene objects matching this exact structure:
     "headline": "${isHindi ? "50M KI SABSE BADI GALTI" : "THE $50M MISTAKE"}",
     "subtitle": "${isHindi ? "EK DECISION NE TABAH KIYA EMPIRE" : "HOW A SINGLE DECISION DESTROYED AN EMPIRE"}",
     "narration": "${isHindi ? "Is fifty million dollar ki galti ne raato-raat 9000 stores ke empire ko khatam kar diya... aur kisi ko iski bhanak tak nahi lagi." : "This fifty million dollar mistake wiped out a nine thousand store empire overnight... and nobody saw it coming."}",
+    "narrationTts": "${isHindi ? "इस पचास मिलियन डॉलर की गलती ने रातों-रात नौ हज़ार स्टोर्स के साम्राज्य को ख़त्म कर दिया... और किसी को इसकी भनक तक नहीं लगी।" : "This fifty million dollar mistake wiped out a nine thousand store empire overnight... and nobody saw it coming."}",
     "imagePrompt": "Portrait cutout of main subject related to ${topic}, isolated single subject on solid white background, clean sticker",
     "bRollQuery": "Cinematic 4k B-roll footage related to ${topic}, e.g. corporate boardroom meeting or stock exchange floor",
     "isSingleSubject": true,
@@ -269,6 +280,7 @@ function generateDefaultVoxStoryboard(topic: string, language: string = "en"): S
         headline: `${sanitizedTopic.slice(0, 14)} KI SHURUAT`,
         subtitle: "EK IDEA JISNE BADAL DI PURI DUNIYA",
         narration: `${topic} ke shuruati dino me, ek chhoti si team ne ek aisa khatarnak risk liya jisne puri industry ko hilakar rakh diya.`,
+        narrationTts: `${topic} के शुरुआती दिनों में, एक छोटी सी टीम ने एक ऐसा ख़तरनाक रिस्क लिया जिसने पूरी इंडस्ट्री को हिलाकर रख दिया।`,
         imagePrompt: `Founder or key figure behind ${topic}, portrait cutout, isolated PNG sticker on white background`,
         isSingleSubject: true,
         visualType: "center_hero_cutout",
@@ -291,6 +303,7 @@ function generateDefaultVoxStoryboard(topic: string, language: string = "en"): S
         headline: "CRORE KA DAAV",
         subtitle: "EK AISA OFFER JISNE SAB BADAL DIYA",
         narration: "Unhone ek aisi krantikari strategy pesh ki jis par shuruat me investors ne sawal uthaye the.",
+        narrationTts: "उन्होंने एक ऐसी क्रांतिकारी रणनीति पेश की जिस पर शुरुआत में निवेशकों ने सवाल उठाए थे।",
         imagePrompt: `Stack of investment cash money for ${topic}, isolated PNG sticker on white background`,
         isSingleSubject: true,
         visualType: "split_left_newspaper_right_cutout",
@@ -303,6 +316,7 @@ function generateDefaultVoxStoryboard(topic: string, language: string = "en"): S
         headline: "MARKET KI JUNG",
         subtitle: "PURANE NIYAMO KO TODNA",
         narration: "Fizul kharcho ko khatam karke aur customer experience ko priority dekar, unhone record growth hasil ki.",
+        narrationTts: "फ़िज़ूल खर्चों को ख़त्म करके और कस्टमर एक्सपीरियंस को प्राथमिकता देकर, उन्होंने रिकॉर्ड ग्रोथ हासिल की।",
         imagePrompt: `Modern tech server glowing network for ${topic}, isolated PNG sticker on white background`,
         isSingleSubject: true,
         visualType: "dual_cutout_versus",
@@ -315,6 +329,7 @@ function generateDefaultVoxStoryboard(topic: string, language: string = "en"): S
         headline: "SECRET EVIDENCE",
         subtitle: "LEAKED AUDIT REPORT",
         narration: "Paramparik companies ne samay ke sath badalne se inkar kar diya, jiske parinam swarup unka patan ho gaya.",
+        narrationTts: "पारंपरिक कंपनियों ने समय के साथ बदलने से इनकार कर दिया, जिसके परिणामस्वरूप उनका पतन हो गया।",
         imagePrompt: `Abandoned traditional store front representing competitors of ${topic}, isolated PNG sticker on white background`,
         isSingleSubject: true,
         visualType: "spotlight_magnifier_document",
@@ -327,6 +342,7 @@ function generateDefaultVoxStoryboard(topic: string, language: string = "en"): S
         headline: "BILLIONS KA REVENUE",
         subtitle: "GLOBAL MARKET PAR RAJ",
         narration: "Aaj yahi strategy international markets me billions of dollars ka revenue generate karti hai.",
+        narrationTts: "आज यही रणनीति इंटरनेशनल मार्केट्स में अरबों डॉलर का रेवेन्यू जनरेट करती है।",
         imagePrompt: `Golden trophy award for digital dominance in ${topic}, isolated PNG sticker on white background`,
         isSingleSubject: true,
         visualType: "revenue_stat_trend",
@@ -339,6 +355,7 @@ function generateDefaultVoxStoryboard(topic: string, language: string = "en"): S
         headline: "ITHIHAS KA BADA MOD",
         subtitle: "EK IDEA SE GLOBAL EMPIRE TAK",
         narration: "Yeh aadhunik business itihas ki sabse shandar aur prernadayak growth stories me se ek hai.",
+        narrationTts: "यह आधुनिक बिज़नेस इतिहास की सबसे शानदार और प्रेरणादायक ग्रोथ कहानियों में से एक है।",
         imagePrompt: `Royal gold crown symbol of business victory for ${topic}, isolated PNG sticker on white background`,
         isSingleSubject: true,
         visualType: "editorial_strikethrough_swap",

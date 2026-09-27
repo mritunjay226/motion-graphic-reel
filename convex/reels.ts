@@ -99,6 +99,9 @@ export const createReelFromTopic = mutation({
       topic: args.topic,
       language: args.language || "en",
       status: "draft",
+      currentStep: 1,
+      progressPercent: 5,
+      progressMessage: "Initializing video generation...",
       storyboard: defaultStoryboard,
       createdAt: Date.now(),
       updatedAt: Date.now(),
@@ -210,6 +213,9 @@ export const updateReelStatus = mutation({
     errorMessage: v.optional(v.string()),
     failedStep: v.optional(v.string()),
     themeId: v.optional(v.string()),
+    currentStep: v.optional(v.number()),
+    progressPercent: v.optional(v.number()),
+    progressMessage: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const patches: any = {
@@ -224,8 +230,86 @@ export const updateReelStatus = mutation({
     if (args.errorMessage !== undefined) patches.errorMessage = args.errorMessage;
     if (args.failedStep !== undefined) patches.failedStep = args.failedStep;
     if (args.themeId) patches.themeId = args.themeId;
+    if (args.currentStep !== undefined) patches.currentStep = args.currentStep;
+    if (args.progressPercent !== undefined) patches.progressPercent = args.progressPercent;
+    if (args.progressMessage !== undefined) patches.progressMessage = args.progressMessage;
 
     await ctx.db.patch(args.reelId, patches);
+  },
+});
+
+/**
+ * Update real-time generation pipeline progress for a reel.
+ */
+export const updatePipelineProgress = mutation({
+  args: {
+    reelId: v.id("reels"),
+    currentStep: v.number(),
+    progressPercent: v.number(),
+    progressMessage: v.string(),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.patch(args.reelId, {
+      currentStep: args.currentStep,
+      progressPercent: args.progressPercent,
+      progressMessage: args.progressMessage,
+      updatedAt: Date.now(),
+    });
+  },
+});
+
+/**
+ * Re-synchronize single scene audio, duration, and Deepgram whisper tokens,
+ * and recompute contiguous startFrames for all scenes in the storyboard.
+ */
+export const updateSceneAudioAndTokens = mutation({
+  args: {
+    reelId: v.id("reels"),
+    sceneIndex: v.number(),
+    narration: v.string(),
+    audioUrl: v.string(),
+    audioDurationSec: v.number(),
+    durationFrames: v.number(),
+    whisperTokens: v.any(),
+  },
+  handler: async (ctx, args) => {
+    const reel = await ctx.db.get(args.reelId);
+    if (!reel) {
+      throw new Error(`Reel ${args.reelId} not found`);
+    }
+
+    const storyboard = [...(reel.storyboard || [])];
+    if (args.sceneIndex < 0 || args.sceneIndex >= storyboard.length) {
+      throw new Error(`Scene index ${args.sceneIndex} out of bounds (0-${storyboard.length - 1})`);
+    }
+
+    const target = storyboard[args.sceneIndex];
+    storyboard[args.sceneIndex] = {
+      ...target,
+      narration: args.narration,
+      audioUrl: args.audioUrl,
+      audioDurationSec: args.audioDurationSec,
+      durationFrames: args.durationFrames,
+      whisperTokens: args.whisperTokens,
+    };
+
+    // Recalculate contiguous timeline startFrame for every scene
+    let currentStart = 0;
+    for (let i = 0; i < storyboard.length; i++) {
+      storyboard[i] = {
+        ...storyboard[i],
+        startFrame: currentStart,
+        durationFrames: storyboard[i].durationFrames || Math.ceil((storyboard[i].audioDurationSec || 4) * 30),
+      };
+      currentStart += storyboard[i].durationFrames!;
+    }
+
+    await ctx.db.patch(args.reelId, {
+      storyboard,
+      updatedAt: Date.now(),
+    });
+
+    return storyboard[args.sceneIndex];
   },
 });
 
@@ -260,6 +344,53 @@ export const updateReelTheme = mutation({
       themeId: args.themeId,
       updatedAt: Date.now(),
     });
+  },
+});
+
+/**
+ * Update a specific scene in a reel's storyboard (headline, subtitle, narration, visualType, imageUrl, videoUrl).
+ */
+export const updateScene = mutation({
+  args: {
+    reelId: v.id("reels"),
+    sceneIndex: v.number(),
+    headline: v.optional(v.string()),
+    subtitle: v.optional(v.string()),
+    narration: v.optional(v.string()),
+    visualType: v.optional(v.string()),
+    imageUrl: v.optional(v.string()),
+    videoUrl: v.optional(v.string()),
+    bRollUrl: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const reel = await ctx.db.get(args.reelId);
+    if (!reel) {
+      throw new Error(`Reel ${args.reelId} not found`);
+    }
+
+    const storyboard = [...(reel.storyboard || [])];
+    if (args.sceneIndex < 0 || args.sceneIndex >= storyboard.length) {
+      throw new Error(`Scene index ${args.sceneIndex} out of bounds (0-${storyboard.length - 1})`);
+    }
+
+    const currentScene = storyboard[args.sceneIndex];
+    storyboard[args.sceneIndex] = {
+      ...currentScene,
+      headline: args.headline !== undefined ? args.headline : currentScene.headline,
+      subtitle: args.subtitle !== undefined ? args.subtitle : currentScene.subtitle,
+      narration: args.narration !== undefined ? args.narration : currentScene.narration,
+      visualType: args.visualType !== undefined ? args.visualType : currentScene.visualType,
+      imageUrl: args.imageUrl !== undefined ? args.imageUrl : currentScene.imageUrl,
+      videoUrl: args.videoUrl !== undefined ? args.videoUrl : currentScene.videoUrl,
+      bRollUrl: args.bRollUrl !== undefined ? args.bRollUrl : (args.videoUrl !== undefined ? args.videoUrl : currentScene.bRollUrl),
+    };
+
+    await ctx.db.patch(args.reelId, {
+      storyboard,
+      updatedAt: Date.now(),
+    });
+
+    return storyboard[args.sceneIndex];
   },
 });
 
