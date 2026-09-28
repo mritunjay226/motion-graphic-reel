@@ -21,14 +21,18 @@ export async function uploadAudioToCloudinary(
   const timestamp = Math.floor(Date.now() / 1000).toString();
   const publicId = fileName.replace(/\.[^/.]+$/, "");
   
-  // Format payload: data URL or Base64 string
+  // Format payload: data URL or Base64 string with accurate MIME type
   let fileData: string;
   if (Buffer.isBuffer(bufferOrBase64)) {
-    fileData = `data:audio/mp3;base64,${bufferOrBase64.toString("base64")}`;
+    const isWav = fileName.toLowerCase().endsWith(".wav") || bufferOrBase64.subarray(0, 4).toString("ascii") === "RIFF";
+    const mimeType = isWav ? "audio/wav" : "audio/mp3";
+    fileData = `data:${mimeType};base64,${bufferOrBase64.toString("base64")}`;
   } else if (bufferOrBase64.startsWith("data:")) {
     fileData = bufferOrBase64;
   } else {
-    fileData = `data:audio/mp3;base64,${bufferOrBase64}`;
+    const isWav = fileName.toLowerCase().endsWith(".wav") || bufferOrBase64.startsWith("UklGR");
+    const mimeType = isWav ? "audio/wav" : "audio/mp3";
+    fileData = `data:${mimeType};base64,${bufferOrBase64}`;
   }
 
   // Create SHA-1 signature for Cloudinary signed upload

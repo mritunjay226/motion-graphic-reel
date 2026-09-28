@@ -568,3 +568,28 @@ export const updateSocialPostStatus = mutation({
   },
 });
 
+/**
+ * Backfill missing createdAt / updatedAt for legacy reel documents using Convex _creationTime.
+ */
+export const backfillTimestamps = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const reels = await ctx.db.query("reels").collect();
+    let updatedCount = 0;
+    for (const reel of reels) {
+      const updates: { createdAt?: number; updatedAt?: number } = {};
+      if (reel.createdAt === undefined) {
+        updates.createdAt = reel._creationTime;
+      }
+      if (reel.updatedAt === undefined) {
+        updates.updatedAt = reel._creationTime;
+      }
+      if (Object.keys(updates).length > 0) {
+        await ctx.db.patch(reel._id, updates);
+        updatedCount++;
+      }
+    }
+    return { success: true, updatedCount };
+  },
+});
+

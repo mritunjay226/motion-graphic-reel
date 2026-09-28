@@ -123,7 +123,18 @@ export const TactileSfxLayer: React.FC<TactileSfxLayerProps> = ({
       }
     });
 
-    return deduplicated;
+    // Limiter: Maximum 3 concurrent active Foley cues per 2-frame window to guarantee clean mix headroom
+    const finalCues: MergedSfxCue[] = [];
+    deduplicated.forEach((cue) => {
+      const concurrentCount = finalCues.filter(
+        (existing) => Math.abs(existing.frame - cue.frame) <= 2
+      ).length;
+      if (concurrentCount < 3) {
+        finalCues.push(cue);
+      }
+    });
+
+    return finalCues;
   }, [sceneCues, customEvents]);
 
   return (

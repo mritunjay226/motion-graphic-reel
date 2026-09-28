@@ -25,23 +25,25 @@ const bebasNeue = (() => {
   }
 })();
 
-const montserrat = loadMontserrat("normal", fontOptions);
-const inter = loadInter("normal", fontOptions);
-const syne = loadSyne("normal", fontOptions);
-const spaceGrotesk = loadSpaceGrotesk("normal", fontOptions);
-const outfit = loadOutfit("normal", fontOptions);
-const playfairDisplay = loadPlayfairDisplay("normal", fontOptions);
-const oswald = loadOswald("normal", fontOptions);
-const cinzel = loadCinzel("normal", fontOptions);
-const permanentMarker = (() => {
+const safeLoadFont = (loader: any, fallbackName: string, ...args: any[]) => {
   try {
-    return loadPermanentMarker();
+    return loader(...args);
   } catch (e) {
-    return { fontFamily: "Permanent Marker" };
+    return { fontFamily: fallbackName };
   }
-})();
-const notoSansDevanagari = loadNotoSansDevanagari("normal", fontOptions);
-const teko = loadTeko("normal", fontOptions);
+};
+
+const montserrat = safeLoadFont(loadMontserrat, "Montserrat", "normal", fontOptions);
+const inter = safeLoadFont(loadInter, "Inter", "normal", fontOptions);
+const syne = safeLoadFont(loadSyne, "Syne", "normal", fontOptions);
+const spaceGrotesk = safeLoadFont(loadSpaceGrotesk, "Space Grotesk", "normal", fontOptions);
+const outfit = safeLoadFont(loadOutfit, "Outfit", "normal", fontOptions);
+const playfairDisplay = safeLoadFont(loadPlayfairDisplay, "Playfair Display", "normal", fontOptions);
+const oswald = safeLoadFont(loadOswald, "Oswald", "normal", fontOptions);
+const cinzel = safeLoadFont(loadCinzel, "Cinzel", "normal", fontOptions);
+const permanentMarker = safeLoadFont(loadPermanentMarker, "Permanent Marker");
+const notoSansDevanagari = safeLoadFont(loadNotoSansDevanagari, "Noto Sans Devanagari", "normal", fontOptions);
+const teko = safeLoadFont(loadTeko, "Teko", "normal", fontOptions);
 
 export const FONTS = {
   bebasNeue: `${bebasNeue.fontFamily}, ${teko.fontFamily}, sans-serif`,

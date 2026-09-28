@@ -20,6 +20,8 @@ import { SpotlightOverlay } from "./components/SpotlightOverlay";
 
 import { getLayoutTemplate } from "./templates/layouts";
 import { VoxCameraRig, CameraZoomPreset } from "./components/VoxCameraRig";
+import { ContinuousSpatialCamera } from "./components/ContinuousSpatialCamera";
+import { RackFocusLayer } from "./components/RackFocusLayer";
 import { RemotionVideoLayer } from "./components/RemotionVideoLayer";
 import { TactilePaperCanvas } from "./components/TactilePaperCanvas";
 
@@ -28,18 +30,26 @@ interface SceneRendererProps {
   voiceId?: string;
   theme?: VideoTheme;
   enableAudio?: boolean;
+  sceneIndex?: number;
+  totalScenes?: number;
+  prevScene?: Scene;
+  nextScene?: Scene;
 }
 
 /**
  * SceneRenderer orchestrates Vox documentary visual storytelling by routing scenes into 
- * broadcast-grade, collision-free 2.5D Vox layout templates with intelligent Steadicam
- * camera choreography, keyword-synced punch zooms, and selective spotlight focus.
+ * broadcast-grade, collision-free 2.5D Vox layout templates with intelligent 3D spatial
+ * camera choreography, match-cut portal dives, and optical rack focus depth-of-field.
  */
 export const SceneRenderer: React.FC<SceneRendererProps> = ({
   scene,
   voiceId,
   theme,
   enableAudio = true,
+  sceneIndex = 0,
+  totalScenes = 6,
+  prevScene,
+  nextScene,
 }) => {
   const frame = useCurrentFrame();
 
@@ -49,6 +59,7 @@ export const SceneRenderer: React.FC<SceneRendererProps> = ({
     durationFrames,
     animationRules,
     whisperTokens = [],
+    spatialCameraConfig,
   } = scene;
 
   const canvasBg = theme?.canvasBg || "#F4F4F6";
@@ -58,27 +69,6 @@ export const SceneRenderer: React.FC<SceneRendererProps> = ({
 
   // Select dynamic layout template preset
   const LayoutTemplate = getLayoutTemplate(scene, sceneId);
-
-  // Dynamic cinematic camera presets rotating across the 6-scene story arc
-  const cameraPresets: CameraZoomPreset[] = [
-    "slow_push_in",     // Scene 1: Authoritative center hook push
-    "focal_pan_right",  // Scene 2: Smooth slider drift tracking right
-    "slow_pull_out",    // Scene 3: Wide context reveal
-    "punch_zoom_beat",  // Scene 4: Crisp impact snap with steady push
-    "focal_pan_left",   // Scene 5: Smooth slider drift tracking left
-    "slow_push_in",     // Scene 6: Dramatic climax push
-  ];
-  const activeCameraPreset = cameraPresets[(Number(sceneId) - 1 + cameraPresets.length) % cameraPresets.length];
-
-  // Determine if this scene features secondary evidence (charts, memos, clippings)
-  const normLayout = String(layoutType).toLowerCase();
-  const hasSecondaryEvidence =
-    normLayout.includes("split") ||
-    normLayout.includes("memo") ||
-    normLayout.includes("chart") ||
-    normLayout.includes("stat") ||
-    normLayout.includes("matrix") ||
-    normLayout.includes("document");
 
   // Dynamic 2.5D depth transitions rotating across scenes
   const transitionTypes: CinematicTransitionType[] = [
@@ -91,7 +81,18 @@ export const SceneRenderer: React.FC<SceneRendererProps> = ({
   ];
   const activeTransition = transitionTypes[(Number(sceneId) - 1 + transitionTypes.length) % transitionTypes.length];
 
-  const backgroundImageUrl = scene.imageKitUrls?.background || (scene as any).imageUrl || "";
+  // Inter-Scene Match-Cut Handoff Determination
+  const isMatchCutEntry = Boolean(
+    sceneIndex > 0 &&
+    (prevScene?.spatialCameraConfig?.trajectoryMode === "portal_dive_matchcut" ||
+     spatialCameraConfig?.trajectoryMode === "portal_dive_matchcut")
+  );
+
+  const isMatchCutExit = Boolean(
+    nextScene &&
+    (spatialCameraConfig?.trajectoryMode === "portal_dive_matchcut" ||
+     nextScene?.spatialCameraConfig?.trajectoryMode === "portal_dive_matchcut")
+  );
 
   return (
     <AbsoluteFill
@@ -106,17 +107,28 @@ export const SceneRenderer: React.FC<SceneRendererProps> = ({
         durationFrames={durationFrames}
         transitionFrames={7}
       >
-        {/* Broadcast-Grade 2.5D Vox Camera Controller Rig */}
-        <VoxCameraRig
-          zoomPreset={activeCameraPreset}
-          layoutType={layoutType}
-          tokens={whisperTokens}
-          enableHandheldWiggle={true}
+        {/* Optical Rack Focus Depth-of-Field Engine */}
+        <RackFocusLayer
+          focusPlane={spatialCameraConfig?.rackFocusTarget || "subject"}
           durationFrames={durationFrames}
+          transitionFrames={12}
+          maxBlur={5}
         >
-          {/* Render Dynamic Broadcast Vox Layout Template */}
-          <LayoutTemplate scene={scene} theme={theme} />
-        </VoxCameraRig>
+          {/* Broadcast-Grade 3D Continuous Spatial Camera Rig */}
+          <ContinuousSpatialCamera
+            sceneIndex={sceneIndex}
+            totalScenes={totalScenes}
+            durationFrames={durationFrames}
+            layoutType={layoutType}
+            tokens={whisperTokens}
+            config={spatialCameraConfig}
+            isMatchCutEntry={isMatchCutEntry}
+            isMatchCutExit={isMatchCutExit}
+          >
+            {/* Render Dynamic Broadcast Vox Layout Template */}
+            <LayoutTemplate scene={scene} theme={theme} />
+          </ContinuousSpatialCamera>
+        </RackFocusLayer>
       </CinematicDepthTransition>
     </AbsoluteFill>
   );

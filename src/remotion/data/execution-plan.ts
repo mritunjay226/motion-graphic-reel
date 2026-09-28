@@ -28,12 +28,12 @@ export const baseExecutionPlan: ExecutionPlan = {
     narrationScript:
       "In the year 2000, a small startup called Netflix walked into Blockbuster's headquarters with a bold offer. They asked for fifty million dollars to become Blockbuster's online streaming arm. The Blockbuster executives literally laughed them out of the room, calling the idea a joke. What they didn't realize is they had just sealed their own fate. Within a decade, Netflix was worth over a hundred billion dollars. And Blockbuster? They filed for bankruptcy in 2010 — the most expensive rejection in business history.",
     voiceConfig: {
-      provider: "cartesia",
-      voiceId: "62ae83ad-4f6a-430b-af41-a9bede9286ca",
-      voiceName: "Vox High-Retention Explainer",
-      modelId: "sonic-3",
+      provider: "gemini",
+      voiceId: "fola_gemini",
+      voiceName: "Fola (Gemini 3.8 Flash Studio)",
+      modelId: "gemini-3.8-flash-tts",
       language: "en",
-      sampleRate: 44100,
+      sampleRate: 24000,
     },
     bgMusicTrack: {
       name: "cinematic_history_strings",

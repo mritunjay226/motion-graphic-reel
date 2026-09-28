@@ -29,7 +29,7 @@ function CreateVideoContent() {
 
   const [selectedLanguage, setSelectedLanguage] = useState<string>("hi");
   const [topic, setTopic] = useState<string>("");
-  const [selectedVoiceId, setSelectedVoiceId] = useState<string>("brian_hindi");
+  const [selectedVoiceId, setSelectedVoiceId] = useState<string>("fola_hindi");
   const [voiceFilter, setVoiceFilter] = useState<"matching" | "all">("matching");
   const [activeCategory, setActiveCategory] = useState<TopicCategoryKey>("viral");
   const [showAdvanced, setShowAdvanced] = useState<boolean>(false);

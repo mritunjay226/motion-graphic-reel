@@ -383,11 +383,20 @@ const ALL_LAYOUT_ORDER: string[] = [
   "ecosystem_integration_hub",
   "handwritten_roadmap_checklist",
   "editorial_strikethrough_swap",
+  "visual_metaphor_documentary",
+  "advanced_data_viz_suite",
+  "conspiracy_evidence_board",
+  "kinetic_typography_marquee",
 ];
 
 function resolveLayout(scene: Scene, sceneIndex: number): string {
   const raw = String((scene as any).layoutType || (scene as any).visualType || "").toLowerCase();
   if (raw) {
+    if (raw.includes("conspiracy") || raw.includes("evidence") || raw.includes("yarn") || raw.includes("board")) return "conspiracy_evidence_board";
+    if (raw.includes("metaphor") || raw.includes("scale") || raw.includes("funnel") || raw.includes("vault") || raw.includes("speedometer")) return "visual_metaphor_documentary";
+    if (raw.includes("data_viz") || raw.includes("spline") || raw.includes("donut") || raw.includes("matrix_table") || raw.includes("feature_matrix")) return "advanced_data_viz_suite";
+    if (raw.includes("marquee") || raw.includes("typography_marquee") || raw.includes("wallpaper")) return "kinetic_typography_marquee";
+    if (raw.includes("saas") || raw.includes("product_hero") || raw.includes("browser")) return "saas_product_hero";
     if (raw.includes("split_left_right") || raw.includes("memo")) return "split_left_cutout_right_memo";
     if (raw.includes("newspaper")) return "split_left_newspaper_right_cutout";
     if (raw.includes("stat") || raw.includes("trend") || raw.includes("revenue")) return "revenue_stat_trend";
@@ -413,8 +422,8 @@ function resolveLayout(scene: Scene, sceneIndex: number): string {
 
 /**
  * Computes elegant, restrained, broadcast-quality tactile Foley sound cues.
- * Follows the 1-Transition + 1-Accent rule (MAX 2 sounds per scene)
- * to maintain 100% speech clarity without chaotic overlapping sound effects.
+ * Follows the 1-Transition + 1-Accent + 1-PreRiser hierarchy
+ * to maintain 100% speech clarity with physical texture.
  */
 export function computeSceneTactileCues(scene: Scene, sceneIndex: number, totalScenes: number = 6): ComputedSfxCue[] {
   const cues: ComputedSfxCue[] = [];
@@ -423,6 +432,19 @@ export function computeSceneTactileCues(scene: Scene, sceneIndex: number, totalS
   const headline = String((scene as any).headline || scene.sceneTitle || "").toLowerCase();
   const narration = String((scene as any).narration || scene.narrationLine || "").toLowerCase();
   const explicitCue = (scene as any).sfxCue as SfxSoundId | undefined;
+
+  // ── 0. PRE-TRANSITION TENSION RISER (Begins 15 frames before scene cut) ──
+  if (sceneIndex < totalScenes - 1 && scene.durationFrames >= 24) {
+    const riserStart = sceneStart + scene.durationFrames - 15;
+    cues.push({
+      id: `riser-${scene.sceneId}`,
+      soundId: "tension_riser",
+      frame: riserStart,
+      durationFrames: 15,
+      volume: 0.16,
+      label: `Scene ${scene.sceneId} Pre-Transition Tension Riser`,
+    });
+  }
 
   // ── 1. TRANSITION FOLEY (Frame 0: Exactly 1 per scene) ──
   if (sceneIndex === 0) {
@@ -447,7 +469,13 @@ export function computeSceneTactileCues(scene: Scene, sceneIndex: number, totalS
     });
   } else {
     // Inter-scene cuts: Synchronized to frame 3 (exact midpoint of 7-frame transition cut)
-    const isPaperTheme = layout.includes("memo") || layout.includes("newspaper") || layout.includes("editorial") || layout.includes("document");
+    const isPaperTheme =
+      layout.includes("memo") ||
+      layout.includes("newspaper") ||
+      layout.includes("editorial") ||
+      layout.includes("document") ||
+      layout.includes("evidence") ||
+      layout.includes("conspiracy");
     cues.push({
       id: `trans-${scene.sceneId}`,
       soundId: isPaperTheme ? "paper_rip" : "whip_fast",
@@ -475,7 +503,199 @@ export function computeSceneTactileCues(scene: Scene, sceneIndex: number, totalS
   const isTwist = headline.includes("mistake") || headline.includes("galti") || headline.includes("rejected") || headline.includes("bankrupt") || headline.includes("fail") || headline.includes("warning");
   const isFinancial = headline.includes("$") || headline.includes("m") || headline.includes("b") || headline.includes("revenue") || headline.includes("loss") || headline.includes("profit") || narration.includes("dollar") || narration.includes("crore") || narration.includes("million") || narration.includes("billion");
 
-  if (isTwist && sceneIndex > 0 && sceneIndex < totalScenes - 1) {
+  if (layout === "conspiracy_evidence_board") {
+    // Conspiracy Board: String connection at frame 12, Rubber stamp impact at frame 32
+    cues.push({
+      id: `accent-yarn-${scene.sceneId}`,
+      soundId: "paper_tape",
+      frame: sceneStart + 12,
+      durationFrames: 16,
+      volume: 0.18,
+      label: `Scene ${scene.sceneId} Red Yarn Pin Snap`,
+    });
+    cues.push({
+      id: `accent-stamp-${scene.sceneId}`,
+      soundId: "rubber_stamp",
+      frame: sceneStart + 32,
+      durationFrames: 22,
+      volume: 0.28,
+      label: `Scene ${scene.sceneId} Forensic Stamp Slam`,
+    });
+    cues.push({
+      id: `accent-stamp-boom-${scene.sceneId}`,
+      soundId: "cinematic_sub_boom",
+      frame: sceneStart + 32,
+      durationFrames: 20,
+      volume: 0.14,
+      label: `Scene ${scene.sceneId} Stamp Sub Weight`,
+    });
+  } else if (layout === "visual_metaphor_documentary") {
+    const isScale = headline.includes("scale") || headline.includes("cost") || headline.includes("balance") || headline.includes("weigh");
+    const isFunnel = headline.includes("funnel") || headline.includes("leak") || headline.includes("churn") || headline.includes("drop");
+    const isVault = headline.includes("vault") || headline.includes("lock") || headline.includes("security") || headline.includes("safe");
+
+    if (isScale) {
+      cues.push({
+        id: `accent-scale-coin-${scene.sceneId}`,
+        soundId: "coin_clink",
+        frame: sceneStart + 14,
+        durationFrames: 18,
+        volume: 0.22,
+        label: `Scene ${scene.sceneId} Scale Weight Drop`,
+      });
+      cues.push({
+        id: `accent-scale-thud-${scene.sceneId}`,
+        soundId: "rubber_stamp",
+        frame: sceneStart + 28,
+        durationFrames: 20,
+        volume: 0.20,
+        label: `Scene ${scene.sceneId} Balance Scale Tilt Impact`,
+      });
+    } else if (isFunnel) {
+      cues.push({
+        id: `accent-funnel-bubble-${scene.sceneId}`,
+        soundId: "bubble_pop",
+        frame: sceneStart + 16,
+        durationFrames: 12,
+        volume: 0.20,
+        label: `Scene ${scene.sceneId} Funnel Churn Bubble`,
+      });
+      cues.push({
+        id: `accent-funnel-drip-${scene.sceneId}`,
+        soundId: "paper_slide",
+        frame: sceneStart + 26,
+        durationFrames: 16,
+        volume: 0.16,
+        label: `Scene ${scene.sceneId} Funnel Fluid Fill`,
+      });
+    } else if (isVault) {
+      cues.push({
+        id: `accent-vault-click-${scene.sceneId}`,
+        soundId: "mechanical_click",
+        frame: sceneStart + 12,
+        durationFrames: 16,
+        volume: 0.22,
+        label: `Scene ${scene.sceneId} Vault Tumbler Click`,
+      });
+      cues.push({
+        id: `accent-vault-lock-${scene.sceneId}`,
+        soundId: "cinematic_sub_boom",
+        frame: sceneStart + 30,
+        durationFrames: 24,
+        volume: 0.24,
+        label: `Scene ${scene.sceneId} Vault Deadbolt Lock Slam`,
+      });
+    } else {
+      // Speedometer
+      cues.push({
+        id: `accent-speed-needle-${scene.sceneId}`,
+        soundId: "tension_riser",
+        frame: sceneStart + 8,
+        durationFrames: 18,
+        volume: 0.18,
+        label: `Scene ${scene.sceneId} Tachometer Rev Riser`,
+      });
+      cues.push({
+        id: `accent-speed-pop-${scene.sceneId}`,
+        soundId: "tactile_pop",
+        frame: sceneStart + 26,
+        durationFrames: 10,
+        volume: 0.18,
+        label: `Scene ${scene.sceneId} Redline Rev Limiter Bounce`,
+      });
+    }
+  } else if (layout === "advanced_data_viz_suite") {
+    const isDonut = headline.includes("donut") || headline.includes("percent") || headline.includes("gauge") || headline.includes("share");
+    const isMatrix = headline.includes("matrix") || headline.includes("versus") || headline.includes("comparison") || headline.includes("audit");
+
+    if (isDonut) {
+      cues.push({
+        id: `accent-donut-click-${scene.sceneId}`,
+        soundId: "mechanical_click",
+        frame: sceneStart + 14,
+        durationFrames: 16,
+        volume: 0.20,
+        label: `Scene ${scene.sceneId} Radial Donut Gauge Tick`,
+      });
+      cues.push({
+        id: `accent-donut-ding-${scene.sceneId}`,
+        soundId: "bell_ding",
+        frame: sceneStart + 26,
+        durationFrames: 20,
+        volume: 0.22,
+        label: `Scene ${scene.sceneId} Donut Target Reached`,
+      });
+    } else if (isMatrix) {
+      cues.push({
+        id: `accent-matrix-staple-${scene.sceneId}`,
+        soundId: "paper_staple",
+        frame: sceneStart + 14,
+        durationFrames: 16,
+        volume: 0.20,
+        label: `Scene ${scene.sceneId} Matrix Row Audit Check`,
+      });
+      cues.push({
+        id: `accent-matrix-stamp-${scene.sceneId}`,
+        soundId: "rubber_stamp",
+        frame: sceneStart + 32,
+        durationFrames: 22,
+        volume: 0.26,
+        label: `Scene ${scene.sceneId} Matrix Verdict Stamp`,
+      });
+    } else {
+      // Spline Area Graph
+      cues.push({
+        id: `accent-spline-swoosh-${scene.sceneId}`,
+        soundId: "light_swoosh",
+        frame: sceneStart + 12,
+        durationFrames: 16,
+        volume: 0.18,
+        label: `Scene ${scene.sceneId} Spline Path Draw`,
+      });
+      cues.push({
+        id: `accent-spline-chime-${scene.sceneId}`,
+        soundId: "success_chime",
+        frame: sceneStart + 28,
+        durationFrames: 20,
+        volume: 0.20,
+        label: `Scene ${scene.sceneId} Spline Value Peak Chime`,
+      });
+    }
+  } else if (layout === "kinetic_typography_marquee") {
+    cues.push({
+      id: `accent-marquee-slide-${scene.sceneId}`,
+      soundId: "paper_slide",
+      frame: sceneStart + 8,
+      durationFrames: 18,
+      volume: 0.16,
+      label: `Scene ${scene.sceneId} Marquee Ribbon Drift`,
+    });
+    cues.push({
+      id: `accent-marquee-stamp-${scene.sceneId}`,
+      soundId: "rubber_stamp",
+      frame: sceneStart + 26,
+      durationFrames: 22,
+      volume: 0.24,
+      label: `Scene ${scene.sceneId} Evidence Stamp Impact`,
+    });
+  } else if (layout === "saas_product_hero") {
+    cues.push({
+      id: `accent-saas-click-${scene.sceneId}`,
+      soundId: "mouse_click",
+      frame: sceneStart + 18,
+      durationFrames: 12,
+      volume: 0.24,
+      label: `Scene ${scene.sceneId} Cursor Click Impact`,
+    });
+    cues.push({
+      id: `accent-saas-ripple-${scene.sceneId}`,
+      soundId: "bubble_pop",
+      frame: sceneStart + 22,
+      durationFrames: 10,
+      volume: 0.16,
+      label: `Scene ${scene.sceneId} Click Ripple Pop`,
+    });
+  } else if (isTwist && sceneIndex > 0 && sceneIndex < totalScenes - 1) {
     // Dramatic narrative reversal / mistake
     cues.push({
       id: `accent-twist-${scene.sceneId}`,

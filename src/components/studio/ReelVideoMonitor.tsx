@@ -18,6 +18,12 @@ interface ReelVideoMonitorProps {
   };
   mounted: boolean;
   onTogglePlay: (e?: React.MouseEvent) => void;
+  showSafeZones?: boolean;
+  onToggleSafeZones?: () => void;
+  enableInfiniteCanvas?: boolean;
+  onToggleInfiniteCanvas?: () => void;
+  enableLoop?: boolean;
+  onToggleLoop?: () => void;
 }
 
 export const ReelVideoMonitor: React.FC<ReelVideoMonitorProps> = ({
@@ -31,6 +37,12 @@ export const ReelVideoMonitor: React.FC<ReelVideoMonitorProps> = ({
   preloadStatus,
   mounted,
   onTogglePlay,
+  showSafeZones = false,
+  onToggleSafeZones,
+  enableInfiniteCanvas = true,
+  onToggleInfiniteCanvas,
+  enableLoop = false,
+  onToggleLoop,
 }) => {
   return (
     <div className="w-full flex flex-col items-center">
@@ -54,6 +66,63 @@ export const ReelVideoMonitor: React.FC<ReelVideoMonitorProps> = ({
             F{currentFrame}
           </span>
         </div>
+      </div>
+
+      {/* Quick Action Mode Badges */}
+      <div className="w-full flex items-center justify-start gap-1.5 pb-2 mb-1 text-xs">
+        {onToggleInfiniteCanvas && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleInfiniteCanvas();
+            }}
+            title="Toggle 3D Infinite Canvas vs Classic View"
+            className={`px-2 py-0.5 rounded-full text-[10px] font-medium border transition-colors flex items-center gap-1 cursor-pointer ${
+              enableInfiniteCanvas
+                ? "bg-indigo-50 text-indigo-700 border-indigo-200 shadow-xs"
+                : "bg-neutral-100 text-neutral-500 border-neutral-200 hover:text-neutral-700"
+            }`}
+          >
+            <span>{enableInfiniteCanvas ? "3D Canvas" : "Classic View"}</span>
+          </button>
+        )}
+
+        {onToggleLoop && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleLoop();
+            }}
+            title="Toggle Seamless Loop Return"
+            className={`px-2 py-0.5 rounded-full text-[10px] font-medium border transition-colors flex items-center gap-1 cursor-pointer ${
+              enableLoop
+                ? "bg-purple-50 text-purple-700 border-purple-200 shadow-xs"
+                : "bg-neutral-100 text-neutral-500 border-neutral-200 hover:text-neutral-700"
+            }`}
+          >
+            <span>Loop</span>
+          </button>
+        )}
+
+        {onToggleSafeZones && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleSafeZones();
+            }}
+            title="Toggle 9:16 Social Retention Safe Zones"
+            className={`px-2 py-0.5 rounded-full text-[10px] font-medium border transition-colors flex items-center gap-1 cursor-pointer ${
+              showSafeZones
+                ? "bg-rose-50 text-rose-700 border-rose-200 shadow-xs"
+                : "bg-neutral-100 text-neutral-500 border-neutral-200 hover:text-neutral-700"
+            }`}
+          >
+            <span>Safe Zones</span>
+          </button>
+        )}
       </div>
 
       {/* 9:16 Video Frame Viewport Stage (Pro Display Styling) */}

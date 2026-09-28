@@ -12,7 +12,7 @@ export default defineSchema({
     email: v.string(),
     name: v.optional(v.string()),
     imageUrl: v.optional(v.string()),
-    createdAt: v.number(),
+    createdAt: v.optional(v.number()),
   }).index("by_clerk_id", ["clerkId"]),
 
   reels: defineTable({
@@ -84,8 +84,8 @@ export default defineSchema({
         })
       )
     ),
-    createdAt: v.number(),
-    updatedAt: v.number(),
+    createdAt: v.optional(v.number()),
+    updatedAt: v.optional(v.number()),
   })
     .index("by_user", ["userId"])
     .index("by_status", ["status"]),

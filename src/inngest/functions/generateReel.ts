@@ -6,8 +6,11 @@ import { fetchRealWorldAssetImage } from "@/lib/web-asset-fetcher";
 import { fetchVerifiedVideoBRoll } from "@/lib/video-fetcher";
 import { generateGeminiImage } from "@/lib/gemini-image";
 import { generateSvgVectorStickerUrl } from "@/remotion/utils/vector-assets";
-import { getOrGenerateAudio } from "@/lib/cartesia";
-import { generateChatterboxAudio } from "@/lib/chatterbox";
+import {
+  generateGeminiAudio,
+  resolveGeminiVoiceName,
+  resolveGeminiModel,
+} from "@/lib/gemini-tts";
 import { getVoicePresetById, getDefaultVoiceForLanguage } from "@/lib/voice-presets";
 import { uploadImageToImageKit } from "@/lib/imagekit";
 import { ConvexHttpClient } from "convex/browser";
@@ -84,113 +87,123 @@ export const generateReelPipeline = (inngest.createFunction as any)(
         return prompts;
       });
 
-      // ─── Step 3: High-Speed Parallel Audio TTS Generation (Chatterbox + Cartesia Fallback) ───
+      // ─── Step 3: High-Speed Parallel Audio TTS Generation (Gemini 3.8 Flash TTS & Flash Lite) ───
       const audioData = await step.run("3-generate-audio-tts", async () => {
         const selectedPreset = getVoicePresetById(voiceId) || getDefaultVoiceForLanguage(language);
-        const voiceClipUrl = selectedPreset?.clipUrl;
-        const baseExaggeration = selectedPreset?.recommendedExaggeration ?? 0.70;
-        const baseCfgWeight = selectedPreset?.recommendedCfgWeight ?? 0.35;
+        const resolvedVoice = resolveGeminiVoiceName(selectedPreset?.geminiVoiceName || selectedPreset?.name || voiceId, language);
+        const preferredModel = resolveGeminiModel(selectedPreset?.model || "gemini-3.8-flash-tts");
 
-        console.log(`[Step 3] Generating voiceover via Chatterbox TTS on Modal (${language}) using preset: "${selectedPreset?.name}"...`);
-        const isHi = language.toLowerCase() === "hi" || language.toLowerCase() === "hinglish";
-        const fallbackVoice = isHi ? "7e8cb11d-37af-476b-ab8f-25da99b18644" : "62ae83ad-4f6a-430b-af41-a9bede9286ca";
-        const voice = (voiceId && !voiceId.includes("_")) ? voiceId : fallbackVoice;
+        console.log(`[Step 3] Generating voiceover via Gemini 3.8 Flash TTS (${language}) with voice: "${resolvedVoice}" (${preferredModel})...`);
         let masterVoiceoverUrl = "";
-        let masterBufferBase64 = "";
 
         // 1. Synthesize Master Continuous Script (prioritize Devanagari narrationTts for authentic Hindi pronunciation)
         const masterScript = scriptScenes.map((sc: any) => (sc.narrationTts || sc.narration).trim()).join(" ");
+
         try {
-          // Primary: Chatterbox Dual-Model Engine on Modal with zero-shot voice cloning
-          const chatterboxMaster = await generateChatterboxAudio({
-            prompt: masterScript,
+          // Primary: Gemini 3.8 Flash TTS (or preset specified model)
+          const geminiMaster = await generateGeminiAudio({
+            text: masterScript,
+            voiceName: resolvedVoice,
+            model: preferredModel,
             language,
-            voiceClipUrl,
-            exaggeration: baseExaggeration,
-            cfgWeight: baseCfgWeight,
-            isHookScene: false,
           });
-          masterVoiceoverUrl = chatterboxMaster.audioUrl;
-          console.log(`[Step 3] ✅ Master continuous voiceover generated via Chatterbox (${selectedPreset?.name}): ${masterVoiceoverUrl}`);
-        } catch (chatterboxMasterErr: any) {
-          console.warn(`[Step 3 Chatterbox Master Fallback]`, chatterboxMasterErr.message);
-          // Fallback: Cartesia Sonic-3
+
+          const masterBuffer = geminiMaster.buffer;
+          const fileName = `master_voiceover_${Date.now()}.wav`;
+
           try {
-            const masterArrayBuffer = await getOrGenerateAudio(masterScript, voice, "sonic-3", language);
-            const masterBuffer = Buffer.from(masterArrayBuffer);
-            masterBufferBase64 = masterBuffer.toString("base64");
-            const fileName = `master_voiceover_${Date.now()}.mp3`;
+            masterVoiceoverUrl = await uploadAudioToCloudinary(masterBuffer, fileName, "vox-reels/audio");
+            console.log(`[Step 3] ✅ Master continuous voiceover synthesized via ${geminiMaster.model} [${resolvedVoice}] & uploaded to Cloudinary: ${masterVoiceoverUrl}`);
+          } catch (cloudErr: any) {
+            console.error(`[Step 3 Cloudinary Master Upload Error]`, cloudErr.message);
+          }
+        } catch (geminiMasterErr: any) {
+          console.warn(`[Step 3 Gemini Flash Master Fallback]`, geminiMasterErr.message);
+          // Fallback: Gemini 3.8 Flash Lite TTS
+          try {
+            const liteMaster = await generateGeminiAudio({
+              text: masterScript,
+              voiceName: resolvedVoice,
+              model: "gemini-3.8-flash-lite-tts",
+              language,
+            });
+            const masterBuffer = liteMaster.buffer;
+            const fileName = `master_voiceover_lite_${Date.now()}.wav`;
             try {
               masterVoiceoverUrl = await uploadAudioToCloudinary(masterBuffer, fileName, "vox-reels/audio");
-            } catch {
-              masterVoiceoverUrl = `data:audio/mp3;base64,${masterBufferBase64}`;
+            } catch (cloudErr: any) {
+              console.error(`[Step 3 Cloudinary Lite Master Upload Error]`, cloudErr.message);
             }
-          } catch (cErr: any) {
-            console.warn(`[Step 3 Cartesia Master Warning]`, cErr.message);
+          } catch (liteErr: any) {
+            console.error(`[Step 3 Gemini Flash Lite Master Error]`, liteErr.message);
           }
         }
 
-        // 2. Synthesize Per-Scene Audio Chunks in Bounded Batches (Batch size 2 for optimal A10G throughput)
+        // 2. Synthesize Per-Scene Audio Chunks in Parallel Batches
         const processSceneAudio = async (sc: any) => {
           let audioUrl = "";
-          let bufferBase64 = "";
           const ttsPrompt = (sc.narrationTts || sc.narration).trim();
-          const wordCount = sc.narration.trim().split(/\s+/).filter(Boolean).length;
-          const estimatedDurationSec = Math.max(2.5, Math.round(wordCount * 0.38 * 10) / 10);
-          const isHook = sc.sceneId === 1;
 
-          // Tier 1: Chatterbox TTS (Modal A10G dual-model: Turbo for EN, Multilingual for HI)
           try {
-            const chatterboxResult = await generateChatterboxAudio({
-              prompt: ttsPrompt,
+            // Tier 1: Gemini 3.8 Flash TTS
+            const geminiResult = await generateGeminiAudio({
+              text: ttsPrompt,
+              voiceName: resolvedVoice,
+              model: preferredModel,
               language,
-              voiceClipUrl,
-              exaggeration: isHook ? Math.min(1.0, baseExaggeration + 0.05) : baseExaggeration,
-              cfgWeight: isHook ? Math.min(1.0, baseCfgWeight + 0.05) : baseCfgWeight,
-              isHookScene: isHook,
             });
-            audioUrl = chatterboxResult.audioUrl;
-            console.log(`[Step 3] ✅ Scene ${sc.sceneId} audio generated via Chatterbox [${selectedPreset?.name}] (${estimatedDurationSec}s): ${audioUrl}`);
+
+            const buffer = geminiResult.buffer;
+            const fileName = `narration_sc_${sc.sceneId}_${Date.now()}.wav`;
+            const durationSec = geminiResult.durationSec;
+
+            try {
+              audioUrl = await uploadAudioToCloudinary(buffer, fileName, "vox-reels/audio");
+              console.log(`[Step 3] ✅ Scene ${sc.sceneId} audio generated via ${geminiResult.model} [${resolvedVoice}] (${durationSec}s): ${audioUrl}`);
+            } catch (cloudErr: any) {
+              console.error(`[Step 3 Scene ${sc.sceneId} Cloudinary Error]`, cloudErr.message);
+            }
 
             return {
               sceneId: sc.sceneId,
               narration: sc.narration,
               audioUrl,
-              bufferBase64: "",
-              audioDurationSec: estimatedDurationSec,
+              audioDurationSec: durationSec,
             };
-          } catch (chatterboxErr: any) {
-            console.warn(`[Step 3 Chatterbox Scene Fallback] Scene ${sc.sceneId}: ${chatterboxErr.message}. Falling back to Cartesia...`);
-
-            // Tier 2 Fallback: Cartesia Sonic-3
+          } catch (sceneErr: any) {
+            console.warn(`[Step 3 Scene Fallback] Scene ${sc.sceneId}: ${sceneErr.message}. Trying Flash Lite...`);
             try {
-              const arrayBuffer = await getOrGenerateAudio(ttsPrompt, voice, "sonic-3", language);
-              const buffer = Buffer.from(arrayBuffer);
-              bufferBase64 = buffer.toString("base64");
-              const fileName = `narration_sc_${sc.sceneId}_${Date.now()}.mp3`;
-              const durationSec = Math.round((buffer.length / 16000) * 100) / 100;
+              const liteResult = await generateGeminiAudio({
+                text: ttsPrompt,
+                voiceName: resolvedVoice,
+                model: "gemini-3.8-flash-lite-tts",
+                language,
+              });
+
+              const buffer = liteResult.buffer;
+              const fileName = `narration_sc_${sc.sceneId}_lite_${Date.now()}.wav`;
+              const durationSec = liteResult.durationSec;
 
               try {
                 audioUrl = await uploadAudioToCloudinary(buffer, fileName, "vox-reels/audio");
-                console.log(`[Step 3] ✅ Scene ${sc.sceneId} Cartesia fallback audio uploaded (${durationSec}s)`);
-              } catch {
-                audioUrl = `data:audio/mp3;base64,${bufferBase64}`;
+              } catch (cloudErr: any) {
+                console.error(`[Step 3 Scene ${sc.sceneId} Lite Cloudinary Error]`, cloudErr.message);
               }
 
               return {
                 sceneId: sc.sceneId,
                 narration: sc.narration,
                 audioUrl,
-                bufferBase64,
                 audioDurationSec: durationSec,
               };
-            } catch (cartesiaErr: any) {
-              console.warn(`[Step 3 All Audio Failed] Scene ${sc.sceneId}:`, cartesiaErr.message);
+            } catch (liteErr: any) {
+              console.error(`[Step 3 All Audio Failed] Scene ${sc.sceneId}:`, liteErr.message);
+              const wordCount = sc.narration.trim().split(/\s+/).filter(Boolean).length;
+              const estimatedDurationSec = Math.max(2.5, Math.round(wordCount * 0.38 * 10) / 10);
               return {
                 sceneId: sc.sceneId,
                 narration: sc.narration,
                 audioUrl: "",
-                bufferBase64: "",
                 audioDurationSec: estimatedDurationSec,
               };
             }
@@ -198,7 +211,7 @@ export const generateReelPipeline = (inngest.createFunction as any)(
         };
 
         const sceneResults: any[] = [];
-        const BATCH_SIZE = 2;
+        const BATCH_SIZE = 3;
         for (let i = 0; i < scriptScenes.length; i += BATCH_SIZE) {
           const batch = scriptScenes.slice(i, i + BATCH_SIZE);
           const batchResults = await Promise.all(batch.map((sc: any) => processSceneAudio(sc)));
@@ -210,30 +223,28 @@ export const generateReelPipeline = (inngest.createFunction as any)(
             reelId: reelId as Id<"reels">,
             currentStep: 3,
             progressPercent: 45,
-            progressMessage: "Voiceover synthesized. Aligning captions with Deepgram...",
+            progressMessage: "Voiceover synthesized via Gemini 3.8 Flash TTS. Aligning captions...",
           });
         } catch (pErr) {
           console.warn(`[Progress Update Warning]`, pErr);
         }
 
-        return { sceneResults, masterVoiceoverUrl, masterBufferBase64 };
+        return { sceneResults, masterVoiceoverUrl };
       });
 
       // ─── Step 4: Parallel Deepgram Nova-2 Transcription ────────────────
       const captionsData = await step.run("4-deepgram-captions", async () => {
-        console.log(`[Step 4] Transcribing word-level captions concurrently from audio buffers (${language})`);
+        console.log(`[Step 4] Transcribing word-level captions concurrently from audio URLs (${language})`);
         const sceneAudios = audioData?.sceneResults || (Array.isArray(audioData) ? audioData : []);
 
         const captionPromises = scriptScenes.map(async (sc: any) => {
           const audioItem = sceneAudios.find((a: any) => a.sceneId === sc.sceneId);
-          let result: { tokens: any[]; durationSec: number };
-
-          if (audioItem?.bufferBase64) {
-            const buffer = Buffer.from(audioItem.bufferBase64, "base64");
-            result = await transcribeAudioWithDeepgramDetailed(sc.narration, buffer, language, audioItem?.audioDurationSec);
-          } else {
-            result = await transcribeAudioWithDeepgramDetailed(sc.narration, audioItem?.audioUrl, language, audioItem?.audioDurationSec);
-          }
+          const result = await transcribeAudioWithDeepgramDetailed(
+            sc.narration,
+            audioItem?.audioUrl,
+            language,
+            audioItem?.audioDurationSec
+          );
 
           return {
             sceneId: sc.sceneId,
