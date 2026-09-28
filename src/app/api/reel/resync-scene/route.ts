@@ -2,8 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { ConvexHttpClient } from "convex/browser";
 import { api } from "../../../../../convex/_generated/api";
 import { Id } from "../../../../../convex/_generated/dataModel";
-import { generateChatterboxAudio } from "@/lib/chatterbox";
-import { getOrGenerateAudio } from "@/lib/cartesia";
+import {
+  generateGeminiAudio,
+  resolveGeminiVoiceName,
+  resolveGeminiModel,
+} from "@/lib/gemini-tts";
 import { uploadAudioToCloudinary } from "@/lib/cloudinary";
 import { transcribeAudioWithDeepgramDetailed } from "@/lib/deepgram";
 import { getVoicePresetById, getDefaultVoiceForLanguage } from "@/lib/voice-presets";
@@ -52,42 +55,50 @@ export async function POST(req: NextRequest) {
     const cleanNarration = narration.trim();
     const selectedLanguage = language || reel.language || "en";
     const selectedPreset = getVoicePresetById(voiceId) || getDefaultVoiceForLanguage(selectedLanguage);
-    const voiceClipUrl = selectedPreset?.clipUrl;
-    const baseExaggeration = selectedPreset?.recommendedExaggeration ?? 0.70;
-    const baseCfgWeight = selectedPreset?.recommendedCfgWeight ?? 0.35;
-    const isHook = sceneIndex === 0;
+    const resolvedVoice = resolveGeminiVoiceName(selectedPreset?.geminiVoiceName || selectedPreset?.name || voiceId, selectedLanguage);
+    const preferredModel = resolveGeminiModel(selectedPreset?.model || "gemini-3.8-flash-tts");
 
     let audioUrl = "";
     let buffer: Buffer | undefined;
 
-    // Tier 1: Chatterbox Dual-Model TTS on Modal
+    // Primary: Gemini 3.8 Flash TTS
     try {
-      console.log(`[Resync Scene ${sceneIndex + 1}] Synthesizing with Chatterbox (${selectedLanguage})...`);
-      const chatterboxResult = await generateChatterboxAudio({
-        prompt: cleanNarration,
+      console.log(`[Resync Scene ${sceneIndex + 1}] Synthesizing with Gemini 3.8 Flash TTS (${selectedLanguage}) voice "${resolvedVoice}"...`);
+      const geminiResult = await generateGeminiAudio({
+        text: cleanNarration,
+        voiceName: resolvedVoice,
+        model: preferredModel,
         language: selectedLanguage,
-        voiceClipUrl,
-        exaggeration: isHook ? Math.min(1.0, baseExaggeration + 0.05) : baseExaggeration,
-        cfgWeight: isHook ? Math.min(1.0, baseCfgWeight + 0.05) : baseCfgWeight,
-        isHookScene: isHook,
       });
-      audioUrl = chatterboxResult.audioUrl;
-    } catch (chatterboxErr: any) {
-      console.warn(`[Resync Scene ${sceneIndex + 1} Chatterbox Fallback]`, chatterboxErr.message);
-
-      // Tier 2: Cartesia Sonic-3
-      const isHi = selectedLanguage.toLowerCase() === "hi" || selectedLanguage.toLowerCase() === "hinglish";
-      const fallbackVoice = isHi ? "7e8cb11d-37af-476b-ab8f-25da99b18644" : "62ae83ad-4f6a-430b-af41-a9bede9286ca";
-      const voice = (voiceId && !voiceId.includes("_")) ? voiceId : fallbackVoice;
-
-      const arrayBuffer = await getOrGenerateAudio(cleanNarration, voice, "sonic-3", selectedLanguage);
-      buffer = Buffer.from(arrayBuffer);
-      const fileName = `resync_sc_${sceneIndex + 1}_${Date.now()}.mp3`;
+      buffer = geminiResult.buffer;
+      const fileName = `resync_sc_${sceneIndex + 1}_${Date.now()}.wav`;
 
       try {
         audioUrl = await uploadAudioToCloudinary(buffer, fileName, "vox-reels/audio");
       } catch {
-        audioUrl = `data:audio/mp3;base64,${buffer.toString("base64")}`;
+        audioUrl = `data:audio/wav;base64,${buffer.toString("base64")}`;
+      }
+    } catch (geminiErr: any) {
+      console.warn(`[Resync Scene ${sceneIndex + 1} Gemini Fallback]`, geminiErr.message);
+
+      // Fallback: Gemini 3.8 Flash Lite TTS
+      try {
+        const liteResult = await generateGeminiAudio({
+          text: cleanNarration,
+          voiceName: resolvedVoice,
+          model: "gemini-3.8-flash-lite-tts",
+          language: selectedLanguage,
+        });
+        buffer = liteResult.buffer;
+        const fileName = `resync_sc_${sceneIndex + 1}_lite_${Date.now()}.wav`;
+
+        try {
+          audioUrl = await uploadAudioToCloudinary(buffer, fileName, "vox-reels/audio");
+        } catch {
+          audioUrl = `data:audio/wav;base64,${buffer.toString("base64")}`;
+        }
+      } catch (liteErr: any) {
+        console.error(`[Resync Scene ${sceneIndex + 1} All Audio Failed]`, liteErr.message);
       }
     }
 

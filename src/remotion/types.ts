@@ -286,6 +286,27 @@ export interface KineticCaptionConfig {
   };
 }
 
+// ─── Spatial Camera Configuration ──────────────────────────────────────────
+
+export type CameraTrajectoryMode =
+  | "orbital_gimbal_3d"    // 3D perspective pan with natural pitch/yaw
+  | "portal_dive_matchcut"  // Dives into focal anchor, expands out in next scene
+  | "infinite_desk_glide"  // Horizontal/diagonal traverse across virtual desk
+  | "punch_rack_focus"     // Impact punch-zoom with depth-of-field blur
+  | "smart_continuous";     // Automatically chooses best mode based on layout
+
+export interface SpatialCameraConfig {
+  trajectoryMode?: CameraTrajectoryMode;
+  focalTarget?: { x: number; y: number };
+  entryScale?: number;
+  exitScale?: number;
+  pitchDeg?: number;
+  yawDeg?: number;
+  enableRackFocus?: boolean;
+  rackFocusTarget?: "subject" | "background" | "foreground" | "all_sharp";
+  enableHandheldWiggle?: boolean;
+}
+
 // ─── Scene ───────────────────────────────────────────────────────────────────
 
 export interface Scene {
@@ -306,6 +327,7 @@ export interface Scene {
   bRollUrl?: string;
   visualType?: string;
   layoutType?: string;
+  spatialCameraConfig?: SpatialCameraConfig;
 }
 
 // ─── Global Animation Defaults ───────────────────────────────────────────────

@@ -11,38 +11,24 @@ export interface VoiceOption {
   previewUrl?: string;
 }
 
-export const CARTESIA_VOICES: VoiceOption[] = [
-  // ── Curated Chatterbox Cloned Voice Library (from assets/ref_voices) ──
+export const GEMINI_VOICES: VoiceOption[] = [
+  // ── Curated Gemini 3.8 Flash TTS Voice Library ──
   ...VOICE_PRESETS.map((vp) => ({
     id: vp.id,
     name: vp.name,
     lang: vp.language as "hi" | "en",
     accent: vp.accent,
     desc: vp.description,
-    sampleText: vp.language === "hi"
+    sampleText: vp.sampleText || (vp.language === "hi"
       ? "नमस्ते, यह हिंदी डॉक्यूमेंट्री आवाज़ का प्रीव्यू है।"
-      : "Hello, this is a sample preview of this documentary narrator voice.",
+      : "Hello, this is a sample preview of this documentary narrator voice."),
     previewUrl: vp.previewUrl,
   })),
-
-  // ── Cartesia Fallback Voices ──
-  {
-    id: "62ae83ad-4f6a-430b-af41-a9bede9286ca",
-    name: "Vox Dynamic (Cartesia)",
-    lang: "en",
-    accent: "US Male",
-    desc: "Fast-paced, high energy viral documentary voice",
-    sampleText: "How did a small Silicon Valley startup take down a multi-billion dollar legacy giant?",
-  },
-  {
-    id: "7e8cb11d-37af-476b-ab8f-25da99b18644",
-    name: "Anuj (Cartesia)",
-    lang: "hi",
-    accent: "Hindi Male",
-    desc: "Energetic, high retention documentary narrator",
-    sampleText: "नमस्ते! यह एक हाई-रिटेंशन 2.5D डॉक्यूमेंट्री वीडियो रील्स इंजन है।",
-  },
 ];
+
+// Alias for backwards compatibility across existing components
+export const CARTESIA_VOICES = GEMINI_VOICES;
+
 
 export interface LanguageOption {
   id: string;
@@ -52,11 +38,11 @@ export interface LanguageOption {
 }
 
 export const LANGUAGES: LanguageOption[] = [
-  { id: "en", name: "English", flag: "🇺🇸", defaultVoice: "brian_english" },
-  { id: "hi", name: "Hindi (Hinglish)", flag: "🇮🇳", defaultVoice: "brian_hindi" },
-  { id: "es", name: "Spanish", flag: "🇪🇸", defaultVoice: "brian_english" },
-  { id: "fr", name: "French", flag: "🇫🇷", defaultVoice: "brian_english" },
-  { id: "de", name: "German", flag: "🇩🇪", defaultVoice: "brian_english" },
+  { id: "en", name: "English", flag: "🇺🇸", defaultVoice: "fola_gemini" },
+  { id: "hi", name: "Hindi (Hinglish)", flag: "🇮🇳", defaultVoice: "fola_hindi" },
+  { id: "es", name: "Spanish", flag: "🇪🇸", defaultVoice: "fola_gemini" },
+  { id: "fr", name: "French", flag: "🇫🇷", defaultVoice: "fola_gemini" },
+  { id: "de", name: "German", flag: "🇩🇪", defaultVoice: "fola_gemini" },
 ];
 
 export type TopicCategoryKey = "viral" | "business" | "tech";

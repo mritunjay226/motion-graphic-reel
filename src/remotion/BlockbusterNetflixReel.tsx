@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import { AbsoluteFill, Sequence, Audio, useCurrentFrame, interpolate, staticFile } from "remotion";
 import { executionPlan as defaultPlan } from "./data/execution-plan";
 import type { ExecutionPlan } from "./types";
@@ -8,6 +8,8 @@ import { SceneRenderer } from "./SceneRenderer";
 import { FilmTreatment } from "./components/FilmTreatment";
 import { TactilePaperCanvas } from "./components/TactilePaperCanvas";
 import { TactileSfxLayer } from "./components/TactileSfxLayer";
+import { InfiniteWorldCanvas } from "./components/InfiniteWorldCanvas";
+import { SocialSafeZoneOverlay } from "./components/SocialSafeZoneOverlay";
 import { getVideoTheme, resolveVideoTheme, DEFAULT_STYLE_ID, DEFAULT_PALETTE_ID } from "./utils/themes";
 import { PRESET_MUSIC_URL_MAP } from "./utils/resolveAsset";
 
@@ -25,6 +27,9 @@ export interface BlockbusterNetflixReelProps {
   sfxVolume?: number;
   bgMusicUrl?: string;
   bgMusicVolume?: number;
+  enableInfiniteCanvas?: boolean;
+  enableLoop?: boolean;
+  showSafeZones?: boolean;
 }
 
 /**
@@ -34,7 +39,7 @@ export interface BlockbusterNetflixReelProps {
  */
 export const BlockbusterNetflixReel: React.FC<BlockbusterNetflixReelProps> = ({
   plan = defaultPlan,
-  voiceId = "62ae83ad-4f6a-430b-af41-a9bede9286ca",
+  voiceId = "fola_gemini",
   themeId,
   styleId,
   colorPaletteId,
@@ -46,6 +51,9 @@ export const BlockbusterNetflixReel: React.FC<BlockbusterNetflixReelProps> = ({
   sfxVolume = 1.0,
   bgMusicUrl = "/music/documentary_pulse.mp3",
   bgMusicVolume = 0.15,
+  enableInfiniteCanvas = true,
+  enableLoop = false,
+  showSafeZones = false,
 }) => {
   const frame = useCurrentFrame();
   const activePlan = plan || defaultPlan;
@@ -66,41 +74,71 @@ export const BlockbusterNetflixReel: React.FC<BlockbusterNetflixReelProps> = ({
     !masterAudioUrl.includes("cdn.saas.com")
   );
 
+  // ── INTELLIGENT TOKEN-AWARE SIDECHAIN SPEECH INTERVALS ──
+  // Precompute exact speech frame ranges from Whisper/Deepgram tokens or scene boundaries.
+  const speechIntervals = useMemo(() => {
+    const intervals: Array<{ start: number; end: number }> = [];
+
+    scenes.forEach((sc) => {
+      if (sc.whisperTokens && sc.whisperTokens.length > 0) {
+        // Group contiguous words separated by less than 10 frames into a continuous speech block
+        let blockStart = sc.whisperTokens[0].startFrame;
+        let blockEnd = sc.whisperTokens[0].endFrame;
+
+        for (let i = 1; i < sc.whisperTokens.length; i++) {
+          const tok = sc.whisperTokens[i];
+          if (tok.startFrame - blockEnd <= 10) {
+            // Contiguous speech or micro-pause: extend block
+            blockEnd = Math.max(blockEnd, tok.endFrame);
+          } else {
+            // Substantial narrative pause (>10 frames / 0.33s): push block and start new one
+            intervals.push({ start: blockStart - 3, end: blockEnd + 4 });
+            blockStart = tok.startFrame;
+            blockEnd = tok.endFrame;
+          }
+        }
+        intervals.push({ start: blockStart - 3, end: blockEnd + 4 });
+      } else {
+        // Fallback to scene-level boundaries with 4-frame ease padding
+        intervals.push({
+          start: sc.startFrame + 2,
+          end: sc.startFrame + sc.durationFrames - 4,
+        });
+      }
+    });
+
+    return intervals;
+  }, [scenes]);
+
   // Smooth Exponential Sidechain Ducking:
   // Ducks music to ~ -22dB during speech, smoothly eases up to ~ -14dB during narrative pauses
-  const duckedVolume = Math.max(0.06, bgMusicVolume * 0.55);
-  const swelledVolume = Math.min(0.35, bgMusicVolume * 1.5);
+  const duckedVolume = Math.max(0.06, bgMusicVolume * 0.52);
+  const swelledVolume = Math.min(0.32, bgMusicVolume * 1.45);
 
   const getDynamicMusicVolume = (f: number) => {
-    const activeScene = scenes.find(
-      (sc) => f >= sc.startFrame && f <= sc.startFrame + sc.durationFrames
-    );
+    const fadeFrames = 7;
 
-    if (!activeScene) {
-      return swelledVolume;
+    for (const interval of speechIntervals) {
+      if (f >= interval.start && f <= interval.end) {
+        // Active speech: ducked
+        return duckedVolume;
+      }
+
+      // Smooth attack: speech about to begin within fadeFrames
+      if (f < interval.start && interval.start - f <= fadeFrames) {
+        const progress = (fadeFrames - (interval.start - f)) / fadeFrames;
+        return interpolate(progress, [0, 1], [swelledVolume, duckedVolume]);
+      }
+
+      // Smooth release: speech just ended within fadeFrames
+      if (f > interval.end && f - interval.end <= fadeFrames) {
+        const progress = (f - interval.end) / fadeFrames;
+        return interpolate(progress, [0, 1], [duckedVolume, swelledVolume]);
+      }
     }
 
-    const localF = f - activeScene.startFrame;
-    const remainingF = activeScene.startFrame + activeScene.durationFrames - f;
-    const fadeFrames = 6;
-
-    // Smooth ease-in duck at speech onset
-    if (localF < fadeFrames) {
-      return interpolate(localF, [0, fadeFrames], [swelledVolume, duckedVolume], {
-        extrapolateLeft: "clamp",
-        extrapolateRight: "clamp",
-      });
-    }
-
-    // Smooth ease-out swell at speech conclusion
-    if (remainingF < fadeFrames) {
-      return interpolate(fadeFrames - remainingF, [0, fadeFrames], [duckedVolume, swelledVolume], {
-        extrapolateLeft: "clamp",
-        extrapolateRight: "clamp",
-      });
-    }
-
-    return duckedVolume;
+    // Dramatic narrative pause or inter-scene gap: swell music up for punchline impact!
+    return swelledVolume;
   };
 
   let resolvedBgMusicUrl = (bgMusicUrl && !bgMusicUrl.includes("cdn.saas.com")) ? bgMusicUrl : "";
@@ -185,22 +223,40 @@ export const BlockbusterNetflixReel: React.FC<BlockbusterNetflixReelProps> = ({
       {/* ── BACKGROUND CINEMATIC FILM & TEXTURE LAYER (STRICTLY BEHIND CONTENT) ── */}
       <FilmTreatment config={filmTreatment} theme={activeTheme} />
 
-      {/* ── SCENE VISUAL SEQUENCE STACK (FOREGROUND: ALL SUBJECTS, TEXT, CUTOUTS, CAPTIONS) ── */}
-      {scenes.map((scene) => (
-        <Sequence
-          key={`scene-${scene.sceneId}`}
-          from={scene.startFrame}
-          durationInFrames={scene.durationFrames}
-          name={scene.sceneTitle}
-        >
-          <SceneRenderer
-            scene={scene}
-            voiceId={voiceId}
-            theme={activeTheme}
-            enableAudio={false}
-          />
-        </Sequence>
-      ))}
+      {/* ── TRUE INFINITE CANVAS & 3D CAMERA FLIGHT STAGE ── */}
+      {enableInfiniteCanvas ? (
+        <InfiniteWorldCanvas
+          scenes={scenes}
+          theme={activeTheme}
+          canvasBg={activeTheme.canvasBg || "#FAF8F2"}
+          enableConnectors={true}
+          enableLoop={enableLoop}
+        />
+      ) : (
+        /* Legacy scene sequence stack */
+        scenes.map((scene, idx) => (
+          <Sequence
+            key={`scene-${scene.sceneId}`}
+            from={scene.startFrame}
+            durationInFrames={scene.durationFrames}
+            name={scene.sceneTitle}
+          >
+            <SceneRenderer
+              scene={scene}
+              sceneIndex={idx}
+              totalScenes={scenes.length}
+              prevScene={idx > 0 ? scenes[idx - 1] : undefined}
+              nextScene={idx < scenes.length - 1 ? scenes[idx + 1] : undefined}
+              voiceId={voiceId}
+              theme={activeTheme}
+              enableAudio={false}
+            />
+          </Sequence>
+        ))
+      )}
+
+      {/* ── 9:16 SOCIAL RETENTION SAFE ZONE OVERLAY (QA & AUDIT GUIDE) ── */}
+      {showSafeZones && <SocialSafeZoneOverlay platform="all" />}
     </TactilePaperCanvas>
   );
 };

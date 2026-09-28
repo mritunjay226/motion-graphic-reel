@@ -87,6 +87,9 @@ export default function ReelPreviewPage({ params }: ReelPageProps) {
   // Dynamic Background Texture & Paper Tooth state
   const [activeTextureType, setActiveTextureType] = useState<string>("paper_fiber");
   const [activeTextureOpacity, setActiveTextureOpacity] = useState<number>(0.18);
+  const [enableInfiniteCanvas, setEnableInfiniteCanvas] = useState<boolean>(true);
+  const [enableLoop, setEnableLoop] = useState<boolean>(false);
+  const [showSafeZones, setShowSafeZones] = useState<boolean>(false);
 
   // Check if storyboard data is generated and available
   const hasStoryboard = Boolean(
@@ -121,8 +124,24 @@ export default function ReelPreviewPage({ params }: ReelPageProps) {
       sfxVolume,
       bgMusicUrl: reel?.bgMusicUrl || "https://res.cloudinary.com/diah8zonu/video/upload/v1788713679/vox-reels/music/documentary_pulse.mp3",
       bgMusicVolume: reel?.bgMusicVolume ?? 0.15,
+      enableInfiniteCanvas,
+      enableLoop,
+      showSafeZones,
     };
-  }, [executionPlan, activeThemeId, activeTextureType, activeTextureOpacity, isMuted, enableSfx, sfxVolume, reel?.bgMusicUrl, reel?.bgMusicVolume]);
+  }, [
+    executionPlan,
+    activeThemeId,
+    activeTextureType,
+    activeTextureOpacity,
+    isMuted,
+    enableSfx,
+    sfxVolume,
+    reel?.bgMusicUrl,
+    reel?.bgMusicVolume,
+    enableInfiniteCanvas,
+    enableLoop,
+    showSafeZones,
+  ]);
 
   // Memoize total duration frames
   const totalFrames = useMemo(() => {
@@ -371,6 +390,12 @@ export default function ReelPreviewPage({ params }: ReelPageProps) {
                     preloadStatus={preloadStatus}
                     mounted={mounted}
                     onTogglePlay={handleTogglePlay}
+                    showSafeZones={showSafeZones}
+                    onToggleSafeZones={() => setShowSafeZones((prev) => !prev)}
+                    enableInfiniteCanvas={enableInfiniteCanvas}
+                    onToggleInfiniteCanvas={() => setEnableInfiniteCanvas((prev) => !prev)}
+                    enableLoop={enableLoop}
+                    onToggleLoop={() => setEnableLoop((prev) => !prev)}
                   />
 
                   <TransportControls
@@ -426,15 +451,109 @@ export default function ReelPreviewPage({ params }: ReelPageProps) {
                   )}
 
                   {activeTab === "canvas" && (
-                    <div className="rounded-2xl sm:rounded-3xl border border-black/[0.06] bg-white/70 overflow-hidden shadow-xs">
-                      <BgTextureSelector
-                        currentTextureId={activeTextureType}
-                        currentOpacity={activeTextureOpacity}
-                        onTextureChange={(texId, op) => {
-                          setActiveTextureType(texId);
-                          setActiveTextureOpacity(op);
-                        }}
-                      />
+                    <div className="space-y-4">
+                      {/* 3D Spatial Canvas & Retention Safe Zone Controls */}
+                      <div className="rounded-2xl sm:rounded-3xl border border-black/[0.06] bg-white/70 p-5 shadow-xs space-y-4">
+                        <div className="flex items-center justify-between pb-3 border-b border-black/[0.06]">
+                          <div>
+                            <h4 className="text-xs font-semibold text-[#1D1D1F] uppercase tracking-wider">
+                              Camera & Spatial Stage
+                            </h4>
+                            <p className="text-[11px] text-[#86868B] mt-0.5">
+                              Configure 3D flight trajectory, loop closure, and social retention guides
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="space-y-3">
+                          {/* 3D Infinite Canvas Switch */}
+                          <div className="flex items-center justify-between p-3 rounded-xl bg-black/[0.02] border border-black/[0.04]">
+                            <div>
+                              <span className="text-xs font-medium text-[#1D1D1F] block">
+                                3D Infinite Spatial Canvas
+                              </span>
+                              <span className="text-[11px] text-[#86868B]">
+                                Seamless orbital camera flight across investigative documents (Vox style)
+                              </span>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => setEnableInfiniteCanvas((prev) => !prev)}
+                              className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-hidden ${
+                                enableInfiniteCanvas ? "bg-[#0071E3]" : "bg-neutral-200"
+                              }`}
+                            >
+                              <span
+                                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
+                                  enableInfiniteCanvas ? "translate-x-5" : "translate-x-0"
+                                }`}
+                              />
+                            </button>
+                          </div>
+
+                          {/* Seamless Video Loop Switch */}
+                          <div className="flex items-center justify-between p-3 rounded-xl bg-black/[0.02] border border-black/[0.04]">
+                            <div>
+                              <span className="text-xs font-medium text-[#1D1D1F] block">
+                                Seamless Social Loop
+                              </span>
+                              <span className="text-[11px] text-[#86868B]">
+                                Camera smoothly swoops back to Scene 1 in final 30 frames for infinite loop playback
+                              </span>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => setEnableLoop((prev) => !prev)}
+                              className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-hidden ${
+                                enableLoop ? "bg-[#8B5CF6]" : "bg-neutral-200"
+                              }`}
+                            >
+                              <span
+                                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
+                                  enableLoop ? "translate-x-5" : "translate-x-0"
+                                }`}
+                              />
+                            </button>
+                          </div>
+
+                          {/* 9:16 Social Retention Safe Zones Switch */}
+                          <div className="flex items-center justify-between p-3 rounded-xl bg-black/[0.02] border border-black/[0.04]">
+                            <div>
+                              <span className="text-xs font-medium text-[#1D1D1F] block">
+                                9:16 Social Safe Zones
+                              </span>
+                              <span className="text-[11px] text-[#86868B]">
+                                Overlay UI boundaries for TikTok, Reels, and YouTube Shorts
+                              </span>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => setShowSafeZones((prev) => !prev)}
+                              className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-hidden ${
+                                showSafeZones ? "bg-[#E11D48]" : "bg-neutral-200"
+                              }`}
+                            >
+                              <span
+                                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
+                                  showSafeZones ? "translate-x-5" : "translate-x-0"
+                                }`}
+                              />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Paper Texture Selector */}
+                      <div className="rounded-2xl sm:rounded-3xl border border-black/[0.06] bg-white/70 overflow-hidden shadow-xs">
+                        <BgTextureSelector
+                          currentTextureId={activeTextureType}
+                          currentOpacity={activeTextureOpacity}
+                          onTextureChange={(texId, op) => {
+                            setActiveTextureType(texId);
+                            setActiveTextureOpacity(op);
+                          }}
+                        />
+                      </div>
                     </div>
                   )}
 
