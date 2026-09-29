@@ -31,7 +31,7 @@ export const CharacterBoil: React.FC<CharacterBoilProps> = ({
   const rotation =
     rotationCenter +
     rotationAmplitude *
-      Math.sin((frame / rotationOscillation.periodFrames) * Math.PI * 2);
+    Math.sin((frame / rotationOscillation.periodFrames) * Math.PI * 2);
 
   // Scale: oscillate between minScale and maxScale
   const scaleAmplitude =
@@ -41,7 +41,7 @@ export const CharacterBoil: React.FC<CharacterBoilProps> = ({
   const scale =
     scaleCenter +
     scaleAmplitude *
-      Math.sin((frame / scaleOscillation.periodFrames) * Math.PI * 2);
+    Math.sin((frame / scaleOscillation.periodFrames) * Math.PI * 2);
 
   return (
     <div

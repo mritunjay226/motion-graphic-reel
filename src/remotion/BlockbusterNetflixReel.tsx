@@ -111,9 +111,9 @@ export const BlockbusterNetflixReel: React.FC<BlockbusterNetflixReelProps> = ({
   }, [scenes]);
 
   // Smooth Exponential Sidechain Ducking:
-  // Ducks music to ~ -22dB during speech, smoothly eases up to ~ -14dB during narrative pauses
-  const duckedVolume = Math.max(0.06, bgMusicVolume * 0.52);
-  const swelledVolume = Math.min(0.32, bgMusicVolume * 1.45);
+  // Ducks music to ~ -22dB during speech, smoothly swells up to ~ -14dB (+8dB boost) during narrative pauses & 3D camera flights
+  const duckedVolume = Math.max(0.05, bgMusicVolume * 0.48);
+  const swelledVolume = Math.min(0.35, bgMusicVolume * 1.60);
 
   const getDynamicMusicVolume = (f: number) => {
     const fadeFrames = 7;
@@ -218,6 +218,7 @@ export const BlockbusterNetflixReel: React.FC<BlockbusterNetflixReelProps> = ({
         sfxVolume={sfxVolume}
         enableAudio={enableAudio}
         enableSfx={enableSfx}
+        enableLoop={enableLoop}
       />
 
       {/* ── BACKGROUND CINEMATIC FILM & TEXTURE LAYER (STRICTLY BEHIND CONTENT) ── */}

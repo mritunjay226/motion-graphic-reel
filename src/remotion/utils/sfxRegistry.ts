@@ -446,7 +446,7 @@ export function computeSceneTactileCues(scene: Scene, sceneIndex: number, totalS
     });
   }
 
-  // ── 1. TRANSITION FOLEY (Frame 0: Exactly 1 per scene) ──
+  // ── 1. TRANSITION & 3D SPATIAL FLIGHT FOLEY ──
   if (sceneIndex === 0) {
     // Scene 1 Hook: Cinematic Sub Boom
     cues.push({
@@ -457,18 +457,35 @@ export function computeSceneTactileCues(scene: Scene, sceneIndex: number, totalS
       volume: 0.28,
       label: "Scene 1 Hook Sub Bass Drop",
     });
-  } else if (sceneIndex === totalScenes - 1) {
-    // Final Scene Climax Impact
-    cues.push({
-      id: `climax-boom-${scene.sceneId}`,
-      soundId: "cinematic_boom_heavy",
-      frame: sceneStart,
-      durationFrames: 35,
-      volume: 0.26,
-      label: "Climax Revelation Sub Boom",
-    });
   } else {
-    // Inter-scene cuts: Synchronized to frame 3 (exact midpoint of 7-frame transition cut)
+    // 3D Spatial Camera Flight Triplet:
+    // Flight occurs over the 30-frame window [sceneStart - 30, sceneStart]
+
+    // A. Takeoff Document Release (T - 26): Paper lifts off desk
+    if (sceneStart >= 26) {
+      cues.push({
+        id: `flight-takeoff-${scene.sceneId}`,
+        soundId: "paper_slide",
+        frame: sceneStart - 26,
+        durationFrames: 18,
+        volume: 0.16,
+        label: `Scene ${scene.sceneId} 3D Crane Takeoff Document Slide`,
+      });
+    }
+
+    // B. Peak Mid-Air 3D Velocity Swoop (T - 15): Aerodynamic air whoosh
+    if (sceneStart >= 15) {
+      cues.push({
+        id: `flight-swoop-${scene.sceneId}`,
+        soundId: "cinematic_whoosh",
+        frame: sceneStart - 15,
+        durationFrames: 22,
+        volume: 0.22,
+        label: `Scene ${scene.sceneId} 3D Camera Velocity Whoosh`,
+      });
+    }
+
+    // C. Document Touchdown & Tape / Pin Anchor (T): Tangible physical contact
     const isPaperTheme =
       layout.includes("memo") ||
       layout.includes("newspaper") ||
@@ -476,23 +493,49 @@ export function computeSceneTactileCues(scene: Scene, sceneIndex: number, totalS
       layout.includes("document") ||
       layout.includes("evidence") ||
       layout.includes("conspiracy");
+
+    if (sceneIndex === totalScenes - 1) {
+      // Climax Revelation Boom on arrival
+      cues.push({
+        id: `climax-boom-${scene.sceneId}`,
+        soundId: "cinematic_boom_heavy",
+        frame: sceneStart,
+        durationFrames: 35,
+        volume: 0.26,
+        label: "Climax Revelation Sub Boom",
+      });
+    } else {
+      cues.push({
+        id: `flight-landing-${scene.sceneId}`,
+        soundId: isPaperTheme ? "paper_tape" : "tactile_pop",
+        frame: sceneStart,
+        durationFrames: 16,
+        volume: 0.20,
+        label: `Scene ${scene.sceneId} Document Touchdown Anchor`,
+      });
+    }
+  }
+
+  // ── 2. HEADLINE YELLOW HIGHLIGHTER SQUEAK (Frame 6) ──
+  // Timed to signature Vox yellow highlight sweep across the headline keyword
+  if (scene.durationFrames >= 20) {
     cues.push({
-      id: `trans-${scene.sceneId}`,
-      soundId: isPaperTheme ? "paper_rip" : "whip_fast",
-      frame: sceneStart + 3,
-      durationFrames: 14,
-      volume: 0.20,
-      label: `Scene ${scene.sceneId} Midpoint Transition Cut`,
+      id: `highlight-marker-${scene.sceneId}`,
+      soundId: "marker_highlighter",
+      frame: sceneStart + 6,
+      durationFrames: 16,
+      volume: 0.16,
+      label: `Scene ${scene.sceneId} Yellow Marker Sweep`,
     });
   }
 
-  // ── 2. CONTEXTUAL ACTION ACCENT FOLEY (Keyframe-locked & Composite Stacks) ──
+  // ── 3. CONTEXTUAL ACTION ACCENT FOLEY (Keyframe-locked & Composite Stacks) ──
   if (explicitCue && SFX_CATALOG[explicitCue]) {
     // Explicit AI-assigned cue
     cues.push({
       id: `accent-explicit-${scene.sceneId}`,
       soundId: explicitCue,
-      frame: sceneStart + 10,
+      frame: sceneStart + 12,
       durationFrames: SFX_CATALOG[explicitCue].maxDurationFrames || 20,
       volume: SFX_CATALOG[explicitCue].defaultVolume,
       label: `Scene ${scene.sceneId} Accent: ${explicitCue}`,

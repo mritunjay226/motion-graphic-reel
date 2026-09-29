@@ -12,14 +12,18 @@ interface TactileSfxSelectorProps {
 }
 
 const FEATURED_SFX_DEMOS: { id: SfxSoundId; label: string; tag: string }[] = [
-  { id: "paper_rip", label: "Paper Tear Rip", tag: "Transition" },
-  { id: "rubber_stamp", label: "Rubber Stamp", tag: "Badge" },
-  { id: "camera_shutter", label: "Shutter Snap", tag: "Photo" },
-  { id: "marker_highlighter", label: "Highlighter", tag: "Headline" },
+  { id: "cinematic_whoosh", label: "3D Crane Swoop", tag: "Flight" },
+  { id: "paper_slide", label: "Document Lift", tag: "Flight" },
+  { id: "paper_tape", label: "Evidence Pin", tag: "Anchor" },
+  { id: "marker_highlighter", label: "Highlighter Sweep", tag: "Headline" },
+  { id: "rubber_stamp", label: "Forensic Stamp", tag: "Badge" },
+  { id: "camera_shutter", label: "Polaroid Shutter", tag: "Photo" },
+  { id: "cinematic_sub_boom", label: "Sub-Bass Drop", tag: "Impact" },
+  { id: "tape_rewind", label: "Loop Rewind", tag: "Loop" },
   { id: "cash_register", label: "Cash Register", tag: "Milestone" },
-  { id: "typewriter_key", label: "Typewriter", tag: "Text" },
-  { id: "cinematic_sub_boom", label: "Sub Boom", tag: "Impact" },
-  { id: "bell_ding", label: "Bell Ding", tag: "Highlight" },
+  { id: "coin_clink", label: "Coin Clink", tag: "Finance" },
+  { id: "mechanical_click", label: "Vault Lock", tag: "Metaphor" },
+  { id: "bubble_pop", label: "Funnel Bubble", tag: "Metaphor" },
 ];
 
 export const TactileSfxSelector: React.FC<TactileSfxSelectorProps> = ({
@@ -115,6 +119,55 @@ export const TactileSfxSelector: React.FC<TactileSfxSelectorProps> = ({
           onChange={(e) => onVolumeChange(parseFloat(e.target.value))}
           className="w-full accent-[#0071E3] cursor-pointer h-1.5 bg-black/[0.08] rounded-full disabled:opacity-40"
         />
+      </div>
+
+      {/* Broadcast Mix Hierarchy Visualizer */}
+      <div className="bg-black/[0.02] border border-black/[0.04] rounded-xl p-3 mb-4 space-y-2">
+        <div className="flex items-center justify-between text-[11px] font-semibold text-[#1D1D1F]">
+          <span>Broadcast Mix Hierarchy</span>
+          <span className="text-[10px] text-[#86868B] font-mono">Calibrated Headroom</span>
+        </div>
+
+        <div className="space-y-1.5 text-[10px]">
+          {/* Dialogue Bus */}
+          <div className="flex items-center justify-between">
+            <span className="text-[#1D1D1F] font-medium w-24">Dialogue</span>
+            <div className="flex-1 mx-2 h-1.5 bg-black/[0.06] rounded-full overflow-hidden">
+              <div className="h-full bg-[#0071E3] rounded-full w-[95%]" />
+            </div>
+            <span className="font-mono text-[#0071E3] font-semibold w-12 text-right">0 dB</span>
+          </div>
+
+          {/* Ducked Music Bus */}
+          <div className="flex items-center justify-between">
+            <span className="text-[#86868B] font-medium w-24">Ducked Music</span>
+            <div className="flex-1 mx-2 h-1.5 bg-black/[0.06] rounded-full overflow-hidden">
+              <div className="h-full bg-emerald-500 rounded-full w-[42%]" />
+            </div>
+            <span className="font-mono text-emerald-600 font-semibold w-12 text-right">-22 dB</span>
+          </div>
+
+          {/* Inter-Scene Flight Swell Bus */}
+          <div className="flex items-center justify-between">
+            <span className="text-[#86868B] font-medium w-24">Flight Swell</span>
+            <div className="flex-1 mx-2 h-1.5 bg-black/[0.06] rounded-full overflow-hidden">
+              <div className="h-full bg-emerald-400 rounded-full w-[65%]" />
+            </div>
+            <span className="font-mono text-emerald-600 font-semibold w-12 text-right">-14 dB</span>
+          </div>
+
+          {/* Tactile Foley Bus */}
+          <div className="flex items-center justify-between">
+            <span className="text-[#86868B] font-medium w-24">Tactile Foley</span>
+            <div className="flex-1 mx-2 h-1.5 bg-black/[0.06] rounded-full overflow-hidden">
+              <div
+                className="h-full bg-amber-500 rounded-full"
+                style={{ width: `${Math.min(100, Math.round(sfxVolume * 55))}%` }}
+              />
+            </div>
+            <span className="font-mono text-amber-600 font-semibold w-12 text-right">-16 dB</span>
+          </div>
+        </div>
       </div>
 
       {/* Interactive Sound Audition Grid */}
