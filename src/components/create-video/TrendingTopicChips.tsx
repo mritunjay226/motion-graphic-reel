@@ -1,5 +1,6 @@
 import React from "react";
 import { CATEGORIZED_TRENDING_TOPICS, TopicCategoryKey } from "./constants";
+import { Sparkles } from "lucide-react";
 
 interface TrendingTopicChipsProps {
   activeCategory: TopicCategoryKey;
@@ -23,15 +24,18 @@ export const TrendingTopicChips: React.FC<TrendingTopicChipsProps> = ({
       : currentCategoryData.topicsEn;
 
   return (
-    <div className="bg-black/[0.02] border border-black/[0.05] rounded-2xl p-4 flex flex-col gap-3">
-      {/* Category Pills & Label */}
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <span className="text-xs font-semibold text-[#86868B]">
-          Featured Topics
-        </span>
+    <div className="bg-[#FFFDF7] border-2 border-[#111111] shadow-[3px_3px_0px_#111111] rounded-2xl p-4 sm:p-5 flex flex-col gap-3.5">
+      {/* Category Header & Niche Switcher */}
+      <div className="flex flex-wrap items-center justify-between gap-2.5">
+        <div className="flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-[#FFE600] border border-[#111111]" />
+          <span className="font-mono text-xs font-black uppercase tracking-wider text-[#111111]">
+            Curated Case Files
+          </span>
+        </div>
 
         {/* Niche Category Switcher */}
-        <div className="inline-flex items-center bg-black/[0.04] p-0.5 rounded-full border border-black/[0.03]">
+        <div className="inline-flex items-center bg-white p-1 rounded-xl border-2 border-[#111111] shadow-[2px_2px_0px_#111111] gap-1 select-none">
           {(["viral", "business", "tech"] as const).map((cat) => {
             const isSelected = activeCategory === cat;
             return (
@@ -39,10 +43,11 @@ export const TrendingTopicChips: React.FC<TrendingTopicChipsProps> = ({
                 key={cat}
                 type="button"
                 onClick={() => setActiveCategory(cat)}
-                className={`px-3 py-1 rounded-full text-xs font-medium capitalize transition-all cursor-pointer ${isSelected
-                    ? "bg-white text-[#1D1D1F] shadow-xs font-semibold"
-                    : "text-[#86868B] hover:text-[#1D1D1F]"
-                  }`}
+                className={`px-3 py-1 rounded-lg text-xs font-mono font-black uppercase tracking-wide transition-all cursor-pointer ${
+                  isSelected
+                    ? "bg-[#111111] text-[#FFE600] shadow-[1px_1px_0px_#111111] border border-[#111111]"
+                    : "text-[#555555] hover:text-[#111111] hover:bg-[#F4F4F6]"
+                }`}
               >
                 {cat}
               </button>
@@ -51,7 +56,7 @@ export const TrendingTopicChips: React.FC<TrendingTopicChipsProps> = ({
         </div>
       </div>
 
-      {/* Topic Pill List */}
+      {/* Case Study Topic Badges */}
       <div className="flex flex-wrap gap-2">
         {activeChips.map((chip) => {
           const isSelected = topic === chip;
@@ -60,12 +65,13 @@ export const TrendingTopicChips: React.FC<TrendingTopicChipsProps> = ({
               key={chip}
               type="button"
               onClick={() => onSelectTopic(chip)}
-              className={`text-xs px-3.5 py-2 rounded-xl transition-all text-left cursor-pointer active:scale-98 ${isSelected
-                  ? "bg-[#0071E3] text-white shadow-sm font-medium"
-                  : "bg-white text-[#1D1D1F] border border-black/[0.06] hover:border-black/[0.15] hover:shadow-xs"
-                }`}
+              className={`text-xs px-3.5 py-2 rounded-xl transition-all text-left cursor-pointer active:translate-y-0.5 ${
+                isSelected
+                  ? "bg-[#FFE600] text-[#111111] border-2 border-[#111111] shadow-[3px_3px_0px_#111111] font-black -translate-y-0.5"
+                  : "bg-white text-[#222222] border-2 border-[#111111]/30 hover:border-[#111111] hover:shadow-[2px_2px_0px_#111111] font-bold"
+              }`}
             >
-              {chip}
+              <span>{chip}</span>
             </button>
           );
         })}
@@ -73,3 +79,4 @@ export const TrendingTopicChips: React.FC<TrendingTopicChipsProps> = ({
     </div>
   );
 };
+

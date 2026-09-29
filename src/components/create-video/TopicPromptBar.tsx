@@ -30,8 +30,8 @@ export const TopicPromptBar: React.FC<TopicPromptBarProps> = ({
   setShowAdvanced,
 }) => {
   return (
-    <div className="flex flex-col gap-3">
-      {/* Spotlight-Style Input Container */}
+    <div className="flex flex-col gap-3.5">
+      {/* Vox Editorial Prompt Input Bar */}
       <div className="relative group">
         <input
           type="text"
@@ -44,54 +44,55 @@ export const TopicPromptBar: React.FC<TopicPromptBarProps> = ({
           }
           value={topic}
           onChange={(e) => setTopic(e.target.value)}
-          className="w-full bg-white border border-black/[0.08] text-[#1D1D1F] placeholder-[#86868B]/60 rounded-2xl px-5 py-4 text-base sm:text-lg font-medium focus:outline-none focus:border-[#0071E3] focus:ring-4 focus:ring-[#0071E3]/15 shadow-[0_2px_12px_rgba(0,0,0,0.03)] transition-all pr-28 sm:pr-32"
+          className="w-full bg-[#FFFDF7] border-3 border-[#111111] text-[#111111] placeholder-[#888888] rounded-2xl px-5 py-4 text-base sm:text-lg font-bold shadow-[4px_4px_0px_#111111] focus:outline-none focus:shadow-[6px_6px_0px_#FFE600] transition-all pr-32 sm:pr-36"
         />
 
-        {/* Surprise Button */}
+        {/* Surprise Dice Roll Button */}
         <div className="absolute right-2.5 top-1/2 -translate-y-1/2">
           <button
             type="button"
             onClick={onInstantRandomRoll}
-            className="px-3 py-1.5 rounded-full text-xs font-medium bg-black/[0.04] hover:bg-black/[0.08] text-[#1D1D1F] transition-all cursor-pointer flex items-center gap-1.5 active:scale-95"
-            title="Roll an editorial topic"
+            className="px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider bg-[#FFE600] hover:bg-[#ffd900] text-[#111111] border-2 border-[#111111] shadow-[2px_2px_0px_#111111] active:translate-y-0.5 transition-all cursor-pointer flex items-center gap-1.5"
+            title="Roll an editorial documentary topic"
           >
-            <Dices className="w-3.5 h-3.5 text-[#86868B]" />
+            <Dices className="w-3.5 h-3.5 text-[#111111]" />
             <span className="hidden sm:inline">Surprise</span>
           </button>
         </div>
       </div>
 
-      {/* Sub-Bar Actions */}
+      {/* Sub-Bar Actions: AI Suggest + Narrator Audition + Image Engine */}
       <div className="flex flex-wrap items-center justify-between gap-3 px-1">
-        <div className="flex items-center gap-2.5">
+        <div className="flex flex-wrap items-center gap-2.5">
           {/* AI Suggest Pill */}
           <button
             type="button"
             disabled={isSuggestingAi}
             onClick={onSuggestTopicAi}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-[#0071E3]/10 hover:bg-[#0071E3]/15 disabled:opacity-50 text-[#0071E3] transition-all cursor-pointer active:scale-95"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider bg-[#111111] hover:bg-[#222222] disabled:opacity-50 text-[#B5F500] border-2 border-[#111111] shadow-[2px_2px_0px_#FFE600] transition-all cursor-pointer active:translate-y-0.5"
           >
             {isSuggestingAi ? (
               <Loader2 className="w-3.5 h-3.5 animate-spin" />
             ) : (
               <Sparkles className="w-3.5 h-3.5" />
             )}
-            <span>{isSuggestingAi ? "Generating..." : "Suggest idea"}</span>
+            <span>{isSuggestingAi ? "Scripting..." : "AI Suggest"}</span>
           </button>
 
-          {/* Active Voice Pill */}
-          <div className="inline-flex items-center gap-2 bg-black/[0.03] border border-black/[0.04] px-3 py-1 rounded-full text-xs text-[#1D1D1F]">
-            <Volume2 className="w-3.5 h-3.5 text-[#86868B]" />
-            <span className="font-medium truncate max-w-[130px]">
+          {/* Active Voice Pill with Audio Preview */}
+          <div className="inline-flex items-center gap-2 bg-[#FFFDF7] border-2 border-[#111111] shadow-[2px_2px_0px_#111111] px-3 py-1 rounded-xl text-xs text-[#111111]">
+            <Volume2 className="w-3.5 h-3.5 text-[#555555]" />
+            <span className="font-bold truncate max-w-[130px]">
               {currentVoiceObj.name}
             </span>
             <button
               type="button"
               onClick={(e) => onAuditionVoice(currentVoiceObj, e)}
-              className={`px-2 py-0.5 rounded-full text-[11px] font-medium transition-all flex items-center gap-1 cursor-pointer ${playingVoiceId === currentVoiceObj.id
-                  ? "bg-[#0071E3] text-white animate-pulse"
-                  : "bg-white text-[#1D1D1F] shadow-xs hover:bg-neutral-100"
-                }`}
+              className={`px-2 py-0.5 rounded-md text-[10px] font-mono font-black uppercase transition-all flex items-center gap-1 cursor-pointer border ${
+                playingVoiceId === currentVoiceObj.id
+                  ? "bg-[#FFE600] text-[#111111] border-[#111111] animate-pulse"
+                  : "bg-white hover:bg-[#FFE600] text-[#111111] border-[#111111]"
+              }`}
             >
               {playingVoiceId === currentVoiceObj.id ? (
                 <>
@@ -108,21 +109,21 @@ export const TopicPromptBar: React.FC<TopicPromptBarProps> = ({
           </div>
         </div>
 
-        {/* Custom Settings Toggle */}
+        {/* Custom Image Engine Toggle */}
         <button
           type="button"
           onClick={() => setShowAdvanced(!showAdvanced)}
-          className="text-xs text-[#86868B] hover:text-[#1D1D1F] transition-colors flex items-center gap-1 cursor-pointer"
+          className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#333333] hover:text-[#111111] bg-white border-2 border-[#111111] shadow-[2px_2px_0px_#111111] px-3 py-1 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer hover:-translate-y-0.5 active:translate-y-0.5"
         >
           {showAdvanced ? (
             <>
               <ChevronUp className="w-3.5 h-3.5" />
-              <span>Hide settings</span>
+              <span>Hide Engine</span>
             </>
           ) : (
             <>
               <ChevronDown className="w-3.5 h-3.5" />
-              <span>Image options</span>
+              <span>Visual Engine</span>
             </>
           )}
         </button>
