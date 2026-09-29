@@ -17,6 +17,7 @@ import { VoiceoverSelector } from "@/components/VoiceoverSelector";
 import { SocialPublishModal } from "@/components/SocialPublishModal";
 import { SceneEditorModal } from "@/components/SceneEditorModal";
 import { StockVideoPickerModal } from "@/components/StockVideoPickerModal";
+import FilmTreatment from "@/components/landing/FilmTreatment";
 
 // Studio Modular Components
 import { ReelStudioHeader } from "@/components/studio/ReelStudioHeader";
@@ -360,9 +361,9 @@ export default function ReelPreviewPage({ params }: ReelPageProps) {
   const totalTimeSeconds = Math.floor(totalFrames / 30);
 
   return (
-    <main className="min-h-screen bg-[#FBFBFD] text-[#1D1D1F] flex flex-col font-sans selection:bg-[#0071E3] selection:text-white relative overflow-x-hidden">
-      {/* Subtle ambient lighting */}
-      <div className="absolute top-0 inset-x-0 h-96 bg-gradient-to-b from-blue-50/20 via-transparent to-transparent pointer-events-none" />
+    <main className="min-h-screen bg-[#F4F4F6] text-[#111111] flex flex-col font-sans selection:bg-[#FFE600] selection:text-black relative overflow-x-hidden">
+      {/* Reusable Film Treatment Overlay */}
+      <FilmTreatment grainOpacity={0.12} scanlines={true} vignette={false} />
 
       {/* Global Studio Top Navigation */}
       <StudioNavbar />
@@ -383,9 +384,9 @@ export default function ReelPreviewPage({ params }: ReelPageProps) {
       />
 
       {/* ─── MAIN PRO STUDIO WORKSPACE ─── */}
-      <div className="flex-1 max-w-[1600px] w-full mx-auto p-3 sm:p-6 flex flex-col gap-6 relative z-10">
+      <div className="flex-1 max-w-[1600px] w-full mx-auto p-3 sm:p-6 flex flex-col gap-6 relative z-20">
         {!hasStoryboard && status !== "completed" ? (
-          <div className="w-full max-w-3xl mx-auto my-8">
+          <div className="w-full max-w-3xl mx-auto my-8 bg-white border-3 border-[#111111] shadow-[8px_8px_0px_#111111] rounded-3xl p-6 sm:p-8">
             <ReelGenerationProgress
               reelId={rawReelId}
               onRetry={handleRetry}
@@ -398,7 +399,7 @@ export default function ReelPreviewPage({ params }: ReelPageProps) {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
               {/* ── LEFT: 9:16 VIDEO MONITOR & TRANSPORT CONTROLS ── */}
               <div className="lg:col-span-5 flex flex-col items-center">
-                <div className="bg-white/80 backdrop-blur-xl border border-black/[0.06] p-4 rounded-[28px] sm:rounded-[32px] shadow-[0_4px_24px_rgba(0,0,0,0.04)] w-full max-w-[400px] flex flex-col items-center relative">
+                <div className="bg-[#FFFDF7] border-3 border-[#111111] p-4 rounded-3xl shadow-[8px_8px_0px_#111111] w-full max-w-[400px] flex flex-col items-center relative">
                   <ReelVideoMonitor
                     playerRef={playerRef}
                     stageContainerRef={stageContainerRef}

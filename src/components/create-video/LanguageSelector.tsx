@@ -11,7 +11,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   onLanguageChange,
 }) => {
   return (
-    <div className="inline-flex items-center bg-black/[0.04] p-1 rounded-full border border-black/[0.04]">
+    <div className="inline-flex items-center bg-white p-1 rounded-xl border-2 border-[#111111] shadow-[2px_2px_0px_#111111] gap-1 select-none">
       {LANGUAGES.map((lang) => {
         const isSelected = selectedLanguage === lang.id;
         return (
@@ -19,16 +19,18 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
             key={lang.id}
             type="button"
             onClick={() => onLanguageChange(lang.id)}
-            className={`px-3 py-1 rounded-full text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer select-none ${isSelected
-                ? "bg-white text-[#1D1D1F] shadow-sm font-semibold"
-                : "text-[#86868B] hover:text-[#1D1D1F]"
-              }`}
+            className={`px-3 py-1.5 rounded-lg text-xs font-mono font-black tracking-wide transition-all flex items-center gap-1.5 cursor-pointer ${
+              isSelected
+                ? "bg-[#FFE600] text-[#111111] shadow-[1px_1px_0px_#111111] border border-[#111111] scale-102"
+                : "text-[#555555] hover:text-[#111111] hover:bg-[#F4F4F6]"
+            }`}
           >
-            <span className="text-sm">{lang.flag}</span>
-            <span>{lang.id.toUpperCase()}</span>
+            <span className="text-sm leading-none">{lang.flag}</span>
+            <span className="uppercase">{lang.id}</span>
           </button>
         );
       })}
     </div>
   );
 };
+

@@ -20,6 +20,9 @@ import { TrendingTopicChips } from "@/components/create-video/TrendingTopicChips
 import { NarratorVoiceGrid } from "@/components/create-video/NarratorVoiceGrid";
 import { AdvancedImageSettings } from "@/components/create-video/AdvancedImageSettings";
 
+import FilmTreatment from "@/components/landing/FilmTreatment";
+import { Zap, Sparkles } from "lucide-react";
+
 export type { VoiceOption };
 
 function CreateVideoContent() {
@@ -191,28 +194,51 @@ function CreateVideoContent() {
   const currentVoiceObj = CARTESIA_VOICES.find((v) => v.id === selectedVoiceId) || CARTESIA_VOICES[0];
 
   return (
-    <main className="min-h-screen bg-[#FBFBFD] text-[#1D1D1F] flex flex-col font-sans selection:bg-[#0071E3]/20 selection:text-[#0071E3] overflow-x-hidden">
+    <main className="min-h-screen bg-[#F4F4F6] text-[#111111] flex flex-col font-sans selection:bg-[#FFE600] selection:text-black overflow-x-hidden relative">
+      {/* Reusable Vox Film Treatment Overlay */}
+      <FilmTreatment grainOpacity={0.12} scanlines={true} vignette={false} />
+
+      {/* Broadcast Studio Viewfinder HUD View */}
+      <div className="absolute top-20 left-6 pointer-events-none z-20 opacity-70 hidden sm:block">
+        <svg className="w-12 h-12 stroke-[#111111]" fill="none" viewBox="0 0 48 48">
+          <path d="M 4 20 L 4 4 L 20 4" strokeWidth="3" strokeLinecap="square" />
+        </svg>
+        <div className="text-[9px] font-mono text-[#111111] font-black tracking-widest mt-0.5">
+          REC [30FPS]
+        </div>
+      </div>
+      <div className="absolute top-20 right-6 pointer-events-none z-20 opacity-70 hidden sm:block text-right">
+        <svg className="w-12 h-12 stroke-[#111111] ml-auto" fill="none" viewBox="0 0 48 48">
+          <path d="M 28 4 L 44 4 L 44 20" strokeWidth="3" strokeLinecap="square" />
+        </svg>
+        <div className="text-[9px] font-mono text-[#111111] font-black tracking-widest mt-0.5">
+          1080x1920 9:16
+        </div>
+      </div>
+
       {/* Hidden Audio Element for Voice Auditioning */}
       <audio ref={audioRef} className="hidden" />
 
-      {/* Navigation Header */}
+      {/* Vox Navigation Header */}
       <StudioNavbar />
 
       {/* Main Content Area */}
-      <div className="flex-1 max-w-3xl w-full mx-auto px-4 sm:px-6 py-10 sm:py-14 flex flex-col justify-center">
+      <div className="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-12 flex flex-col justify-center relative z-20">
         {activeReelId ? (
           /* Workstation Progress View */
           <div className="flex flex-col gap-5 animate-in fade-in duration-300 w-full items-center">
-            <ReelGenerationProgress
-              reelId={activeReelId}
-              onComplete={(reelId) => {
-                router.push(`/reel/${reelId}`);
-              }}
-              onRetry={() => {
-                setActiveReelId(null);
-                setIsGenerating(false);
-              }}
-            />
+            <div className="w-full bg-white border-3 border-[#111111] shadow-[8px_8px_0px_#111111] rounded-3xl p-6 sm:p-8">
+              <ReelGenerationProgress
+                reelId={activeReelId}
+                onComplete={(reelId) => {
+                  router.push(`/reel/${reelId}`);
+                }}
+                onRetry={() => {
+                  setActiveReelId(null);
+                  setIsGenerating(false);
+                }}
+              />
+            </div>
 
             <button
               type="button"
@@ -220,20 +246,25 @@ function CreateVideoContent() {
                 setActiveReelId(null);
                 setIsGenerating(false);
               }}
-              className="px-5 py-2 rounded-full bg-white border border-black/[0.08] shadow-xs text-xs font-medium text-[#1D1D1F] hover:bg-black/[0.03] transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95"
+              className="px-6 py-2.5 rounded-xl bg-white border-2 border-[#111111] shadow-[3px_3px_0px_#111111] hover:bg-[#FFE600] text-xs font-mono font-black uppercase tracking-wider text-[#111111] transition-all flex items-center justify-center gap-2 cursor-pointer active:translate-y-0.5 hover:-translate-y-0.5"
             >
-              <ArrowLeft className="w-3.5 h-3.5" />
-              <span>Back to prompt</span>
+              <ArrowLeft className="w-4 h-4 stroke-[3]" />
+              <span>Back to Prompt Console</span>
             </button>
           </div>
         ) : (
-          /* Clean Apple Creation Card */
-          <div className="apple-card rounded-[32px] p-6 sm:p-10 relative">
+          /* Vox Studio Documentary Console Card */
+          <div className="bg-white border-3 border-[#111111] shadow-[8px_8px_0px_#111111] rounded-3xl p-6 sm:p-10 relative overflow-hidden">
             {/* Top Eyebrow & Language Switcher */}
-            <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
-              <span className="text-xs font-semibold text-[#86868B] uppercase tracking-wider">
-                New Motion Reel
-              </span>
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-6 pb-4 border-b-2 border-[#111111]/15">
+              <div className="flex items-center gap-2.5">
+                <span className="px-3 py-1 rounded-full text-[10px] font-mono font-black uppercase tracking-wider bg-[#FFE600] text-[#111111] border-2 border-[#111111] shadow-[2px_2px_0px_#111111]">
+                  ● 2.5D MOTION CONSOLE
+                </span>
+                <span className="hidden sm:inline font-mono text-[10px] font-bold text-[#555555] uppercase tracking-wider">
+                  DISPATCH #01 • 30 FPS RIG
+                </span>
+              </div>
 
               <LanguageSelector
                 selectedLanguage={selectedLanguage}
@@ -242,12 +273,12 @@ function CreateVideoContent() {
             </div>
 
             {/* Headline */}
-            <div className="mb-8">
-              <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-[#1D1D1F] leading-tight mb-2">
-                What story will you tell?
+            <div className="mb-7">
+              <h1 className="font-bebas text-4xl sm:text-6xl uppercase tracking-wide text-[#111111] leading-[0.95] mb-2.5">
+                What Story Will You Animate?
               </h1>
-              <p className="text-sm text-[#86868B] font-normal leading-relaxed max-w-xl">
-                Enter any documentary topic or case study. We'll write the script, record the voiceover, sync captions, and animate the visual scenes.
+              <p className="text-xs sm:text-sm text-[#555555] font-medium leading-relaxed max-w-2xl">
+                Enter any documentary topic or investigative question. We'll research the facts, script a high-retention 6-scene story arc, record broadcast narration, and animate multi-plane cutouts.
               </p>
             </div>
 
@@ -303,17 +334,18 @@ function CreateVideoContent() {
               <button
                 type="submit"
                 disabled={isGenerating || !topic.trim()}
-                className="w-full py-4 rounded-full text-base font-semibold bg-[#0071E3] hover:bg-[#0077ED] disabled:opacity-40 text-white shadow-[0_4px_16px_rgba(0,113,227,0.3)] hover:shadow-[0_6px_22px_rgba(0,113,227,0.4)] active:scale-[0.99] transition-all flex items-center justify-center gap-2.5 cursor-pointer select-none"
+                className="w-full py-4.5 rounded-2xl text-base sm:text-lg font-mono font-black uppercase tracking-wider bg-[#FFE600] hover:bg-[#ffd900] disabled:opacity-40 text-[#111111] border-3 border-[#111111] shadow-[6px_6px_0px_#111111] hover:shadow-[8px_8px_0px_#111111] hover:-translate-y-0.5 active:translate-y-1 active:shadow-[2px_2px_0px_#111111] transition-all flex items-center justify-center gap-3 cursor-pointer select-none"
               >
                 {isGenerating ? (
                   <>
-                    <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    <span>Generating video...</span>
+                    <span className="w-5 h-5 border-3 border-[#111111] border-t-transparent rounded-full animate-spin" />
+                    <span>Directing Reel & Animating...</span>
                   </>
                 ) : (
                   <>
-                    <span>Generate video</span>
-                    <ArrowRight className="w-4 h-4" />
+                    <Zap className="w-5 h-5 fill-current text-[#111111]" />
+                    <span>Launch 2.5D Motion Reel</span>
+                    <ArrowRight className="w-5 h-5 stroke-[3]" />
                   </>
                 )}
               </button>
@@ -321,8 +353,8 @@ function CreateVideoContent() {
 
             {/* Error Message */}
             {errorMessage && (
-              <div className="mt-4 p-3.5 bg-red-50 border border-red-200 rounded-2xl text-xs text-red-700 flex items-center gap-2">
-                <AlertCircle className="w-4 h-4 text-red-500 shrink-0" />
+              <div className="mt-5 p-4 bg-red-50 border-2 border-red-600 rounded-xl text-xs font-mono font-bold text-red-700 flex items-center gap-2.5 shadow-[3px_3px_0px_#EF4444]">
+                <AlertCircle className="w-4 h-4 text-red-600 shrink-0 stroke-[2.5]" />
                 <span>{errorMessage}</span>
               </div>
             )}
@@ -337,8 +369,8 @@ export default function CreateVideoPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-[#FBFBFD] text-[#1D1D1F] flex flex-col items-center justify-center text-sm font-medium">
-          Loading Studio...
+        <div className="min-h-screen bg-[#F4F4F6] text-[#111111] flex flex-col items-center justify-center text-sm font-mono font-black uppercase">
+          Loading Studio Console...
         </div>
       }
     >

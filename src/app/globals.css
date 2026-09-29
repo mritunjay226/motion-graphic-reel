@@ -1,25 +1,27 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
 @import "tailwindcss";
 
 :root {
-  --bg-canvas: #FBFBFD;
+  --bg-canvas: #F4F4F6;
   --bg-surface: #FFFFFF;
-  --text-primary: #1D1D1F;
-  --text-secondary: #86868B;
-  --text-tertiary: #A1A1A6;
+  --text-primary: #111111;
+  --text-secondary: #555555;
+  --text-tertiary: #888888;
+  --color-vox-yellow: #FFE600;
+  --color-vox-lime: #B5F500;
+  --color-vox-black: #111111;
+  --color-paper: #FFFDF7;
+  --border-editorial: #111111;
+
+  /* Legacy variable mappings for safety */
   --accent-blue: #0071E3;
-  --accent-blue-hover: #0077ED;
   --accent-green: #34C759;
   --accent-amber: #FF9500;
   --border-hairline: rgba(0, 0, 0, 0.08);
-
-  /* Legacy variable mappings for safety */
-  --color-paper: #FBFBFD;
-  --color-ink: #1D1D1F;
-  --color-vox-lime: #0071E3;
-  --color-highlighter: #0071E3;
-  --color-crimson: #FF3B30;
-  --color-border: rgba(0, 0, 0, 0.08);
+  --color-ink: #111111;
+  --color-highlighter: #FFE600;
+  --color-crimson: #EF4444;
+  --color-border: #111111;
 }
 
 body {
@@ -78,36 +80,113 @@ body {
   font-family: 'JetBrains Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
-/* Legacy font aliases to prevent broken layouts */
+/* Editorial Typography Classes */
 .font-bebas {
-  font-family: 'Inter', -apple-system, sans-serif;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-family: 'Bebas Neue', 'Inter', -apple-system, sans-serif;
+  letter-spacing: 0.04em;
+}
+
+.font-editorial {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
 }
 
 .font-utility {
   font-family: 'JetBrains Mono', monospace;
 }
 
-/* Apple Card & Glass Materials */
+/* 2.5D Character Boil Animation (Tactile stop-motion paper wiggle) */
+@keyframes character-boil {
+  0%, 100% {
+    transform: rotate(0deg) translate(0px, 0px);
+  }
+  25% {
+    transform: rotate(-0.6deg) translate(-1px, 0.5px);
+  }
+  50% {
+    transform: rotate(0.5deg) translate(0.5px, -0.5px);
+  }
+  75% {
+    transform: rotate(-0.4deg) translate(0.5px, 0.5px);
+  }
+}
+
+.animate-character-boil {
+  animation: character-boil 1.2s steps(4, jump-none) infinite;
+}
+
+/* Vox Brutalist Card & Container Utilities */
+.vox-card {
+  background: #FFFFFF;
+  border: 2px solid #111111;
+  box-shadow: 4px 4px 0px #111111;
+}
+
+.vox-card-elevated {
+  background: #FFFDF7;
+  border: 3px solid #111111;
+  box-shadow: 6px 6px 0px #111111;
+}
+
+.vox-btn-yellow {
+  background-color: #FFE600;
+  color: #111111;
+  border: 2px solid #111111;
+  box-shadow: 3px 3px 0px #111111;
+  font-weight: 800;
+  text-transform: uppercase;
+  transition: all 0.15s ease;
+}
+
+.vox-btn-yellow:hover {
+  background-color: #ffd900;
+  transform: translateY(-2px);
+  box-shadow: 4px 4px 0px #111111;
+}
+
+.vox-btn-yellow:active {
+  transform: translateY(1px);
+  box-shadow: 1px 1px 0px #111111;
+}
+
+.vox-btn-dark {
+  background-color: #111111;
+  color: #FFFFFF;
+  border: 2px solid #111111;
+  box-shadow: 3px 3px 0px #B5F500;
+  font-weight: 800;
+  text-transform: uppercase;
+  transition: all 0.15s ease;
+}
+
+.vox-btn-dark:hover {
+  background-color: #222222;
+  transform: translateY(-2px);
+  box-shadow: 4px 4px 0px #B5F500;
+}
+
+.vox-btn-dark:active {
+  transform: translateY(1px);
+  box-shadow: 1px 1px 0px #B5F500;
+}
+
+/* Legacy Card Classes with Vox Elevated Defaults */
 .apple-card {
   background: #FFFFFF;
-  border: 1px solid rgba(0, 0, 0, 0.07);
-  box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.03);
+  border: 2px solid #111111;
+  box-shadow: 4px 4px 0px #111111;
 }
 
 .apple-card-elevated {
-  background: #FFFFFF;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.04);
+  background: #FFFDF7;
+  border: 3px solid #111111;
+  box-shadow: 6px 6px 0px #111111;
 }
 
 .apple-glass {
-  background: rgba(255, 255, 255, 0.82);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  border: 2px solid #111111;
+  box-shadow: 4px 4px 0px #111111;
 }
 
 .apple-glass-dark {
