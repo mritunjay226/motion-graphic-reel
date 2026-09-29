@@ -19,6 +19,36 @@ import mime from "mime";
 
 export type GeminiTtsModel = "gemini-3.8-flash-tts" | "gemini-3.8-flash-lite-tts";
 
+export type VoiceDeliveryStyle = "investigative" | "cinematic" | "energetic" | "dramatic" | "authoritative";
+
+export const STYLE_PROMPTS: Record<VoiceDeliveryStyle, string> = {
+  investigative: `## Voice & Performance Direction:
+- Role: Authoritative, investigative documentary narrator (Vox, Netflix docuseries, MoSidd style).
+- Delivery: Speak with deliberate pacing, articulate diction, natural pauses for emphasis, and a warm, resonant studio microphone proximity effect.
+- Tone: Serious, analytical, confident, and dramatic—never rushed, never robotic, never casual.
+- Prosody: Honor commas and periods with natural dramatic micro-breaths. Deliver key metrics, dates, and revelations with subtle acoustic weight.`,
+
+  cinematic: `## Voice & Performance Direction:
+- Role: Cinematic broadcast storyteller.
+- Delivery: Sophisticated, rich, balanced, and emotive studio narration.
+- Tone: Engaging, polished, resonant, and captivating.`,
+
+  energetic: `## Voice & Performance Direction:
+- Role: Modern, high-energy tech explainer narrator.
+- Delivery: Rapid, upbeat, punchy cadence with razor-sharp enthusiasm.
+- Tone: Confident, fast-paced, and hook-focused.`,
+
+  dramatic: `## Voice & Performance Direction:
+- Role: Deep, resonant dramatic baritone for true-crime, scandals, and high-stakes climaxes.
+- Delivery: Heavy, deliberate, suspenseful, and commanding.
+- Tone: Ominous, gripping, and impactful.`,
+
+  authoritative: `## Voice & Performance Direction:
+- Role: Executive financial & industry analyst.
+- Delivery: Crisp, measured, precise, and highly professional.
+- Tone: Objective, steady, and commanding.`,
+};
+
 export interface WavConversionOptions {
   numChannels: number;
   sampleRate: number;
@@ -31,6 +61,7 @@ export interface GeminiTtsOptions {
   model?: GeminiTtsModel | string;
   temperature?: number;
   language?: string;
+  style?: VoiceDeliveryStyle | string;
 }
 
 export interface GeminiAudioResult {
@@ -47,14 +78,15 @@ const audioCache = new Map<string, GeminiAudioResult>();
 
 /**
  * Maps legacy voice IDs or presets to official Gemini 3.8 voice names.
+ * Defaults to 'Fenrir' (Authoritative investigative documentary narrator).
  */
 export function resolveGeminiVoiceName(voiceIdOrName?: string, language: string = "en"): string {
-  if (!voiceIdOrName) return "Fola";
+  if (!voiceIdOrName) return "Fenrir";
 
   const lower = voiceIdOrName.toLowerCase();
 
   // If already a valid Gemini voice name or starts with one
-  const validVoices = ["fola", "puck", "charon", "kore", "fenrir", "aoede", "leda", "orus", "zephyr"];
+  const validVoices = ["fenrir", "aoede", "charon", "puck", "kore", "fola", "leda", "orus", "zephyr"];
   for (const v of validVoices) {
     if (lower === v || lower.startsWith(`${v}_`) || lower.includes(v)) {
       return v.charAt(0).toUpperCase() + v.slice(1);
@@ -168,15 +200,17 @@ export function sanitizeTranscript(text: string): string {
 }
 
 /**
- * Generates audio using Gemini 3.8 TTS Flash or Gemini 3.8 TTS Flash Lite.
+ * Generates audio using Gemini 3.8 TTS Flash or Gemini 3.8 TTS Flash Lite
+ * with studio vocal performance prompting and calibrated temperature.
  */
 export async function generateGeminiAudio(options: GeminiTtsOptions): Promise<GeminiAudioResult> {
   const {
     text,
     voiceName: requestedVoice,
     model: requestedModel,
-    temperature = 1,
+    temperature = 0.35, // Calibrated studio baseline for acoustic stability & reduced vocal jitter
     language = "en",
+    style = "investigative",
   } = options;
 
   if (!text || !text.trim()) {
@@ -192,7 +226,7 @@ export async function generateGeminiAudio(options: GeminiTtsOptions): Promise<Ge
   const model = resolveGeminiModel(requestedModel);
   const cleanText = sanitizeTranscript(text);
 
-  const cacheKey = `${model}:${voiceName}:${cleanText}`;
+  const cacheKey = `${model}:${voiceName}:${style}:${temperature}:${cleanText}`;
   if (audioCache.has(cacheKey)) {
     return audioCache.get(cacheKey)!;
   }
@@ -211,12 +245,14 @@ export async function generateGeminiAudio(options: GeminiTtsOptions): Promise<Ge
     },
   };
 
+  const styleDirective = STYLE_PROMPTS[style as VoiceDeliveryStyle] || STYLE_PROMPTS.investigative;
+
   const contents = [
     {
       role: "user",
       parts: [
         {
-          text: `## Transcript:\n${cleanText}`,
+          text: `${styleDirective}\n\n## Transcript To Narrate:\n${cleanText}`,
         },
       ],
     },
@@ -287,15 +323,17 @@ export async function generateGeminiAudio(options: GeminiTtsOptions): Promise<Ge
  */
 export async function getOrGenerateGeminiAudio(
   text: string,
-  voiceName: string = "Fola",
+  voiceName: string = "Fenrir",
   model: GeminiTtsModel = "gemini-3.8-flash-tts",
-  language: string = "en"
+  language: string = "en",
+  style: VoiceDeliveryStyle = "investigative"
 ): Promise<Buffer> {
   const result = await generateGeminiAudio({
     text,
     voiceName,
     model,
     language,
+    style,
   });
   return result.buffer;
 }

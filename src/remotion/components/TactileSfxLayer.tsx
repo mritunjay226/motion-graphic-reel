@@ -11,6 +11,7 @@ export interface TactileSfxLayerProps {
   sfxVolume?: number;
   enableAudio?: boolean;
   enableSfx?: boolean;
+  enableLoop?: boolean;
 }
 
 interface MergedSfxCue {
@@ -36,6 +37,7 @@ export const TactileSfxLayer: React.FC<TactileSfxLayerProps> = ({
   sfxVolume = 1.0,
   enableAudio = true,
   enableSfx = true,
+  enableLoop = false,
 }) => {
   if (!enableAudio || !enableSfx || !scenes || scenes.length === 0) {
     return null;
@@ -109,6 +111,23 @@ export const TactileSfxLayer: React.FC<TactileSfxLayerProps> = ({
       }
     });
 
+    // Add loop closure 3D swoop cue when enableLoop is active
+    if (enableLoop && scenes.length > 1) {
+      const totalReelFrames = scenes.reduce(
+        (max, s) => Math.max(max, s.startFrame + s.durationFrames),
+        0
+      );
+      rawList.push({
+        id: "loop-closure-swoop",
+        soundId: "cinematic_whoosh",
+        url: getSfxUrl("cinematic_whoosh"),
+        frame: totalReelFrames - 16,
+        durationFrames: 22,
+        volume: 0.22,
+        label: "Loop Return 3D Crane Swoop",
+      });
+    }
+
     // Sort chronologically by timeline frame
     rawList.sort((a, b) => a.frame - b.frame);
 
@@ -135,7 +154,7 @@ export const TactileSfxLayer: React.FC<TactileSfxLayerProps> = ({
     });
 
     return finalCues;
-  }, [sceneCues, customEvents]);
+  }, [sceneCues, customEvents, enableLoop, scenes]);
 
   return (
     <React.Fragment>
