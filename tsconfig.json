@@ -39,6 +39,7 @@
   "exclude": [
     "node_modules",
     "modal_render",
-    ".next"
+    ".next",
+    "scratch"
   ]
 }

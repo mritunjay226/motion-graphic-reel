@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
-import { executionPlan } from "d:/motion-graphic-reel/src/remotion/data/execution-plan";
-import { computeSceneTactileCues, getSfxUrl, SFX_CATALOG } from "d:/motion-graphic-reel/src/remotion/utils/sfxRegistry";
+import { executionPlan } from "../src/remotion/data/execution-plan";
+import { computeSceneTactileCues, getSfxUrl, SFX_CATALOG } from "../src/remotion/utils/sfxRegistry";
 
 const scenes = executionPlan.scenes;
 console.log(`=== AUDITING TACTILE FOLEY & AUDIO SUITE ACROSS ALL ${scenes.length} SCENES ===\n`);
@@ -9,7 +9,7 @@ console.log(`=== AUDITING TACTILE FOLEY & AUDIO SUITE ACROSS ALL ${scenes.length
 let totalCues = 0;
 const allCues: any[] = [];
 const missingFiles: string[] = [];
-const sfxDir = "d:/motion-graphic-reel/public/sfx";
+const sfxDir = path.join(process.cwd(), "public/sfx");
 
 scenes.forEach((sc, idx) => {
   const cues = computeSceneTactileCues(sc, idx, scenes.length);

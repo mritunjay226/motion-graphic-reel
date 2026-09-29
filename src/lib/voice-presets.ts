@@ -201,5 +201,5 @@ export function getDefaultVoiceForLanguage(language: string = "en"): VoicePreset
   if (langKey === "hi" || langKey === "hinglish") {
     return VOICE_PRESETS.find((v) => v.id === "fola_hindi") || VOICE_PRESETS.find((v) => v.language === "hi") || VOICE_PRESETS[0];
   }
-  return VOICE_PRESETS.find((v) => v.id === "fola_gemini") || VOICE_PRESETS[0];
+  return VOICE_PRESETS.find((v) => v.id === "fenrir_gemini") || VOICE_PRESETS[0];
 }

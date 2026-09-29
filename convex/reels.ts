@@ -213,6 +213,8 @@ export const updateReelStatus = mutation({
     errorMessage: v.optional(v.string()),
     failedStep: v.optional(v.string()),
     themeId: v.optional(v.string()),
+    voiceId: v.optional(v.string()),
+    voiceStyle: v.optional(v.string()),
     currentStep: v.optional(v.number()),
     progressPercent: v.optional(v.number()),
     progressMessage: v.optional(v.string()),
@@ -230,6 +232,8 @@ export const updateReelStatus = mutation({
     if (args.errorMessage !== undefined) patches.errorMessage = args.errorMessage;
     if (args.failedStep !== undefined) patches.failedStep = args.failedStep;
     if (args.themeId) patches.themeId = args.themeId;
+    if (args.voiceId) patches.voiceId = args.voiceId;
+    if (args.voiceStyle) patches.voiceStyle = args.voiceStyle;
     if (args.currentStep !== undefined) patches.currentStep = args.currentStep;
     if (args.progressPercent !== undefined) patches.progressPercent = args.progressPercent;
     if (args.progressMessage !== undefined) patches.progressMessage = args.progressMessage;
@@ -342,6 +346,24 @@ export const updateReelTheme = mutation({
   handler: async (ctx, args) => {
     await ctx.db.patch(args.reelId, {
       themeId: args.themeId,
+      updatedAt: Date.now(),
+    });
+  },
+});
+
+/**
+ * Update Voiceover Narrator ID and performance style for a reel project.
+ */
+export const updateReelVoice = mutation({
+  args: {
+    reelId: v.id("reels"),
+    voiceId: v.string(),
+    voiceStyle: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.patch(args.reelId, {
+      voiceId: args.voiceId,
+      ...(args.voiceStyle ? { voiceStyle: args.voiceStyle } : {}),
       updatedAt: Date.now(),
     });
   },

@@ -100,12 +100,14 @@ export const generateReelPipeline = (inngest.createFunction as any)(
         const masterScript = scriptScenes.map((sc: any) => (sc.narrationTts || sc.narration).trim()).join(" ");
 
         try {
-          // Primary: Gemini 3.8 Flash TTS (or preset specified model)
+          // Primary: Gemini 3.8 Flash TTS (or preset specified model) with documentary directing
           const geminiMaster = await generateGeminiAudio({
             text: masterScript,
             voiceName: resolvedVoice,
             model: preferredModel,
             language,
+            style: "investigative",
+            temperature: 0.35,
           });
 
           const masterBuffer = geminiMaster.buffer;
@@ -126,6 +128,8 @@ export const generateReelPipeline = (inngest.createFunction as any)(
               voiceName: resolvedVoice,
               model: "gemini-3.8-flash-lite-tts",
               language,
+              style: "investigative",
+              temperature: 0.35,
             });
             const masterBuffer = liteMaster.buffer;
             const fileName = `master_voiceover_lite_${Date.now()}.wav`;
@@ -145,12 +149,14 @@ export const generateReelPipeline = (inngest.createFunction as any)(
           const ttsPrompt = (sc.narrationTts || sc.narration).trim();
 
           try {
-            // Tier 1: Gemini 3.8 Flash TTS
+            // Tier 1: Gemini 3.8 Flash TTS with documentary directing
             const geminiResult = await generateGeminiAudio({
               text: ttsPrompt,
               voiceName: resolvedVoice,
               model: preferredModel,
               language,
+              style: "investigative",
+              temperature: 0.35,
             });
 
             const buffer = geminiResult.buffer;

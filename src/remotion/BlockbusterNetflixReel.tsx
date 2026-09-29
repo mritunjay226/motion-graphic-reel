@@ -39,7 +39,7 @@ export interface BlockbusterNetflixReelProps {
  */
 export const BlockbusterNetflixReel: React.FC<BlockbusterNetflixReelProps> = ({
   plan = defaultPlan,
-  voiceId = "fola_gemini",
+  voiceId = "fenrir_gemini",
   themeId,
   styleId,
   colorPaletteId,
@@ -192,7 +192,7 @@ export const BlockbusterNetflixReel: React.FC<BlockbusterNetflixReelProps> = ({
           const finalAudioUrl =
             scene.audioUrl && !scene.audioUrl.includes("cdn.saas.com")
               ? scene.audioUrl
-              : `/api/tts?text=${encodeURIComponent(scene.narrationLine)}&voiceId=${voiceId}`;
+              : `/api/tts?text=${encodeURIComponent(scene.narrationLine)}&voiceId=${voiceId}&style=investigative`;
 
           return (
             <Sequence

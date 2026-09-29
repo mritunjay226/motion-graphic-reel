@@ -52,6 +52,8 @@ export default defineSchema({
     bgMusicUrl: v.optional(v.string()),
     bgMusicVolume: v.optional(v.number()),
     themeId: v.optional(v.string()),
+    voiceId: v.optional(v.string()),
+    voiceStyle: v.optional(v.string()),
     fullVoiceoverUrl: v.optional(v.string()),
     masterWhisperTokens: v.optional(v.any()),
     videoUrl: v.optional(v.string()),

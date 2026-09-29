@@ -1,5 +1,5 @@
-import { getNodeWorldCoordinates, computeCameraFlightState } from "d:/motion-graphic-reel/src/remotion/utils/cameraFlight";
-import { executionPlan } from "d:/motion-graphic-reel/src/remotion/data/execution-plan";
+import { getNodeWorldCoordinates, computeCameraFlightState } from "../src/remotion/utils/cameraFlight";
+import { executionPlan } from "../src/remotion/data/execution-plan";
 
 const scenes = executionPlan.scenes;
 const nodePositions = getNodeWorldCoordinates(scenes);

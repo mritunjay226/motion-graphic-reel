@@ -13,17 +13,18 @@ export async function GET(req: NextRequest) {
   try {
     const searchParams = req.nextUrl.searchParams;
     const text = searchParams.get("text");
-    const voiceId = searchParams.get("voiceId") || searchParams.get("voice") || "Fola";
+    const voiceId = searchParams.get("voiceId") || searchParams.get("voice") || "fenrir_gemini";
     const modelParam = searchParams.get("model") || searchParams.get("modelId") || "gemini-3.8-flash-tts";
     const language = searchParams.get("language") || "en";
-    const provider = searchParams.get("provider");
+    const style = searchParams.get("style") || "investigative";
+    const tempParam = searchParams.get("temperature");
+    const temperature = tempParam ? parseFloat(tempParam) : 0.35;
 
     if (!text || !text.trim()) {
       return NextResponse.json({ error: "Missing 'text' parameter." }, { status: 400 });
     }
 
     const preset = getVoicePresetById(voiceId);
-
 
     // Default & Primary: Gemini 3.8 Flash TTS / Flash Lite TTS
     const model = resolveGeminiModel(preset?.model || modelParam);
@@ -34,6 +35,8 @@ export async function GET(req: NextRequest) {
       voiceName,
       model,
       language,
+      style,
+      temperature,
     });
 
     const audioBuffer = audioResult.buffer;
@@ -85,12 +88,13 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const {
       text,
-      voiceId = "Fola",
+      voiceId = "fenrir_gemini",
       voice,
       model = "gemini-3.8-flash-tts",
       modelId,
       language = "en",
-      provider,
+      style = "investigative",
+      temperature = 0.35,
     } = body;
 
     if (!text || typeof text !== "string" || !text.trim()) {
@@ -99,7 +103,6 @@ export async function POST(req: NextRequest) {
 
     const resolvedVoiceId = voice || voiceId;
     const preset = getVoicePresetById(resolvedVoiceId);
-
 
     // Default & Primary: Gemini 3.8 Flash TTS / Flash Lite TTS
     const resolvedModel = resolveGeminiModel(preset?.model || modelId || model);
@@ -110,6 +113,8 @@ export async function POST(req: NextRequest) {
       voiceName,
       model: resolvedModel,
       language,
+      style,
+      temperature,
     });
 
     return new NextResponse(new Uint8Array(audioResult.buffer), {

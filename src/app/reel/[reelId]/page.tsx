@@ -13,6 +13,7 @@ import { BgMusicSelector } from "@/components/BgMusicSelector";
 import { ThemeSelector } from "@/components/ThemeSelector";
 import { BgTextureSelector } from "@/components/BgTextureSelector";
 import { TactileSfxSelector } from "@/components/TactileSfxSelector";
+import { VoiceoverSelector } from "@/components/VoiceoverSelector";
 import { SocialPublishModal } from "@/components/SocialPublishModal";
 import { SceneEditorModal } from "@/components/SceneEditorModal";
 import { StockVideoPickerModal } from "@/components/StockVideoPickerModal";
@@ -84,6 +85,23 @@ export default function ReelPreviewPage({ params }: ReelPageProps) {
     }
   }, [reel?.themeId]);
 
+  // Voiceover Narrator state with Convex sync
+  const [activeVoiceId, setActiveVoiceId] = useState<string>(
+    (reel as any)?.voiceId || "fenrir_gemini"
+  );
+  const [activeVoiceStyle, setActiveVoiceStyle] = useState<string>(
+    (reel as any)?.voiceStyle || "investigative"
+  );
+
+  useEffect(() => {
+    if ((reel as any)?.voiceId) {
+      setActiveVoiceId((reel as any).voiceId);
+    }
+    if ((reel as any)?.voiceStyle) {
+      setActiveVoiceStyle((reel as any).voiceStyle);
+    }
+  }, [(reel as any)?.voiceId, (reel as any)?.voiceStyle]);
+
   // Dynamic Background Texture & Paper Tooth state
   const [activeTextureType, setActiveTextureType] = useState<string>("paper_fiber");
   const [activeTextureOpacity, setActiveTextureOpacity] = useState<number>(0.18);
@@ -120,6 +138,7 @@ export default function ReelPreviewPage({ params }: ReelPageProps) {
       textureType: activeTextureType,
       paperTextureOpacity: activeTextureOpacity,
       enableAudio: !isMuted,
+      voiceId: activeVoiceId,
       enableSfx,
       sfxVolume,
       bgMusicUrl: reel?.bgMusicUrl || "https://res.cloudinary.com/diah8zonu/video/upload/v1788713679/vox-reels/music/documentary_pulse.mp3",
@@ -134,6 +153,7 @@ export default function ReelPreviewPage({ params }: ReelPageProps) {
     activeTextureType,
     activeTextureOpacity,
     isMuted,
+    activeVoiceId,
     enableSfx,
     sfxVolume,
     reel?.bgMusicUrl,
@@ -559,6 +579,18 @@ export default function ReelPreviewPage({ params }: ReelPageProps) {
 
                   {activeTab === "audio" && (
                     <div className="space-y-5">
+                      <div className="rounded-2xl sm:rounded-3xl border border-black/[0.06] bg-white/70 overflow-hidden shadow-xs">
+                        <VoiceoverSelector
+                          reelId={rawReelId as Id<"reels">}
+                          currentVoiceId={activeVoiceId}
+                          currentVoiceStyle={activeVoiceStyle}
+                          onVoiceChange={(vId, vStyle) => {
+                            setActiveVoiceId(vId);
+                            if (vStyle) setActiveVoiceStyle(vStyle);
+                          }}
+                        />
+                      </div>
+
                       <div className="rounded-2xl sm:rounded-3xl border border-black/[0.06] bg-white/70 overflow-hidden shadow-xs">
                         <BgMusicSelector
                           reelId={rawReelId as Id<"reels">}
